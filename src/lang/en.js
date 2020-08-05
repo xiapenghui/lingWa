@@ -78,6 +78,8 @@ export default {
     username: 'Username',
     password: 'Password',
     any: 'any',
+    errorName: 'Please enter the correct user name',
+    errorPassword: 'The password can not be less than 6 digits',
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
   },
@@ -172,10 +174,10 @@ export default {
     fixedHeader: 'Fixed Header',
     sidebarLogo: 'Sidebar Logo'
   },
-  test:{
-    test:'test',
-    newTest:'newTest',
-    oneTest:'oneTest',
-    twoTest:'twoTest'
+  test: {
+    test: 'test',
+    newTest: 'newTest',
+    oneTest: 'oneTest',
+    twoTest: 'twoTest'
   }
 }
