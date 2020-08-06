@@ -12,7 +12,7 @@
       </template>
     </el-table-column>
 
-    <el-table-column width="180px" align="center" label="Date">
+    <el-table-column width="180px" align="center" label="Date" sortable="custom">
       <template slot-scope="scope">
         <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
       </template>
@@ -78,7 +78,7 @@ export default {
       list: null,
       listQuery: {
         page: 1,
-        limit: 5,
+        limit: 10,
         type: this.type,
         sort: '+id'
       },
@@ -100,4 +100,3 @@ export default {
   }
 }
 </script>
-
