@@ -5,6 +5,7 @@
         v-for="tag in visitedViews"
         ref="tag"
         :key="tag.path"
+        v-rest-styleBackground="isActive(tag)? theme : ''"
         :class="isActive(tag)?'active':''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
@@ -47,6 +48,9 @@ export default {
     },
     routes() {
       return this.$store.state.permission.routes
+    },
+    theme() {
+      return this.$store.state.settings.theme
     }
   },
   watch: {

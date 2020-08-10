@@ -15,7 +15,7 @@
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper" :style="{'color':theme}">
+        <div v-rest-styleColor="theme" class="avatar-wrapper">
           <!-- <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar"> -->
           {{ this.$store.getters.name }}
           <i class="el-icon-caret-bottom" />

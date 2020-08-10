@@ -34,6 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 
 Vue.directive('rest-styleBackground', function(dom, definition) { // 背景颜色
   dom.style.background = definition.value
+  dom.style.borderColor = definition.value
 })
 
 Vue.directive('rest-styleColor', function(dom, definition) { // 字体颜色
