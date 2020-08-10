@@ -126,12 +126,14 @@ export default {
       })
     },
     handleLogin() {
+      console.info('1.登录页面按钮点击')
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
           this.$store
             .dispatch('user/login', this.loginForm)
             .then(() => {
+              console.info('3.vuex 里面的 login 方法被调用 完毕')
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
