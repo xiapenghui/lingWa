@@ -1,12 +1,16 @@
 export default {
   route: {
     dashboard: '首页',
-
-    guide: '引导页',
-    permission: '权限测试页',
+    BasicData: '基础数据',
+    ProductionPlan: '生产计划',
+    ProductionManagement: '生产管理',
+    QualityAdministration: '品质管理',
+    DeviceManagement: '设备管理',
+    SystemManagement: '系统管理',
     rolePermission: '角色权限',
-    pagePermission: '页面权限',
-    directivePermission: '指令权限',
+    lookUser: '查看用户',
+    // 截止
+
     icons: '图标',
     components: '组件',
     tinymce: '富文本编辑器',
@@ -89,11 +93,33 @@ export default {
   },
   permission: {
     addRole: '新增角色',
+    delete: '删除角色',
     editPermission: '编辑权限',
+    coplyPermission: '复制权限',
+    lookPermission: '查看用户',
+    title: '角色名称',
+    name: '角色名称',
+    user: '创建者',
+    time: '创建时间',
+    description: '描述',
+    operations: '操作',
+    fullName: '姓名',
+    loginUser: '登录名',
+    company: '公司',
+    department: '部门',
+    errorInfo: '确定删除角色吗？',
+    errorTitle: '警告',
+    Confirm: '确定',
+    Cancel: '取消',
+    Menus: '菜单',
+    editRole: '编辑角色',
+    success: '操作成功！',
+    // 截止
+
     roles: '你的权限',
     switchRoles: '切换权限',
     tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 el-tab 或 el-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。',
-    delete: '删除',
+
     confirm: '确定',
     cancel: '取消'
   },

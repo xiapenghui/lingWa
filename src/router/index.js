@@ -79,6 +79,76 @@ export const constantRoutes = [{
       affix: true
     }
   }]
+},
+// 基础数据
+{
+  path: '/BasicData',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/BasicData/index'),
+    name: 'BasicData',
+    meta: {
+      title: 'BasicData',
+      icon: 'tab'
+    }
+  }]
+},
+// 生产计划
+{
+  path: '/ProductionPlan',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/ProductionPlan/index'),
+    name: 'ProductionPlan',
+    meta: {
+      title: 'ProductionPlan',
+      icon: 'tab'
+    }
+  }]
+},
+// 生产管理
+{
+  path: '/ProductionManagement',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/ProductionManagement/index'),
+    name: 'ProductionManagement',
+    meta: {
+      title: 'ProductionManagement',
+      icon: 'tab'
+    }
+  }]
+},
+// 品质管理
+{
+  path: '/QualityAdministration',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/QualityAdministration/index'),
+    name: 'QualityAdministration',
+    meta: {
+      title: 'QualityAdministration',
+      icon: 'tab'
+    }
+  }]
+},
+// 设备管理
+{
+  path: '/DeviceManagement',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/DeviceManagement/index'),
+    name: 'DeviceManagement',
+    meta: {
+      title: 'DeviceManagement',
+      icon: 'tab'
+    }
+  }]
 }
 ]
 
@@ -86,44 +156,38 @@ export const constantRoutes = [{
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
+// 系统管理
 export const asyncRoutes = [{
-  path: '/permission',
+  path: '/SystemManagement',
   component: Layout,
-  redirect: '/permission/page',
+  redirect: '/SystemManagement/index',
   alwaysShow: true, // will always show the root menu
   name: 'Permission',
   meta: {
-    title: 'permission',
+    title: 'SystemManagement',
     icon: 'lock',
     roles: ['admin', 'editor'] // you can set roles in root nav
   },
-  children: [{
-    path: 'page',
-    component: () => import('@/views/permission/page'),
-    name: 'PagePermission',
-    meta: {
-      title: 'pagePermission',
-      roles: ['admin'] // or you can only set roles in sub nav
+  children: [
+    {
+      path: 'index',
+      component: () => import('@/views/SystemManagement/index'),
+      name: 'RolePermission',
+      meta: {
+        title: 'rolePermission',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'lookUser',
+      hidden: true,
+      component: () => import('@/views/SystemManagement/lookUser'),
+      name: 'lookUser',
+      meta: {
+        title: 'lookUser',
+        roles: ['admin']
+      }
     }
-  },
-  {
-    path: 'directive',
-    component: () => import('@/views/permission/directive'),
-    name: 'DirectivePermission',
-    meta: {
-      title: 'directivePermission'
-      // if do not set roles, means: this page does not require permission
-    }
-  },
-  {
-    path: 'role',
-    component: () => import('@/views/permission/role'),
-    name: 'RolePermission',
-    meta: {
-      title: 'rolePermission',
-      roles: ['admin']
-    }
-  }
   ]
 },
 
@@ -217,46 +281,6 @@ tableRouter,
     }
   }
   ]
-},
-
-{
-  path: '/zip',
-  component: Layout,
-  redirect: '/zip/download',
-  alwaysShow: true,
-  name: 'Zip',
-  meta: {
-    title: 'zip',
-    icon: 'zip'
-  },
-  children: [{
-    path: 'download',
-    component: () => import('@/views/zip/index'),
-    name: 'ExportZip',
-    meta: {
-      title: 'exportZip'
-    }
-  }]
-},
-
-{
-  path: '/pdf',
-  component: Layout,
-  redirect: '/pdf/index',
-  children: [{
-    path: 'index',
-    component: () => import('@/views/pdf/index'),
-    name: 'PDF',
-    meta: {
-      title: 'pdf',
-      icon: 'pdf'
-    }
-  }]
-},
-{
-  path: '/pdf/download',
-  component: () => import('@/views/pdf/download'),
-  hidden: true
 },
 
 // 404 page must be placed at the end !!!

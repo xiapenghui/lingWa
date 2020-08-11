@@ -1,12 +1,16 @@
 export default {
   route: {
     dashboard: 'Dashboard',
-    documentation: 'Documentation',
-    guide: 'Guide',
-    permission: 'Permission',
-    pagePermission: 'Page Permission',
+    BasicData: 'Basic Data',
+    ProductionPlan: 'Production Plan',
+    ProductionManagement: 'Production Management',
+    QualityAdministration: 'Quality Administration',
+    DeviceManagement: 'Device Management',
+    SystemManagement: 'System Management',
     rolePermission: 'Role Permission',
-    directivePermission: 'Directive Permission',
+    lookUser: 'Look User',
+    // 截止
+
     icons: 'Icons',
     components: 'Components',
     tinymce: 'Tinymce',
@@ -89,11 +93,33 @@ export default {
   },
   permission: {
     addRole: 'New Role',
+    delete: 'Delete',
     editPermission: 'Edit',
+    coplyPermission: 'Coply',
+    lookPermission: 'Look',
+    title: 'Role Name',
+    name: 'Role Name',
+    user: 'User',
+    time: 'Creation Time',
+    description: 'description',
+    operations: 'Operations',
+    fullName: 'fullName',
+    loginUser: 'loginUser',
+    company: 'company',
+    department: 'department',
+    errorInfo: 'Confirm to remove the role ？',
+    errorTitle: 'Warning',
+    Confirm: 'Confirm',
+    Cancel: 'Cancel',
+    Menus: 'Menus',
+    editRole: 'Edit Role',
+    success: 'operation  Success！',
+    // 截止
+
     roles: 'Your roles',
     switchRoles: 'Switch roles',
     tips: 'In some cases, using v-permission will have no effect. For example: Element-UI  el-tab or el-table-column and other scenes that dynamically render dom. You can only do this with v-if.',
-    delete: 'Delete',
+
     confirm: 'Confirm',
     cancel: 'Cancel'
   },
