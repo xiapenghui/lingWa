@@ -114,6 +114,7 @@ export default {
     Menus: '菜单',
     editRole: '编辑角色',
     success: '操作成功！',
+    noInfo: '角色名称不能为空',
     // 截止
 
     roles: '你的权限',

@@ -38,9 +38,7 @@
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
       <el-form :model="role" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.name')" :rules="[{ required: true, message: '' }, { type: 'number', message: '' }]">
-          <el-input v-model="role.name" :placeholder="$t('permission.name')" />
-        </el-form-item>
+        <el-form-item :label="$t('permission.name')" :rules="rules" prop="name"><el-input v-model="role.name" :placeholder="$t('permission.name')" /></el-form-item>
         <el-form-item :label="$t('permission.description')">
           <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
         </el-form-item>
@@ -90,7 +88,8 @@ export default {
         title: undefined,
         page: 1,
         limit: 20
-      }
+      },
+      rules: [{ required: true, message: this.$t('permission.noInfo') }]
     }
   },
   computed: {
@@ -186,7 +185,6 @@ export default {
     },
     // 增加角色
     handleAddRole() {
-      debugger
       this.role = Object.assign({}, defaultRole)
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
@@ -201,7 +199,6 @@ export default {
       this.checkStrictly = true
       this.role = deepClone(scope.row)
       this.$nextTick(() => {
-        debugger
         const routes = this.generateRoutes(this.role.routes)
         this.$refs.tree.setCheckedNodes(this.generateArr(routes))
         // set checked state of a node not affects its father and child nodes
@@ -272,17 +269,27 @@ export default {
 
       // const { description, key, name } = this.role
       this.dialogVisible = false
-      this.$notify({
-        title: 'Success',
-        dangerouslyUseHTMLString: true,
-        // message: `
-        //     <div>Role Key: ${key}</div>
-        //     <div>Role Name: ${name}</div>
-        //     <div>Description: ${description}</div>
-        //   `,
-        message: this.$t('permission.success'),
-        type: 'success'
-      })
+      if (this.role.name === '') {
+        this.$notify({
+          title: 'warning',
+          dangerouslyUseHTMLString: true,
+          message: this.$t('permission.noInfo'),
+          type: 'warning'
+        })
+        return
+      } else {
+        this.$notify({
+          title: 'Success',
+          dangerouslyUseHTMLString: true,
+          // message: `
+          //     <div>Role Key: ${key}</div>
+          //     <div>Role Name: ${name}</div>
+          //     <div>Description: ${description}</div>
+          //   `,
+          message: this.$t('permission.success'),
+          type: 'success'
+        })
+      }
     },
     // reference: src/view/layout/components/Sidebar/SidebarItem.vue
     onlyOneShowingChild(children = [], parent) {

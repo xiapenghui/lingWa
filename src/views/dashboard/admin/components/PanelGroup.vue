@@ -64,7 +64,6 @@ export default {
   },
   methods: {
     handleSetLineChartData(type) {
-      debugger
       this.$emit('handleSetLineChartData', type)
     }
   }

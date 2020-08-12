@@ -114,6 +114,7 @@ export default {
     Menus: 'Menus',
     editRole: 'Edit Role',
     success: 'operation  Success！',
+    noInfo: 'Role name cannot be empty',
     // 截止
 
     roles: 'Your roles',
