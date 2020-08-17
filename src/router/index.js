@@ -94,6 +94,35 @@ export const constantRoutes = [{
     }
   }]
 },
+// 参数信息
+{
+  path: '/ParameterInfo',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/ParameterInfo/index'),
+    name: 'ParameterInfo',
+    meta: {
+      title: 'ParameterInfo',
+      icon: 'tab'
+    }
+  }]
+},
+// 标签管理
+{
+  path: '/LabelManagement',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/LabelManagement/index'),
+    name: 'LabelManagement',
+    meta: {
+      title: 'LabelManagement',
+      icon: 'tab'
+    }
+  }]
+},
+
 // 生产计划
 {
   path: '/ProductionPlan',
@@ -108,7 +137,7 @@ export const constantRoutes = [{
     }
   }]
 },
-// 生产管理
+// 生产过程
 {
   path: '/ProductionManagement',
   component: Layout,
@@ -122,7 +151,22 @@ export const constantRoutes = [{
     }
   }]
 },
-// 品质管理
+// 安灯管理
+{
+  path: '/LampManagement',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/LampManagement/index'),
+    name: 'LampManagement',
+    meta: {
+      title: 'LampManagement',
+      icon: 'tab'
+    }
+  }]
+},
+
+// 质量管理
 {
   path: '/QualityAdministration',
   component: Layout,
@@ -149,6 +193,34 @@ export const constantRoutes = [{
       icon: 'tab'
     }
   }]
+},
+// 报表看板
+{
+  path: '/ReportBoard',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/ReportBoard/index'),
+    name: 'ReportBoard',
+    meta: {
+      title: 'ReportBoard',
+      icon: 'tab'
+    }
+  }]
+},
+// 数据集成
+{
+  path: '/DataIntegration',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/DataIntegration/index'),
+    name: 'DataIntegration',
+    meta: {
+      title: 'DataIntegration',
+      icon: 'tab'
+    }
+  }]
 }
 ]
 
@@ -166,7 +238,7 @@ export const asyncRoutes = [{
   meta: {
     title: 'SystemManagement',
     icon: 'lock',
-    roles: ['admin', 'editor'] // you can set roles in root nav
+    roles: ['admin'] // you can set roles in root nav
   },
   children: [
     {
@@ -278,6 +350,14 @@ tableRouter,
     name: 'UploadExcel',
     meta: {
       title: 'uploadExcel'
+    }
+  },
+  {
+    path: 'newTree',
+    component: () => import('@/views/excel/newTree'),
+    name: 'newTree',
+    meta: {
+      title: 'newTree'
     }
   }
   ]
