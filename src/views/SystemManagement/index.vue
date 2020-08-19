@@ -4,18 +4,18 @@
     <el-input v-model="listQuery.title" :placeholder="$t('permission.title')" style="width: 200px;margin-left: 20px;" class="filter-item" />
     <el-button class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 10px;" @click="handleFilter">{{ $t('table.search') }}</el-button>
     <el-table v-loading="listLoading" :data="rolesList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" :label="$t('permission.name')" width="220">
+      <el-table-column align="center" :label="$t('permission.name')" width="200">
         <template slot-scope="scope">
           {{ scope.row.key }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.user')" width="220">
+      <el-table-column align="center" :label="$t('permission.user')" width="200" prop="name" sortable>
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="220">
+      <el-table-column align="center" :label="$t('permission.time')" width="200">
         <!-- <template slot-scope="scope">
           {{ scope.row.name }}
         </template> -->
@@ -29,8 +29,10 @@
       <el-table-column align="center" :label="$t('permission.operations')">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editPermission') }}</el-button>
-          <el-button type="success" size="small" @click="handleCoply(scope)">{{ $t('permission.coplyPermission') }}</el-button>
+          <el-button type="info" size="small" @click="handleCoply(scope)">{{ $t('permission.coplyPermission') }}</el-button>
           <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
+          <el-button v-if="isShow" type="danger" size="small" @click="handleBan(scope)">{{ $t('permission.handleBan') }}</el-button>
+          <el-button v-if="!isShow" type="success" size="small" @click="handleEnable(scope)">{{ $t('permission.handleEnable') }}</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.delete') }}</el-button>
         </template>
       </el-table-column>
@@ -78,6 +80,7 @@ export default {
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
+      isShow: false, // 禁用,启用按钮的显示隐藏
       defaultProps: {
         children: 'children',
         label: 'title'
@@ -104,6 +107,14 @@ export default {
     this.getList()
   },
   methods: {
+    // 启用权限
+    handleEnable(scope) {
+      this.isShow = !this.isShow
+    },
+    // 禁用权限
+    handleBan() {
+      this.isShow = !this.isShow
+    },
     // 查询
     handleFilter() {
       this.listQuery.page = 1
@@ -322,6 +333,10 @@ export default {
   }
   .permission-tree {
     margin-bottom: 30px;
+  }
+  .el-button--info {
+    background-color: #a744bf;
+    border-color: #a744bf;
   }
 }
 </style>

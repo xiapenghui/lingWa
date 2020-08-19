@@ -14,6 +14,7 @@ export default {
     SystemManagement: '系统管理',
     rolePermission: '角色权限',
     lookUser: '查看用户',
+    userMangement: '用户管理',
     // 截止
 
     icons: '图标',
@@ -104,8 +105,8 @@ export default {
     lookPermission: '查看用户',
     title: '角色名称',
     name: '角色名称',
-    user: '创建者',
-    time: '创建时间',
+    user: '维护者',
+    time: '维护时间',
     description: '描述',
     operations: '操作',
     fullName: '姓名',
@@ -120,6 +121,22 @@ export default {
     editRole: '编辑角色',
     success: '操作成功！',
     noInfo: '角色名称不能为空',
+    handleBan: '禁用权限',
+    handleEnable: '启用权限',
+    userName: '用户名',
+    search: '查询',
+    reset: '重置',
+    addUser: '新增用户',
+    exportUser: '导出用户',
+    state: '状态',
+    userNameInfo: '请输入用户名',
+    fullNameInfo: '请输入姓名',
+    containInfo: '包含禁用状态的用户',
+    companyInfo: '请选择公司',
+    departmentInfo: '请选择部门',
+    editUser: '编辑用户',
+    modifyeUser: '修改用户',
+
     // 截止
 
     roles: '你的权限',

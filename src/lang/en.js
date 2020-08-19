@@ -14,6 +14,7 @@ export default {
     SystemManagement: 'System Management',
     rolePermission: 'Role Permission',
     lookUser: 'Look User',
+    userMangement: 'User Mangement',
     // 截止
 
     icons: 'Icons',
@@ -120,6 +121,21 @@ export default {
     editRole: 'Edit Role',
     success: 'operation  Success！',
     noInfo: 'Role name cannot be empty',
+    handleBan: 'Ban',
+    handleEnable: 'Enable',
+    userName: 'User Name',
+    search: 'Search',
+    reset: 'Reset',
+    addUser: 'Add User',
+    exportUser: 'Export User',
+    state: 'State',
+    userNameInfo: 'Please Enter One User Name',
+    fullNameInfo: 'Please enter name',
+    containInfo: 'Include Disabled Users',
+    companyInfo: 'Please Select A Company',
+    departmentInfo: 'Please Select Department',
+    editUser: 'Edit User',
+    modifyeUser: 'Modifye User',
     // 截止
 
     roles: 'Your roles',
