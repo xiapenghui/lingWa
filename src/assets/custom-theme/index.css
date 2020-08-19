@@ -10860,7 +10860,8 @@
 	display:none
 }
 .custom-theme .el-form-item--medium .el-form-item__label {
-	line-height:36px
+	line-height:36px;
+	text-align: right;
 }
 .custom-theme .el-form-item--medium .el-form-item__content {
 	line-height:36px

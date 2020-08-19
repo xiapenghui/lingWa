@@ -119,8 +119,11 @@ export default {
     Cancel: 'Cancel',
     Menus: 'Menus',
     editRole: 'Edit Role',
-    success: 'operation  Success！',
-    noInfo: 'Role name cannot be empty',
+    success: 'Operation  Success！',
+    noInfo: 'Role Name Cannot Be Empty',
+    passwordInfo: ' Password Cannot Be Empty',
+    passwordsInfo: 'Duplicate Password Cannot Be Empty',
+    fullNamesInfo: 'FullName Cannot Be Empty',
     handleBan: 'Ban',
     handleEnable: 'Enable',
     userName: 'User Name',
@@ -136,6 +139,9 @@ export default {
     departmentInfo: 'Please Select Department',
     editUser: 'Edit User',
     modifyeUser: 'Modifye User',
+    password: 'Password',
+    passwords: 'Passwords',
+    roleUser: 'Role',
     // 截止
 
     roles: 'Your roles',

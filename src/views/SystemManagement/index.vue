@@ -1,9 +1,22 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleAddRole">{{ $t('permission.addRole') }}</el-button>
-    <el-input v-model="listQuery.title" :placeholder="$t('permission.title')" style="width: 200px;margin-left: 20px;" class="filter-item" />
-    <el-button class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 10px;" @click="handleFilter">{{ $t('table.search') }}</el-button>
-    <el-table v-loading="listLoading" :data="rolesList" style="width: 100%;margin-top:30px;" border>
+    <div class="search">
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-col :span="8">
+            <label class="radio-label">{{ $t('permission.title') }}:</label>
+          </el-col>
+          <el-col :span="16"><el-input v-model="listQuery.title" :placeholder="$t('permission.title')" /></el-col>
+        </el-col>
+      </el-row>
+      <el-row class="center">
+        <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+      </el-row>
+    </div>
+    <div class="rightBtn">
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddRole">{{ $t('permission.addRole') }}</el-button>
+    </div>
+    <el-table v-loading="listLoading" :data="rolesList" style="width: 100%;" border>
       <el-table-column align="center" :label="$t('permission.name')" width="200">
         <template slot-scope="scope">
           {{ scope.row.key }}
@@ -31,8 +44,8 @@
           <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editPermission') }}</el-button>
           <el-button type="info" size="small" @click="handleCoply(scope)">{{ $t('permission.coplyPermission') }}</el-button>
           <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
-          <el-button v-if="isShow" type="danger" size="small" @click="handleBan(scope)">{{ $t('permission.handleBan') }}</el-button>
-          <el-button v-if="!isShow" type="success" size="small" @click="handleEnable(scope)">{{ $t('permission.handleEnable') }}</el-button>
+          <el-button v-if="scope.row.status == '开启'" type="success" size="small" @click="handleBan(scope, '开启')">{{ $t('permission.handleEnable') }}</el-button>
+          <el-button v-else type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleBan') }}</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.delete') }}</el-button>
         </template>
       </el-table-column>
@@ -57,6 +70,7 @@
 </template>
 
 <script>
+import '../../styles/scrollbar.css'
 import path from 'path'
 import { deepClone } from '@/utils'
 import { getRoutes, getRoles, addRole, deleteRole, updateRole } from '@/api/role'
@@ -80,13 +94,13 @@ export default {
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
-      isShow: false, // 禁用,启用按钮的显示隐藏
       defaultProps: {
         children: 'children',
         label: 'title'
       },
       listLoading: true,
       total: 10,
+      isShow: true,
       listQuery: {
         title: undefined,
         page: 1,
@@ -107,16 +121,16 @@ export default {
     this.getList()
   },
   methods: {
-    // 启用权限
-    handleEnable(scope) {
-      this.isShow = !this.isShow
-    },
-    // 禁用权限
-    handleBan() {
-      this.isShow = !this.isShow
+    // 禁用，启用权限
+    handleBan(scope, status) {
+      this.$message({
+        message: status + '成功',
+        type: 'success'
+      })
+      scope.row.status = status
     },
     // 查询
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1
       this.getList()
     },
@@ -328,15 +342,36 @@ export default {
 
 <style lang="scss" scoped>
 .app-container {
-  .roles-table {
-    margin-top: 30px;
+  .search {
+    border: 1px solid #dfe6ec;
+    padding: 20px 0;
+    border-radius: 5px;
+    label {
+      font-weight: 500;
+    }
+    .el-col-8 {
+      text-align: right;
+      line-height: 35px;
+    }
+    .center {
+      text-align: center;
+      margin-top: 20px;
+    }
+  }
+  .rightBtn {
+    text-align: right;
+    margin: 20px 0 5px 0;
   }
   .permission-tree {
     margin-bottom: 30px;
+  }
+  .el-table__body-wrapper {
+    overflow: scroll;
   }
   .el-button--info {
     background-color: #a744bf;
     border-color: #a744bf;
   }
 }
+
 </style>

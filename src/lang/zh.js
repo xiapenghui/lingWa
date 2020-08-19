@@ -121,6 +121,9 @@ export default {
     editRole: '编辑角色',
     success: '操作成功！',
     noInfo: '角色名称不能为空',
+    passwordInfo: '密码不能为空',
+    passwordsInfo: '确认密码不能为空',
+    fullNamesInfo: '姓名不能为空',
     handleBan: '禁用权限',
     handleEnable: '启用权限',
     userName: '用户名',
@@ -136,6 +139,9 @@ export default {
     departmentInfo: '请选择部门',
     editUser: '编辑用户',
     modifyeUser: '修改用户',
+    password: '密码',
+    passwords: '确认密码',
+    roleUser: '角色',
 
     // 截止
 

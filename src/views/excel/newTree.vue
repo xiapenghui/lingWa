@@ -95,8 +95,34 @@ export default {
         })
       }
     },
+    // formatJson(filterVal, jsonData) {
+    //   return jsonData.map(v => filterVal.map(j => v[j]))
+    // }
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
+      let arr = []
+      jsonData.map(item => {
+        const a = []
+        if (item.children) {
+          const arr1 = filterVal.map(j => item[j])
+          a.push(arr1)
+          arr = arr.concat(a)
+          item.children.map(child => {
+            debugger
+            filterVal.map((items, index) => {
+              if (index === 0) {
+                child[items] = '  ' + child[items]
+              }
+            })
+          })
+          const arr2 = item.children.map(v => filterVal.map(j => v[j]))
+          arr = arr.concat(arr2)
+        } else {
+          const arr3 = filterVal.map(j => item[j])
+          a.push(arr3)
+          arr = arr.concat(a)
+        }
+      })
+      return arr
     }
   }
 }
