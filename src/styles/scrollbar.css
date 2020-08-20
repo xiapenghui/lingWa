@@ -1,17 +1,19 @@
+.el-table__body-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
- .el-table__body-wrapper::-webkit-scrollbar {
-width: 10px;
-height: 10px;
-}
 .el-table__body-wrapper::-webkit-scrollbar-thumb {
-background-color: #c6c9d0;
-border-radius: 5px;
+  background-color: #c6c9d0;
+  border-radius: 5px;
 }
+
 ::-webkit-scrollbar {
-width: 10px;
-height: 10px;
+  width: 8px;
+  height: 8px;
 }
+
 ::-webkit-scrollbar-thumb {
-background-color: #c6c9d0;
-border-radius: 5px;
+  background-color: #c6c9d0;
+  border-radius: 5px;
 }

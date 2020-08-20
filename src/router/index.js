@@ -84,16 +84,37 @@ export const constantRoutes = [{
 {
   path: '/BasicData',
   component: Layout,
-  children: [{
-    path: 'index',
-    component: () => import('@/views/BasicData/index'),
-    name: 'BasicData',
-    meta: {
-      title: 'BasicData',
-      icon: 'tab'
+  redirect: '/BasicData/MaterialManagement/MaterialInformation',
+  name: 'BasicData',
+  meta: {
+    title: 'BasicData',
+    icon: 'nested'
+  },
+  children: [
+    {
+      path: 'MaterialManagement',
+      component: () => import('@/views/BasicData/MaterialManagement/index'), // Parent router-view
+      name: 'MaterialManagement',
+      meta: { title: 'MaterialManagement' },
+      redirect: '/BasicData/MaterialManagement/MaterialInformation',
+      children: [
+        {
+          path: 'MaterialInformation',
+          component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
+          name: 'MaterialInformation',
+          meta: { title: 'MaterialInformation' }
+        },
+        {
+          path: 'ProductMaintenance',
+          component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
+          name: 'ProductMaintenance',
+          meta: { title: 'ProductMaintenance' }
+        }
+      ]
     }
-  }]
+  ]
 },
+
 // 参数信息
 {
   path: '/ParameterInfo',

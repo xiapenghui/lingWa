@@ -11,4 +11,5 @@ export default {
 .el-form-item__label {
   text-align: right !important;
 }
+
 </style>

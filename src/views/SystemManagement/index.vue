@@ -17,18 +17,18 @@
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddRole">{{ $t('permission.addRole') }}</el-button>
     </div>
     <el-table v-loading="listLoading" :data="rolesList" style="width: 100%;" border>
-      <el-table-column align="center" :label="$t('permission.name')" width="200">
+      <el-table-column align="center" :label="$t('permission.name')" width="150">
         <template slot-scope="scope">
           {{ scope.row.key }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.user')" width="200" prop="name" sortable>
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="name" sortable>
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="200">
+      <el-table-column align="center" :label="$t('permission.time')" width="150">
         <!-- <template slot-scope="scope">
           {{ scope.row.name }}
         </template> -->
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import '../../styles/commentBox.scss'
 import '../../styles/scrollbar.css'
 import path from 'path'
 import { deepClone } from '@/utils'
@@ -123,6 +124,7 @@ export default {
   methods: {
     // 禁用，启用权限
     handleBan(scope, status) {
+      debugger
       this.$message({
         message: status + '成功',
         type: 'success'
@@ -341,37 +343,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-  .search {
-    border: 1px solid #dfe6ec;
-    padding: 20px 0;
-    border-radius: 5px;
-    label {
-      font-weight: 500;
-    }
-    .el-col-8 {
-      text-align: right;
-      line-height: 35px;
-    }
-    .center {
-      text-align: center;
-      margin-top: 20px;
-    }
-  }
-  .rightBtn {
-    text-align: right;
-    margin: 20px 0 5px 0;
-  }
-  .permission-tree {
-    margin-bottom: 30px;
-  }
-  .el-table__body-wrapper {
-    overflow: scroll;
-  }
-  .el-button--info {
-    background-color: #a744bf;
-    border-color: #a744bf;
-  }
-}
 
 </style>

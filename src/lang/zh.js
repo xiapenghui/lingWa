@@ -15,6 +15,11 @@ export default {
     rolePermission: '角色权限',
     lookUser: '查看用户',
     userMangement: '用户管理',
+    // do
+    MaterialManagement: '物料信息管理',
+    MaterialInformation: '原料信息维护',
+    ProductMaintenance: '成品信息维护',
+
     // 截止
 
     icons: '图标',
@@ -113,7 +118,7 @@ export default {
     loginUser: '登录名',
     company: '公司',
     department: '部门',
-    errorInfo: '确定删除角色吗？',
+    errorInfo: '确定删除此条数据吗？',
     errorTitle: '警告',
     Confirm: '确定',
     Cancel: '取消',
@@ -142,6 +147,42 @@ export default {
     password: '密码',
     passwords: '确认密码',
     roleUser: '角色',
+    roleUserInfo: '请选择角色',
+    // 原料
+    materialNo: '原料编号',
+    materialInfo: '请输入原料编号',
+    materialName: '原料名称',
+    materialNameInfo: '请输入原料名称',
+    inclusionProhibition: '包含禁用状态的原料',
+    addMaterial: '新增原料',
+    exportMaterial: '导出原料',
+    importMaterial: '导入原料',
+    materialSpecifications: '原料规格',
+    MaterialColor: '颜色',
+    EditMaterial: '编辑原料',
+    handleMaterial: '禁用原料',
+    SpecificationsMaterial: '启用物料',
+    deleteMaterial: '删除原料',
+    materialNoInfo: '请输入原料编号',
+    materialNmame: '请输入原料名称',
+
+    // 成品
+    finishedNo: '成品编号',
+    finishedInfo: '请输入成品编号',
+    finishedName: '成品名称',
+    finishedNameInfo: '请输入成品名称',
+    inclusionFinished: '包含禁用状态的成品',
+    addFinished: '新增成品',
+    exportFinished: '导出成品',
+    importFinished: '导入成品',
+    finishedSpecifications: '成品规格',
+    finishedColor: '颜色',
+    EditFinished: '编辑成品',
+    handleFinished: '禁用成品',
+    SpecificationsFinished: '启用物料',
+    deleteFinished: '删除成品',
+    finishedNoInfo: '请输入成品编号',
+    finishedNmame: '请输入成品名称',
 
     // 截止
 
