@@ -22,6 +22,10 @@
   .rightBtn {
     text-align: right;
     margin: 20px 0 5px 0;
+    .handleImport {
+      display: inline-block;
+      margin-left: 10px;
+    }
   }
 
   .permission-tree {
@@ -36,6 +40,4 @@
   /* .el-table ::v-deep .el-table__body-wrapper {
     overflow: scroll;
   } */
-
 }
-

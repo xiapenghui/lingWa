@@ -30,7 +30,8 @@
     <div class="rightBtn">
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addMaterial') }}</el-button>
       <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">{{ $t('permission.exportMaterial') }}</el-button>
-      <el-button type="primary" icon="el-icon-document-remove" @click="handleImport">{{ $t('permission.importMaterial') }}</el-button>
+      <!-- <el-button type="primary" icon="el-icon-document-remove">{{ $t('permission.importMaterial') }}</el-button> -->
+      <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" />
     </div>
 
     <el-table v-loading="listLoading" :data="rolesList" style="width: 100%" border>
@@ -88,6 +89,9 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-table v-if="isShow" :data="tableData" border highlight-current-row><el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" /></el-table>
+
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditMaterial') : $t('permission.addMaterial')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
@@ -119,9 +123,10 @@ import '../../../../styles/commentBox.scss'
 import { deleteRole } from '@/api/role'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 export default {
-  components: { Pagination },
+  components: { Pagination, UploadExcelComponent },
   data() {
     return {
       // role: Object.assign({}, defaultRole),
@@ -168,6 +173,10 @@ export default {
 
       listLoading: true,
       total: 10,
+      tableData: [],
+      tableHeader: [],
+      isShow: true,
+      parentMsg: this.$t('permission.importMaterial'),
       rules: {
         materialNo: [{ required: true, message: this.$t('permission.materialNoInfo'), trigger: 'blur' }],
         materialName: [
@@ -181,6 +190,14 @@ export default {
     }
   },
   computed: {},
+  watch: {
+    parentMsg: {
+      handler(newName, oldName) {
+        this.parentMsg = newName
+      },
+      immediate: true
+    }
+  },
   created() {
     // Mock: get all routes and roles list from server
     this.getList()
@@ -248,7 +265,21 @@ export default {
       return jsonData.map(v => filterVal.map(j => v[j]))
     },
     // 导入
-    handleImport() {},
+    beforeUpload(file) {
+      const isLt1M = file.size / 1024 / 1024 < 1
+      if (isLt1M) {
+        return true
+      }
+      this.$message({
+        message: 'Please do not upload files larger than 1m in size.',
+        type: 'warning'
+      })
+      return false
+    },
+    handleSuccess({ results, header }) {
+      this.tableData = results
+      this.tableHeader = header
+    },
     // 获取列表
     getList() {
       this.listLoading = false
