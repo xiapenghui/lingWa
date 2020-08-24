@@ -107,7 +107,6 @@ export default {
           a.push(arr1)
           arr = arr.concat(a)
           item.children.map(child => {
-            debugger
             filterVal.map((items, index) => {
               if (index === 0) {
                 child[items] = '  ' + child[items]

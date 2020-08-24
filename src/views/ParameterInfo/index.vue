@@ -46,7 +46,6 @@ export default {
         // 接口相关，根据自己的接口处理
         fetchList({ parent: id })
           .then(result => {
-            debugger
             resolve(result)
           })
           .finally(() => {

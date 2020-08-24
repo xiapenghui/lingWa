@@ -4,19 +4,19 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.finishedNo') }}:</label>
+            <label class="radio-label">{{ $t('permission.companyNo') }}:</label>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.finishedNo" :placeholder="$t('permission.finishedInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="form.companyNo" :placeholder="$t('permission.companysInfo')" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.finishedName') }}:</label>
+            <label class="radio-label">{{ $t('permission.companyName') }}:</label>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.finishedName" :placeholder="$t('permission.finishedNameInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="form.companyName" :placeholder="$t('permission.companyNameInfo')" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionFinished') }}</el-checkbox>
+            <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionCompany') }}</el-checkbox>
           </el-col>
         </el-col>
       </el-row>
@@ -28,37 +28,42 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addFinished') }}</el-button>
-      <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">{{ $t('permission.exportFinished') }}</el-button>
-      <!-- <el-button type="primary" icon="el-icon-document-remove" @click="handleImport">{{ $t('permission.importFinished') }}</el-button> -->
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addCompany') }}</el-button>
+      <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">{{ $t('permission.exportCompany') }}</el-button>
+      <!-- <el-button type="primary" icon="el-icon-document-remove">{{ $t('permission.importcompany') }}</el-button> -->
       <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" />
     </div>
 
     <el-table v-loading="listLoading" :data="rolesList" style="width: 100%" border>
-      <el-table-column align="center" :label="$t('permission.finishedNo')" width="150" fixed sortable prop="key">
+      <el-table-column align="center" :label="$t('permission.companyNo')" width="150" fixed sortable prop="key">
         <template slot-scope="scope">
-          {{ scope.row.finishedNo }}
+          {{ scope.row.companyNo }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.finishedName')" width="150">
+      <el-table-column align="center" :label="$t('permission.companyName')" width="150">
         <template slot-scope="scope">
-          {{ scope.row.finishedName }}
+          {{ scope.row.companyName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.finishedSpecifications')" width="150">
+      <el-table-column align="center" :label="$t('permission.companyAllName')" width="150">
         <template slot-scope="scope">
-          {{ scope.row.finishedSpecifications }}
+          {{ scope.row.companyAllName }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" :label="$t('permission.companyTel')" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.companyTel }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" :label="$t('permission.companyAddress')" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.companyAddress }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.finishedColor')" width="250">
+      <el-table-column align="center" :label="$t('permission.companyDescription')" width="300">
         <template slot-scope="scope">
-          {{ scope.row.finishedColor }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" :label="$t('permission.description')" width="300">
-        <template slot-scope="scope">
-          {{ scope.row.description }}
+          {{ scope.row.companyDescription }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
@@ -81,29 +86,41 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="400">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.EditFinished') }}</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.EditCompany') }}</el-button>
           <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
-          <el-button v-if="scope.row.status == '开启'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleFinished') }}</el-button>
-          <el-button v-else type="success" size="small" @click="handleBan(scope, '开启')">{{ $t('permission.SpecificationsFinished') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.deleteFinished') }}</el-button>
+          <el-button v-if="scope.row.status == '开启'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleCompany') }}</el-button>
+          <el-button v-else type="success" size="small" @click="handleBan(scope, '开启')">{{ $t('permission.SpecificationsCompany') }}</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.deleteCompany') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <el-table v-if="isShow" :data="tableData" border highlight-current-row><el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" /></el-table>
+
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditFinished') : $t('permission.addFinished')">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.finishedNo')" prop="finishedNo"><el-input v-model="role.finishedNo" :placeholder="$t('permission.finishedNo')" /></el-form-item>
-        <el-form-item :label="$t('permission.finishedName')" prop="finishedName">
-          <el-input v-model="role.finishedName" :placeholder="$t('permission.finishedName')" />
+        <el-form-item :label="$t('permission.companyNo')"><el-input v-model="role.companyNo" :placeholder="$t('permission.companyNo')" /></el-form-item>
+        <el-form-item :label="$t('permission.companyName')" prop="companyName"><el-input v-model="role.companyName" :placeholder="$t('permission.companyName')" /></el-form-item>
+        <el-form-item :label="$t('permission.companyAllName')" prop="companyAllName">
+          <el-input v-model="role.companyAllName" :placeholder="$t('permission.companyAllName')" />
         </el-form-item>
-
-        <el-form-item :label="$t('permission.finishedSpecifications')">
-          <el-input v-model="role.finishedSpecifications" :placeholder="$t('permission.finishedSpecifications')" />
+        <el-form-item :label="$t('permission.companyTel')"><el-input v-model="role.companyTel" :placeholder="$t('permission.companyTel')" /></el-form-item>
+        <el-form-item :label="$t('permission.companyAddress')"><el-input v-model="role.companyAddress" :placeholder="$t('permission.companyAddress')" /></el-form-item>
+        <el-form-item :label="$t('permission.companyLogo')">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="role.imageUrl" :src="role.imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
         </el-form-item>
-        <el-form-item :label="$t('permission.finishedColor')"><el-input v-model="role.finishedColor" :placeholder="$t('permission.finishedColor')" /></el-form-item>
-
-        <el-form-item :label="$t('permission.description')">
-          <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
+        <el-form-item :label="$t('permission.companyDescription')">
+          <el-input v-model="role.companyDescription" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.companyDescription')" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -128,29 +145,23 @@ export default {
     return {
       // role: Object.assign({}, defaultRole),
       role: {
-        finishedNo: '',
-        finishedName: '',
-        finishedSpecifications: '',
-        roleUser: ''
+        companyNo: '',
+        companyName: '',
+        companyAllName: '',
+        companyTel: '',
+        companyAddress: '',
+        imageUrl: '',
+        companyDescription: ''
       },
       routes: [],
       rolesList: [
         {
-          finishedNo: '123456',
-          finishedName: '熟料',
-          finishedSpecifications: '部长',
-          description: '三米',
-          finishedColor: '红色',
-          status: '禁用',
-          user: '张三',
-          time: '2020-8-19'
-        },
-        {
-          finishedNo: '123456',
-          finishedName: '熟料',
-          finishedSpecifications: '部长',
-          description: '三米',
-          finishedColor: '红色',
+          companyNo: '123456',
+          companyName: '上海灵娃',
+          companyAllName: '上海灵娃科技有限公司',
+          companyTel: '17621627757',
+          companyAddress: '上海市静安区365号',
+          companyDescription: '不赖',
           status: '启用',
           user: '张三',
           time: '2020-8-19'
@@ -158,11 +169,9 @@ export default {
       ],
       dialogVisible: false,
       dialogType: 'new',
-
       form: {
-        finishedNo: '',
-        fullName: '',
-        finishedName: '',
+        companyNo: '',
+        companyName: '',
         showReviewer: false,
         page: 1,
         limit: 20
@@ -170,31 +179,38 @@ export default {
 
       listLoading: true,
       total: 10,
-      parentMsg: this.$t('permission.importFinished'),
-      rules: {
-        finishedNo: [{ required: true, message: this.$t('permission.finishedNoInfo'), trigger: 'blur' }],
-        finishedName: [
-          {
-            required: true,
-            message: this.$t('permission.finishedNameInfo'),
-            trigger: 'blur'
-          }
-        ]
-      }
+      tableData: [],
+      tableHeader: [],
+      isShow: true,
+      parentMsg: this.$t('permission.importCompany')
     }
   },
   computed: {},
   watch: {
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
-      this.parentMsg = this.$t('permission.importFinished')
+      this.parentMsg = this.$t('permission.importCompany')
+      this.setFormRules()
     }
   },
   created() {
     // Mock: get all routes and roles list from server
     this.getList()
+    this.setFormRules()
   },
   methods: {
+    // 表单验证切换中英文
+    setFormRules: function() {
+      this.rules = {
+        companyName: [
+          {
+            required: true,
+            message: this.$t('permission.companyNameInfo'),
+            trigger: 'blur'
+          }
+        ]
+      }
+    },
     // 禁用，启用权限
     handleBan(scope, status) {
       this.$message({
@@ -212,9 +228,9 @@ export default {
     // 重置
     handleReset() {
       this.form = {
-        finishedNo: '',
+        companyNo: '',
         fullName: '',
-        finishedName: '',
+        companyName: '',
         showReviewer: false,
         page: 1,
         limit: 20
@@ -227,8 +243,8 @@ export default {
       if (this.rolesList.length) {
         import('@/vendor/Export2Excel').then(excel => {
           const tHeader = [
-            this.$t('permission.finishedNo'),
-            this.$t('permission.finishedName'),
+            this.$t('permission.companyNo'),
+            this.$t('permission.companyName'),
             this.$t('permission.title'),
             this.$t('permission.department'),
             this.$t('permission.company'),
@@ -237,7 +253,7 @@ export default {
             this.$t('permission.user'),
             this.$t('permission.time')
           ]
-          const filterVal = ['finishedNo', 'name', 'title', 'department', 'company', 'description', 'state', 'user', 'time']
+          const filterVal = ['companyNo', 'name', 'title', 'department', 'company', 'description', 'state', 'user', 'time']
           const list = this.rolesList
           const data = this.formatJson(filterVal, list)
           excel.export_json_to_excel({
@@ -315,6 +331,22 @@ export default {
     handleLook() {
       this.$router.push('../SystemManagement/lookUser')
     },
+    // 图片上传
+    handleAvatarSuccess(res, file) {
+      this.role.imageUrl = URL.createObjectURL(file.raw)
+    },
+    beforeAvatarUpload(file) {
+      const type = file.type === 'image/jpeg' || 'image/jpg' || 'image/webp' || 'image/png'
+      const isLt5M = file.size / 1024 / 1024 < 2
+
+      if (!type) {
+        this.$message.error(this.$t('permission.imgErrorInfo'))
+      }
+      if (!isLt5M) {
+        this.$message.error(this.$t('permission.imgSize'))
+      }
+      return type && isLt5M
+    },
     // 删除角色
     handleDelete({ $index, row }) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
@@ -345,7 +377,7 @@ export default {
 
       // const { description, key, name } = this.role
       this.dialogVisible = false
-      if (this.role.finishedNo === '') {
+      if (this.role.companyNo === '') {
         this.$notify({
           title: 'warning',
           dangerouslyUseHTMLString: true,
@@ -376,5 +408,29 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #999999;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+  border: 1px dashed #999999;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

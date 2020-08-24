@@ -372,9 +372,9 @@ export default {
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
       if (isEdit) {
-        debugger
+        console.log(1)
       } else {
-        debugger
+        console.log(1)
       }
 
       // const { description, key, name } = this.role
@@ -405,6 +405,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -15,6 +15,13 @@ export default {
     rolePermission: 'Role Permission',
     lookUser: 'Look User',
     userMangement: 'User Mangement',
+    MaterialManagement: 'Material Management',
+    MaterialInformation: 'Material Information',
+    ProductMaintenance: 'Product Maintenance',
+    OrganizationalManagement: 'Organizational Management',
+    CompanyMaintenance: 'Company Maintenance',
+    DepartmentMaintenance: 'Department Maintenance',
+
     // 截止
 
     icons: 'Icons',
@@ -120,7 +127,7 @@ export default {
     Menus: 'Menus',
     editRole: 'Edit Role',
     success: 'Operation  Success！',
-    noInfo: 'Role Name Cannot Be Empty',
+    noInfo: 'Required Item Cannot Be Empty',
     passwordInfo: ' Password Cannot Be Empty',
     passwordsInfo: 'Duplicate Password Cannot Be Empty',
     fullNamesInfo: 'FullName Cannot Be Empty',
@@ -143,6 +150,8 @@ export default {
     passwords: 'Passwords',
     roleUser: 'Role',
     roleUserInfo: 'Please Select Role',
+    imgErrorInfo: 'The Image Format Is Incorrect! (Can Only Contain JPG, PNG, webp, JPEG)',
+    imgSize: 'The Size Of The Uploaded Picture Cannot Exceed  5MB',
     // 原料
     materialNo: 'Material No',
     materialInfo: 'Please Input The Material Number',
@@ -178,6 +187,26 @@ export default {
     deleteFinished: 'Delete',
     finishedNoInfo: 'Please Input The Finished Product Number',
     finishedNmame: 'Please Enter The Product Name',
+
+    // 公司信息管理
+    companyNo: 'Company No',
+    companyName: 'Company Name',
+    companyAllName: 'Company AllName',
+    companyTel: 'Company Phone',
+    companyAddress: 'Company Address',
+    companysInfo: 'Please Enter Company Number',
+    companyDescription: 'Company Description',
+    companyLogo: 'Company Logo',
+    companyNameInfo: 'Please Enter Company Abbreviation',
+    inclusionCompany: 'Companies With Disabled Status',
+    addCompany: 'Add Company',
+    exportCompany: 'Export Company',
+    importCompany: 'Import Company',
+    EditCompany: 'Edit',
+    handleCompany: 'Handle',
+    SpecificationsCompany: 'Specifications',
+    deleteCompany: 'Delete',
+    companyNoInfo: 'Please Enter Company Number',
     // 截止
 
     roles: 'Your roles',

@@ -15,10 +15,12 @@ export default {
     rolePermission: '角色权限',
     lookUser: '查看用户',
     userMangement: '用户管理',
-    // do
     MaterialManagement: '物料信息管理',
     MaterialInformation: '原料信息维护',
     ProductMaintenance: '成品信息维护',
+    OrganizationalManagement: '组织架构管理',
+    CompanyMaintenance: '公司信息管理',
+    DepartmentMaintenance: '部门信息管理',
 
     // 截止
 
@@ -125,7 +127,7 @@ export default {
     Menus: '菜单',
     editRole: '编辑角色',
     success: '操作成功！',
-    noInfo: '角色名称不能为空',
+    noInfo: '必填项不能为空',
     passwordInfo: '密码不能为空',
     passwordsInfo: '确认密码不能为空',
     fullNamesInfo: '姓名不能为空',
@@ -148,6 +150,8 @@ export default {
     passwords: '确认密码',
     roleUser: '角色',
     roleUserInfo: '请选择角色',
+    imgErrorInfo: '图片格式不正确!(只能包含jpg，png，webp，JPEG)',
+    imgSize: '上传头像图片大小不能超过 5MB',
     // 原料
     materialNo: '原料编号',
     materialInfo: '请输入原料编号',
@@ -184,6 +188,25 @@ export default {
     finishedNoInfo: '请输入成品编号',
     finishedNmame: '请输入成品名称',
 
+    // 公司信息管理
+    companyNo: '公司编号',
+    companyName: '公司简称',
+    companyAllName: '公司全称',
+    companyTel: '公司电话',
+    companyAddress: '公司地址',
+    companysInfo: '请输入公司编号',
+    companyDescription: '公司描述',
+    companyLogo: '公司Logo',
+    companyNameInfo: '请输入公司简称',
+    inclusionCompany: '包含禁用状态的公司',
+    addCompany: '新增公司',
+    exportCompany: '导出公司',
+    importCompany: '导入公司',
+    EditCompany: '编辑公司',
+    handleCompany: '禁用公司',
+    SpecificationsCompany: '启用公司',
+    deleteCompany: '删除公司',
+    companyNoInfo: '请输入公司编号',
     // 截止
 
     roles: '你的权限',

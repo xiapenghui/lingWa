@@ -84,32 +84,66 @@ export const constantRoutes = [{
 {
   path: '/BasicData',
   component: Layout,
-  redirect: '/BasicData/MaterialManagement/MaterialInformation',
+  redirect: '/BasicData/OrganizationalManagement/CompanyMaintenance',
   name: 'BasicData',
   meta: {
     title: 'BasicData',
     icon: 'nested'
   },
+  // 物料信息管理模块
   children: [
+    // 组织架构管理
+    {
+      path: 'OrganizationalManagement',
+      component: () => import('@/views/BasicData/OrganizationalManagement/index'), // Parent router-view
+      name: 'OrganizationalManagement',
+      meta: {
+        title: 'OrganizationalManagement'
+      },
+      redirect: '/BasicData/OrganizationalManagement/CompanyMaintenance',
+      children: [{
+        path: 'CompanyMaintenance',
+        component: () => import('@/views/BasicData/OrganizationalManagement/CompanyMaintenance'),
+        name: 'CompanyMaintenance',
+        meta: {
+          title: 'CompanyMaintenance'
+        }
+      },
+      {
+        path: 'DepartmentMaintenance',
+        component: () => import('@/views/BasicData/OrganizationalManagement/DepartmentMaintenance'),
+        name: 'DepartmentMaintenance',
+        meta: {
+          title: 'DepartmentMaintenance'
+        }
+      }
+      ]
+    },
+    // 物料信息管理模块
     {
       path: 'MaterialManagement',
       component: () => import('@/views/BasicData/MaterialManagement/index'), // Parent router-view
       name: 'MaterialManagement',
-      meta: { title: 'MaterialManagement' },
+      meta: {
+        title: 'MaterialManagement'
+      },
       redirect: '/BasicData/MaterialManagement/MaterialInformation',
-      children: [
-        {
-          path: 'MaterialInformation',
-          component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
-          name: 'MaterialInformation',
-          meta: { title: 'MaterialInformation' }
-        },
-        {
-          path: 'ProductMaintenance',
-          component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
-          name: 'ProductMaintenance',
-          meta: { title: 'ProductMaintenance' }
+      children: [{
+        path: 'MaterialInformation',
+        component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
+        name: 'MaterialInformation',
+        meta: {
+          title: 'MaterialInformation'
         }
+      },
+      {
+        path: 'ProductMaintenance',
+        component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
+        name: 'ProductMaintenance',
+        meta: {
+          title: 'ProductMaintenance'
+        }
+      }
       ]
     }
   ]
@@ -261,35 +295,34 @@ export const asyncRoutes = [{
     icon: 'lock',
     roles: ['admin'] // you can set roles in root nav
   },
-  children: [
-    {
-      path: 'index',
-      component: () => import('@/views/SystemManagement/index'),
-      name: 'RolePermission',
-      meta: {
-        title: 'rolePermission',
-        roles: ['admin']
-      }
-    },
-    {
-      path: 'lookUser',
-      hidden: true,
-      component: () => import('@/views/SystemManagement/lookUser'),
-      name: 'lookUser',
-      meta: {
-        title: 'lookUser',
-        roles: ['admin']
-      }
-    },
-    {
-      path: 'userMangement',
-      component: () => import('@/views/SystemManagement/userMangement'),
-      name: 'userMangement',
-      meta: {
-        title: 'userMangement',
-        roles: ['admin']
-      }
+  children: [{
+    path: 'index',
+    component: () => import('@/views/SystemManagement/index'),
+    name: 'RolePermission',
+    meta: {
+      title: 'rolePermission',
+      roles: ['admin']
     }
+  },
+  {
+    path: 'lookUser',
+    hidden: true,
+    component: () => import('@/views/SystemManagement/lookUser'),
+    name: 'lookUser',
+    meta: {
+      title: 'lookUser',
+      roles: ['admin']
+    }
+  },
+  {
+    path: 'userMangement',
+    component: () => import('@/views/SystemManagement/userMangement'),
+    name: 'userMangement',
+    meta: {
+      title: 'userMangement',
+      roles: ['admin']
+    }
+  }
   ]
 },
 

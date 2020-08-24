@@ -23,7 +23,7 @@ export default {
       type: Boolean
     },
     buttonTop: {
-      default: 200,
+      default: 150,
       type: Number
     }
   },

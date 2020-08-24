@@ -124,7 +124,6 @@ export default {
   methods: {
     // 禁用，启用权限
     handleBan(scope, status) {
-      debugger
       this.$message({
         message: status + '成功',
         type: 'success'

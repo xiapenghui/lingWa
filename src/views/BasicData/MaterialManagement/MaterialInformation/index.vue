@@ -176,8 +176,26 @@ export default {
       tableData: [],
       tableHeader: [],
       isShow: true,
-      parentMsg: this.$t('permission.importMaterial'),
-      rules: {
+      parentMsg: this.$t('permission.importMaterial')
+    }
+  },
+  computed: {},
+  watch: {
+    // 监听data属性中英文切换问题
+    '$i18n.locale'() {
+      this.parentMsg = this.$t('permission.importMaterial')
+      this.setFormRules()
+    }
+  },
+  created() {
+    // Mock: get all routes and roles list from server
+    this.getList()
+    this.setFormRules()
+  },
+  methods: {
+    // 表单验证切换中英文
+    setFormRules: function() {
+      this.rules = {
         materialNo: [{ required: true, message: this.$t('permission.materialNoInfo'), trigger: 'blur' }],
         materialName: [
           {
@@ -187,22 +205,7 @@ export default {
           }
         ]
       }
-    }
-  },
-  computed: {},
-  watch: {
-    parentMsg: {
-      handler(newName, oldName) {
-        this.parentMsg = newName
-      },
-      immediate: true
-    }
-  },
-  created() {
-    // Mock: get all routes and roles list from server
-    this.getList()
-  },
-  methods: {
+    },
     // 禁用，启用权限
     handleBan(scope, status) {
       this.$message({
