@@ -81,7 +81,7 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="400">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.EditMaterial') }}</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editPermission') }}</el-button>
           <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
           <el-button v-if="scope.row.status == '开启'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleMaterial') }}</el-button>
           <el-button v-else type="success" size="small" @click="handleBan(scope, '开启')">{{ $t('permission.SpecificationsMaterial') }}</el-button>
