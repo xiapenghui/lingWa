@@ -119,6 +119,43 @@ export const constantRoutes = [{
       }
       ]
     },
+
+    // 生产信息管理
+    {
+      path: 'ProductionManagement',
+      component: () => import('@/views/BasicData/ProductionManagement/index'), // Parent router-view
+      name: 'ProductionManagement',
+      meta: {
+        title: 'ProductionManagement'
+      },
+      redirect: '/BasicData/ProductionManagement/LineMaintenance',
+      children: [{
+        path: 'LineMaintenance',
+        component: () => import('@/views/BasicData/ProductionManagement/LineMaintenance'),
+        name: 'LineMaintenance',
+        meta: {
+          title: 'LineMaintenance'
+        }
+      },
+      {
+        path: 'WorkMaintenance',
+        component: () => import('@/views/BasicData/ProductionManagement/WorkMaintenance'),
+        name: 'WorkMaintenance',
+        meta: {
+          title: 'WorkMaintenance'
+        }
+      },
+      {
+        path: 'ProcessMaintenance',
+        component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
+        name: 'ProcessMaintenance',
+        meta: {
+          title: 'ProcessMaintenance'
+        }
+      }
+      ]
+    },
+
     // 物料信息管理模块
     {
       path: 'MaterialManagement',
@@ -194,14 +231,14 @@ export const constantRoutes = [{
 },
 // 生产过程
 {
-  path: '/ProductionManagement',
+  path: '/ProductionManagements',
   component: Layout,
   children: [{
     path: 'index',
-    component: () => import('@/views/ProductionManagement/index'),
-    name: 'ProductionManagement',
+    component: () => import('@/views/ProductionManagements/index'),
+    name: 'ProductionManagements',
     meta: {
-      title: 'ProductionManagement',
+      title: 'ProductionManagements',
       icon: 'tab'
     }
   }]

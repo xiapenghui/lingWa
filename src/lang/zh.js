@@ -5,7 +5,7 @@ export default {
     ParameterInfo: '参数信息',
     LabelManagement: '标签管理',
     ProductionPlan: '生产计划',
-    ProductionManagement: '生产过程',
+    ProductionManagements: '生产过程',
     LampManagement: '安灯管理',
     QualityAdministration: '质量管理',
     DeviceManagement: '设备管理',
@@ -21,6 +21,10 @@ export default {
     OrganizationalManagement: '组织架构管理',
     CompanyMaintenance: '公司信息管理',
     DepartmentMaintenance: '部门信息管理',
+    ProductionManagement: '生产信息管理',
+    LineMaintenance: '产线信息维护',
+    WorkMaintenance: '工作中心维护',
+    ProcessMaintenance: '工序信息维护',
 
     // 截止
 
@@ -207,6 +211,25 @@ export default {
     SpecificationsCompany: '启用公司',
     deleteCompany: '删除公司',
     companyNoInfo: '请输入公司编号',
+
+    // 工序信息维护
+    serialNo: '工序编号',
+    serialName: '工序名称',
+    serialInfo: '请输入工序编号',
+    serialNameInfo: '请输入工序名称',
+    serialDescription: '工序描述',
+    inclusionSerial: '包含禁用状态的工序',
+    addSerial: '新增工序',
+    exportSerial: '导出工序',
+    importSerial: '导入工序',
+    EditSerial: '编辑工序',
+    handleSerial: '禁用工序',
+    SpecificationsSerial: '启用工序',
+    deleteSerial: '删除工序',
+    serialIdentification: '倒扣账标识',
+    serialCode: '倒扣账代码',
+    yes: '是',
+    no: '否',
     // 截止
 
     roles: '你的权限',

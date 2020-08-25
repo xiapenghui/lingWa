@@ -5,7 +5,7 @@ export default {
     ParameterInfo: 'Parameter Info',
     LabelManagement: 'Label Management',
     ProductionPlan: 'Production Plan',
-    ProductionManagement: 'Production Management',
+    ProductionManagements: 'Production Management',
     LampManagement: 'Lamp Management',
     QualityAdministration: 'Quality Administration',
     DeviceManagement: 'Device Management',
@@ -21,7 +21,10 @@ export default {
     OrganizationalManagement: 'Organizational Structure',
     CompanyMaintenance: 'Company Maintenance',
     DepartmentMaintenance: 'Department Maintenance',
-
+    ProductionManagement: 'Production Management',
+    LineMaintenance: 'Line Maintenance',
+    WorkMaintenance: 'Work Maintenance',
+    ProcessMaintenance: 'Process Maintenance',
     // 截止
 
     icons: 'Icons',
@@ -207,6 +210,26 @@ export default {
     SpecificationsCompany: 'Specifications',
     deleteCompany: 'Delete',
     companyNoInfo: 'Please Enter Company Number',
+
+    // 工序信息维护
+    serialNo: 'serial No',
+    serialName: 'serial Name',
+    serialInfo: 'Please Input The Operation Number',
+    serialNameInfo: 'Please Enter The Operation Name',
+    serialDescription: 'Serial Description',
+    inclusionSerial: 'Operations With Disabled Status',
+    addSerial: 'Add Serial',
+    exportSerial: 'Export Serial',
+    importSerial: 'Import Serial',
+    EditSerial: 'Edit',
+    handleSerial: 'Handle',
+    SpecificationsSerial: 'Specifications',
+    deleteSerial: 'Delete',
+    serialIdentification: 'Reverse Deduction Mark',
+    serialCode: 'Recollection Code',
+    yes: 'Yes',
+    no: 'No',
+
     // 截止
 
     roles: 'Your roles',
