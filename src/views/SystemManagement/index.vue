@@ -52,8 +52,8 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
-      <el-form :model="role" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.name')" :rules="rules" prop="name"><el-input v-model="role.name" :placeholder="$t('permission.name')" /></el-form-item>
+      <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
+        <el-form-item :label="$t('permission.name')" prop="name"><el-input v-model="role.name" :placeholder="$t('permission.name')" /></el-form-item>
         <el-form-item :label="$t('permission.description')">
           <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
         </el-form-item>
@@ -106,8 +106,7 @@ export default {
         title: undefined,
         page: 1,
         limit: 20
-      },
-      rules: [{ required: true, message: this.$t('permission.noInfo') }]
+      }
     }
   },
   computed: {
@@ -115,13 +114,26 @@ export default {
       return this.routes
     }
   },
+  watch: {
+    // 监听data属性中英文切换问题
+    '$i18n.locale'() {
+      this.setFormRules()
+    }
+  },
   created() {
     // Mock: get all routes and roles list from server
     this.getRoutes()
     this.getRoles()
     this.getList()
+    this.setFormRules()
   },
   methods: {
+    // 表单验证切换中英文
+    setFormRules: function() {
+      this.rules = {
+        name: [{ required: true, message: this.$t('permission.roleNameInfo') }]
+      }
+    },
     // 禁用，启用权限
     handleBan(scope, status) {
       this.$message({
@@ -341,6 +353,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

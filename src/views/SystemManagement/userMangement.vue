@@ -104,7 +104,7 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="400">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.modifyeUser') }}</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editUser') }}</el-button>
           <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
           <el-button v-if="scope.row.status == '开启'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleBan') }}</el-button>
           <el-button v-else type="success" size="small" @click="handleBan(scope, '开启')">{{ $t('permission.handleEnable') }}</el-button>
@@ -113,7 +113,7 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editUser') : $t('permission.addUser')">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
         <el-form-item :label="$t('permission.userName')" prop="userName"><el-input v-model="role.userName" :placeholder="$t('permission.userNameInfo')" /></el-form-item>
         <el-form-item :label="$t('permission.password')" prop="password"><el-input v-model="role.password" :placeholder="$t('permission.password')" /></el-form-item>
@@ -212,8 +212,25 @@ export default {
       departmentOptions: ['研发部', '财务部'],
       roleUserOptions: ['管理员', '生产组长'],
       listLoading: true,
-      total: 10,
-      rules: {
+      total: 10
+    }
+  },
+  computed: {},
+  watch: {
+    // 监听data属性中英文切换问题
+    '$i18n.locale'() {
+      this.setFormRules()
+    }
+  },
+  created() {
+    // Mock: get all routes and roles list from server
+    this.getList()
+    this.setFormRules()
+  },
+  methods: {
+    // 表单验证切换中英文
+    setFormRules: function() {
+      this.rules = {
         userName: [{ required: true, message: this.$t('permission.userNameInfo'), trigger: 'blur' }],
         password: [
           {
@@ -236,15 +253,9 @@ export default {
             trigger: 'blur'
           }
         ]
+
       }
-    }
-  },
-  computed: {},
-  created() {
-    // Mock: get all routes and roles list from server
-    this.getList()
-  },
-  methods: {
+    },
     // 禁用，启用权限
     handleBan(scope, status) {
       this.$message({
@@ -374,7 +385,8 @@ export default {
       if (isEdit) {
         console.log(1)
       } else {
-        console.log(1)
+        debugger
+        console.log('this.role', this.role)
       }
 
       // const { description, key, name } = this.role
