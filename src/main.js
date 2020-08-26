@@ -6,6 +6,7 @@ import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
 import Element from 'element-ui'
 import './styles/element-variables.scss'
+import getNowDate from './api/commonData.js'
 
 import '@/styles/index.scss' // global css
 
@@ -40,6 +41,8 @@ Vue.directive('rest-styleBackground', function(dom, definition) { // 背景颜�
 Vue.directive('rest-styleColor', function(dom, definition) { // 字体颜色
   dom.style.color = definition.value
 })
+
+Vue.prototype.$getDate = getNowDate // 获取全局维护时间。
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size

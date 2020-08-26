@@ -226,6 +226,8 @@ export default {
     // Mock: get all routes and roles list from server
     this.getList()
     this.setFormRules()
+    var getDate = this.$getDate
+    console.log('getDate', getDate())
   },
   methods: {
     // 表单验证切换中英文

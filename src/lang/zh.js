@@ -241,19 +241,20 @@ export default {
     confirm: '确定',
     cancel: '取消'
   },
-  guide: {
-    description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
-    button: '打开引导'
+
+  error: {
+    back: '返回',
+    sorry: '抱歉',
+    oneInfo: '你没有权限访问该页面',
+    twoInfo: '如有其他需要请联系管理员',
+    oops: '哎呀',
+    allRight: '版权所有',
+    copanyNmame: '上海灵娃智能科技有限公司',
+    oneMessage: '管理员说你没权限进入这个页面...',
+    twoMessage: '请检查您输入的URL是否正确，或单击下面的按钮返回主页',
+    goHome: '返回首页'
   },
-  components: {
-    documentation: '文档',
-    tinymceTips: '富文本是管理后台一个核心的功能，但同时又是一个有很多坑的地方。在选择富文本的过程中我也走了不少的弯路，市面上常见的富文本都基本用过了，最终权衡了一下选择了Tinymce。更详细的富文本比较和介绍见',
-    dropzoneTips: '由于我司业务有特殊需求，而且要传七牛 所以没用第三方，选择了自己封装。代码非常的简单，具体代码你可以在这里看到 @/components/Dropzone',
-    stickyTips: '当页面滚动到预设的位置会吸附在顶部',
-    backToTopTips1: '页面滚动到指定位置会在右下角出现返回顶部按钮',
-    backToTopTips2: '可自定义按钮的样式、show/hide、出现的高度、返回的位置 如需文字提示，可在外部使用Element的el-tooltip元素',
-    imageUploadTips: '由于我在使用时它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，优先还是使用官方版本。'
-  },
+
   table: {
     dynamicTips1: '固定表头, 按照表头顺序排序',
     dynamicTips2: '不固定表头, 按照点击顺序排序',
@@ -283,11 +284,7 @@ export default {
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'
   },
-  errorLog: {
-    tips: '请点击右上角bug小图标',
-    description: '现在的管理后台基本都是spa的形式了，它增强了用户体验，但同时也会增加页面出问题的可能性，可能一个小小的疏忽就导致整个页面的死锁。好在 Vue 官网提供了一个方法来捕获处理异常，你可以在其中进行错误处理或者异常上报。',
-    documentation: '文档介绍'
-  },
+
   excel: {
     export: '导出',
     selectedExport: '导出已选择项',
@@ -297,14 +294,7 @@ export default {
     export: '导出',
     placeholder: '请输入文件名(默认file)'
   },
-  pdf: {
-    tips: '这里使用   window.print() 来实现下载pdf的功能'
-  },
-  theme: {
-    change: '换肤',
-    documentation: '换肤文档',
-    tips: 'Tips: 它区别于 navbar 上的 theme-pick, 是两种不同的换肤方法，各自有不同的应用场景，具体请参考文档。'
-  },
+
   tagsView: {
     refresh: '刷新',
     close: '关闭',
@@ -317,11 +307,6 @@ export default {
     tagsView: '开启 Tags-View',
     fixedHeader: '固定 Header',
     sidebarLogo: '侧边栏 Logo'
-  },
-  test: {
-    test: '测试',
-    newTest: '新的测试',
-    oneTest: '国内文档',
-    twoTest: '内推招聘'
   }
+
 }

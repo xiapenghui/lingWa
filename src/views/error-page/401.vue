@@ -1,11 +1,11 @@
 <template>
   <div class="errPage-container">
-    <el-button icon="el-icon-arrow-left" class="pan-back-btn" @click="back">返回</el-button>
+    <el-button icon="el-icon-arrow-left" class="pan-back-btn" @click="back">{{ $t('error.back') }}</el-button>
     <el-row>
       <el-col :span="12">
-        <h1 class="text-jumbo text-ginormous">sorry!</h1>
-        <h2>抱歉！你没有权限访问该页面！</h2>
-        <h3>如有其他需要请联系管理员</h3>
+        <h1 class="text-jumbo text-ginormous">{{ $t('error.sorry') }}!</h1>
+        <h2>{{ $t('error.oneInfo') }}！</h2>
+        <h3>{{ $t('error.twoInfo') }}！</h3>
       </el-col>
       <el-col :span="12"><img :src="errGif" width="313" height="428" alt="Girl has dropped her ice cream."></el-col>
     </el-row>
@@ -14,7 +14,6 @@
 
 <script>
 import errGif from '@/assets/401_images/401.gif'
-
 export default {
   name: 'Page401',
   data() {
