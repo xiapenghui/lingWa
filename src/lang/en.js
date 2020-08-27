@@ -93,7 +93,9 @@ export default {
     logOut: 'Log Out',
     profile: 'Profile',
     theme: 'Theme',
-    size: 'Global Size'
+    size: 'Global Size',
+    words: 'Font Size',
+    Chinese: 'Choose Chinese And English'
   },
   login: {
     title: 'Login Form',

@@ -94,7 +94,10 @@ export default {
     logOut: '退出登录',
     profile: '个人中心',
     theme: '换肤',
-    size: '布局大小'
+    size: '布局大小',
+    words: '字体大小',
+    Chinese: '切换中英文'
+
   },
   login: {
     title: '系统登录',
