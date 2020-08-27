@@ -6,13 +6,13 @@
           <el-col :span="8">
             <label class="radio-label">{{ $t('permission.userName') }}:</label>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.userName" :placeholder="$t('permission.userNameInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="form.userName" :placeholder="$t('permission.userNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <label class="radio-label">{{ $t('permission.fullName') }}:</label>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.fullName" :placeholder="$t('permission.fullNameInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="form.fullName" :placeholder="$t('permission.fullNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
@@ -115,10 +115,10 @@
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.userName')" prop="userName"><el-input v-model="role.userName" :placeholder="$t('permission.userNameInfo')" /></el-form-item>
-        <el-form-item :label="$t('permission.password')" prop="password"><el-input v-model="role.password" :placeholder="$t('permission.password')" /></el-form-item>
-        <el-form-item :label="$t('permission.passwords')" prop="passwords"><el-input v-model="role.passwords" :placeholder="$t('permission.passwords')" /></el-form-item>
-        <el-form-item :label="$t('permission.fullName')" prop="fullName"><el-input v-model="role.fullName" :placeholder="$t('permission.fullNameInfo')" /></el-form-item>
+        <el-form-item :label="$t('permission.userName')" prop="userName"><el-input v-model="role.userName" :placeholder="$t('permission.userNameInfo')" clearable /></el-form-item>
+        <el-form-item :label="$t('permission.password')" prop="password"><el-input v-model="role.password" :placeholder="$t('permission.password')" clearable /></el-form-item>
+        <el-form-item :label="$t('permission.passwords')" prop="passwords"><el-input v-model="role.passwords" :placeholder="$t('permission.passwords')" clearable /></el-form-item>
+        <el-form-item :label="$t('permission.fullName')" prop="fullName"><el-input v-model="role.fullName" :placeholder="$t('permission.fullNameInfo')" clearable /></el-form-item>
 
         <el-form-item :label="$t('permission.roleUser')">
           <el-select v-model="role.roleUser" :placeholder="$t('permission.roleUserInfo')" clearable style="width: 100%">

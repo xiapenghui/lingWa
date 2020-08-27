@@ -6,13 +6,13 @@
           <el-col :span="8">
             <label class="radio-label">{{ $t('permission.serialNo') }}:</label>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.serialNo" :placeholder="$t('permission.serialInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="form.serialNo" :placeholder="$t('permission.serialInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <label class="radio-label">{{ $t('permission.serialName') }}:</label>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.serialName" :placeholder="$t('permission.serialNameInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="form.serialName" :placeholder="$t('permission.serialNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
@@ -96,11 +96,11 @@
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditSerial') : $t('permission.addSerial')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
         <el-form-item :label="$t('permission.serialNo')" prop="serialNo">
-          <el-input v-model="role.serialNo" :placeholder="$t('permission.serialNo')" />
+          <el-input v-model="role.serialNo" :placeholder="$t('permission.serialNo')" clearable />
         </el-form-item>
 
         <el-form-item :label="$t('permission.serialName')" prop="serialName">
-          <el-input v-model="role.serialName" :placeholder="$t('permission.serialName')" />
+          <el-input v-model="role.serialName" :placeholder="$t('permission.serialName')" clearable />
         </el-form-item>
 
         <el-form-item :label="$t('permission.serialIdentification')">
@@ -109,7 +109,7 @@
         </el-form-item>
 
         <el-form-item :label="$t('permission.serialCode')">
-          <el-input v-model="role.serialCode" :placeholder="$t('permission.serialCode')" />
+          <el-input v-model="role.serialCode" :placeholder="$t('permission.serialCode')" clearable />
         </el-form-item>
 
         <el-form-item :label="$t('permission.serialDescription')">

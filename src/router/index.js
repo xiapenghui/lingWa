@@ -156,6 +156,33 @@ export const constantRoutes = [{
       ]
     },
 
+    // 产品信息管理
+    {
+      path: 'ProductMmanagement',
+      component: () => import('@/views/BasicData/ProductMmanagement/index'), // Parent router-view
+      name: 'ProductMmanagement',
+      meta: {
+        title: 'ProductMmanagement'
+      },
+      redirect: '/BasicData/ProductMmanagement/BomMangement',
+      children: [{
+        path: 'BomMangement',
+        component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
+        name: 'BomMangement',
+        meta: {
+          title: 'BomMangement'
+        }
+      },
+      {
+        path: 'RouteMaintenance',
+        component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
+        name: 'RouteMaintenance',
+        meta: {
+          title: 'RouteMaintenance'
+        }
+      }
+      ]
+    },
     // 物料信息管理模块
     {
       path: 'MaterialManagement',

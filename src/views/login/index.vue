@@ -8,7 +8,7 @@
 
       <el-form-item prop="username">
         <span class="svg-container"><svg-icon icon-class="user" /></span>
-        <el-input ref="username" v-model="loginForm.username" :placeholder="$t('login.username')" name="username" type="text" tabindex="1" autocomplete="on" />
+        <el-input ref="username" v-model="loginForm.username" :placeholder="$t('login.username')" name="username" type="text" tabindex="1" autocomplete="on" clearable />
       </el-form-item>
 
       <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
@@ -23,6 +23,7 @@
             name="password"
             tabindex="2"
             autocomplete="on"
+            clearable
             @keyup.native="checkCapslock"
             @blur="capsTooltip = false"
             @keyup.enter.native="handleLogin"

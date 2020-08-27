@@ -25,6 +25,9 @@ export default {
     LineMaintenance: 'Line Maintenance',
     WorkMaintenance: 'Work Maintenance',
     ProcessMaintenance: 'Process Maintenance',
+    ProductMmanagement: 'Product Mmanagement',
+    BomMangement: 'BOM Mangement',
+    RouteMaintenance: 'Route Maintenance',
     // 截止
 
     icons: 'Icons',
@@ -232,6 +235,20 @@ export default {
     yes: 'Yes',
     no: 'No',
 
+    // 生产信息管理
+    inclusionBom: 'Version Contains BOM In Disabled State',
+    addBom: 'Add BOM',
+    exportBom: 'Export BOM',
+    importBom: 'Import BOM',
+    editionBom: 'Edition Bom',
+    descriptionBom: 'Description Bom',
+    lookDetail: 'Look',
+    EditBom: 'Edit',
+    handleBom: 'Handle',
+    SpecificationsBom: 'Specifications',
+    deleteBom: 'Delete',
+    materiaMany: 'Materia Many',
+    materiaManyInfo: 'Please Input The Amount Of Raw Materials',
     // 截止
 
     roles: 'Your roles',

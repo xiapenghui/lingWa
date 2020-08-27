@@ -25,6 +25,9 @@ export default {
     LineMaintenance: '产线信息维护',
     WorkMaintenance: '工作中心维护',
     ProcessMaintenance: '工序信息维护',
+    ProductMmanagement: '产品信息维护',
+    BomMangement: 'BOM信息维护',
+    RouteMaintenance: '工艺路线维护',
 
     // 截止
 
@@ -232,8 +235,23 @@ export default {
     serialCode: '倒扣账代码',
     yes: '是',
     no: '否',
-    // 截止
 
+    // 生产信息管理
+    inclusionBom: '包含禁用状态的BOM',
+    addBom: '新增BOM',
+    exportBom: '导出BOM',
+    importBom: '导入BOM',
+    editionBom: 'BOM版本',
+    descriptionBom: 'BOM描述',
+    lookDetail: '查看BOM',
+    EditBom: '编辑BOM',
+    handleBom: '禁用BOM',
+    SpecificationsBom: '启用BOM',
+    deleteBom: '删除BOM',
+    materiaMany: '原料用量',
+    materiaManyInfo: '请输入原料用量',
+
+    // 截止
     roles: '你的权限',
     switchRoles: '切换权限',
     tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 el-tab 或 el-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。',

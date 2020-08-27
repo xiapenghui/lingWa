@@ -6,13 +6,13 @@
           <el-col :span="8">
             <label class="radio-label">{{ $t('permission.finishedNo') }}:</label>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.finishedNo" :placeholder="$t('permission.finishedInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="form.finishedNo" :placeholder="$t('permission.finishedInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <label class="radio-label">{{ $t('permission.finishedName') }}:</label>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.finishedName" :placeholder="$t('permission.finishedNameInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="form.finishedName" :placeholder="$t('permission.finishedNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
@@ -92,15 +92,16 @@
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditFinished') : $t('permission.addFinished')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.finishedNo')" prop="finishedNo"><el-input v-model="role.finishedNo" :placeholder="$t('permission.finishedNo')" /></el-form-item>
+        <el-form-item :label="$t('permission.finishedNo')" prop="finishedNo">
+          <el-input v-model="role.finishedNo" :placeholder="$t('permission.finishedNo')" clearable /></el-form-item>
         <el-form-item :label="$t('permission.finishedName')" prop="finishedName">
-          <el-input v-model="role.finishedName" :placeholder="$t('permission.finishedName')" />
+          <el-input v-model="role.finishedName" :placeholder="$t('permission.finishedName')" clearable />
         </el-form-item>
 
         <el-form-item :label="$t('permission.finishedSpecifications')">
-          <el-input v-model="role.finishedSpecifications" :placeholder="$t('permission.finishedSpecifications')" />
+          <el-input v-model="role.finishedSpecifications" :placeholder="$t('permission.finishedSpecifications')" clearable />
         </el-form-item>
-        <el-form-item :label="$t('permission.finishedColor')"><el-input v-model="role.finishedColor" :placeholder="$t('permission.finishedColor')" /></el-form-item>
+        <el-form-item :label="$t('permission.finishedColor')"><el-input v-model="role.finishedColor" :placeholder="$t('permission.finishedColor')" clearable /></el-form-item>
 
         <el-form-item :label="$t('permission.description')">
           <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
