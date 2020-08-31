@@ -88,8 +88,8 @@
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editPermission') }}</el-button>
           <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
-          <el-button v-if="scope.row.status == '开启'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleCompany') }}</el-button>
-          <el-button v-else type="success" size="small" @click="handleBan(scope, '开启')">{{ $t('permission.SpecificationsCompany') }}</el-button>
+          <el-button v-if="scope.row.status == '启用'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleCompany') }}</el-button>
+          <el-button v-else type="success" size="small" @click="handleBan(scope, '启用')">{{ $t('permission.SpecificationsCompany') }}</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.deleteCompany') }}</el-button>
         </template>
       </el-table-column>
@@ -101,7 +101,9 @@
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
         <el-form-item :label="$t('permission.companyNo')"><el-input v-model="role.companyNo" :placeholder="$t('permission.companyNo')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.companyName')" prop="companyName"><el-input v-model="role.companyName" :placeholder="$t('permission.companyName')" clearable /></el-form-item>
+        <el-form-item :label="$t('permission.companyName')" prop="companyName">
+          <el-input v-model="role.companyName" :placeholder="$t('permission.companyName')" clearable />
+        </el-form-item>
         <el-form-item :label="$t('permission.companyAllName')" prop="companyAllName">
           <el-input v-model="role.companyAllName" :placeholder="$t('permission.companyAllName')" clearable />
         </el-form-item>
@@ -213,11 +215,43 @@ export default {
     },
     // 禁用，启用权限
     handleBan(scope, status) {
-      this.$message({
-        message: status + '成功',
-        type: 'success'
-      })
+      if (status === '启用') {
+        this.$confirm(this.$t('permission.EnableInfo'), this.$t('permission.EnableTitle'), {
+          confirmButtonText: this.$t('permission.Confirm'),
+          cancelButtonText: this.$t('permission.Cancel'),
+          type: 'success'
+        })
+          .then(async() => {
+            this.$message({
+              message: status + '成功',
+              type: 'success'
+            })
+          })
+          .catch(err => {
+            console.error(err)
+          })
+      } else {
+        this.$confirm(this.$t('permission.DisableInfo'), this.$t('permission.DisableTitle'), {
+          confirmButtonText: this.$t('permission.Confirm'),
+          cancelButtonText: this.$t('permission.Cancel'),
+          type: 'warning'
+        })
+          .then(async() => {
+            this.$message({
+              message: status + '成功',
+              type: 'success'
+            })
+          })
+          .catch(err => {
+            console.error(err)
+          })
+      }
       scope.row.status = status
+      // this.$message({
+      //   message: status + '成功',
+      //   type: 'success'
+      // })
+      // scope.row.status = status
     },
 
     // 查询

@@ -253,6 +253,10 @@ export default {
     deleteBom: '删除BOM',
     materiaMany: '原料用量',
     materiaManyInfo: '请输入原料用量',
+    EnableTitle: '启用',
+    DisableTitle: '禁用',
+    EnableInfo: '确定启用此条数据吗？',
+    DisableInfo: '确定禁用此条数据吗？',
 
     // 截止
     roles: '你的权限',

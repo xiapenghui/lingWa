@@ -251,6 +251,10 @@ export default {
     deleteBom: 'Delete',
     materiaMany: 'Materia Many',
     materiaManyInfo: 'Please Input The Amount Of Raw Materials',
+    EnableTitle: 'Enable',
+    DisableTitle: 'Disable',
+    EnableInfo: 'Are You Sure To Enable This Data？',
+    DisableInfo: 'Are You Sure To Disable This Data？',
     // 截止
 
     roles: 'Your roles',

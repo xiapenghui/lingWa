@@ -44,7 +44,7 @@
           <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editPermission') }}</el-button>
           <el-button type="info" size="small" @click="handleCoply(scope)">{{ $t('permission.coplyPermission') }}</el-button>
           <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
-          <el-button v-if="scope.row.status == '开启'" type="success" size="small" @click="handleBan(scope, '开启')">{{ $t('permission.handleEnable') }}</el-button>
+          <el-button v-if="scope.row.status == '启用'" type="success" size="small" @click="handleBan(scope, '启用')">{{ $t('permission.handleEnable') }}</el-button>
           <el-button v-else type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleBan') }}</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.delete') }}</el-button>
         </template>
