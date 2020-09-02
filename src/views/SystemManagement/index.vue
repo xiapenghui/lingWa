@@ -4,9 +4,11 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.title') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+              <label class="radio-label">{{ $t('permission.title') }}:</label>
+            </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="listQuery.title" :placeholder="$t('permission.title')" /></el-col>
+          <el-col :span="16"><el-input v-model="listQuery.title" :placeholder="$t('permission.titleInfo')" /></el-col>
         </el-col>
       </el-row>
       <el-row class="center">
@@ -53,13 +55,25 @@
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.name')" prop="name"><el-input v-model="role.name" :placeholder="$t('permission.name')" /></el-form-item>
-        <el-form-item :label="$t('permission.description')">
-          <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
-        </el-form-item>
-        <el-form-item :label="$t('permission.Menus')">
-          <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
-        </el-form-item>
+
+        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+          <el-form-item :label="$t('permission.title')" prop="title">
+            <el-input v-model="role.title" :placeholder="$t('permission.title')" />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+          <el-form-item :label="$t('permission.description')">
+            <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+          <el-form-item :label="$t('permission.Menus')">
+            <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
+          </el-form-item>
+        </el-tooltip>
+
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -106,7 +120,10 @@ export default {
         title: undefined,
         page: 1,
         limit: 20
-      }
+      },
+      content1: this.$t('permission.title'),
+      content2: this.$t('permission.description'),
+      content3: this.$t('permission.Menus')
     }
   },
   computed: {
@@ -117,6 +134,9 @@ export default {
   watch: {
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
+      this.content1 = this.$t('permission.title')
+      this.content2 = this.$t('permission.description')
+      this.content3 = this.$t('permission.Menus')
       this.setFormRules()
     }
   },

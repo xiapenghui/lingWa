@@ -4,19 +4,25 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.serialNo') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+              <label class="radio-label">{{ $t('permission.serialNo') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.serialNo" :placeholder="$t('permission.serialInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.serialName') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+              <label class="radio-label">{{ $t('permission.serialName') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.serialName" :placeholder="$t('permission.serialNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionProhibition') }}</el-checkbox>
+            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionProhibition') }}</el-checkbox>
+            </el-tooltip>
           </el-col>
         </el-col>
       </el-row>
@@ -95,26 +101,37 @@
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditSerial') : $t('permission.addSerial')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.serialNo')" prop="serialNo">
-          <el-input v-model="role.serialNo" :placeholder="$t('permission.serialNo')" clearable />
-        </el-form-item>
 
-        <el-form-item :label="$t('permission.serialName')" prop="serialName">
-          <el-input v-model="role.serialName" :placeholder="$t('permission.serialName')" clearable />
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+          <el-form-item :label="$t('permission.serialNo')" prop="serialNo">
+            <el-input v-model="role.serialNo" :placeholder="$t('permission.serialNo')" clearable />
+          </el-form-item>
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.serialIdentification')">
-          <el-radio v-model="role.serialIdentification" label="1">{{ this.$t('permission.yes') }}</el-radio>
-          <el-radio v-model="role.serialIdentification" label="2">{{ this.$t('permission.no') }}</el-radio>
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+          <el-form-item :label="$t('permission.serialName')" prop="serialName">
+            <el-input v-model="role.serialName" :placeholder="$t('permission.serialName')" clearable />
+          </el-form-item>
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.serialCode')">
-          <el-input v-model="role.serialCode" :placeholder="$t('permission.serialCode')" clearable />
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
+          <el-form-item :label="$t('permission.serialIdentification')">
+            <el-radio v-model="role.serialIdentification" label="1">{{ this.$t('permission.yes') }}</el-radio>
+            <el-radio v-model="role.serialIdentification" label="2">{{ this.$t('permission.no') }}</el-radio>
+          </el-form-item>
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.serialDescription')">
-          <el-input v-model="role.serialDescription" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.serialDescription')" />
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
+          <el-form-item :label="$t('permission.serialCode')">
+            <el-input v-model="role.serialCode" :placeholder="$t('permission.serialCode')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
+          <el-form-item :label="$t('permission.serialDescription')">
+            <el-input v-model="role.serialDescription" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.serialDescription')" />
+          </el-form-item>
+        </el-tooltip>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -172,7 +189,13 @@ export default {
       tableData: [],
       tableHeader: [],
       isShow: true,
-      parentMsg: this.$t('permission.importSerial')
+      parentMsg: this.$t('permission.importSerial'),
+      content1: this.$t('permission.serialNo'),
+      content2: this.$t('permission.serialName'),
+      content3: this.$t('permission.inclusionProhibition'),
+      content4: this.$t('permission.serialIdentification'),
+      content5: this.$t('permission.serialCode'),
+      content6: this.$t('permission.serialDescription')
     }
   },
   computed: {},
@@ -180,6 +203,12 @@ export default {
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.parentMsg = this.$t('permission.importSerial')
+      this.content1 = this.$t('permission.serialNo')
+      this.content2 = this.$t('permission.serialName')
+      this.content3 = this.$t('permission.inclusionProhibition')
+      this.content4 = this.$t('permission.serialIdentification')
+      this.content5 = this.$t('permission.serialCode')
+      this.content6 = this.$t('permission.serialDescriptions')
       this.setFormRules()
     }
   },

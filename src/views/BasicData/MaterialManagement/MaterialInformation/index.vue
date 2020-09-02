@@ -4,19 +4,25 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.materialNo') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+              <label class="radio-label">{{ $t('permission.materialNo') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.materialNo" :placeholder="$t('permission.materialInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.materialName') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+              <label class="radio-label">{{ $t('permission.materialName') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.materialName" :placeholder="$t('permission.materialNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionProhibition') }}</el-checkbox>
+            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionProhibition') }}</el-checkbox>
+            </el-tooltip>
           </el-col>
         </el-col>
       </el-row>
@@ -95,21 +101,36 @@
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditMaterial') : $t('permission.addMaterial')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.materialNo')" prop="materialNo">
-          <el-input v-model="role.materialNo" :placeholder="$t('permission.materialNo')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.materialName')" prop="materialName">
-          <el-input v-model="role.materialName" :placeholder="$t('permission.materialName')" />
-        </el-form-item>
 
-        <el-form-item :label="$t('permission.materialSpecifications')">
-          <el-input v-model="role.materialSpecifications" :placeholder="$t('permission.materialSpecifications')" clearable />
-        </el-form-item>
-        <el-form-item :label="$t('permission.MaterialColor')">
-          <el-input v-model="role.MaterialColor" :placeholder="$t('permission.MaterialColor')" clearable /></el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+          <el-form-item :label="$t('permission.materialNo')" prop="materialNo">
+            <el-input v-model="role.materialNo" :placeholder="$t('permission.materialNo')" clearable />
+          </el-form-item>
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.description')">
-          <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+          <el-form-item :label="$t('permission.materialName')" prop="materialName">
+            <el-input v-model="role.materialName" :placeholder="$t('permission.materialName')" />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
+          <el-form-item :label="$t('permission.materialSpecifications')">
+            <el-input v-model="role.materialSpecifications" :placeholder="$t('permission.materialSpecifications')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
+          <el-form-item :label="$t('permission.MaterialColor')">
+            <el-input v-model="role.MaterialColor" :placeholder="$t('permission.MaterialColor')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
+          <el-form-item :label="$t('permission.description')">
+            <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
+          </el-form-item>
+        </el-tooltip>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -178,7 +199,13 @@ export default {
       tableData: [],
       tableHeader: [],
       isShow: true,
-      parentMsg: this.$t('permission.importMaterial')
+      parentMsg: this.$t('permission.importMaterial'),
+      content1: this.$t('permission.materialNo'),
+      content2: this.$t('permission.materialName'),
+      content3: this.$t('permission.inclusionProhibition'),
+      content4: this.$t('permission.materialSpecifications'),
+      content5: this.$t('permission.MaterialColor'),
+      content6: this.$t('permission.description')
     }
   },
   computed: {},
@@ -186,6 +213,12 @@ export default {
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.parentMsg = this.$t('permission.importMaterial')
+      this.content1 = this.$t('permission.materialNo')
+      this.content2 = this.$t('permission.materialName')
+      this.content3 = this.$t('permission.inclusionProhibition')
+      this.content4 = this.$t('permission.materialSpecifications')
+      this.content5 = this.$t('permission.MaterialColor')
+      this.content6 = this.$t('permission.description')
       this.setFormRules()
     }
   },

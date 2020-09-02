@@ -4,19 +4,25 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.finishedNo') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+              <label class="radio-label">{{ $t('permission.finishedNo') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.finishedNo" :placeholder="$t('permission.finishedInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.finishedName') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+              <label class="radio-label">{{ $t('permission.finishedName') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.finishedName" :placeholder="$t('permission.finishedNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionFinished') }}</el-checkbox>
+            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionFinished') }}</el-checkbox>
+            </el-tooltip>
           </el-col>
         </el-col>
       </el-row>
@@ -92,20 +98,33 @@
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditFinished') : $t('permission.addFinished')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.finishedNo')" prop="finishedNo">
-          <el-input v-model="role.finishedNo" :placeholder="$t('permission.finishedNo')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.finishedName')" prop="finishedName">
-          <el-input v-model="role.finishedName" :placeholder="$t('permission.finishedName')" clearable />
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+          <el-form-item :label="$t('permission.finishedNo')" prop="finishedNo">
+            <el-input v-model="role.finishedNo" :placeholder="$t('permission.finishedNo')" clearable />
+          </el-form-item>
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.finishedSpecifications')">
-          <el-input v-model="role.finishedSpecifications" :placeholder="$t('permission.finishedSpecifications')" clearable />
-        </el-form-item>
-        <el-form-item :label="$t('permission.finishedColor')"><el-input v-model="role.finishedColor" :placeholder="$t('permission.finishedColor')" clearable /></el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+          <el-form-item :label="$t('permission.finishedName')" prop="finishedName">
+            <el-input v-model="role.finishedName" :placeholder="$t('permission.finishedName')" clearable />
+          </el-form-item>
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.description')">
-          <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
+          <el-form-item :label="$t('permission.finishedSpecifications')">
+            <el-input v-model="role.finishedSpecifications" :placeholder="$t('permission.finishedSpecifications')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
+          <el-form-item :label="$t('permission.finishedColor')"><el-input v-model="role.finishedColor" :placeholder="$t('permission.finishedColor')" clearable /></el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
+          <el-form-item :label="$t('permission.description')">
+            <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
+          </el-form-item>
+        </el-tooltip>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -172,7 +191,37 @@ export default {
       listLoading: true,
       total: 10,
       parentMsg: this.$t('permission.importFinished'),
-      rules: {
+      content1: this.$t('permission.finishedNo'),
+      content2: this.$t('permission.finishedName'),
+      content3: this.$t('permission.inclusionFinished'),
+      content4: this.$t('permission.finishedSpecifications'),
+      content5: this.$t('permission.finishedColor'),
+      content6: this.$t('permission.description')
+    }
+  },
+  computed: {},
+  watch: {
+    // 监听data属性中英文切换问题
+    '$i18n.locale'() {
+      this.parentMsg = this.$t('permission.importFinished')
+      this.content1 = this.$t('permission.finishedNo')
+      this.content2 = this.$t('permission.finishedName')
+      this.content3 = this.$t('permission.inclusionFinished')
+      this.content4 = this.$t('permission.finishedSpecifications')
+      this.content5 = this.$t('permission.finishedColor')
+      this.content6 = this.$t('permission.description')
+      this.setFormRules()
+    }
+  },
+  created() {
+    // Mock: get all routes and roles list from server
+    this.getList()
+    this.setFormRules()
+  },
+  methods: {
+    // 表单验证切换中英文
+    setFormRules: function() {
+      this.rules = {
         finishedNo: [{ required: true, message: this.$t('permission.finishedNoInfo'), trigger: 'blur' }],
         finishedName: [
           {
@@ -182,20 +231,7 @@ export default {
           }
         ]
       }
-    }
-  },
-  computed: {},
-  watch: {
-    // 监听data属性中英文切换问题
-    '$i18n.locale'() {
-      this.parentMsg = this.$t('permission.importFinished')
-    }
-  },
-  created() {
-    // Mock: get all routes and roles list from server
-    this.getList()
-  },
-  methods: {
+    },
     // 禁用，启用权限
     handleBan(scope, status) {
       this.$message({

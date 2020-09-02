@@ -4,19 +4,25 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.finishedNo') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+              <label class="radio-label">{{ $t('permission.finishedNo') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.finishedNo" :placeholder="$t('permission.finishedInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.finishedName') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+              <label class="radio-label">{{ $t('permission.finishedName') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.finishedName" :placeholder="$t('permission.finishedNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionBom') }}</el-checkbox>
+            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionBom') }}</el-checkbox>
+            </el-tooltip>
           </el-col>
         </el-col>
       </el-row>
@@ -88,16 +94,54 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditBom') : $t('permission.addBom')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.finishedNo')" prop="finishedNo"><el-input v-model="role.finishedNo" :placeholder="$t('permission.finishedNo')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.serialName')" prop="serialName"><el-input v-model="role.serialName" :placeholder="$t('permission.serialName')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.materialNo')" prop="materialNo"><el-input v-model="role.materialNo" :placeholder="$t('permission.materialNo')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.materiaMany')" prop="materiaMany"><el-input v-model="role.materiaMany" :placeholder="$t('permission.materiaMany')" /></el-form-item>
-        <el-form-item :label="$t('permission.editionBom')"><el-input v-model="role.editionBom" :placeholder="$t('permission.editionBom')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.finishedName')"><el-input v-model="role.finishedName" :placeholder="$t('permission.finishedName')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.materialName')"><el-input v-model="role.materialName" :placeholder="$t('permission.materialName')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.descriptionBom')">
-          <el-input v-model="role.descriptionBom" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.descriptionBom')" />
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+          <el-form-item :label="$t('permission.finishedNo')" prop="finishedNo">
+            <el-input v-model="role.finishedNo" :placeholder="$t('permission.finishedNo')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+          <el-form-item :label="$t('permission.serialName')" prop="serialName">
+            <el-input v-model="role.serialName" :placeholder="$t('permission.serialName')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
+          <el-form-item :label="$t('permission.materialNo')" prop="materialNo">
+            <el-input v-model="role.materialNo" :placeholder="$t('permission.materialNo')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
+          <el-form-item :label="$t('permission.materiaMany')" prop="materiaMany">
+            <el-input v-model="role.materiaMany" :placeholder="$t('permission.materiaMany')" />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
+          <el-form-item :label="$t('permission.editionBom')">
+            <el-input v-model="role.editionBom" :placeholder="$t('permission.editionBom')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
+          <el-form-item :label="$t('permission.finishedName')">
+            <el-input v-model="role.finishedName" :placeholder="$t('permission.finishedName')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content8" placement="top-start">
+          <el-form-item :label="$t('permission.materialName')">
+            <el-input v-model="role.materialName" :placeholder="$t('permission.materialName')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content9" placement="top-start">
+          <el-form-item :label="$t('permission.descriptionBom')">
+            <el-input v-model="role.descriptionBom" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.descriptionBom')" />
+          </el-form-item>
+        </el-tooltip>
+
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -105,9 +149,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogVisible2" :title="dialogType2">
-      <el-tree :data="treeData" :props="defaultProps" default-expand-all />
-    </el-dialog>
+    <el-dialog :visible.sync="dialogVisible2" :title="dialogType2"><el-tree :data="treeData" :props="defaultProps" default-expand-all /></el-dialog>
   </div>
 </template>
 
@@ -160,7 +202,6 @@ export default {
 
       listLoading: true,
       total: 10,
-      parentMsg: this.$t('permission.importBom'),
       dialogType2: '标题',
       treeData: [
         {
@@ -222,7 +263,17 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'label'
-      }
+      },
+      parentMsg: this.$t('permission.importBom'),
+      content1: this.$t('permission.finishedNo'),
+      content2: this.$t('permission.serialName'),
+      content3: this.$t('permission.inclusionBom'),
+      content4: this.$t('permission.materialNo'),
+      content5: this.$t('permission.materiaMany'),
+      content6: this.$t('permission.editionBom'),
+      content7: this.$t('permission.finishedName'),
+      content8: this.$t('permission.materialName'),
+      content9: this.$t('permission.descriptionBom')
     }
   },
   computed: {},
@@ -230,6 +281,15 @@ export default {
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.parentMsg = this.$t('permission.importBom')
+      this.content1 = this.$t('permission.finishedNo')
+      this.content2 = this.$t('permission.serialName')
+      this.content3 = this.$t('permission.inclusionBom')
+      this.content4 = this.$t('permission.materialNo')
+      this.content5 = this.$t('permission.materiaMany')
+      this.content6 = this.$t('permission.editionBom')
+      this.content7 = this.$t('permission.finishedName')
+      this.content8 = this.$t('permission.materialName')
+      this.content9 = this.$t('permission.descriptionBom')
       this.setFormRules()
     }
   },

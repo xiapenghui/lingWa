@@ -4,26 +4,34 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.userName') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+              <label class="radio-label">{{ $t('permission.userName') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.userName" :placeholder="$t('permission.userNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.fullName') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+              <label class="radio-label">{{ $t('permission.fullName') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.fullName" :placeholder="$t('permission.fullNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.containInfo') }}</el-checkbox>
+            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.containInfo') }}</el-checkbox>
+            </el-tooltip>
           </el-col>
         </el-col>
       </el-row>
       <el-row :gutter="20" style="margin-top: 20px;">
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.company') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
+              <label class="radio-label">{{ $t('permission.company') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-select v-model="form.company" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%">
@@ -33,7 +41,9 @@
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.department') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
+              <label class="radio-label">{{ $t('permission.department') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-select v-model="form.department" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
@@ -115,32 +125,61 @@
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.userName')" prop="userName"><el-input v-model="role.userName" :placeholder="$t('permission.userNameInfo')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.password')" prop="password"><el-input v-model="role.password" :placeholder="$t('permission.password')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.passwords')" prop="passwords"><el-input v-model="role.passwords" :placeholder="$t('permission.passwords')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.fullName')" prop="fullName"><el-input v-model="role.fullName" :placeholder="$t('permission.fullNameInfo')" clearable /></el-form-item>
 
-        <el-form-item :label="$t('permission.roleUser')">
-          <el-select v-model="role.roleUser" :placeholder="$t('permission.roleUserInfo')" clearable style="width: 100%">
-            <el-option v-for="item in roleUserOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+          <el-form-item :label="$t('permission.userName')" prop="userName">
+            <el-input v-model="role.userName" :placeholder="$t('permission.userNameInfo')" clearable />
+          </el-form-item>
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.company')">
-          <el-select v-model="role.company" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%">
-            <el-option v-for="item in companyOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
+          <el-form-item :label="$t('permission.password')" prop="password">
+            <el-input v-model="role.password" :placeholder="$t('permission.password')" clearable />
+          </el-form-item>
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.department')">
-          <el-select v-model="role.department" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
-            <el-option v-for="item in departmentOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
+          <el-form-item :label="$t('permission.passwords')" prop="passwords">
+            <el-input v-model="role.passwords" :placeholder="$t('permission.passwords')" clearable />
+          </el-form-item>
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.description')">
-          <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
-        </el-form-item>
+        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+          <el-form-item :label="$t('permission.fullName')" prop="fullName">
+            <el-input v-model="role.fullName" :placeholder="$t('permission.fullNameInfo')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content8" placement="top-start">
+          <el-form-item :label="$t('permission.roleUser')">
+            <el-select v-model="role.roleUser" :placeholder="$t('permission.roleUserInfo')" clearable style="width: 100%">
+              <el-option v-for="item in roleUserOptions" :key="item" :label="item" :value="item" />
+            </el-select>
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
+          <el-form-item :label="$t('permission.company')">
+            <el-select v-model="role.company" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%">
+              <el-option v-for="item in companyOptions" :key="item" :label="item" :value="item" />
+            </el-select>
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
+          <el-form-item :label="$t('permission.department')">
+            <el-select v-model="role.department" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
+              <el-option v-for="item in departmentOptions" :key="item" :label="item" :value="item" />
+            </el-select>
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content9" placement="top-start">
+          <el-form-item :label="$t('permission.description')">
+            <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
+          </el-form-item>
+        </el-tooltip>
+
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -212,13 +251,31 @@ export default {
       departmentOptions: ['研发部', '财务部'],
       roleUserOptions: ['管理员', '生产组长'],
       listLoading: true,
-      total: 10
+      total: 10,
+      content1: this.$t('permission.userName'),
+      content2: this.$t('permission.fullName'),
+      content3: this.$t('permission.containInfo'),
+      content4: this.$t('permission.company'),
+      content5: this.$t('permission.department'),
+      content6: this.$t('permission.password'),
+      content7: this.$t('permission.passwords'),
+      content8: this.$t('permission.roleUser'),
+      content9: this.$t('permission.description')
     }
   },
   computed: {},
   watch: {
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
+      this.content1 = this.$t('permission.userName')
+      this.content2 = this.$t('permission.fullName')
+      this.content3 = this.$t('permission.containInfo')
+      this.content4 = this.$t('permission.company')
+      this.content5 = this.$t('permission.department')
+      this.content6 = this.$t('permission.password')
+      this.content7 = this.$t('permission.passwords')
+      this.content8 = this.$t('permission.roleUser')
+      this.content9 = this.$t('permission.description')
       this.setFormRules()
     }
   },

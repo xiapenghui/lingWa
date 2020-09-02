@@ -11,6 +11,9 @@
     .el-col-8 {
       text-align: right;
       line-height: 35px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .center {

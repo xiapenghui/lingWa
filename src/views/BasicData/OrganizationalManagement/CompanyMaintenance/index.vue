@@ -4,19 +4,25 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.companyNo') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+              <label class="radio-label">{{ $t('permission.companyNo') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.companyNo" :placeholder="$t('permission.companysInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <label class="radio-label">{{ $t('permission.companyName') }}:</label>
+            <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+              <label class="radio-label">{{ $t('permission.companyName') }}:</label>
+            </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="form.companyName" :placeholder="$t('permission.companyNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionCompany') }}</el-checkbox>
+            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionCompany') }}</el-checkbox>
+            </el-tooltip>
           </el-col>
         </el-col>
       </el-row>
@@ -100,30 +106,58 @@
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item :label="$t('permission.companyNo')"><el-input v-model="role.companyNo" :placeholder="$t('permission.companyNo')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.companyName')" prop="companyName">
-          <el-input v-model="role.companyName" :placeholder="$t('permission.companyName')" clearable />
-        </el-form-item>
-        <el-form-item :label="$t('permission.companyAllName')" prop="companyAllName">
-          <el-input v-model="role.companyAllName" :placeholder="$t('permission.companyAllName')" clearable />
-        </el-form-item>
-        <el-form-item :label="$t('permission.companyTel')"><el-input v-model="role.companyTel" :placeholder="$t('permission.companyTel')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.companyAddress')"><el-input v-model="role.companyAddress" :placeholder="$t('permission.companyAddress')" clearable /></el-form-item>
-        <el-form-item :label="$t('permission.companyLogo')">
-          <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="role.imageUrl" :src="role.imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item :label="$t('permission.companyDescription')">
-          <el-input v-model="role.companyDescription" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.companyDescription')" />
-        </el-form-item>
+
+        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+          <el-form-item :label="$t('permission.companyNo')">
+            <el-input v-model="role.companyNo" :placeholder="$t('permission.companyNo')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+          <el-form-item :label="$t('permission.companyName')" prop="companyName">
+            <el-input v-model="role.companyName" :placeholder="$t('permission.companyName')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
+          <el-form-item :label="$t('permission.companyAllName')" prop="companyAllName">
+            <el-input v-model="role.companyAllName" :placeholder="$t('permission.companyAllName')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
+          <el-form-item :label="$t('permission.companyTel')">
+            <el-input v-model="role.companyTel" :placeholder="$t('permission.companyTel')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
+          <el-form-item :label="$t('permission.companyAddress')">
+            <el-input v-model="role.companyAddress" :placeholder="$t('permission.companyAddress')" clearable />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
+          <el-form-item :label="$t('permission.companyLogo')">
+            <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="role.imageUrl" :src="role.imageUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
+            </el-upload>
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" :content="content8" placement="top-start">
+          <el-form-item :label="$t('permission.companyDescription')">
+            <el-input v-model="role.companyDescription" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.companyDescription')" />
+          </el-form-item>
+        </el-tooltip>
+
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -184,7 +218,15 @@ export default {
       tableData: [],
       tableHeader: [],
       isShow: true,
-      parentMsg: this.$t('permission.importCompany')
+      parentMsg: this.$t('permission.importCompany'),
+      content1: this.$t('permission.companyNo'),
+      content2: this.$t('permission.companyName'),
+      content3: this.$t('permission.inclusionCompany'),
+      content4: this.$t('permission.companyAllName'),
+      content5: this.$t('permission.companyTel'),
+      content6: this.$t('permission.companyAddress'),
+      content7: this.$t('permission.companyLogo'),
+      content8: this.$t('permission.companyDescription')
     }
   },
   computed: {},
@@ -192,6 +234,14 @@ export default {
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.parentMsg = this.$t('permission.importCompany')
+      this.content1 = this.$t('permission.companyNo')
+      this.content2 = this.$t('permission.companyName')
+      this.content3 = this.$t('permission.inclusionCompany')
+      this.content4 = this.$t('permission.companyAllName')
+      this.content5 = this.$t('permission.companyTel')
+      this.content6 = this.$t('permission.companyAddress')
+      this.content7 = this.$t('permission.companyLogo')
+      this.content8 = this.$t('permission.companyDescription')
       this.setFormRules()
     }
   },
