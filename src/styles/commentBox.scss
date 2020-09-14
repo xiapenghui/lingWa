@@ -8,7 +8,9 @@
       font-weight: 500;
     }
 
-    .el-col-8 {
+    .el-col-8,
+    .el-col-12,
+    .el-col-15{
       text-align: right;
       line-height: 35px;
       overflow: hidden;

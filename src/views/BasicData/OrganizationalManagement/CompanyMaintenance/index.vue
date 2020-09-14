@@ -19,7 +19,7 @@
           <el-col :span="16"><el-input v-model="form.companyName" :placeholder="$t('permission.companyNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
-          <el-col :span="8">
+          <el-col :span="12">
             <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
               <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionCompany') }}</el-checkbox>
             </el-tooltip>
