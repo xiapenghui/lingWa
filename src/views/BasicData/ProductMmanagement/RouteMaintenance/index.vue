@@ -43,9 +43,9 @@
           {{ scope.row.edition }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.descriptionBom')" width="300">
+      <el-table-column align="center" :label="$t('permission.descriptionRoute')" width="300">
         <template slot-scope="scope">
-          {{ scope.row.descriptionBom }}
+          {{ scope.row.descriptionRoute }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
@@ -100,7 +100,7 @@
           <div class="boxTree" :style="{ width: boxThreeWidth }">
             <el-form-item :label="$t('permission.ProcessRouteDetail')">
               <el-tree
-                :data="data"
+                :data="boxTree"
                 node-key="id"
                 default-expand-all
                 draggable
@@ -116,7 +116,12 @@
               >
                 <span slot-scope="{ node, data }" class="custom-tree-node" @mouseenter="mouseenter(data)" @mouseleave="mouseleave(data)">
                   <span>{{ node.label }}</span>
-                  <span v-show="data.show"><el-tag type="danger" size="mini" @click="() => remove(node, data)">删除</el-tag></span>
+                  <span v-show="data.show">
+                    <!-- <el-tag type="danger" size="mini" @click="() => remove(node, data)">删除</el-tag> -->
+                    <el-popconfirm title="这是一段内容确定删除吗？">
+                      <el-tag slot="reference" type="danger" size="mini" @onConfirm="remove(node, data)">删除</el-tag>
+                    </el-popconfirm>
+                  </span>
                 </span>
               </el-tree>
               <div class="boxBtn" style="text-align:right;">
@@ -128,7 +133,12 @@
 
           <div v-if="isShow" class="boxList" :style="{ width: boxListWidth }">
             <el-form-item :label="$t('permission.changeRoute')">
-              <el-tree :data="boxList" show-checkbox node-key="id" />
+              <el-tree
+                ref="boxList"
+                :data="boxList"
+                show-checkbox
+                node-key="id"
+              />
               <div class="boxBtn" style="text-align:right;">
                 <el-button type="danger" @click="cancel">{{ $t('permission.cancel') }}</el-button>
                 <el-button type="primary" @click="submit">{{ $t('permission.submit') }}</el-button>
@@ -159,45 +169,38 @@ export default {
   components: { Pagination, UploadExcelComponent },
   data() {
     return {
+      boxThreeWidth: '100%',
+      boxListWidth: '50%',
+      dialogVisible: false,
+      dialogVisible2: false,
+      listLoading: false,
+      isShow: false,
+      dialogType: 'new',
+      total: 10,
+      dialogType2: '标题',
       role: {
-        finishedNo: '',
-        serialName: '',
-        materialNo: '',
-        materiaMany: '',
-        editionBom: '',
-        finishedName: '',
-        materialName: '',
-        descriptionBom: ''
+        ProcessRoute: '',
+        edition: '',
+        description: ''
       },
-      routes: [],
       rolesList: [
         {
-          finishedNo: '123456',
-          finishedName: '熟料',
-          editionBom: 'v12',
-          descriptionBom: '可以',
+          ProcessRoute: '123456',
+          edition: '123456',
+          descriptionRoute: '123',
           status: '禁用',
           user: '张三',
           time: '2020-8-19'
         }
       ],
-      dialogVisible: false,
-      dialogVisible2: false,
-      dialogType: 'new',
-      isShow: false,
-      boxThreeWidth: '100%',
-      boxListWidth: '50%',
       form: {
-        finishedNo: '',
-        fullName: '',
+        ProcessRoute: '',
+        edition: '',
         showReviewer: false,
         page: 1,
         limit: 20
       },
-      listLoading: true,
-      total: 10,
-      dialogType2: '标题',
-      data: [
+      boxTree: [
         {
           id: 1,
           label: '一级 1',
@@ -336,7 +339,6 @@ export default {
       this.content3 = this.$t('permission.edition')
       this.content4 = this.$t('permission.descriptionRoute')
       this.content5 = this.$t('permission.ProcessRouteDetail')
-
       this.setFormRules()
     }
   },
@@ -376,8 +378,8 @@ export default {
     // 重置
     handleReset() {
       this.form = {
-        finishedNo: '',
-        fullName: '',
+        ProcessRoute: '',
+        edition: '',
         showReviewer: false,
         page: 1,
         limit: 20
@@ -498,13 +500,17 @@ export default {
         })
     },
     // 提交工序列表
-    submit() {},
-    // 取消工序列表操作
-    cancel() {},
-    // 添加维修
-    addRepai() {
-
+    submit() {
+      this.$refs.boxList.getCheckedNodes().map(item => {
+        this.boxTree.push(item)
+      })
     },
+    // 取消工序列表操作
+    cancel() {
+      this.$refs.boxList.setCheckedKeys([])
+    },
+    // 添加维修
+    addRepai() {},
     // 添加工序
     addTechnology() {
       this.boxThreeWidth = '50%'
@@ -545,13 +551,15 @@ export default {
     },
     // 鼠标悬浮出现按钮
     mouseenter(data) {
-      console.log(data)
       data.show = true
     },
 
     mouseleave(data) {
-      console.log(data)
       data.show = false
+    },
+    // 删除节点
+    remove(node, data) {
+      debugger
     },
     // 拖拽功能
     handleDragStart(node, ev) {
@@ -581,9 +589,7 @@ export default {
     },
     allowDrag(draggingNode) {
       return draggingNode.data.label.indexOf('三级 3-2-2') === -1
-    },
-    // 删除节点
-    remove(node, data) {}
+    }
   }
 }
 </script>
