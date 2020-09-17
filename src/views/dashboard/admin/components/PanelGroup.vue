@@ -1,54 +1,12 @@
 <template>
   <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
-        </div>
+    <el-col v-for="(item, index) in titleList" :key="index" :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData(item.type)">
+        <div class="card-panel-icon-wrapper" :class="item.classS">
+          <svg-icon :icon-class="item.class" class-name="card-panel-icon" /></div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            New Visits
-          </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            Messages
-          </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
-        <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            Purchases
-          </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            Shoppings
-          </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <div class="card-panel-text">{{ item.name }}</div>
+          <count-to :start-val="item.start" :end-val="item.end" :duration="item.time" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -61,6 +19,55 @@ import CountTo from 'vue-count-to'
 export default {
   components: {
     CountTo
+  },
+
+  data() {
+    return {
+      titleList: [
+        {
+          name: this.$t('permission.importRoute'),
+          start: 0,
+          end: 102400,
+          time: 2600,
+          class: 'peoples',
+          classS: 'icon-people',
+          type: 'newVisitis'
+        },
+        {
+          name: 'messages',
+          start: 0,
+          end: 81212,
+          time: 3000,
+          class: 'message',
+          classS: 'icon-message',
+          type: 'messages'
+        },
+        {
+          name: 'purchases',
+          start: 0,
+          end: 92800,
+          time: 3200,
+          class: 'money',
+          classS: 'icon-money',
+          type: 'purchases'
+        },
+        {
+          name: 'shoppings',
+          start: 0,
+          end: 13600,
+          time: 3400,
+          class: 'shopping',
+          classS: 'icon-shopping',
+          type: 'shoppings'
+        }
+      ]
+    }
+  },
+  watch: {
+    // 监听data属性中英文切换问题
+    '$i18n.locale'() {
+      this.titleList[0].name = this.$t('permission.importRoute')
+    }
   },
   methods: {
     handleSetLineChartData(type) {
@@ -86,8 +93,8 @@ export default {
     overflow: hidden;
     color: #666;
     background: #fff;
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-    border-color: rgba(0, 0, 0, .05);
+    box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.05);
 
     &:hover {
       .card-panel-icon-wrapper {
@@ -107,7 +114,7 @@ export default {
       }
 
       .icon-shopping {
-        background: #34bfa3
+        background: #34bfa3;
       }
     }
 
@@ -124,7 +131,7 @@ export default {
     }
 
     .icon-shopping {
-      color: #34bfa3
+      color: #34bfa3;
     }
 
     .card-panel-icon-wrapper {
@@ -160,7 +167,7 @@ export default {
   }
 }
 
-@media (max-width:550px) {
+@media (max-width: 550px) {
   .card-panel-description {
     display: none;
   }

@@ -118,8 +118,8 @@
                   <span>{{ node.label }}</span>
                   <span v-show="data.show">
                     <!-- <el-tag type="danger" size="mini" @click="() => remove(node, data)">删除</el-tag> -->
-                    <el-popconfirm title="这是一段内容确定删除吗？">
-                      <el-tag slot="reference" type="danger" size="mini" @onConfirm="remove(node, data)">删除</el-tag>
+                    <el-popconfirm title="这是一段内容确定删除吗？" @onConfirm="remove(node, data)">
+                      <el-tag slot="reference" type="danger" size="mini">删除</el-tag>
                     </el-popconfirm>
                   </span>
                 </span>
@@ -559,7 +559,8 @@ export default {
     },
     // 删除节点
     remove(node, data) {
-      debugger
+      console.log('node', node)
+      console.log('data', data)
     },
     // 拖拽功能
     handleDragStart(node, ev) {

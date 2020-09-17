@@ -1,17 +1,19 @@
 <template>
   <div class="app-container">
-    <el-popconfirm title="这是一段内容确定删除吗？"><el-button slot="reference">删除</el-button></el-popconfirm>
+    <el-popconfirm title="删除后不可恢复，确认删除？" @onConfirm="deleteCollection">
+      <el-button slot="reference" class="collection_delete" type="danger">删除</el-button>
+    </el-popconfirm>
   </div>
 </template>
 <script>
 export default {
-  name: 'DeviceType',
   data() {
-    return {
-
-    }
+    return {}
   },
   methods: {
+    deleteCollection() {
+      alert(123)
+    }
 
   }
 }
