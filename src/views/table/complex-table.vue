@@ -188,11 +188,14 @@ export default {
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      time: null
     }
   },
   created() {
     this.getList()
+    var getDate = this.$getDate
+    this.time = getDate()
   },
   methods: {
     getList() {
@@ -321,7 +324,7 @@ export default {
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: 'table-list'
+          filename: this.time + '123'
         })
         this.downloadLoading = false
       })
