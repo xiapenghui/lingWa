@@ -66,7 +66,7 @@
 
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.title')" prop="title">
-            <el-input v-model="role.title" :placeholder="$t('permission.title')" />
+            <el-input v-model="role.title" :placeholder="$t('permission.title')" clearable />
           </el-form-item>
         </el-tooltip>
 
@@ -78,7 +78,15 @@
 
         <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
           <el-form-item :label="$t('permission.Menus')">
-            <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
+            <el-tree
+              ref="tree"
+              :check-strictly="checkStrictly"
+              :data="routesData"
+              :props="defaultProps"
+              show-checkbox
+              node-key="path"
+              class="permission-tree"
+            />
           </el-form-item>
         </el-tooltip>
 
@@ -100,18 +108,22 @@ import { getRoutes, getRoles, addRole, deleteRole, updateRole } from '@/api/role
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
-const defaultRole = {
-  key: '',
-  name: '',
-  description: '',
-  routes: []
-}
+// const defaultRole = {
+//   key: '',
+//   name: '',
+//   description: '',
+//   routes: []
+// }
 
 export default {
   components: { Pagination },
   data() {
     return {
-      role: Object.assign({}, defaultRole),
+      // role: Object.assign({}, defaultRole),
+      role: {
+        title: ''
+      },
+
       routes: [],
       rolesList: [
         {
@@ -167,7 +179,7 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        name: [{ required: true, message: this.$t('permission.roleNameInfo') }]
+        title: [{ required: true, message: this.$t('permission.roleNameInfo') }]
       }
     },
     // 禁用，启用权限
@@ -196,7 +208,6 @@ export default {
     },
 
     async getRoutes() {
-      debugger
       const res = await getRoutes()
       console.log(res, res)
       this.serviceRoutes = res.data
@@ -261,7 +272,7 @@ export default {
     },
     // 增加角色
     handleAddRole() {
-      this.role = Object.assign({}, defaultRole)
+      // this.role = Object.assign({}, defaultRole)
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
@@ -275,6 +286,7 @@ export default {
       this.checkStrictly = true
       this.role = deepClone(scope.row)
       this.$nextTick(() => {
+        debugger
         const routes = this.generateRoutes(this.role.routes)
         this.$refs.tree.setCheckedNodes(this.generateArr(routes))
         // set checked state of a node not affects its father and child nodes

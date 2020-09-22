@@ -134,13 +134,13 @@
 
         <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
           <el-form-item :label="$t('permission.password')" prop="password">
-            <el-input v-model="role.password" :placeholder="$t('permission.password')" clearable />
+            <el-input v-model="role.password" type="password" :placeholder="$t('permission.password')" clearable />
           </el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
           <el-form-item :label="$t('permission.passwords')" prop="passwords">
-            <el-input v-model="role.passwords" :placeholder="$t('permission.passwords')" clearable />
+            <el-input v-model="role.passwords" type="password" :placeholder="$t('permission.passwords')" clearable />
           </el-form-item>
         </el-tooltip>
 
