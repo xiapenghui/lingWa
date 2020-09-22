@@ -64,8 +64,16 @@ export const constantRoutes = [{
   path: '/401',
   component: () => import('@/views/error-page/401'),
   hidden: true
-},
-{
+}
+
+]
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+// 系统管理
+export const asyncRoutes = [{
   path: '/',
   component: Layout,
   redirect: '/dashboard',
@@ -85,11 +93,11 @@ export const constantRoutes = [{
   path: '/BasicData',
   component: Layout,
   redirect: '/BasicData/OrganizationalManagement/CompanyMaintenance',
-  alwaysShow: true,
   name: 'BasicData',
   meta: {
     title: 'BasicData',
     icon: 'nested'
+
   },
   // 物料信息管理模块
   children: [
@@ -100,6 +108,7 @@ export const constantRoutes = [{
       name: 'OrganizationalManagement',
       meta: {
         title: 'OrganizationalManagement'
+
       },
       redirect: '/BasicData/OrganizationalManagement/CompanyMaintenance',
       children: [{
@@ -108,6 +117,7 @@ export const constantRoutes = [{
         name: 'CompanyMaintenance',
         meta: {
           title: 'CompanyMaintenance'
+
         }
       },
       {
@@ -116,6 +126,7 @@ export const constantRoutes = [{
         name: 'DepartmentMaintenance',
         meta: {
           title: 'DepartmentMaintenance'
+
         }
       }
       ]
@@ -128,6 +139,7 @@ export const constantRoutes = [{
       name: 'ProductionManagement',
       meta: {
         title: 'ProductionManagement'
+
       },
       redirect: '/BasicData/ProductionManagement/LineMaintenance',
       children: [{
@@ -136,6 +148,7 @@ export const constantRoutes = [{
         name: 'LineMaintenance',
         meta: {
           title: 'LineMaintenance'
+
         }
       },
       {
@@ -144,6 +157,7 @@ export const constantRoutes = [{
         name: 'WorkMaintenance',
         meta: {
           title: 'WorkMaintenance'
+
         }
       },
       {
@@ -152,6 +166,7 @@ export const constantRoutes = [{
         name: 'ProcessMaintenance',
         meta: {
           title: 'ProcessMaintenance'
+
         }
       }
       ]
@@ -164,6 +179,7 @@ export const constantRoutes = [{
       name: 'ProductMmanagement',
       meta: {
         title: 'ProductMmanagement'
+
       },
       redirect: '/BasicData/ProductMmanagement/BomMangement',
       children: [{
@@ -172,6 +188,7 @@ export const constantRoutes = [{
         name: 'BomMangement',
         meta: {
           title: 'BomMangement'
+
         }
       },
       {
@@ -180,6 +197,7 @@ export const constantRoutes = [{
         name: 'RouteMaintenance',
         meta: {
           title: 'RouteMaintenance'
+
         }
       }
       ]
@@ -191,6 +209,7 @@ export const constantRoutes = [{
       name: 'MaterialManagement',
       meta: {
         title: 'MaterialManagement'
+
       },
       redirect: '/BasicData/MaterialManagement/MaterialInformation',
       children: [{
@@ -199,6 +218,7 @@ export const constantRoutes = [{
         name: 'MaterialInformation',
         meta: {
           title: 'MaterialInformation'
+
         }
       },
       {
@@ -207,12 +227,16 @@ export const constantRoutes = [{
         name: 'ProductMaintenance',
         meta: {
           title: 'ProductMaintenance'
+
         }
       }
       ]
     }
-  ]},
-// 参数信息{
+  ]
+},
+
+// 参数信息
+{
   path: '/ParameterInfo',
   component: Layout,
   children: [{
@@ -222,8 +246,12 @@ export const constantRoutes = [{
     meta: {
       title: 'ParameterInfo',
       icon: 'tab'
+
     }
-  }]},// 标签管理{
+  }]
+},
+// 标签管理
+{
   path: '/LabelManagement',
   component: Layout,
   children: [{
@@ -233,9 +261,13 @@ export const constantRoutes = [{
     meta: {
       title: 'LabelManagement',
       icon: 'tab'
+
     }
-  }]},
-// 生产计划{
+  }]
+},
+
+// 生产计划
+{
   path: '/ProductionPlan',
   component: Layout,
   children: [{
@@ -245,8 +277,12 @@ export const constantRoutes = [{
     meta: {
       title: 'ProductionPlan',
       icon: 'tab'
+
     }
-  }]},// 生产过程{
+  }]
+},
+// 生产过程
+{
   path: '/ProductionManagements',
   component: Layout,
   children: [{
@@ -256,21 +292,233 @@ export const constantRoutes = [{
     meta: {
       title: 'ProductionManagements',
       icon: 'tab'
-    }
-  }]},// 安灯管理{  path: '/LampManagement',  component: Layout,  children: [{    path: 'index',    component: () => import('@/views/LampManagement/index'),    name: 'LampManagement',    meta: {      title: 'LampManagement',      icon: 'tab'    }  }]},
-// 质量管理{  path: '/QualityAdministration',  component: Layout,  children: [{    path: 'index',    component: () => import('@/views/QualityAdministration/index'),    name: 'QualityAdministration',    meta: {      title: 'QualityAdministration',      icon: 'tab'    }  }]},// 设备管理{  path: '/DeviceManagement',  component: Layout,  children: [{    path: 'index',    component: () => import('@/views/DeviceManagement/index'),    name: 'DeviceManagement',    meta: {      title: 'DeviceManagement',      icon: 'tab'    }  }]},// 报表看板{  path: '/ReportBoard',  component: Layout,  children: [{    path: 'index',    component: () => import('@/views/ReportBoard/index'),    name: 'ReportBoard',    meta: {      title: 'ReportBoard',      icon: 'tab'    }  }]},// 数据集成{  path: '/DataIntegration',  component: Layout,  children: [{    path: 'index',    component: () => import('@/views/DataIntegration/index'),    name: 'DataIntegration',    meta: {      title: 'DataIntegration',      icon: 'tab'    }  }]}
-]
 
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-// 系统管理
-export const asyncRoutes = [{  path: '/SystemManagement',  component: Layout,  redirect: '/SystemManagement/index',  alwaysShow: true, // will always show the root menu  name: 'Permission',  meta: {    title: 'SystemManagement',    icon: 'lock',    roles: ['admin'] // you can set roles in root nav  },  children: [{    path: 'index',    component: () => import('@/views/SystemManagement/index'),    name: 'RolePermission',    meta: {      title: 'rolePermission',      roles: ['admin']    }  },  {    path: 'lookUser',    hidden: true,    component: () => import('@/views/SystemManagement/lookUser'),    name: 'lookUser',    meta: {      title: 'lookUser',      roles: ['admin']    }  },  {    path: 'userMangement',    component: () => import('@/views/SystemManagement/userMangement'),    name: 'userMangement',    meta: {      title: 'userMangement',      roles: ['admin']    }  }  ]},
-/** when your routing map is too long, you can split it into small modules **/nestedRouter,tableRouter,
-{  path: '/tab',  component: Layout,  children: [{    path: 'index',    component: () => import('@/views/tab/index'),    name: 'Tab',    meta: {      title: 'tab',      icon: 'tab'    }  }]},
-{  path: '/error',  component: Layout,  redirect: 'noRedirect',  name: 'ErrorPages',  hidden: true,  meta: {    title: 'errorPages',    icon: '404'  },  children: [{    path: '401',    component: () => import('@/views/error-page/401'),    name: 'Page401',    meta: {      title: 'page401',      noCache: true    }  },  {    path: '404',    component: () => import('@/views/error-page/404'),    name: 'Page404',    meta: {      title: 'page404',      noCache: true    }  }  ]},{  path: '/excel',  component: Layout,  redirect: '/excel/export-excel',  name: 'Excel',  meta: {    title: 'excel',    icon: 'excel'  },  children: [{    path: 'export-excel',    component: () => import('@/views/excel/export-excel'),    name: 'ExportExcel',    meta: {      title: 'exportExcel'    }  },  {    path: 'export-selected-excel',    component: () => import('@/views/excel/select-excel'),    name: 'SelectExcel',    meta: {      title: 'selectExcel'    }  },  {    path: 'export-merge-header',    component: () => import('@/views/excel/merge-header'),    name: 'MergeHeader',    meta: {      title: 'mergeHeader'    }  },  {    path: 'upload-excel',    component: () => import('@/views/excel/upload-excel'),    name: 'UploadExcel',    meta: {      title: 'uploadExcel'    }  },  {    path: 'newTree',    component: () => import('@/views/excel/newTree'),    name: 'newTree',    meta: {      title: 'newTree'    }  }  ]},
-// 404 page must be placed at the end !!!{  path: '*',  redirect: '/404',  hidden: true}
+    }
+  }]
+},
+// 安灯管理
+{
+  path: '/LampManagement',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/LampManagement/index'),
+    name: 'LampManagement',
+    meta: {
+      title: 'LampManagement',
+      icon: 'tab'
+
+    }
+  }]
+},
+
+// 质量管理
+{
+  path: '/QualityAdministration',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/QualityAdministration/index'),
+    name: 'QualityAdministration',
+    meta: {
+      title: 'QualityAdministration',
+      icon: 'tab'
+
+    }
+  }]
+},
+// 设备管理
+{
+  path: '/DeviceManagement',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/DeviceManagement/index'),
+    name: 'DeviceManagement',
+    meta: {
+      title: 'DeviceManagement',
+      icon: 'tab'
+
+    }
+  }]
+},
+// 报表看板
+{
+  path: '/ReportBoard',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/ReportBoard/index'),
+    name: 'ReportBoard',
+    meta: {
+      title: 'ReportBoard',
+      icon: 'tab'
+
+    }
+  }]
+},
+// 数据集成
+{
+  path: '/DataIntegration',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/DataIntegration/index'),
+    name: 'DataIntegration',
+    meta: {
+      title: 'DataIntegration',
+      icon: 'tab'
+
+    }
+  }]
+},
+{
+  path: '/SystemManagement',
+  component: Layout,
+  redirect: '/SystemManagement/index',
+  name: 'Permission',
+  meta: {
+    title: 'SystemManagement',
+    icon: 'lock',
+    roles: ['admin'] // you can set roles in root nav
+  },
+  children: [{
+    path: 'index',
+    component: () => import('@/views/SystemManagement/index'),
+    name: 'RolePermission',
+    meta: {
+      title: 'rolePermission',
+      roles: ['admin']
+    }
+  },
+  {
+    path: 'lookUser',
+    hidden: true,
+    component: () => import('@/views/SystemManagement/lookUser'),
+    name: 'lookUser',
+    meta: {
+      title: 'lookUser',
+      roles: ['admin']
+    }
+  },
+  {
+    path: 'userMangement',
+    component: () => import('@/views/SystemManagement/userMangement'),
+    name: 'userMangement',
+    meta: {
+      title: 'userMangement',
+      roles: ['admin']
+    }
+  }
+  ]
+},
+
+/** when your routing map is too long, you can split it into small modules **/
+nestedRouter,
+tableRouter,
+
+{
+  path: '/tab',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/tab/index'),
+    name: 'Tab',
+    meta: {
+      title: 'tab',
+      icon: 'tab'
+    }
+  }]
+},
+
+{
+  path: '/error',
+  component: Layout,
+  redirect: 'noRedirect',
+  name: 'ErrorPages',
+  hidden: true,
+  meta: {
+    title: 'errorPages',
+    icon: '404'
+  },
+  children: [{
+    path: '401',
+    component: () => import('@/views/error-page/401'),
+    name: 'Page401',
+    meta: {
+      title: 'page401',
+      noCache: true
+    }
+  },
+  {
+    path: '404',
+    component: () => import('@/views/error-page/404'),
+    name: 'Page404',
+    meta: {
+      title: 'page404',
+      noCache: true
+    }
+  }
+  ]
+},
+{
+  path: '/excel',
+  component: Layout,
+  redirect: '/excel/export-excel',
+  name: 'Excel',
+  meta: {
+    title: 'excel',
+    icon: 'excel'
+  },
+  children: [{
+    path: 'export-excel',
+    component: () => import('@/views/excel/export-excel'),
+    name: 'ExportExcel',
+    meta: {
+      title: 'exportExcel'
+    }
+  },
+  {
+    path: 'export-selected-excel',
+    component: () => import('@/views/excel/select-excel'),
+    name: 'SelectExcel',
+    meta: {
+      title: 'selectExcel'
+    }
+  },
+  {
+    path: 'export-merge-header',
+    component: () => import('@/views/excel/merge-header'),
+    name: 'MergeHeader',
+    meta: {
+      title: 'mergeHeader'
+    }
+  },
+  {
+    path: 'upload-excel',
+    component: () => import('@/views/excel/upload-excel'),
+    name: 'UploadExcel',
+    meta: {
+      title: 'uploadExcel'
+    }
+  },
+  {
+    path: 'newTree',
+    component: () => import('@/views/excel/newTree'),
+    name: 'newTree',
+    meta: {
+      title: 'newTree'
+    }
+  }
+  ]
+},
+
+// 404 page must be placed at the end !!!
+{
+  path: '*',
+  redirect: '/404',
+  hidden: true
+}
 ]
 
 const createRouter = () => new Router({

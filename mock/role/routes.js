@@ -1,63 +1,206 @@
 // Just a mock data
 
-const constantRoutes = [
+const constantRoutes = [{
+  path: '/redirect',
+  hidden: true,
+  children: [{
+    path: '/redirect/:path(.*)',
+    component: () => import('@/views/redirect/index')
+  }]
+},
+{
+  path: '/login',
+  component: () => import('@/views/login/index'),
+  hidden: true
+}, {
+  path: '/auth-redirect',
+  component: () => import('@/views/login/auth-redirect'),
+  hidden: true
+}, {
+  path: '/404',
+  component: () => import('@/views/error-page/404'),
+  hidden: true
+}, {
+  path: '/401',
+  component: () => import('@/views/error-page/401'),
+  hidden: true
+}
+]
+
+const asyncRoutes = [
   {
-    path: '/redirect',
-    component: 'layout/Layout',
-    hidden: true,
-    children: [
-      {
-        path: '/redirect/:path*',
-        component: 'views/redirect/index'
+    path: '/',
+    redirect: '/dashboard',
+    children: [{
+      path: 'dashboard',
+      component: () => import('@/views/dashboard/index'),
+      name: 'Dashboard',
+      meta: {
+        title: 'dashboard',
+        icon: 'dashboard',
+        affix: true
       }
-    ]
-  },
-  {
-    path: '/login',
-    component: 'views/login/index',
-    hidden: true
-  },
-  {
-    path: '/auth-redirect',
-    component: 'views/login/auth-redirect',
-    hidden: true
-  },
-  {
-    path: '/404',
-    component: 'views/error-page/404',
-    hidden: true
-  },
-  {
-    path: '/401',
-    component: 'views/error-page/401',
-    hidden: true
-  },
-  {
-    path: '',
-    component: 'layout/Layout',
-    redirect: 'dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: 'views/dashboard/index',
-        name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', affix: true }
-      }
-    ]
+    }]
   },
   // 基础数据
   {
     path: '/BasicData',
+    redirect: '/BasicData/OrganizationalManagement/CompanyMaintenance',
+    name: 'BasicData',
+    meta: {
+      title: 'BasicData',
+      icon: 'nested'
+    },
+    // 物料信息管理模块
+    children: [
+      // 组织架构管理
+      {
+        path: 'OrganizationalManagement',
+        component: () => import('@/views/BasicData/OrganizationalManagement/index'), // Parent router-view
+        name: 'OrganizationalManagement',
+        meta: {
+          title: 'OrganizationalManagement'
+        },
+        redirect: '/BasicData/OrganizationalManagement/CompanyMaintenance',
+        children: [{
+          path: 'CompanyMaintenance',
+          component: () => import('@/views/BasicData/OrganizationalManagement/CompanyMaintenance'),
+          name: 'CompanyMaintenance',
+          meta: {
+            title: 'CompanyMaintenance'
+          }
+        },
+        {
+          path: 'DepartmentMaintenance',
+          component: () => import('@/views/BasicData/OrganizationalManagement/DepartmentMaintenance'),
+          name: 'DepartmentMaintenance',
+          meta: {
+            title: 'DepartmentMaintenance'
+          }
+        }
+        ]
+      },
+
+      // 生产信息管理
+      {
+        path: 'ProductionManagement',
+        component: () => import('@/views/BasicData/ProductionManagement/index'), // Parent router-view
+        name: 'ProductionManagement',
+        meta: {
+          title: 'ProductionManagement'
+        },
+        redirect: '/BasicData/ProductionManagement/LineMaintenance',
+        children: [{
+          path: 'LineMaintenance',
+          component: () => import('@/views/BasicData/ProductionManagement/LineMaintenance'),
+          name: 'LineMaintenance',
+          meta: {
+            title: 'LineMaintenance'
+          }
+        },
+        {
+          path: 'WorkMaintenance',
+          component: () => import('@/views/BasicData/ProductionManagement/WorkMaintenance'),
+          name: 'WorkMaintenance',
+          meta: {
+            title: 'WorkMaintenance'
+          }
+        },
+        {
+          path: 'ProcessMaintenance',
+          component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
+          name: 'ProcessMaintenance',
+          meta: {
+            title: 'ProcessMaintenance'
+          }
+        }
+        ]
+      },
+
+      // 产品信息管理
+      {
+        path: 'ProductMmanagement',
+        component: () => import('@/views/BasicData/ProductMmanagement/index'), // Parent router-view
+        name: 'ProductMmanagement',
+        meta: {
+          title: 'ProductMmanagement'
+        },
+        redirect: '/BasicData/ProductMmanagement/BomMangement',
+        children: [{
+          path: 'BomMangement',
+          component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
+          name: 'BomMangement',
+          meta: {
+            title: 'BomMangement'
+          }
+        },
+        {
+          path: 'RouteMaintenance',
+          component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
+          name: 'RouteMaintenance',
+          meta: {
+            title: 'RouteMaintenance'
+          }
+        }
+        ]
+      },
+      // 物料信息管理模块
+      {
+        path: 'MaterialManagement',
+        component: () => import('@/views/BasicData/MaterialManagement/index'), // Parent router-view
+        name: 'MaterialManagement',
+        meta: {
+          title: 'MaterialManagement'
+        },
+        redirect: '/BasicData/MaterialManagement/MaterialInformation',
+        children: [{
+          path: 'MaterialInformation',
+          component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
+          name: 'MaterialInformation',
+          meta: {
+            title: 'MaterialInformation'
+          }
+        },
+        {
+          path: 'ProductMaintenance',
+          component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
+          name: 'ProductMaintenance',
+          meta: {
+            title: 'ProductMaintenance'
+          }
+        }
+        ]
+      }
+    ]
+  },
+
+  // 参数信息
+  {
+    path: '/ParameterInfo',
     children: [{
       path: 'index',
-      component: () => import('@/views/BasicData/index'),
-      name: 'BasicData',
+      component: () => import('@/views/ParameterInfo/index'),
+      name: 'ParameterInfo',
       meta: {
-        title: 'BasicData',
+        title: 'ParameterInfo',
         icon: 'tab'
       }
     }]
   },
+  // 标签管理
+  {
+    path: '/LabelManagement',
+    children: [{
+      path: 'index',
+      component: () => import('@/views/LabelManagement/index'),
+      name: 'LabelManagement',
+      meta: {
+        title: 'LabelManagement',
+        icon: 'tab'
+      }
+    }]
+  },
+
   // 生产计划
   {
     path: '/ProductionPlan',
@@ -71,20 +214,34 @@ const constantRoutes = [
       }
     }]
   },
-  // 生产管理
+  // 生产过程
   {
-    path: '/ProductionManagement',
+    path: '/ProductionManagements',
     children: [{
       path: 'index',
-      component: () => import('@/views/ProductionManagement/index'),
-      name: 'ProductionManagement',
+      component: () => import('@/views/ProductionManagements/index'),
+      name: 'ProductionManagements',
       meta: {
-        title: 'ProductionManagement',
+        title: 'ProductionManagements',
         icon: 'tab'
       }
     }]
   },
-  // 品质管理
+  // 安灯管理
+  {
+    path: '/LampManagement',
+    children: [{
+      path: 'index',
+      component: () => import('@/views/LampManagement/index'),
+      name: 'LampManagement',
+      meta: {
+        title: 'LampManagement',
+        icon: 'tab'
+      }
+    }]
+  },
+
+  // 质量管理
   {
     path: '/QualityAdministration',
     children: [{
@@ -109,45 +266,65 @@ const constantRoutes = [
         icon: 'tab'
       }
     }]
-  }
-
-]
-
-const asyncRoutes = [
+  },
+  // 报表看板
+  {
+    path: '/ReportBoard',
+    children: [{
+      path: 'index',
+      component: () => import('@/views/ReportBoard/index'),
+      name: 'ReportBoard',
+      meta: {
+        title: 'ReportBoard',
+        icon: 'tab'
+      }
+    }]
+  },
+  // 数据集成
+  {
+    path: '/DataIntegration',
+    children: [{
+      path: 'index',
+      component: () => import('@/views/DataIntegration/index'),
+      name: 'DataIntegration',
+      meta: {
+        title: 'DataIntegration',
+        icon: 'tab'
+      }
+    }]
+  },
   {
     path: '/SystemManagement',
     component: 'layout/Layout',
     redirect: '/SystemManagement/index',
-    alwaysShow: true,
     meta: {
       title: 'SystemManagement',
       icon: 'lock',
       roles: ['admin', 'editor']
     },
-    children: [
-      {
-        path: 'index',
-        component: 'views/SystemManagement/index',
-        name: 'RolePermission',
-        meta: {
-          title: 'rolePermission',
-          roles: ['admin']
-        }
+    children: [{
+      path: 'index',
+      component: 'views/SystemManagement/index',
+      name: 'RolePermission',
+      meta: {
+        title: 'rolePermission',
+        roles: ['admin']
       }
-    ]
+    }]
   },
 
   {
     path: '/tab',
     component: 'layout/Layout',
-    children: [
-      {
-        path: 'index',
-        component: 'views/tab/index',
-        name: 'Tab',
-        meta: { title: 'tab', icon: 'tab' }
+    children: [{
+      path: 'index',
+      component: 'views/tab/index',
+      name: 'Tab',
+      meta: {
+        title: 'tab',
+        icon: 'tab'
       }
-    ]
+    }]
   },
 
   {
@@ -159,35 +336,46 @@ const asyncRoutes = [
       title: 'excel',
       icon: 'excel'
     },
-    children: [
-      {
-        path: 'export-excel',
-        component: 'views/excel/export-excel',
-        name: 'ExportExcel',
-        meta: { title: 'exportExcel' }
-      },
-      {
-        path: 'export-selected-excel',
-        component: 'views/excel/select-excel',
-        name: 'SelectExcel',
-        meta: { title: 'selectExcel' }
-      },
-      {
-        path: 'export-merge-header',
-        component: 'views/excel/merge-header',
-        name: 'MergeHeader',
-        meta: { title: 'mergeHeader' }
-      },
-      {
-        path: 'upload-excel',
-        component: 'views/excel/upload-excel',
-        name: 'UploadExcel',
-        meta: { title: 'uploadExcel' }
+    children: [{
+      path: 'export-excel',
+      component: 'views/excel/export-excel',
+      name: 'ExportExcel',
+      meta: {
+        title: 'exportExcel'
       }
+    },
+    {
+      path: 'export-selected-excel',
+      component: 'views/excel/select-excel',
+      name: 'SelectExcel',
+      meta: {
+        title: 'selectExcel'
+      }
+    },
+    {
+      path: 'export-merge-header',
+      component: 'views/excel/merge-header',
+      name: 'MergeHeader',
+      meta: {
+        title: 'mergeHeader'
+      }
+    },
+    {
+      path: 'upload-excel',
+      component: 'views/excel/upload-excel',
+      name: 'UploadExcel',
+      meta: {
+        title: 'uploadExcel'
+      }
+    }
     ]
   },
 
-  { path: '*', redirect: '/404', hidden: true }
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
 ]
 
 module.exports = {

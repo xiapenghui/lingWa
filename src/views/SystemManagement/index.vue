@@ -30,10 +30,18 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">
+            {{ scope.row.status }}
+          </el-tag>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.time')" width="150">
-        <!-- <template slot-scope="scope">
-          {{ scope.row.name }}
-        </template> -->
+        <template slot-scope="scope">
+          {{ scope.row.time }}
+        </template>
       </el-table-column>
 
       <el-table-column align="header-center" :label="$t('permission.description')">
@@ -105,7 +113,15 @@ export default {
     return {
       role: Object.assign({}, defaultRole),
       routes: [],
-      rolesList: [],
+      rolesList: [
+        {
+          Key: '123456',
+          name: '上海灵娃',
+          status: '启用',
+          time: '17621627757',
+          description: '不赖'
+        }
+      ],
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
@@ -180,7 +196,9 @@ export default {
     },
 
     async getRoutes() {
+      debugger
       const res = await getRoutes()
+      console.log(res, res)
       this.serviceRoutes = res.data
       const routes = this.generateRoutes(res.data)
       this.routes = this.i18n(routes)
