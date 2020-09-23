@@ -376,19 +376,17 @@ export const asyncRoutes = [{
   path: '/SystemManagement',
   component: Layout,
   redirect: '/SystemManagement/index',
-  name: 'Permission',
+  name: 'SystemManagement',
   meta: {
     title: 'SystemManagement',
-    icon: 'lock',
-    roles: ['admin'] // you can set roles in root nav
+    icon: 'lock'
   },
   children: [{
     path: 'index',
     component: () => import('@/views/SystemManagement/index'),
     name: 'RolePermission',
     meta: {
-      title: 'rolePermission',
-      roles: ['admin']
+      title: 'RolePermission'
     }
   },
   {
@@ -397,8 +395,7 @@ export const asyncRoutes = [{
     component: () => import('@/views/SystemManagement/lookUser'),
     name: 'lookUser',
     meta: {
-      title: 'lookUser',
-      roles: ['admin']
+      title: 'lookUser'
     }
   },
   {

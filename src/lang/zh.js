@@ -12,7 +12,7 @@ export default {
     ReportBoard: '报表看板',
     DataIntegration: '数据集成',
     SystemManagement: '系统管理',
-    rolePermission: '角色权限',
+    RolePermission: '角色权限',
     lookUser: '查看用户',
     userMangement: '用户管理',
     MaterialManagement: '物料信息管理',

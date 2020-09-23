@@ -12,7 +12,7 @@ export default {
     ReportBoard: 'Report Board',
     DataIntegration: 'Data Integration',
     SystemManagement: 'System Management',
-    rolePermission: 'Role Permission',
+    RolePermission: 'Role Permission',
     lookUser: 'Look User',
     userMangement: 'User Mangement',
     MaterialManagement: 'Material Management',
