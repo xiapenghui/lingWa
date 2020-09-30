@@ -6,21 +6,21 @@
         <lang-select class="set-language" />
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="accountName">
         <span class="svg-container"><svg-icon icon-class="user" /></span>
-        <el-input ref="username" v-model="loginForm.username" :placeholder="$t('login.username')" name="username" type="text" tabindex="1" autocomplete="on" clearable />
+        <el-input ref="accountName" v-model="loginForm.accountName" :placeholder="$t('login.username')" name="accountName" type="text" tabindex="1" autocomplete="on" clearable />
       </el-form-item>
 
       <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="password">
+        <el-form-item prop="accountPwd">
           <span class="svg-container"><svg-icon icon-class="password" /></span>
           <el-input
             :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
+            ref="accountPwd"
+            v-model="loginForm.accountPwd"
             :type="passwordType"
             :placeholder="$t('login.password')"
-            name="password"
+            name="accountPwd"
             tabindex="2"
             autocomplete="on"
             clearable
@@ -72,12 +72,12 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        accountName: 'Admin',
+        accountPwd: '123456'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        accountName: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        accountPwd: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
       capsTooltip: false,
@@ -102,10 +102,10 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
+    if (this.loginForm.accountName === '') {
+      this.$refs.accountName.focus()
+    } else if (this.loginForm.accountPwd === '') {
+      this.$refs.accountPwd.focus()
     }
   },
   destroyed() {
@@ -123,7 +123,7 @@ export default {
         this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
+        this.$refs.accountPwd.focus()
       })
     },
     handleLogin() {

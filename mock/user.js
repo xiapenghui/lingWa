@@ -1,6 +1,6 @@
 
 const tokens = {
-  admin: {
+  Admin: {
     token: 'admin-token'
   },
   editor: {
@@ -10,7 +10,7 @@ const tokens = {
 
 const users = {
   'admin-token': {
-    roles: ['admin'],
+    roles: ['Admin'],
     introduction: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Super Admin'
@@ -29,8 +29,8 @@ module.exports = [
     url: '/vue-element-admin/user/login',
     type: 'post',
     response: config => {
-      const { username } = config.body
-      const token = tokens[username]
+      const { accountName } = config.body
+      const token = tokens[accountName]
 
       // mock error
       if (!token) {

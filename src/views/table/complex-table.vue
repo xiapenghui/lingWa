@@ -79,7 +79,9 @@
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.date')" prop="timestamp"><el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" /></el-form-item>
+        <el-form-item :label="$t('table.date')" prop="timestamp">
+          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        </el-form-item>
         <el-form-item :label="$t('table.title')" prop="title"><el-input v-model="temp.title" /></el-form-item>
         <el-form-item :label="$t('table.status')">
           <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
@@ -155,7 +157,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 10,
         importance: undefined,
         title: undefined,
         type: undefined,

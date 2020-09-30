@@ -300,7 +300,7 @@ const asyncRoutes = [
     meta: {
       title: 'SystemManagement',
       icon: 'lock',
-      roles: ['admin', 'editor']
+      roles: ['Admin', 'editor']
     },
     children: [{
       path: 'index',
@@ -308,7 +308,7 @@ const asyncRoutes = [
       name: 'RolePermission',
       meta: {
         title: 'rolePermission',
-        roles: ['admin']
+        roles: ['Admin']
       }
     }]
   },

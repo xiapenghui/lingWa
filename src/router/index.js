@@ -404,7 +404,7 @@ export const asyncRoutes = [{
     name: 'userMangement',
     meta: {
       title: 'userMangement',
-      roles: ['admin']
+      roles: ['Admin']
     }
   }
   ]
