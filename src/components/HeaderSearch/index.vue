@@ -180,7 +180,7 @@ export default {
   }
   .header-search-select {
     font-size: 18px;
-    transition: width 0.2s;
+    transition: width 0s;
     width: 0;
     overflow: hidden;
     background: transparent;

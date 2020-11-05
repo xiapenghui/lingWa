@@ -73,7 +73,7 @@ $t: .1s;
     font-size: 18px;
     overflow: hidden;
     opacity: 1;
-    transition: transform 0.28s ease;
+    transition: transform 0s ease;
     &:hover {
       background: black;
       color: white;

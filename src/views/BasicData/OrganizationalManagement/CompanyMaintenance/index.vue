@@ -18,18 +18,20 @@
           </el-col>
           <el-col :span="16"><el-input v-model="form.companyName" :placeholder="$t('permission.companyNameInfo')" clearable /></el-col>
         </el-col>
-        <el-col :span="6">
-          <el-col :span="12">
+        <el-col :span="4">
+          <el-col :span="24">
             <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
               <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionCompany') }}</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
-      </el-row>
 
-      <el-row class="center">
-        <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-        <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+        <el-col :span="6">
+          <el-col :span="24">
+            <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+            <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+          </el-col>
+        </el-col>
       </el-row>
     </div>
 
@@ -40,7 +42,14 @@
       <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" />
     </div>
 
-    <el-table v-loading="listLoading" :data="rolesList" style="width: 100%" border>
+    <el-table
+      v-loading="listLoading"
+      style="width: 100%"
+      border
+      :header-cell-style="{ background: '#46a6ff',color:'#ffffff' }"
+      :data="rolesList"
+      :height="tableHeight"
+    >
       <el-table-column align="center" :label="$t('permission.companyNo')" width="150" fixed sortable prop="key">
         <template slot-scope="scope">
           {{ scope.row.companyNo }}
@@ -100,8 +109,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <el-table v-if="isShow" :data="tableData" border highlight-current-row><el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" /></el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
@@ -174,7 +181,7 @@ import { deleteRole } from '@/api/role'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-
+const fixHeight = 270
 export default {
   components: { Pagination, UploadExcelComponent },
   data() {
@@ -215,9 +222,8 @@ export default {
 
       listLoading: true,
       total: 10,
-      tableData: [],
-      tableHeader: [],
-      isShow: true,
+
+      tableHeight: window.innerHeight - fixHeight, // 表格高度
       parentMsg: this.$t('permission.importCompany'),
       content1: this.$t('permission.companyNo'),
       content2: this.$t('permission.companyName'),
@@ -231,6 +237,17 @@ export default {
   },
   computed: {},
   watch: {
+    // 监听表格高度
+    tableHeight(val) {
+      if (!this.timer) {
+        this.tableHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
+      }
+    },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.parentMsg = this.$t('permission.importCompany')
@@ -246,6 +263,13 @@ export default {
     }
   },
   created() {
+    // 监听表格高度
+    const that = this
+    window.onresize = () => {
+      return (() => {
+        that.tableHeight = window.innerHeight - fixHeight
+      })()
+    }
     // Mock: get all routes and roles list from server
     this.getList()
     this.setFormRules()

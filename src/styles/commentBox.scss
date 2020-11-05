@@ -9,13 +9,16 @@
     }
 
     .el-col-8,
-    .el-col-12,
-    .el-col-15{
+    .el-col-12 {
       text-align: right;
-      line-height: 35px;
+      line-height: 30px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+    .el-col-4{
+      line-height: 30px;
+      text-align: center;
     }
 
     .center {
@@ -25,8 +28,7 @@
   }
 
   .rightBtn {
-    text-align: right;
-    margin: 20px 0 5px 0;
+    margin: 10px 0 10px 0;
     .handleImport {
       display: inline-block;
       margin-left: 10px;
@@ -45,4 +47,18 @@
   /* .el-table ::v-deep .el-table__body-wrapper {
     overflow: scroll;
   } */
+}
+.el-button--mini,
+.el-button--small{
+  padding: 5px 6px;
+}
+.el-table--mini th{
+  padding: 3px 0;
+}
+.el-table--mini td{
+  padding: 5px 0;
+}
+
+body{
+  overflow: hidden;
 }

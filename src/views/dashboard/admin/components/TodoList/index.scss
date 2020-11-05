@@ -183,7 +183,7 @@
     display: block;
     line-height: 1.0;
         font-size: 14px;
-    transition: color 0.4s;
+    transition: color 0s;
   }
   .todo-list li.completed label {
     color: #d9d9d9;
@@ -200,7 +200,7 @@
     margin: auto 0;
     font-size: 30px;
     color: #cc9a9a;
-    transition: color 0.2s ease-out;
+    transition: color 0s ease-out;
     cursor: pointer;
   }
   .todo-list li .destroy:hover {

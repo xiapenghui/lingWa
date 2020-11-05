@@ -210,7 +210,7 @@ export default {
         border: 2px solid #E5E5E5;
         font-family: 'Roboto', sans-serif;
         color: #777;
-        transition: background-color .2s linear;
+        transition: background-color 0s linear;
         padding: 5px;
     }
 
@@ -247,7 +247,7 @@ export default {
         top: 0px;
         color: white;
         background-color: rgba(33, 150, 243, 0.8);
-        transition: opacity .2s linear;
+        transition: opacity 0s linear;
         text-align: left;
     }
 

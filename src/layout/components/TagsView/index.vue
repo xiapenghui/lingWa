@@ -281,7 +281,7 @@ export default {
       vertical-align: 2px;
       border-radius: 50%;
       text-align: center;
-      transition: all .3s cubic-bezier(.645, .045, .355, 1);
+      transition: all 0s cubic-bezier(.645, .045, .355, 1);
       transform-origin: 100% 50%;
       &:before {
         transform: scale(.6);

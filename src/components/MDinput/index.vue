@@ -207,7 +207,7 @@ export default {
   $apixel: 1px;
   // Utils
   $spacer: 12px;
-  $transition: 0.2s ease all;
+  $transition: 0s ease all;
   $index: 0px;
   $index-has-icon: 30px;
   // Theme:

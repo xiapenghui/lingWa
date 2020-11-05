@@ -45,7 +45,7 @@ Vue.directive('rest-styleColor', function(dom, definition) { // 字体颜色
 Vue.prototype.$getDate = getNowDate // 获取全局维护时间。
 
 Vue.use(Element, {
-  size: Cookies.get('size') || 'medium', // set element-ui default size
+  size: Cookies.get('size') || 'mini', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
 

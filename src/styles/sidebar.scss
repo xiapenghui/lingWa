@@ -2,13 +2,13 @@
 
   .main-container {
     min-height: 100%;
-    transition: margin-left .28s;
+    transition: margin-left 0s;
     margin-left: $sideBarWidth;
     position: relative;
   }
 
   .sidebar-container {
-    transition: width 0.28s;
+    transition: width 0s;
     width: $sideBarWidth !important;
     background-color: $menuBg;
     height: 100%;
@@ -163,14 +163,14 @@
     }
 
     .sidebar-container {
-      transition: transform .28s;
+      transition: transform 0s;
       width: $sideBarWidth !important;
     }
 
     &.hideSidebar {
       .sidebar-container {
         pointer-events: none;
-        transition-duration: 0.3s;
+        transition-duration: 0s;
         transform: translate3d(-$sideBarWidth, 0, 0);
       }
     }

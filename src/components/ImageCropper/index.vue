@@ -908,10 +908,10 @@ export default {
   width: 30px;
   height: 30px;
   cursor: pointer;
-  -webkit-transition: -webkit-transform 0.18s;
+  -webkit-transition: -webkit-transform 0s;
   transition: -webkit-transform 0.18s;
-  transition: transform 0.18s;
-  transition: transform 0.18s, -webkit-transform 0.18s;
+  transition: transform 0s;
+  transition: transform 0s, -webkit-transform 0s;
   -webkit-transform: rotate(0);
   -ms-transform: rotate(0);
   transform: rotate(0);
@@ -1319,8 +1319,8 @@ export default {
   background-color: #61c091;
   border-radius: 100%;
   border: none;
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
+  -webkit-transition: 0s;
+  transition: 0s;
 }
 .vue-image-crop-upload
   .vicp-wrap
@@ -1337,8 +1337,8 @@ export default {
   background-color: #61c091;
   border-radius: 100%;
   border: none;
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
+  -webkit-transition: 0s;
+  transition: 0s;
 }
 .vue-image-crop-upload
   .vicp-wrap
@@ -1354,8 +1354,8 @@ export default {
   background-color: #61c091;
   border: none;
   border-radius: 100%;
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
+  -webkit-transition: 0s;
+  transition: 0s;
 }
 .vue-image-crop-upload
   .vicp-wrap
@@ -1770,10 +1770,10 @@ export default {
   -webkit-transform: scale(2);
   -ms-transform: scale(2);
   transform: scale(2);
-  -webkit-transition: opacity 1.2s ease-out, -webkit-transform 0.6s ease-out;
-  transition: opacity 1.2s ease-out, -webkit-transform 0.6s ease-out;
-  transition: opacity 1.2s ease-out, transform 0.6s ease-out;
-  transition: opacity 1.2s ease-out, transform 0.6s ease-out,
-    -webkit-transform 0.6s ease-out;
+  -webkit-transition: opacity 0s ease-out, -webkit-transform 0s ease-out;
+  transition: opacity 0s ease-out, -webkit-transform 0s ease-out;
+  transition: opacity 0s ease-out, transform 0s ease-out;
+  transition: opacity 0s ease-out, transform 0 ease-out,
+    -webkit-transform 0s ease-out;
 }
 </style>

@@ -76,7 +76,7 @@ export default {
     img {
       width: 100%;
       height: 100%;
-      transition: all 0.2s linear;
+      transition: all 0s linear;
       &:hover {
         transform: scale(1.1, 1.1);
         filter: contrast(130%);
