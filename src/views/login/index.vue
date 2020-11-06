@@ -1,17 +1,38 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      autocomplete="on"
+      label-position="left"
+    >
       <div class="title-container">
-        <h3 class="title">{{ $t('login.title') }}</h3>
+        <h3 class="title">{{ $t("login.title") }}</h3>
         <lang-select class="set-language" />
       </div>
 
       <el-form-item prop="username">
         <span class="svg-container"><svg-icon icon-class="user" /></span>
-        <el-input ref="username" v-model="loginForm.username" :placeholder="$t('login.username')" name="username" type="text" tabindex="1" autocomplete="on" clearable />
+        <el-input
+          ref="username"
+          v-model="loginForm.username"
+          :placeholder="$t('login.username')"
+          name="username"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+          clearable
+        />
       </el-form-item>
 
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+      <el-tooltip
+        v-model="capsTooltip"
+        content="Caps lock is On"
+        placement="right"
+        manual
+      >
         <el-form-item prop="password">
           <span class="svg-container"><svg-icon icon-class="password" /></span>
           <el-input
@@ -28,11 +49,21 @@
             @blur="capsTooltip = false"
             @keyup.enter.native="handleLogin"
           />
-          <span class="show-pwd" @click="showPwd"><svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" /></span>
+          <span
+            class="show-pwd"
+            @click="showPwd"
+          ><svg-icon
+            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+          /></span>
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
+        @click.native.prevent="handleLogin"
+      >{{ $t("login.logIn") }}</el-button>
     </el-form>
   </div>
 </template>
@@ -40,7 +71,6 @@
 <script>
 // import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
-import { login } from '@/api/user'
 export default {
   name: 'Login',
   components: { LangSelect },
@@ -105,7 +135,7 @@ export default {
   methods: {
     checkCapslock(e) {
       const { key } = e
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
+      this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
     },
     showPwd() {
       if (this.passwordType === 'password') {
@@ -138,14 +168,27 @@ export default {
       //     return false
       //   }
       // })
-      const _this = this
-      login(_this.loginForm).then(res => {
-        if (res.IsPass === true) {
-          debugger
+      console.log('this.loginForm', this.loginForm)
+      this.$store
+        .dispatch('user/login', this.loginForm)
+        .then((res) => {
+          console.info('3.vuex 里面的 login 方法被调用 完毕')
+          this.$router.push({ path: '/dashboard' })
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
+      // const _this = this
+      // login(_this.loginForm).then(res => {
+      //   if (res.IsPass === true) {
+      //     console.log("111")
 
-          _this.$router.options.routes.push({ name: 'Dashboard' })
-        }
-      })
+      //     _this.$router.push({ path: '/dashboard' })
+      //   }else{
+      //     console.logh("22")
+      //   }
+      // })
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {

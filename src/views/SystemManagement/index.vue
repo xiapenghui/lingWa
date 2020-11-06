@@ -10,9 +10,9 @@
           </el-col>
           <el-col :span="16"><el-input v-model="listQuery.title" :placeholder="$t('permission.titleInfo')" /></el-col>
         </el-col>
-      </el-row>
-      <el-row class="center">
-        <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+        <el-col :span="6">
+          <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+        </el-col>
       </el-row>
     </div>
     <div class="rightBtn">
@@ -32,9 +32,7 @@
 
       <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">
-            {{ scope.row.status }}
-          </el-tag>
+          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">{{ scope.row.status }}</el-tag>
         </template>
       </el-table-column>
 
@@ -63,11 +61,8 @@
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.title')" prop="title">
-            <el-input v-model="role.title" :placeholder="$t('permission.title')" clearable />
-          </el-form-item>
+          <el-form-item :label="$t('permission.title')" prop="title"><el-input v-model="role.title" :placeholder="$t('permission.title')" clearable /></el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
@@ -78,18 +73,9 @@
 
         <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
           <el-form-item :label="$t('permission.Menus')">
-            <el-tree
-              ref="tree"
-              :check-strictly="checkStrictly"
-              :data="routesData"
-              :props="defaultProps"
-              show-checkbox
-              node-key="path"
-              class="permission-tree"
-            />
+            <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
           </el-form-item>
         </el-tooltip>
-
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -119,7 +105,6 @@ export default {
   components: { Pagination },
   data() {
     return {
-      // role: Object.assign({}, defaultRole),
       role: {
         title: ''
       },

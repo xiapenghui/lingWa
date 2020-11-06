@@ -52,9 +52,11 @@
   }
   .el-table .sort-caret.ascending {
     top: -1px;
+	border-bottom-color: #ffffff;
   }
   .el-table .sort-caret.descending {
     bottom: -1px;
+	border-top-color: #ffffff;
   }
 }
 .el-button--mini,

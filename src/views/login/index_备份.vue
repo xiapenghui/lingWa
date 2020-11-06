@@ -6,21 +6,21 @@
         <lang-select class="set-language" />
       </div>
 
-      <el-form-item prop="accountName">
+      <el-form-item prop="username">
         <span class="svg-container"><svg-icon icon-class="user" /></span>
-        <el-input ref="accountName" v-model="loginForm.accountName" :placeholder="$t('login.username')" name="accountName" type="text" tabindex="1" autocomplete="on" clearable />
+        <el-input ref="username" v-model="loginForm.username" :placeholder="$t('login.username')" name="username" type="text" tabindex="1" autocomplete="on" clearable />
       </el-form-item>
 
       <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="accountPwd">
+        <el-form-item prop="password">
           <span class="svg-container"><svg-icon icon-class="password" /></span>
           <el-input
             :key="passwordType"
-            ref="accountPwd"
-            v-model="loginForm.accountPwd"
+            ref="password"
+            v-model="loginForm.password"
             :type="passwordType"
             :placeholder="$t('login.password')"
-            name="accountPwd"
+            name="password"
             tabindex="2"
             autocomplete="on"
             clearable
@@ -33,51 +33,42 @@
       </el-tooltip>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
-
-      <div style="position:relative">
-        <div class="tips">
-          <span>{{ $t('login.username') }} : admin</span>
-          <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">{{ $t('login.username') }} : editor</span>
-          <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-        </div>
-      </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
-
+import { login } from '@/api/user'
 export default {
   name: 'Login',
   components: { LangSelect },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error(this.$t('login.errorName')))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error(this.$t('login.errorPassword')))
-      } else {
-        callback()
-      }
-    }
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!validUsername(value)) {
+    //     callback(new Error(this.$t('login.errorName')))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // const validatePassword = (rule, value, callback) => {
+    //   if (value.length < 6) {
+    //     callback(new Error(this.$t('login.errorPassword')))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       loginForm: {
-        accountName: 'Admin',
-        accountPwd: '123456'
+        username: 'C20000',
+        password: '123456'
       },
       loginRules: {
-        accountName: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        accountPwd: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        // accountName: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        // accountPwd: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        accountName: [{ required: true, trigger: 'blur' }],
+        accountPwd: [{ required: true, trigger: 'blur' }]
       },
       passwordType: 'password',
       capsTooltip: false,
@@ -102,10 +93,10 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.accountName === '') {
-      this.$refs.accountName.focus()
-    } else if (this.loginForm.accountPwd === '') {
-      this.$refs.accountPwd.focus()
+    if (this.loginForm.username === '') {
+      this.$refs.username.focus()
+    } else if (this.loginForm.password === '') {
+      this.$refs.password.focus()
     }
   },
   destroyed() {
@@ -123,27 +114,36 @@ export default {
         this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.accountPwd.focus()
+        this.$refs.password.focus()
       })
     },
     handleLogin() {
-      console.info('1.登录页面按钮点击')
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store
-            .dispatch('user/login', this.loginForm)
-            .then(() => {
-              console.info('3.vuex 里面的 login 方法被调用 完毕')
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
+      // console.info('1.登录页面按钮点击')
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid) {
+      //     this.loading = true
+      //     this.$store
+      //       .dispatch('user/login', this.loginForm)
+      //       .then(() => {
+      //         debugger
+      //         console.info('3.vuex 里面的 login 方法被调用 完毕')
+      //         this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+      //         this.loading = false
+      //       })
+      //       .catch(() => {
+      //         this.loading = false
+      //       })
+      //   } else {
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
+      const _this = this
+      login(_this.loginForm).then(res => {
+        if (res.IsPass === true) {
+          debugger
+
+          _this.$router.options.routes.push({ name: 'Dashboard' })
         }
       })
     },
@@ -214,9 +214,9 @@ $light_gray: #eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  // background-color: $bg;
-  background-image: linear-gradient(to right, #1a68ad, #889aa4);
-  // background-image: url(../../assets/home/bg.gif);
+  background-color: $bg;
+  // background-image: linear-gradient(to right, #1a68ad, #889aa4);s
+  background-image: url(../../assets/home/bg.gif);
   background-repeat: no-repeat;
   background-size: cover;
   overflow: hidden;
