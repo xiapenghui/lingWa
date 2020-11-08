@@ -13,3 +13,18 @@ export function setToken(token) {
 export function removeToken() {
   return Cookies.remove(TokenKey)
 }
+
+const MenuKey = 'Admin-Menu'
+
+export function getMenu() {
+  return Cookies.get(MenuKey)
+}
+
+export function setMenu(menu) {
+  console.log('menu', menu)
+  return Cookies.set(MenuKey, menu)
+}
+
+export function removeMenu() {
+  return Cookies.remove(MenuKey)
+}

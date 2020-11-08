@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
-
+import permission from './modules/permission' // 导入permission文件 添加
 Vue.use(Vuex)
 
 // https://webpack.js.org/guides/dependency-management/#requirecontext
@@ -19,7 +19,8 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 
 const store = new Vuex.Store({
   modules,
-  getters
+  getters,
+  permission // 添加
 })
 
 export default store

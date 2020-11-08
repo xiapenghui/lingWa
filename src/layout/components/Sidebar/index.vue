@@ -4,6 +4,7 @@
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
+        :default-openeds="openeds"
         :collapse="isCollapse"
         :background-color="variables.menuBg"
         :text-color="variables.menuText"
@@ -28,9 +29,13 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
+      // 动态路由 增加permission_routes
       'permission_routes',
       'sidebar'
     ]),
+    routes() {
+      return this.$router.options.routes
+    },
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
@@ -48,6 +53,11 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    }
+  },
+  data() {
+    return {
+      openeds: []
     }
   }
 }

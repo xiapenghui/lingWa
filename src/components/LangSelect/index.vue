@@ -23,21 +23,20 @@ export default {
   },
   methods: {
     handleSetLanguage(lang) {
-      this.$emit('child-even',lang)
+      this.$emit('child-even', lang)
       this.$i18n.locale = lang
       this.$store.dispatch('app/setLanguage', lang)
-      if(lang=='en'){
+      if (lang === 'en') {
         this.$message({
           message: 'Switch Language Success!',
           type: 'success'
         })
-      }else{
+      } else {
         this.$message({
           message: '语言切换成功!',
           type: 'success'
         })
       }
-
     }
   }
 }
