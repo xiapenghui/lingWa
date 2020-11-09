@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.title') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="listQuery.title" :placeholder="$t('permission.titleInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.RoleName" :placeholder="$t('permission.titleInfo')" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
@@ -16,71 +16,110 @@
       </el-row>
     </div>
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddRole">{{ $t('permission.addRole') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addRole') }}</el-button>
     </div>
-    <el-table v-loading="listLoading" :data="rolesList" style="width: 100%;" border>
-      <el-table-column align="center" :label="$t('permission.name')" width="150">
+    <el-table
+      v-loading="listLoading"
+      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :data="tableData"
+      :height="tableHeight"
+      style="width: 100%"
+      border
+      element-loading-text="拼命加载中"
+      fit
+      highlight-current-row
+    >
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="name">
         <template slot-scope="scope">
-          {{ scope.row.key }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="name" sortable>
-        <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.RoleCode }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
+      <el-table-column align="center" :label="$t('permission.name')" width="150">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">{{ scope.row.status }}</el-tag>
+          {{ scope.row.RoleName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="status">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.UseStatus" :style="{ color: scope.row.UseStatus === '0' ? '#FF5757' : '#13ce66' }">{{ scope.row.UseStatus === '0' ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.time')" width="150">
         <template slot-scope="scope">
-          {{ scope.row.time }}
+          {{ scope.row.ModifyTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="header-center" :label="$t('permission.description')">
         <template slot-scope="scope">
-          {{ scope.row.description }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.operations')">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editPermission') }}</el-button>
-          <el-button type="info" size="small" @click="handleCoply(scope)">{{ $t('permission.coplyPermission') }}</el-button>
-          <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
-          <el-button v-if="scope.row.status == '启用'" type="success" size="small" @click="handleBan(scope, '启用')">{{ $t('permission.handleEnable') }}</el-button>
-          <el-button v-else type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleBan') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.delete') }}</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.editPermission') }}</el-button>
+          <el-button type="info" size="small" @click="handleCoply(scope.row)">{{ $t('permission.coplyPermission') }}</el-button>
+          <el-button type="warning" size="small" @click="handleLook(scope.row)">{{ $t('permission.lookPermission') }}</el-button>
+          <el-button v-if="scope.row.UseStatus == 1" type="danger" size="small" @click="handleBan(scope.row, 1)">{{ $t('permission.handleBan') }}</el-button>
+          <el-button v-else type="success" size="small" @click="handleBan(scope.row, 0)">{{ $t('permission.handleEnable') }}</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
-      <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
+
+    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+
+    <!-- 添加编辑菜单 -->
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
+      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.title')" prop="title"><el-input v-model="role.title" :placeholder="$t('permission.title')" clearable /></el-form-item>
+          <el-form-item :label="$t('permission.title')" prop="RoleName"><el-input v-model="ruleForm.RoleName" :placeholder="$t('permission.title')" /></el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
           <el-form-item :label="$t('permission.description')">
-            <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
+            <el-input v-model="ruleForm.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
           </el-form-item>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-          <el-form-item :label="$t('permission.Menus')">
-            <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item :label="$t('permission.Menus')">
+          <el-tree ref="tree" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
+        </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmRole">{{ $t('permission.confirm') }}</el-button>
+        <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
+    </el-dialog>
+
+    <!-- 查看用户 -->
+    <el-dialog title="用户信息" :visible.sync="dialogTableVisible">
+      <el-table border style="width: 100%" height="50vh" :data="userData">
+        <el-table-column align="center" :label="$t('permission.fullName')" width="250">
+          <template slot-scope="scope">
+            {{ scope.row.NameCN }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" :label="$t('permission.loginUser')" width="250">
+          <template slot-scope="scope">
+            {{ scope.row.AccountName }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" :label="$t('permission.company')">
+          <template slot-scope="scope">
+            {{ scope.row.OrgFullName }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" :label="$t('permission.department')">
+          <template slot-scope="scope">
+            {{ scope.row.DepFullName }}
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationLog.current" :size.sync="paginationLog.size" @pagination="getLogList" /> -->
     </el-dialog>
   </div>
 </template>
@@ -88,75 +127,79 @@
 <script>
 import '../../styles/commentBox.scss'
 import '../../styles/scrollbar.css'
-import path from 'path'
-import { deepClone } from '@/utils'
-import { getRoutes, getRoles, addRole, deleteRole, updateRole } from '@/api/role'
+import { ListRole, addRole, updateRole, deleteRole, ListMenuFunAll, ListUser, UpdateStatus } from '@/api/role'
 import i18n from '@/lang'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-
-// const defaultRole = {
-//   key: '',
-//   name: '',
-//   description: '',
-//   routes: []
-// }
-
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+const fixHeight = 280
 export default {
-  components: { Pagination },
+  name: 'RolePermission',
+  // components: { Pagination },
   data() {
     return {
-      role: {
-        title: ''
-      },
-
-      routes: [],
-      rolesList: [
-        {
-          Key: '123456',
-          name: '上海灵娃',
-          status: '启用',
-          time: '17621627757',
-          description: '不赖'
-        }
-      ],
-      dialogVisible: false,
-      dialogType: 'new',
-      checkStrictly: false,
+      tableData: [],
+      routesData: [], // 权限菜单
+      userData: [], //  查看用户
       defaultProps: {
         children: 'children',
-        label: 'title'
+        MenuTitle: 'MenuTitle'
       },
-      listLoading: true,
+      ruleForm: {}, // 编辑弹窗
+      logId: {}, // 查看用户行数据
+      pagination: {
+        PageIndex: 1,
+        PageSize: 10,
+        RoleName: undefined
+      },
+      // 查看用户分页
+      paginationLog: {
+        current: 1,
+        size: 20
+      },
+
+      listLoading: false,
+      editLoading: false, // 编辑loading
       total: 10,
-      isShow: true,
-      listQuery: {
-        title: undefined,
-        page: 1,
-        limit: 20
+      dialogFormVisible: false, // 编辑弹出框
+      dialogTableVisible: false, // 查看用户弹出框
+      tableHeight: window.innerHeight - fixHeight, // 表格高度
+      dialogType: 'new',
+      rules: {
+        RoleName: [{ required: true, message: '请输入用户名', trigger: 'blur' }]
       },
       content1: this.$t('permission.title'),
-      content2: this.$t('permission.description'),
-      content3: this.$t('permission.Menus')
+      content2: this.$t('permission.description')
     }
   },
-  computed: {
-    routesData() {
-      return this.routes
-    }
-  },
+  computed: {},
   watch: {
+    // 监听表格高度
+    tableHeight(val) {
+      if (!this.timer) {
+        this.tableHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
+      }
+    },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.content1 = this.$t('permission.title')
       this.content2 = this.$t('permission.description')
-      this.content3 = this.$t('permission.Menus')
       this.setFormRules()
     }
   },
   created() {
+    // 监听表格高度
+    const that = this
+    window.onresize = () => {
+      return (() => {
+        that.tableHeight = window.innerHeight - fixHeight
+      })()
+    }
     // Mock: get all routes and roles list from server
-    this.getRoutes()
-    this.getRoles()
+    // this.getRoutes()
     this.getList()
     this.setFormRules()
   },
@@ -168,41 +211,38 @@ export default {
       }
     },
     // 禁用，启用权限
-    handleBan(scope, status) {
-      this.$message({
-        message: status + '成功',
-        type: 'success'
+    handleBan(row, status) {
+      debugger
+      const params = {
+        UseStatus: row.UseStatus,
+        RoleCode: row.RoleCode
+      }
+      UpdateStatus(params).then(res => {
+        debugger
+        // this.$message(res.MSG)
+        if (status === 1) {
+          row.status = 0
+        } else {
+          row.status = 1
+        }
       })
-      scope.row.status = status
+
+      // scope.row.status = status
     },
     // 查询
     handleSearch() {
-      this.listQuery.page = 1
+      this.pagination.PageIndex = 1
       this.getList()
     },
     getList() {
-      this.listLoading = false
-      // fetchList(this.listQuery).then(response => {
-      //   this.list = response.data.items
-      //   this.total = response.data.total
-      //   // Just to simulate the time of the request
-      //   setTimeout(() => {
-      //     this.listLoading = false
-      //   }, 1.5 * 1000)
-      // })
+      this.listLoading = true
+      ListRole(this.pagination).then(res => {
+        this.tableData = res.Obj
+        this.total = res.Obj.length
+        this.listLoading = false
+      })
     },
 
-    async getRoutes() {
-      const res = await getRoutes()
-      console.log(res, res)
-      this.serviceRoutes = res.data
-      const routes = this.generateRoutes(res.data)
-      this.routes = this.i18n(routes)
-    },
-    async getRoles() {
-      const res = await getRoles()
-      this.rolesList = res.data
-    },
     i18n(routes) {
       const app = routes.map(route => {
         route.title = i18n.t(`route.${route.title}`)
@@ -213,176 +253,118 @@ export default {
       })
       return app
     },
-    // Reshape the routes structure so that it looks the same as the sidebar
-    generateRoutes(routes, basePath = '/') {
-      const res = []
 
-      for (let route of routes) {
-        // skip some route
-        if (route.hidden) {
-          continue
-        }
-
-        const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route)
-
-        if (route.children && onlyOneShowingChild && !route.alwaysShow) {
-          route = onlyOneShowingChild
-        }
-
-        const data = {
-          path: path.resolve(basePath, route.path),
-          title: route.meta && route.meta.title
-        }
-
-        // recursive child routes
-        if (route.children) {
-          data.children = this.generateRoutes(route.children, data.path)
-        }
-        res.push(data)
-      }
-      return res
-    },
-    generateArr(routes) {
-      let data = []
-      routes.forEach(route => {
-        data.push(route)
-        if (route.children) {
-          const temp = this.generateArr(route.children)
-          if (temp.length > 0) {
-            data = [...data, ...temp]
-          }
+    // 增加角色
+    handleAddUser() {
+      debugger
+      this.dialogType = 'new'
+      this.dialogFormVisible = true
+      this.ruleForm = {}
+      ListMenuFunAll().then(res => {
+        debugger
+        if (res.IsPass === true) {
+          this.routesData = res.Obj
         }
       })
-      return data
-    },
-    // 增加角色
-    handleAddRole() {
-      // this.role = Object.assign({}, defaultRole)
-      if (this.$refs.tree) {
-        this.$refs.tree.setCheckedNodes([])
-      }
-      this.dialogType = 'new'
-      this.dialogVisible = true
     },
     // 编辑角色
-    handleEdit(scope) {
+    handleEdit(row) {
+      debugger
       this.dialogType = 'edit'
-      this.dialogVisible = true
-      this.checkStrictly = true
-      this.role = deepClone(scope.row)
-      this.$nextTick(() => {
-        debugger
-        const routes = this.generateRoutes(this.role.routes)
-        this.$refs.tree.setCheckedNodes(this.generateArr(routes))
-        // set checked state of a node not affects its father and child nodes
-        this.checkStrictly = false
+      this.dialogFormVisible = true
+      this.ruleForm = JSON.parse(JSON.stringify(row))
+    },
+
+    // 编辑成功
+    submitForm(formName) {
+      this.editLoading = true
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if (this.dialogType === 'edit') {
+            updateRole(this.ruleForm).then(res => {
+              debugger
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.editSuc')
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
+              }
+            })
+          } else {
+            addRole(this.ruleForm).then(res => {
+              debugger
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.addSuc')
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
+              }
+            })
+          }
+        } else {
+          this.editLoading = false
+          this.$message({
+            type: 'error',
+            message: '必填项不能为空'
+          })
+          return false
+        }
       })
     },
+
     // 复制角色
     handleCoply() {},
     // 查看用户
-    handleLook() {
-      this.$router.push('../SystemManagement/lookUser')
+    handleLook(row) {
+      this.logId = row
+      ListUser(this.paginationLog, { RoleCode: row.RoleCode }).then(res => {
+        if (res.TotalRowCount > 0) {
+          this.dialogTableVisible = true
+          this.userData = res.Obj
+          this.logTotal = res.TotalRowCount
+        } else {
+          this.dialogTableVisible = false
+          this.$message('此条数据暂无用户！')
+        }
+      })
     },
     // 删除角色
-    handleDelete({ $index, row }) {
-      this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      })
-        .then(async() => {
-          await deleteRole(row.key)
-          this.rolesList.splice($index, 1)
-          this.$message({
-            type: 'success',
-            message: 'Delete succed!'
-          })
-        })
-        .catch(err => {
-          console.error(err)
-        })
-    },
-    generateTree(routes, basePath = '/', checkedKeys) {
-      const res = []
-
-      for (const route of routes) {
-        const routePath = path.resolve(basePath, route.path)
-
-        // recursive child routes
-        if (route.children) {
-          route.children = this.generateTree(route.children, routePath, checkedKeys)
-        }
-
-        if (checkedKeys.includes(routePath) || (route.children && route.children.length >= 1)) {
-          res.push(route)
-        }
-      }
-      return res
-    },
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
-
-      const checkedKeys = this.$refs.tree.getCheckedKeys()
-      this.role.routes = this.generateTree(deepClone(this.serviceRoutes), '/', checkedKeys)
-
-      if (isEdit) {
-        await updateRole(this.role.key, this.role)
-        for (let index = 0; index < this.rolesList.length; index++) {
-          if (this.rolesList[index].key === this.role.key) {
-            this.rolesList.splice(index, 1, Object.assign({}, this.role))
-            break
-          }
-        }
-      } else {
-        const { data } = await addRole(this.role)
-        this.role.key = data.key
-        this.rolesList.push(this.role)
-      }
-
-      // const { description, key, name } = this.role
-      this.dialogVisible = false
-      if (this.role.name === '') {
-        this.$notify({
-          title: 'warning',
-          dangerouslyUseHTMLString: true,
-          message: this.$t('permission.noInfo'),
+    handleDelete(row) {
+      if (this.tableData.length > 0) {
+        this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
+          confirmButtonText: this.$t('permission.Confirm'),
+          cancelButtonText: this.$t('permission.Cancel'),
           type: 'warning'
         })
-        return
-      } else {
-        this.$notify({
-          title: 'Success',
-          dangerouslyUseHTMLString: true,
-          // message: `
-          //     <div>Role Key: ${key}</div>
-          //     <div>Role Name: ${name}</div>
-          //     <div>Description: ${description}</div>
-          //   `,
-          message: this.$t('permission.success'),
-          type: 'success'
-        })
+          .then(() => {
+            deleteRole({ RoleCode: row.RoleCode }).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.deleteSuccess')
+                })
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+            })
+            this.getList()
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: this.$t('table.deleteError')
+            })
+          })
       }
-    },
-    // reference: src/view/layout/components/Sidebar/SidebarItem.vue
-    onlyOneShowingChild(children = [], parent) {
-      let onlyOneChild = null
-      const showingChildren = children.filter(item => !item.hidden)
-
-      // When there is only one child route, the child route is displayed by default
-      if (showingChildren.length === 1) {
-        onlyOneChild = showingChildren[0]
-        onlyOneChild.path = path.resolve(parent.path, onlyOneChild.path)
-        return onlyOneChild
-      }
-
-      // Show parent if there are no child route to display
-      if (showingChildren.length === 0) {
-        onlyOneChild = { ...parent, path: '', noShowingChildren: true }
-        return onlyOneChild
-      }
-
-      return false
     }
   }
 }

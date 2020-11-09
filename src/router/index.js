@@ -402,21 +402,11 @@ export const asyncRoutes = [
       }
     },
     {
-      path: 'lookUser',
-      hidden: true,
-      component: () => import('@/views/SystemManagement/lookUser'),
-      name: 'lookUser',
-      meta: {
-        title: 'lookUser'
-      }
-    },
-    {
       path: 'userMangement',
       component: () => import('@/views/SystemManagement/userMangement'),
       name: 'userMangement',
       meta: {
-        title: 'userMangement',
-        roles: ['Admin']
+        title: 'userMangement'
       }
     }
     ]

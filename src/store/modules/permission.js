@@ -98,8 +98,8 @@ const actions = {
             duration: 2 * 1000
           })
         } else {
-          console.log('response', response.Obj)
-          const data = response.Obj
+          console.log('response', response.Obj.MenuList)
+          const data = response.Obj.MenuList
           Object.assign(loadMenuData, data)
           const routes = []
           console.log('loadMenuData', loadMenuData)
