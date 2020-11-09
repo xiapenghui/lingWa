@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.companyNo') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.companyNo" :placeholder="$t('permission.companysInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.companyNo" :placeholder="$t('permission.companysInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
@@ -16,12 +16,12 @@
               <label class="radio-label">{{ $t('permission.companyName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.companyName" :placeholder="$t('permission.companyNameInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.companyName" :placeholder="$t('permission.companyNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionCompany') }}</el-checkbox>
+              <el-checkbox v-model="pagination.showReviewer" @change="tableKey">{{ $t('permission.inclusionCompany') }}</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -44,13 +44,16 @@
 
     <el-table
       v-loading="listLoading"
+      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :data="tableData"
+      :height="tableHeight"
       style="width: 100%"
       border
-      :header-cell-style="{ background: '#46a6ff',color:'#ffffff' }"
-      :data="rolesList"
-      :height="tableHeight"
+      element-loading-text="拼命加载中"
+      fit
+      highlight-current-row
     >
-      <el-table-column align="center" :label="$t('permission.companyNo')" width="150" fixed sortable prop="key">
+      <el-table-column align="center" :label="$t('permission.companyNo')" width="150">
         <template slot-scope="scope">
           {{ scope.row.companyNo }}
         </template>
@@ -101,8 +104,7 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="400">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editPermission') }}</el-button>
-          <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editConply') }}</el-button>
           <el-button v-if="scope.row.status == '启用'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleCompany') }}</el-button>
           <el-button v-else type="success" size="small" @click="handleBan(scope, '启用')">{{ $t('permission.SpecificationsCompany') }}</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.deleteCompany') }}</el-button>
@@ -167,8 +169,8 @@
 
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmRole">{{ $t('permission.confirm') }}</el-button>
+        <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -177,39 +179,18 @@
 <script>
 import '../../../../styles/scrollbar.css'
 import '../../../../styles/commentBox.scss'
-import { deleteRole } from '@/api/role'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import UploadExcelComponent from '@/components/UploadExcel/index.vue'
+// import { OrganList, OrganAdd, OrganDelete, OrganModify } from '@/api/role'
 const fixHeight = 270
 export default {
+  name: 'CompanyMaintenance',
   components: { Pagination, UploadExcelComponent },
   data() {
     return {
-      // role: Object.assign({}, defaultRole),
-      role: {
-        companyNo: '',
-        companyName: '',
-        companyAllName: '',
-        companyTel: '',
-        companyAddress: '',
-        imageUrl: '',
-        companyDescription: ''
-      },
-      routes: [],
-      rolesList: [
-        {
-          companyNo: '123456',
-          companyName: '上海灵娃',
-          companyAllName: '上海灵娃科技有限公司',
-          companyTel: '17621627757',
-          companyAddress: '上海市静安区365号',
-          companyDescription: '不赖',
-          status: '启用',
-          user: '张三',
-          time: '2020-8-19'
-        }
-      ],
+      tableData: [],
+      ruleForm: {}, // 编辑弹窗
       dialogVisible: false,
       dialogType: 'new',
       form: {
@@ -222,7 +203,6 @@ export default {
 
       listLoading: true,
       total: 10,
-
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       parentMsg: this.$t('permission.importCompany'),
       content1: this.$t('permission.companyNo'),
@@ -289,66 +269,22 @@ export default {
     },
     // 禁用，启用权限
     handleBan(scope, status) {
-      if (status === '启用') {
-        this.$confirm(this.$t('permission.EnableInfo'), this.$t('permission.EnableTitle'), {
-          confirmButtonText: this.$t('permission.Confirm'),
-          cancelButtonText: this.$t('permission.Cancel'),
-          type: 'success'
-        })
-          .then(async() => {
-            this.$message({
-              message: status + '成功',
-              type: 'success'
-            })
-          })
-          .catch(err => {
-            console.error(err)
-          })
-      } else {
-        this.$confirm(this.$t('permission.DisableInfo'), this.$t('permission.DisableTitle'), {
-          confirmButtonText: this.$t('permission.Confirm'),
-          cancelButtonText: this.$t('permission.Cancel'),
-          type: 'warning'
-        })
-          .then(async() => {
-            this.$message({
-              message: status + '成功',
-              type: 'success'
-            })
-          })
-          .catch(err => {
-            console.error(err)
-          })
-      }
-      scope.row.status = status
-      // this.$message({
-      //   message: status + '成功',
-      //   type: 'success'
-      // })
-      // scope.row.status = status
+
     },
 
     // 查询
     handleSearch() {
-      this.form.page = 1
       this.getList()
     },
     // 重置
     handleReset() {
-      this.form = {
-        companyNo: '',
-        fullName: '',
-        companyName: '',
-        showReviewer: false,
-        page: 1,
-        limit: 20
-      }
+
     },
     // 选择框
     tableKey() {},
     // 导出用户
     handleExport() {
-      if (this.rolesList.length) {
+      if (this.tableData.length) {
         import('@/vendor/Export2Excel').then(excel => {
           const tHeader = [
             this.$t('permission.companyNo'),
@@ -362,7 +298,7 @@ export default {
             this.$t('permission.time')
           ]
           const filterVal = ['companyNo', 'name', 'title', 'department', 'company', 'description', 'state', 'user', 'time']
-          const list = this.rolesList
+          const list = this.tableData
           const data = this.formatJson(filterVal, list)
           excel.export_json_to_excel({
             header: tHeader,
@@ -399,14 +335,6 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = false
-      // fetchList(this.listQuery).then(response => {
-      //   this.list = response.data.items
-      //   this.total = response.data.total
-      //   // Just to simulate the time of the request
-      //   setTimeout(() => {
-      //     this.listLoading = false
-      //   }, 1.5 * 1000)
-      // })
     },
 
     i18n(routes) {
@@ -420,28 +348,20 @@ export default {
       return app
     },
 
-    // 增加角色
+    // 增加
     handleAdd() {
       this.dialogType = 'new'
       this.dialogVisible = true
     },
-    // 编辑角色
+    // 编辑
     handleEdit(scope) {
       this.dialogType = 'edit'
       this.dialogVisible = true
-
-      this.$nextTick(() => {
-        // set checked state of a node not affects its father and child nodess
-      })
     },
 
-    // 查看用户
-    handleLook() {
-      this.$router.push('../SystemManagement/lookUser')
-    },
     // 图片上传
     handleAvatarSuccess(res, file) {
-      this.role.imageUrl = URL.createObjectURL(file.raw)
+
     },
     beforeAvatarUpload(file) {
       const type = file.type === 'image/jpeg' || 'image/jpg' || 'image/webp' || 'image/png'
@@ -457,56 +377,9 @@ export default {
     },
     // 删除角色
     handleDelete({ $index, row }) {
-      this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      })
-        .then(async() => {
-          await deleteRole(row.key)
-          this.rolesList.splice($index, 1)
-          this.$message({
-            type: 'success',
-            message: 'Delete succed!'
-          })
-        })
-        .catch(err => {
-          console.error(err)
-        })
-    },
 
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
-      if (isEdit) {
-        debugger
-      } else {
-        debugger
-      }
-
-      // const { description, key, name } = this.role
-      this.dialogVisible = false
-      if (this.role.companyNo === '') {
-        this.$notify({
-          title: 'warning',
-          dangerouslyUseHTMLString: true,
-          message: this.$t('permission.noInfo'),
-          type: 'warning'
-        })
-        return
-      } else {
-        this.$notify({
-          title: 'Success',
-          dangerouslyUseHTMLString: true,
-          // message: `
-          //     <div>Role Key: ${key}</div>
-          //     <div>Role Name: ${name}</div>
-          //     <div>Description: ${description}</div>
-          //   `,
-          message: this.$t('permission.success'),
-          type: 'success'
-        })
-      }
     }
+
   }
 }
 </script>

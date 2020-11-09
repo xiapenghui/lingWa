@@ -281,6 +281,7 @@ export default {
     EditRouter: '编辑工艺路线',
     addRouter: '新增工艺路线',
     close: '关闭',
+    editConply: '编辑公司',
 
     // 截止
     roles: '你的权限',
