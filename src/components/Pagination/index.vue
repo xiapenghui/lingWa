@@ -24,13 +24,13 @@ export default {
       required: true,
       type: Number
     },
-    page: {
+    current: {
       type: Number,
       default: 1
     },
-    limit: {
+    size: {
       type: Number,
-      default: 20
+      default: 10
     },
     pageSizes: {
       type: Array,
@@ -58,30 +58,30 @@ export default {
   computed: {
     currentPage: {
       get() {
-        return this.page
+        return this.current
       },
       set(val) {
-        this.$emit('update:page', val)
+        this.$emit('update:current', val)
       }
     },
     pageSize: {
       get() {
-        return this.limit
+        return this.size
       },
       set(val) {
-        this.$emit('update:limit', val)
+        this.$emit('update:size', val)
       }
     }
   },
   methods: {
     handleSizeChange(val) {
-      this.$emit('pagination', { page: this.currentPage, limit: val })
+      this.$emit('pagination', { current: this.currentPage, size: val })
       if (this.autoScroll) {
         scrollTo(0, 800)
       }
     },
     handleCurrentChange(val) {
-      this.$emit('pagination', { page: val, limit: this.pageSize })
+      this.$emit('pagination', { current: val, size: this.pageSize })
       if (this.autoScroll) {
         scrollTo(0, 800)
       }
@@ -93,7 +93,7 @@ export default {
 <style scoped>
 .pagination-container {
   background: #fff;
-  padding: 0px 16px;
+  padding: 10px 16px;
   text-align: right;
 }
 .pagination-container.hidden {

@@ -63,14 +63,14 @@
           <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.editPermission') }}</el-button>
           <el-button type="info" size="small" @click="handleCoply(scope.row)">{{ $t('permission.coplyPermission') }}</el-button>
           <el-button type="warning" size="small" @click="handleLook(scope.row)">{{ $t('permission.lookPermission') }}</el-button>
-          <el-button v-if="scope.row.UseStatus == 1" type="danger" size="small" @click="handleBan(scope.row, 1)">{{ $t('permission.handleBan') }}</el-button>
-          <el-button v-else type="success" size="small" @click="handleBan(scope.row, 0)">{{ $t('permission.handleEnable') }}</el-button>
+          <el-button v-if="scope.row.UseStatus == 1" type="danger" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleBan') }}</el-button>
+          <el-button v-else type="success" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleEnable') }}</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 添加编辑菜单 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
@@ -129,11 +129,11 @@ import '../../styles/commentBox.scss'
 import '../../styles/scrollbar.css'
 import { ListRole, addRole, updateRole, deleteRole, ListMenuFunAll, ListUser, UpdateStatus } from '@/api/role'
 import i18n from '@/lang'
-// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 const fixHeight = 280
 export default {
   name: 'RolePermission',
-  // components: { Pagination },
+  components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -141,7 +141,7 @@ export default {
       userData: [], //  查看用户
       defaultProps: {
         children: 'children',
-        MenuTitle: 'MenuTitle'
+        label: 'MenuTitle'
       },
       ruleForm: {}, // 编辑弹窗
       logId: {}, // 查看用户行数据
@@ -211,20 +211,15 @@ export default {
       }
     },
     // 禁用，启用权限
-    handleBan(row, status) {
+    handleBan(row) {
       debugger
       const params = {
-        UseStatus: row.UseStatus,
+        UseStatus: row.UseStatus = row.UseStatus === '1' ? '0' : '1',
         RoleCode: row.RoleCode
       }
       UpdateStatus(params).then(res => {
-        debugger
         // this.$message(res.MSG)
-        if (status === 1) {
-          row.status = 0
-        } else {
-          row.status = 1
-        }
+        this.getList()
       })
 
       // scope.row.status = status
@@ -238,7 +233,7 @@ export default {
       this.listLoading = true
       ListRole(this.pagination).then(res => {
         this.tableData = res.Obj
-        this.total = res.Obj.length
+        this.total = res.TotalRowCount
         this.listLoading = false
       })
     },
@@ -294,7 +289,7 @@ export default {
               }
             })
           } else {
-            addRole(this.ruleForm).then(res => {
+            addRole(this.ruleForm, this.$refs.tree.getCheckedNodes()).then(res => {
               debugger
               if (res.IsPass === true) {
                 this.$message({
