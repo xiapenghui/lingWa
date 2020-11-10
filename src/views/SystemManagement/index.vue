@@ -70,24 +70,26 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
+    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
 
     <!-- 添加编辑菜单 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.title')" prop="RoleName"><el-input v-model="ruleForm.RoleName" :placeholder="$t('permission.title')" /></el-form-item>
+          <el-form-item :label="$t('permission.title')" prop="RoleName">
+            <el-input v-model="ruleForm.RoleName" :placeholder="$t('permission.title')" /></el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
           <el-form-item :label="$t('permission.description')">
-            <el-input v-model="ruleForm.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
+            <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
           </el-form-item>
         </el-tooltip>
 
         <el-form-item :label="$t('permission.Menus')">
           <el-tree ref="tree" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
         </el-form-item>
+
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -119,7 +121,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationLog.current" :size.sync="paginationLog.size" @pagination="getLogList" /> -->
     </el-dialog>
   </div>
 </template>
@@ -127,13 +128,13 @@
 <script>
 import '../../styles/commentBox.scss'
 import '../../styles/scrollbar.css'
-import { ListRole, addRole, updateRole, deleteRole, ListMenuFunAll, ListUser, UpdateStatus } from '@/api/role'
+import { ListRole, addRole, updateRole, deleteRole, ListMenuFunAll, ListUser, UpdateStatus, ListRoleMenuFun } from '@/api/role'
 import i18n from '@/lang'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 const fixHeight = 280
 export default {
   name: 'RolePermission',
-  components: { Pagination },
+  // components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -150,12 +151,6 @@ export default {
         PageSize: 10,
         RoleName: undefined
       },
-      // 查看用户分页
-      paginationLog: {
-        current: 1,
-        size: 20
-      },
-
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
@@ -164,7 +159,7 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
       rules: {
-        RoleName: [{ required: true, message: '请输入用户名', trigger: 'blur' }]
+        RoleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
       },
       content1: this.$t('permission.title'),
       content2: this.$t('permission.description')
@@ -207,12 +202,11 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        title: [{ required: true, message: this.$t('permission.roleNameInfo') }]
+        RoleName: [{ required: true, message: this.$t('permission.roleNameInfo') }]
       }
     },
     // 禁用，启用权限
     handleBan(row) {
-      debugger
       const params = {
         UseStatus: row.UseStatus = row.UseStatus === '1' ? '0' : '1',
         RoleCode: row.RoleCode
@@ -251,12 +245,10 @@ export default {
 
     // 增加角色
     handleAddUser() {
-      debugger
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {}
       ListMenuFunAll().then(res => {
-        debugger
         if (res.IsPass === true) {
           this.routesData = res.Obj
         }
@@ -268,10 +260,16 @@ export default {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
+      ListRoleMenuFun({ 'RoleCode': row.RoleCode }).then(res => {
+        if (res.IsPass === true) {
+          this.routesData = res.Obj
+        }
+      })
     },
 
     // 编辑成功
     submitForm(formName) {
+      debugger
       this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -289,8 +287,15 @@ export default {
               }
             })
           } else {
-            addRole(this.ruleForm, this.$refs.tree.getCheckedNodes()).then(res => {
-              debugger
+            // let params={
+            //    RoleName:'',
+            //    Description:''
+            // }
+            debugger
+            const tree = this.$refs.tree
+            const array = tree.getCheckedKeys().concat(tree.getHalfCheckedKeys())
+            console.log('this.$refs.tree.getCheckedNodes()', array)
+            addRole(this.ruleForm, { 'MenuFunList': array }).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -319,6 +324,7 @@ export default {
     handleLook(row) {
       this.logId = row
       ListUser(this.paginationLog, { RoleCode: row.RoleCode }).then(res => {
+        debugger
         if (res.TotalRowCount > 0) {
           this.dialogTableVisible = true
           this.userData = res.Obj
@@ -329,6 +335,7 @@ export default {
         }
       })
     },
+
     // 删除角色
     handleDelete(row) {
       if (this.tableData.length > 0) {

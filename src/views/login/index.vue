@@ -51,13 +51,13 @@ export default {
     //     callback()
     //   }
     // }
-    // const validatePassword = (rule, value, callback) => {
-    //   if (value.length < 4) {
-    //     callback(new Error(this.$t('login.errorPassword')))
-    //   } else {
-    //     callback()
-    //   }
-    // }
+    const validatePassword = (rule, value, callback) => {
+      if (value.length < 4) {
+        callback(new Error(this.$t('login.errorPassword')))
+      } else {
+        callback()
+      }
+    }
     return {
       loginForm: {
         username: 'C20000',
@@ -65,8 +65,8 @@ export default {
       },
       loginRules: {
         // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        // username: [{ required: true, trigger: 'blur' }],
-        // password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
       capsTooltip: false,

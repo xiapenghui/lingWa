@@ -58,9 +58,6 @@ export default {
       return this.$store.state.settings.theme
     }
   },
-  created() {
-    debugger
-  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')

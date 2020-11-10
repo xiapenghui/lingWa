@@ -12,11 +12,10 @@ export function ListRole(data) {
 }
 
 // 新增角色
-export function addRole(query, data) {
+export function addRole(data) {
   return request({
     url: newUrl + '/api/Role/Add',
     method: 'post',
-    params: query,
     data
   })
 }
@@ -62,6 +61,15 @@ export function ListUser(query, data) {
 export function UpdateStatus(data) {
   return request({
     url: newUrl + '/api/Role/UpdateStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 启用，禁用状态
+export function ListRoleMenuFun(data) {
+  return request({
+    url: newUrl + '/api/Role/ListRoleMenuFun',
     method: 'post',
     data
   })

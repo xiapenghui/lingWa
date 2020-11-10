@@ -5,8 +5,8 @@ import request from '@/utils/request'
 // 公司信息管理列表
 export function OrganList(data) {
   return request({
-    url: newUrl + '/api/User/List',
-    method: 'get',
+    url: newUrl + '/api/OrganizationCorp/List',
+    method: 'post',
     data
   })
 }
@@ -15,7 +15,7 @@ export function OrganList(data) {
 export function OrganAdd(data) {
   return request({
     url: newUrl + '/api/OrganizationCorp/Add',
-    method: 'get',
+    method: 'post',
     data
   })
 }
@@ -23,8 +23,8 @@ export function OrganAdd(data) {
 // 删除公司信息
 export function OrganDelete(data) {
   return request({
-    url: newUrl + '/api/User/Delete',
-    method: 'get',
+    url: newUrl + '/api/OrganizationCorp/Delete',
+    method: 'post',
     data
   })
 }
@@ -32,8 +32,8 @@ export function OrganDelete(data) {
 // 修改公司信息
 export function OrganModify(data) {
   return request({
-    url: newUrl + '/api/User/Modify',
-    method: 'get',
+    url: newUrl + '/api/OrganizationCorp/Modify',
+    method: 'post',
     data
   })
 }
