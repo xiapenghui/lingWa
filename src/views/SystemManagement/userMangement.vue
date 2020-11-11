@@ -51,16 +51,15 @@
             </el-select>
           </el-col>
         </el-col>
-      </el-row>
-      <el-row class="center">
-        <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-        <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+        <el-col :span="4">
+          <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+          <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+        </el-col>
       </el-row>
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addUser') }}</el-button>
-      <el-button type="primary" icon="el-icon-document-remove" @click="handleExportUser">{{ $t('permission.exportUser') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addUser') }}</el-button>s
     </div>
 
     <el-table v-loading="listLoading" :data="rolesList" style="width: 100%" border>
@@ -125,7 +124,6 @@
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.userName')" prop="userName">
             <el-input v-model="role.userName" :placeholder="$t('permission.userNameInfo')" clearable />
@@ -179,7 +177,6 @@
             <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
           </el-form-item>
         </el-tooltip>
-
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -312,7 +309,6 @@ export default {
             trigger: 'blur'
           }
         ]
-
       }
     },
     // 禁用，启用权限
@@ -343,40 +339,7 @@ export default {
     },
     // 选择框
     tableKey() {},
-    // 导出用户
-    handleExportUser() {
-      if (this.rolesList.length) {
-        import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = [
-            this.$t('permission.userName'),
-            this.$t('permission.fullName'),
-            this.$t('permission.title'),
-            this.$t('permission.department'),
-            this.$t('permission.company'),
-            this.$t('permission.description'),
-            this.$t('permission.state'),
-            this.$t('permission.user'),
-            this.$t('permission.time')
-          ]
-          const filterVal = ['userName', 'name', 'title', 'department', 'company', 'description', 'state', 'user', 'time']
-          const list = this.rolesList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data
-          })
-        })
-      } else {
-        this.$message({
-          message: 'Please select at least one item',
-          type: 'warning'
-        })
-      }
-    },
-    // 导出用户
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
-    },
+
     getList() {
       this.listLoading = false
       // fetchList(this.listQuery).then(response => {
