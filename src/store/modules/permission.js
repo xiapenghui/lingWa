@@ -8,6 +8,7 @@ import Layout from '@/layout'
 import {
   Message
 } from 'element-ui'
+import { getUseName, setUseName } from '@/utils/auth'
 // import { getMenu, setMenu } from '@/utils/auth'
 /**
  * 后台查询的菜单数据拼装成路由格式的数据
@@ -67,10 +68,11 @@ export const loadView = (parent, path) => { // 路由懒加载
   return (resolve) => require([`@/views${parent}/${path}`], resolve)
   // return () => import(`@/views${parent}/${path}/index`)
 }
-
+console.log('getUseName', getUseName())
 const state = {
   routes: [],
-  addRoutes: []
+  addRoutes: [],
+  userName: getUseName()
 }
 
 const mutations = {
@@ -78,6 +80,10 @@ const mutations = {
     state.addRoutes = routes
     console.log('routes', constantRoutes.concat(routes))
     state.routes = constantRoutes.concat(routes)
+  },
+  SET_USERNAME: (state, name) => {
+    console.log('name', name)
+    state.userName = name
   }
 
 }
@@ -98,7 +104,9 @@ const actions = {
             duration: 2 * 1000
           })
         } else {
-          console.log('response', response.Obj.MenuList)
+          console.log('response', response.Obj)
+          commit('SET_USERNAME', response.Obj.username)
+          setUseName(response.Obj.username)
           const data = response.Obj.MenuList
           Object.assign(loadMenuData, data)
           const routes = []
@@ -123,6 +131,13 @@ const actions = {
       }).catch(error => {
         console.log(error)
       })
+    })
+  },
+  logout({ commit, state, dispatch }) {
+    return new Promise((resolve, reject) => {
+      console.log('12314567')
+
+      commit('SET_ROUTES', [])
     })
   }
 }

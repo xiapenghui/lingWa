@@ -58,19 +58,44 @@
           {{ scope.row.Description }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.operations')">
+      <el-table-column align="center" :label="$t('permission.operations')" width="250">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.editPermission') }}</el-button>
-          <el-button type="info" size="small" @click="handleCoply(scope.row)">{{ $t('permission.coplyPermission') }}</el-button>
-          <el-button type="warning" size="small" @click="handleLook(scope.row)">{{ $t('permission.lookPermission') }}</el-button>
-          <el-button v-if="scope.row.UseStatus == 1" type="danger" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleBan') }}</el-button>
-          <el-button v-else type="success" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleEnable') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.delete') }}</el-button>
+          <!-- <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.editPermission') }}</el-button> -->
+          <!-- <el-button type="info" size="small" @click="handleCoply(scope.row)">{{ $t('permission.coplyPermission') }}</el-button> -->
+          <!-- <el-button type="warning" size="small" @click="handleLook(scope.row)">{{ $t('permission.lookPermission') }}</el-button> -->
+          <!-- <el-button v-if="scope.row.UseStatus == 1" v-show="scope.row.Keep == 0" type="danger" size="small" @click="handleBan(scope.row)">
+            {{ $t('permission.handleBan') }}
+          </el-button> -->
+          <!-- <el-button v-else v-show="scope.row.Keep == 0" type="success" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleEnable') }}</el-button> -->
+          <!-- <el-button v-show="scope.row.Keep == 0" type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.delete') }}</el-button> -->
+          <el-tooltip class="item" effect="dark" content="编辑角色" placement="top-start">
+            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="复制角色" placement="top-start">
+            <el-button type="success" size="small" icon="el-icon-star-on" plain @click="handleCoply(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="查看用户" placement="top-start">
+            <el-button type="warning" size="small" icon="el-icon-view" plain @click="handleLook(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="禁用角色" placement="top-start">
+            <el-button v-if="scope.row.UseStatus == 1" v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="启用角色" placement="top-start">
+            <el-button v-show="scope.row.Keep == 0" v-if="scope.row.UseStatus == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="复制角色" placement="top-start">
+            <el-button v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
+    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
 
     <!-- 添加编辑菜单 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
@@ -80,13 +105,17 @@
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-          <el-form-item :label="$t('permission.description')">
-            <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
+          <el-form-item :label="$t('permission.DescriptionInfo')" prop="Description">
+            <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.DescriptionInfo')" />
           </el-form-item>
         </el-tooltip>
 
         <el-form-item :label="$t('permission.Menus')">
-          <el-tree ref="tree" :data="routesData" node-key="MenuCode" :props="defaultProps" show-checkbox class="permission-tree" />
+          <el-tree ref="tree" :data="routesData" node-key="MenuCode" :props="defaultProps" show-checkbox class="permission-tree" :default-expanded-keys="defaultShowNodes">
+            <!-- <span slot-scope="{ node }" class="custom-tree-node">
+              <span>{{ node.label }}  </span>1{{ node.ControlTitle }}
+            </span> -->
+          </el-tree>
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -124,15 +153,15 @@
 </template>
 
 <script>
-import '../../styles/commentBox.scss';
-import '../../styles/scrollbar.css';
-import { ListRole, addRole, updateRole, deleteRole, ListMenuFunAll, ListUser, UpdateStatus, ListRoleMenuFun } from '@/api/role';
-import i18n from '@/lang';
-import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
-const fixHeight = 280;
+import '../../styles/commentBox.scss'
+import '../../styles/scrollbar.css'
+import { ListRole, addRole, updateRole, deleteRole, ListMenuFunAll, ListUser, UpdateStatus, ListRoleMenuFun } from '@/api/role'
+import i18n from '@/lang'
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+const fixHeight = 280
 export default {
   name: 'RolePermission',
-  components: { Pagination },
+  // components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -141,12 +170,15 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'MenuTitle'
+        // label: 'ControlTitle'
       },
+
+      defaultShowNodes: [], // 这里存放要默认展开的节点 id
       ruleForm: {}, // 编辑弹窗
       logId: {}, // 查看用户行数据
       pagination: {
         PageIndex: 1,
-        PageSize: 10,
+        PageSize: 50,
         RoleName: undefined
       },
       listLoading: false,
@@ -157,133 +189,169 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
       rules: {
-        RoleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
+        RoleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+        Description: [{ required: true, message: '请输入角色描述', trigger: 'blur' }]
       },
       content1: this.$t('permission.title'),
-      content2: this.$t('permission.description')
-    };
+      content2: this.$t('permission.DescriptionInfo')
+    }
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
-      this.content1 = this.$t('permission.title');
-      this.content2 = this.$t('permission.description');
-      this.setFormRules();
+      this.content1 = this.$t('permission.title')
+      this.content2 = this.$t('permission.DescriptionInfo')
+      this.setFormRules()
+    },
+    routesData: {
+      handler() {
+        // 我这里默认展开一级, 指定几级就往里遍历几层取到 MenuCode 就可以了
+        this.routesData.forEach(item => {
+          this.defaultShowNodes.push(item.MenuCode)
+        })
+      },
+      deep: true
     }
   },
   created() {
     // 监听表格高度
-    const that = this;
+    const that = this
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight;
-      })();
-    };
+        that.tableHeight = window.innerHeight - fixHeight
+      })()
+    }
     // Mock: get all routes and roles list from server
     // this.getRoutes()
-    this.getList();
-    this.setFormRules();
+    this.getList()
+    this.setFormRules()
   },
   methods: {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        RoleName: [{ required: true, message: this.$t('permission.roleNameInfo') }]
-      };
+        RoleName: [{ required: true, message: this.$t('permission.roleNameInfo') }],
+        Description: [{ required: true, message: this.$t('permission.DescriptionInfo') }]
+      }
     },
     // 禁用，启用权限
-    handleBan(row) {
+    handleBan(row, status) {
       const params = {
         UseStatus: (row.UseStatus = row.UseStatus === '1' ? '0' : '1'),
         RoleCode: row.RoleCode
-      };
+      }
       UpdateStatus(params).then(res => {
-        // this.$message(res.MSG)
-        this.getList();
-      });
-
-      // scope.row.status = status
+        this.getList()
+      })
     },
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1;
-      this.getList();
+      this.pagination.PageIndex = 1
+      this.getList()
     },
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       ListRole(this.pagination).then(res => {
-        this.tableData = res.Obj;
-        this.total = res.TotalRowCount;
-        this.listLoading = false;
-      });
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`);
+        route.title = i18n.t(`route.${route.title}`)
         if (route.children) {
-          route.children = this.i18n(route.children);
+          route.children = this.i18n(route.children)
         }
-        return route;
-      });
-      return app;
+        return route
+      })
+      return app
     },
 
     // 增加角色
     handleAddUser() {
-      this.dialogType = 'new';
-      this.dialogFormVisible = true;
-      this.ruleForm = {};
-      ListMenuFunAll().then(res => {
+      this.dialogType = 'new'
+      this.dialogFormVisible = true
+      this.ruleForm = {}
+      ListMenuFunAll({}).then(res => {
         if (res.IsPass === true) {
-          this.routesData = res.Obj;
+          debugger
+          // fn(res.Obj)
+          // function fn(obj) {
+          //   obj.map(item => {
+          //     item.label = item.MenuTitle
+          //     if (item.children && item.children.length) {
+          //       fn(item.children)
+          //     }
+          //   })
+          // }
+          console.log('res.Obj', res.Obj)
+          this.routesData = res.Obj
         }
-      });
+      })
     },
     // 编辑角色
     handleEdit(row) {
-      debugger;
-      this.dialogType = 'edit';
-      this.dialogFormVisible = true;
-      this.ruleForm = JSON.parse(JSON.stringify(row));
+      this.dialogType = 'edit'
+      this.dialogFormVisible = true
+      this.ruleForm = JSON.parse(JSON.stringify(row))
       ListRoleMenuFun({ RoleCode: row.RoleCode }).then(res => {
         if (res.IsPass === true) {
-          this.routesData = res.Obj;
-          const data = [];
-          fn(this.routesData);
-          function fn(arr) {
-            arr.map(item => {
-              if (item.IsUse === '1') {
-                if (item.children.length > 0) {
-                  fn(item.children);
-                } else {
-                  data.push({
-                    MenuCode: item.MenuCode,
-                    MenuTitle: item.MenuTitle
-                  });
-                }
-              }
-            });
-          }
+          this.routesData = res.Obj
+          const data = []
+          this.fn(this.routesData, data)
+          // fn(this.routesData, data)
+          // function fn(arr) {
+          //   arr.map(item => {
+          //     if (item.IsUse === '1') {
+          //       if (item.children.length > 0) {
+          //         fn(item.children)
+          //       } else {
+          //         data.push({
+          //           MenuCode: item.MenuCode,
+          //           MenuTitle: item.MenuTitle,
+          //           ControlTitle: item.ControlTitle
+          //         })
+          //       }
+          //     }
+          //   })
+          // }
 
-          console.log('data', data);
+          console.log('data', data)
           this.$nextTick(function() {
-            this.$refs.tree.setCheckedNodes(data);
-          });
+            this.$refs.tree.setCheckedNodes(data)
+          })
         }
-      });
+      })
+    },
+    fn(arr, data) {
+      arr.map(item => {
+        if (item.IsUse === '1') {
+          if (item.children.length > 0) {
+            this.fn(item.children, data)
+          } else {
+            data.push({
+              MenuCode: item.MenuCode,
+              MenuTitle: item.MenuTitle,
+              ControlTitle: item.ControlTitle
+            })
+          }
+        }
+      })
+      return data
     },
     checkChange(data) {},
     // 编辑成功
@@ -291,29 +359,36 @@ export default {
       // this.editLoading = true;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          const treeSelect = this.$refs.tree.getCheckedNodes(false, true);
-          const newTreeSelect = [];
+          const treeSelect = this.$refs.tree.getCheckedNodes(false, true)
+          const newTreeSelect = []
           treeSelect.map(item => {
             if (item.ParentCode === '') {
-              newTreeSelect.push({ MenuTitle: item.MenuTitle, MenuCode: item.MenuCode, IsUse: '1', children: [] });
+              newTreeSelect.push({ MenuTitle: item.MenuTitle, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, IsUse: '1', children: [] })
             } else {
               newTreeSelect.map(child => {
                 if (child.children) {
                   child.children.map(chi => {
                     if (item.ParentCode === chi.MenuCode) {
-                      chi.children.push({ MenuTitle: item.MenuTitle, MenuCode: item.MenuCode, ParentCode: item.ParentCode, IsUse: '1' });
+                      chi.children.push({ MenuTitle: item.MenuTitle, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, ParentCode: item.ParentCode, IsUse: '1' })
                     }
-                  });
+                  })
                 }
                 if (item.ParentCode === child.MenuCode) {
-                  child.children.push({ MenuTitle: item.MenuTitle, MenuCode: item.MenuCode, ParentCode: item.ParentCode, IsUse: '1', children: [] });
+                  child.children.push({
+                    MenuTitle: item.MenuTitle,
+                    ControlTitle: item.ControlTitle,
+                    MenuCode: item.MenuCode,
+                    ParentCode: item.ParentCode,
+                    IsUse: '1',
+                    children: []
+                  })
                 }
-              });
+              })
             }
-          });
-          console.log('newTreeSelect', newTreeSelect);
+          })
+          console.log('newTreeSelect', newTreeSelect)
           // let  newTree= this.$refs.tree.getCheckedNodes() ;
-          this.ruleForm.MenuFunList = newTreeSelect;
+          this.ruleForm.MenuFunList = newTreeSelect
 
           if (this.dialogType === 'edit') {
             updateRole(this.ruleForm).then(res => {
@@ -321,52 +396,52 @@ export default {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                });
-                this.editLoading = false;
-                this.dialogFormVisible = false;
-                this.getList();
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
               }
-            });
+            })
           } else {
             addRole(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
-                });
-                this.editLoading = false;
-                this.dialogFormVisible = false;
-                this.getList();
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
               }
-            });
+            })
           }
         } else {
-          this.editLoading = false;
+          this.editLoading = false
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          });
-          return false;
+          })
+          return false
         }
-      });
+      })
     },
 
     // 复制角色
     handleCoply() {},
     // 查看用户
     handleLook(row) {
-      this.logId = row;
+      this.logId = row
       ListUser(this.paginationLog, { RoleCode: row.RoleCode }).then(res => {
-        debugger;
+        debugger
         if (res.TotalRowCount > 0) {
-          this.dialogTableVisible = true;
-          this.userData = res.Obj;
-          this.logTotal = res.TotalRowCount;
+          this.dialogTableVisible = true
+          this.userData = res.Obj
+          this.logTotal = res.TotalRowCount
         } else {
-          this.dialogTableVisible = false;
-          this.$message('此条数据暂无用户！');
+          this.dialogTableVisible = false
+          this.$message('此条数据暂无用户！')
         }
-      });
+      })
     },
 
     // 删除角色
@@ -383,26 +458,26 @@ export default {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.deleteSuccess')
-                });
+                })
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                });
+                })
               }
-            });
-            this.getList();
+            })
+            this.getList()
           })
           .catch(() => {
             this.$message({
               type: 'info',
               message: this.$t('table.deleteError')
-            });
-          });
+            })
+          })
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>

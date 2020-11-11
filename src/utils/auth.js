@@ -28,3 +28,17 @@ export function setMenu(menu) {
 export function removeMenu() {
   return Cookies.remove(MenuKey)
 }
+
+const NameKey = 'Admin-Name'
+
+export function getUseName() {
+  return Cookies.get(NameKey)
+}
+
+export function setUseName(name) {
+  return Cookies.set(NameKey, name)
+}
+
+export function removeUseName() {
+  return Cookies.remove(NameKey)
+}

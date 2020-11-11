@@ -114,10 +114,14 @@
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
+    <el-dialog
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')"
+    >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.companyNo')"><el-input v-model="ruleForm.companyNo" :placeholder="$t('permission.companyNo')" /></el-form-item>
+          <el-form-item :label="$t('permission.companyNo')" prop="companyNo"><el-input v-model="ruleForm.companyNo" :placeholder="$t('permission.companyNo')" /></el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
@@ -175,7 +179,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { OrganList } from '@/api/OrganlMan'
+import { OrganList, OrganAdd, OrganModify } from '@/api/OrganlMan'
 // import { OrganList, OrganAdd, OrganDelete, OrganModify } from '@/api/role'
 const fixHeight = 270
 export default {
@@ -196,11 +200,12 @@ export default {
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
-      dialogVisible: false,
       dialogType: 'new',
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       rules: {
+        CompanyCode: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
         companyName: [{ required: true, message: '请输入公司名字', trigger: 'blur' }]
+
       },
       parentMsg: this.$t('permission.importCompany'),
       content1: this.$t('permission.companyNo'),
@@ -256,6 +261,13 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
+        companyNo: [
+          {
+            required: true,
+            message: this.$t('permission.companyNoInfo'),
+            trigger: 'blur'
+          }
+        ],
         companyName: [
           {
             required: true,
@@ -303,7 +315,6 @@ export default {
     getList() {
       this.listLoading = true
       OrganList(this.pagination).then(res => {
-        debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -324,12 +335,57 @@ export default {
     // 增加
     handleAdd() {
       this.dialogType = 'new'
-      this.dialogVisible = true
+      this.dialogFormVisible = true
+      this.ruleForm = {}
     },
     // 编辑
-    handleEdit(scope) {
+    handleEdit(row) {
       this.dialogType = 'edit'
-      this.dialogVisible = true
+      this.dialogFormVisible = true
+      this.ruleForm = JSON.parse(JSON.stringify(row))
+    },
+
+    // 编辑成功
+    submitForm(formName) {
+      this.editLoading = true
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if (this.dialogType === 'edit') {
+            OrganModify(this.ruleForm).then(res => {
+              debugger
+              if (res.code === 200) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.editSuc')
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
+              }
+            })
+          } else {
+            OrganAdd(this.ruleForm).then(res => {
+              debugger
+              if (res.code === 200) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.addSuc')
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
+              }
+            })
+          }
+        } else {
+          this.editLoading = false
+          this.$message({
+            type: 'error',
+            message: '必填项不能为空'
+          })
+          return false
+        }
+      })
     },
 
     // 图片上传

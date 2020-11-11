@@ -31,7 +31,7 @@
           <span class="show-pwd" @click="showPwd"><svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" /></span>
         </el-form-item>
       </el-tooltip>
-      <el-button :loading="loading" type="primary" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <el-button :loading="loading" type="primary" @click.native.prevent="handleLogin()">{{ $t('login.logIn') }}</el-button>
     </el-form>
   </div>
 </template>
@@ -123,11 +123,15 @@ export default {
           _this.loading = true
           _this.$store
             .dispatch('user/login', _this.loginForm)
-            .then(() => {
+            .then((res) => {
               debugger
+              console.log('res', res)
+              if (res.IsPass === true) {
+                _this.$router.push({ path: '/' })
+              }
               console.info('3.vuex 里面的 login 方法被调用 完毕', _this.$route.query.redirect)
               // _this.$router.push({ path: _this.redirect || '/', query: _this.otherQuery })
-              _this.$router.push({ path: '/' })
+
               _this.loading = false
             })
             .catch(() => {
