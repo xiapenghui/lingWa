@@ -111,11 +111,7 @@
         </el-tooltip>
 
         <el-form-item :label="$t('permission.Menus')">
-          <el-tree ref="tree" :data="routesData" node-key="MenuCode" :props="defaultProps" show-checkbox class="permission-tree" :default-expanded-keys="defaultShowNodes">
-            <!-- <span slot-scope="{ node }" class="custom-tree-node">
-              <span>{{ node.label }}  </span>1{{ node.ControlTitle }}
-            </span> -->
-          </el-tree>
+          <el-tree ref="tree" :data="routesData" node-key="MenuCode" :props="defaultProps" show-checkbox class="permission-tree" :default-expanded-keys="defaultShowNodes" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -289,15 +285,16 @@ export default {
       ListMenuFunAll({}).then(res => {
         if (res.IsPass === true) {
           debugger
-          // fn(res.Obj)
-          // function fn(obj) {
-          //   obj.map(item => {
-          //     item.label = item.MenuTitle
-          //     if (item.children && item.children.length) {
-          //       fn(item.children)
-          //     }
-          //   })
-          // }
+          newFn(res.Obj)
+          function newFn(obj) {
+            obj.map(item => {
+              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '(' + item.ControlTitle + ')'
+              item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + '(' + item.ControlCode + ')'
+              if (item.children && item.children.length) {
+                newFn(item.children)
+              }
+            })
+          }
           console.log('res.Obj', res.Obj)
           this.routesData = res.Obj
         }
@@ -310,9 +307,24 @@ export default {
       this.ruleForm = JSON.parse(JSON.stringify(row))
       ListRoleMenuFun({ RoleCode: row.RoleCode }).then(res => {
         if (res.IsPass === true) {
+          // 重构代码MenuTitle、MenuCode
+          newFn(res.Obj)
+          function newFn(obj) {
+            obj.map(item => {
+              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '(' + item.ControlTitle + ')'
+              item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + '(' + item.ControlCode + ')'
+              if (item.children && item.children.length) {
+                newFn(item.children)
+              }
+            })
+          }
+
+          // 已选择树节点进行选中效果
           this.routesData = res.Obj
           const data = []
+          // 方法一
           this.fn(this.routesData, data)
+          // 方法二
           // fn(this.routesData, data)
           // function fn(arr) {
           //   arr.map(item => {
