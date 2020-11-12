@@ -290,7 +290,6 @@ export default {
             obj.map(item => {
               item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '--' + '(' + item.ControlTitle + ')'
               // item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + '(' + item.ControlCode + ')'
-              MenuCode = item.MenuCode
               if (item.children && item.children.length) {
                 newFn(item.children)
               }
@@ -358,6 +357,7 @@ export default {
             this.fn(item.children, data)
           } else {
             data.push({
+              Key:item.Key,
               MenuCode: item.MenuCode,
               MenuTitle: item.MenuTitle,
               ControlTitle: item.ControlTitle
@@ -377,13 +377,13 @@ export default {
           const newTreeSelect = []
           treeSelect.map(item => {
             if (item.ParentCode === '') {
-              newTreeSelect.push({ MenuTitle: item.MenuTitle, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, IsUse: '1', children: [] })
+              newTreeSelect.push({ MenuTitle: item.MenuTitle, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, IsUse: '1',Key:item.Key, children: [] })
             } else {
               newTreeSelect.map(child => {
                 if (child.children) {
                   child.children.map(chi => {
                     if (item.ParentCode === chi.MenuCode) {
-                      chi.children.push({ MenuTitle: item.MenuTitle, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, ParentCode: item.ParentCode, IsUse: '1' })
+                      chi.children.push({ MenuTitle: item.MenuTitle, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, ParentCode: item.ParentCode, Key:item.Key,IsUse: '1' })
                     }
                   })
                 }
@@ -394,6 +394,7 @@ export default {
                     MenuCode: item.MenuCode,
                     ParentCode: item.ParentCode,
                     IsUse: '1',
+                    Key:item.Key,
                     children: []
                   })
                 }

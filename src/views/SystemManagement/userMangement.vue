@@ -375,7 +375,13 @@ export default {
     handleEdit(row) {
       debugger
       this.dialogType = 'edit'
+      companyList().then(res => {
+        if (res.IsPass === true) {
+          this.rouleOptions = res.Obj.RoleList
+        }
+      })
       this.dialogFormVisible = true
+      console.log("row",row)
       this.ruleForm = JSON.parse(JSON.stringify(row))
       this.ruleForm.RoleName = row.RoleName
     },
