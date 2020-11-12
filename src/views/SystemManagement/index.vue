@@ -88,7 +88,7 @@
             <el-button v-show="scope.row.Keep == 0" v-if="scope.row.UseStatus == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="复制角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除角色" placement="top-start">
             <el-button v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -111,7 +111,8 @@
         </el-tooltip>
 
         <el-form-item :label="$t('permission.Menus')">
-          <el-tree ref="tree" :data="routesData" node-key="MenuCode" :props="defaultProps" show-checkbox class="permission-tree" :default-expanded-keys="defaultShowNodes" />
+          <!-- <el-tree ref="tree" :data="routesData" node-key="MenuCode" :props="defaultProps" show-checkbox class="permission-tree" :default-expanded-keys="defaultShowNodes" /> -->
+          <el-tree ref="tree" :data="routesData" node-key="Key" :props="defaultProps" show-checkbox class="permission-tree" :default-expanded-keys="defaultShowNodes" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -166,7 +167,6 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'MenuTitle'
-        // label: 'ControlTitle'
       },
 
       defaultShowNodes: [], // 这里存放要默认展开的节点 id
@@ -213,9 +213,9 @@ export default {
     },
     routesData: {
       handler() {
-        // 我这里默认展开一级, 指定几级就往里遍历几层取到 MenuCode 就可以了
+        // 我这里默认展开一级, 指定几级就往里遍历几层取到 Key 就可以了
         this.routesData.forEach(item => {
-          this.defaultShowNodes.push(item.MenuCode)
+          this.defaultShowNodes.push(item.Key)
         })
       },
       deep: true
@@ -288,8 +288,9 @@ export default {
           newFn(res.Obj)
           function newFn(obj) {
             obj.map(item => {
-              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '(' + item.ControlTitle + ')'
-              item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + '(' + item.ControlCode + ')'
+              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '--' + '(' + item.ControlTitle + ')'
+              // item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + '(' + item.ControlCode + ')'
+              MenuCode = item.MenuCode
               if (item.children && item.children.length) {
                 newFn(item.children)
               }
@@ -311,8 +312,9 @@ export default {
           newFn(res.Obj)
           function newFn(obj) {
             obj.map(item => {
-              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '(' + item.ControlTitle + ')'
-              item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + '(' + item.ControlCode + ')'
+              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '--' + '(' + item.ControlTitle + ')'
+              // item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + '(' + item.ControlCode + ')'
+              // item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + item.ControlCode
               if (item.children && item.children.length) {
                 newFn(item.children)
               }

@@ -128,6 +128,8 @@ export default {
               console.log('res', res)
               if (res.IsPass === true) {
                 _this.$router.push({ path: '/' })
+              } else {
+                this.$message.error(res.MSG)
               }
               console.info('3.vuex 里面的 login 方法被调用 完毕', _this.$route.query.redirect)
               // _this.$router.push({ path: _this.redirect || '/', query: _this.otherQuery })

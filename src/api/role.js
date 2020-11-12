@@ -74,3 +74,59 @@ export function ListRoleMenuFun(data) {
     data
   })
 }
+
+// 系统管理用户管理--用户管理
+// 公司部门下拉列表
+export function companyList(data) {
+  return request({
+    url: newUrl + '/api/User/ListConditionOrgDeptRole',
+    method: 'post',
+    data
+  })
+}
+
+// 分页查询
+export function UserList(data) {
+  return request({
+    url: newUrl + '/api/User/List',
+    method: 'post',
+    data
+  })
+}
+
+// 新增用户
+export function UserAdd(data) {
+  return request({
+    url: newUrl + '/api/User/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 编辑用户
+export function UserUpdate(data) {
+  return request({
+    url: newUrl + '/api/User/Update',
+    method: 'post',
+    data
+  })
+}
+
+//设置用户可用或者禁用状态
+export function RelerStatus(data) {
+  return request({
+    url: newUrl + '/api/User/UpdateStatus',
+    method: 'post',
+    data
+  })
+}
+
+
+//删除用户
+export function RelerDelete(data) {
+  return request({
+    url: newUrl + '/api/User/Delete',
+    method: 'post',
+    data
+  })
+}

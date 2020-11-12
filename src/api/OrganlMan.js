@@ -37,3 +37,37 @@ export function OrganModify(data) {
     data
   })
 }
+
+// 查看工序分页列表
+export function ProduceList(data) {
+  return request({
+    url: newUrl + '/api/ProduceProcess/List',
+    method: 'post',
+    data
+  })
+}
+// 查看工序增加
+export function ProduceAdd(data) {
+  return request({
+    url: newUrl + '/api/ProduceProcess/Add',
+    method: 'post',
+    data
+  })
+}
+// 查看工序增加
+export function ProduceDelete(data) {
+  return request({
+    url: newUrl + '/api/ProduceProcess/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 修改工序增加
+export function ProduceModify(data) {
+  return request({
+    url: newUrl + '/api/ProduceProcess/Modify',
+    method: 'post',
+    data
+  })
+}

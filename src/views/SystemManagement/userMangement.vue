@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.userName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.userName" :placeholder="$t('permission.userNameInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.AccountName" :placeholder="$t('permission.userNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
@@ -16,12 +16,12 @@
               <label class="radio-label">{{ $t('permission.fullName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.fullName" :placeholder="$t('permission.fullNameInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="12">
             <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.containInfo') }}</el-checkbox>
+              <el-checkbox v-model="pagination.ShowBanned" @change="tableKey">{{ $t('permission.containInfo') }}</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -34,8 +34,8 @@
             </el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="form.company" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%">
-              <el-option v-for="item in companyOptions" :key="item" :label="item" :value="item" />
+            <el-select v-model="pagination.OrgCode" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%">
+              <el-option v-for="item in companyData" :key="item.OrgCode" :label="item.FullName" :value="item.OrgCode" />
             </el-select>
           </el-col>
         </el-col>
@@ -46,8 +46,8 @@
             </el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="form.department" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
-              <el-option v-for="item in departmentOptions" :key="item" :label="item" :value="item" />
+            <el-select v-model="pagination.DeptCode" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
+              <el-option v-for="item in DepFullData" :key="item.DeptCode" :label="item.FullName" :value="item.DeptCode" />
             </el-select>
           </el-col>
         </el-col>
@@ -62,125 +62,127 @@
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addUser') }}</el-button>
     </div>
 
-    <el-table v-loading="listLoading" :data="rolesList" style="width: 100%" border>
-      <el-table-column align="center" :label="$t('permission.userName')" width="150" fixed sortable prop="key">
+    <el-table
+      v-loading="listLoading"
+      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :data="tableData"
+      :height="tableHeight"
+      style="width: 100%"
+      border
+      element-loading-text="拼命加载中"
+      fit
+      highlight-current-row
+    >
+      >
+      <el-table-column align="center" :label="$t('permission.userName')" width="150">
         <template slot-scope="scope">
-          {{ scope.row.userName }}
+          {{ scope.row.AccountName }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.fullName')" width="150">
         <template slot-scope="scope">
-          {{ scope.row.fullName }}
+          {{ scope.row.NameCN }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.title')" width="150">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.RoleName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.department')" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.department }}
-        </template>
-      </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.company')" width="250">
         <template slot-scope="scope">
-          {{ scope.row.company }}
+          {{ scope.row.OrgFullName }}
         </template>
       </el-table-column>
+
+      <el-table-column align="center" :label="$t('permission.department')" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.DepFullName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.description')" width="300">
         <template slot-scope="scope">
-          {{ scope.row.description }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">{{ scope.row.status }}</el-tag>
+          <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status === '0' ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === '0' ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.user')" prop="name" sortable width="250">
         <template slot-scope="scope">
-          {{ scope.row.user }}
+          {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.time')" width="200">
         <template slot-scope="scope">
-          {{ scope.row.time }}
+          {{ scope.row.ModifyTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="400">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editUser') }}</el-button>
-          <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
-          <el-button v-if="scope.row.status == '启用'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleBan') }}</el-button>
-          <el-button v-else type="success" size="small" @click="handleBan(scope, '启用')">{{ $t('permission.handleEnable') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.delete') }}</el-button>
+          <el-tooltip class="item" effect="dark" content="编辑角色" placement="top-start">
+            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="禁用角色" placement="top-start">
+            <el-button v-if="scope.row.Status == 1" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="启用角色" placement="top-start">
+            <el-button v-if="scope.row.Status == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="删除角色" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
+
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')">
-      <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.userName')" prop="userName">
-            <el-input v-model="role.userName" :placeholder="$t('permission.userNameInfo')" clearable />
-          </el-form-item>
-        </el-tooltip>
+    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
 
-        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
-          <el-form-item :label="$t('permission.password')" prop="password">
-            <el-input v-model="role.password" type="password" :placeholder="$t('permission.password')" clearable />
-          </el-form-item>
-        </el-tooltip>
+    <el-dialog
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')"
+    >
+      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
 
-        <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
+        <el-form-item :label="$t('permission.userName')" prop="NameCN">
+          <el-input v-model="ruleForm.NameCN" :placeholder="$t('permission.userNameInfo')" clearable />
+        </el-form-item>
+
+        <el-form-item :label="$t('permission.password')" prop="AccountPwd">
+          <el-input v-model="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable />
+        </el-form-item>
+
+        <!-- <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
           <el-form-item :label="$t('permission.passwords')" prop="passwords">
-            <el-input v-model="role.passwords" type="password" :placeholder="$t('permission.passwords')" clearable />
+            <el-input v-model="ruleForm.passwords" type="password" :placeholder="$t('permission.passwords')" clearable />
           </el-form-item>
-        </el-tooltip>
+        </el-tooltip> -->
 
-        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-          <el-form-item :label="$t('permission.fullName')" prop="fullName">
-            <el-input v-model="role.fullName" :placeholder="$t('permission.fullNameInfo')" clearable />
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item :label="$t('permission.fullName')" prop="AccountName">
+          <el-input v-model="ruleForm.AccountName" :placeholder="$t('permission.fullNameInfo')" clearable />
+        </el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content8" placement="top-start">
-          <el-form-item :label="$t('permission.roleUser')">
-            <el-select v-model="role.roleUser" :placeholder="$t('permission.roleUserInfo')" clearable style="width: 100%">
-              <el-option v-for="item in roleUserOptions" :key="item" :label="item" :value="item" />
-            </el-select>
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item :label="$t('permission.rouleInfo')" prop="RoleCode">
+          <el-select v-model="ruleForm.RoleCode" :placeholder="$t('permission.rouleInfo')" clearable style="width: 100%">
+            <el-option v-for="item in rouleOptions" :key="item.RoleCode" :label="item.RoleName" :value="item.RoleCode" />
+          </el-select>
+        </el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
-          <el-form-item :label="$t('permission.company')">
-            <el-select v-model="role.company" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%">
-              <el-option v-for="item in companyOptions" :key="item" :label="item" :value="item" />
-            </el-select>
-          </el-form-item>
-        </el-tooltip>
-
-        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
-          <el-form-item :label="$t('permission.department')">
-            <el-select v-model="role.department" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
-              <el-option v-for="item in departmentOptions" :key="item" :label="item" :value="item" />
-            </el-select>
-          </el-form-item>
-        </el-tooltip>
-
-        <el-tooltip class="item" effect="dark" :content="content9" placement="top-start">
-          <el-form-item :label="$t('permission.description')">
-            <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
-          </el-form-item>
-        </el-tooltip>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmRole">{{ $t('permission.confirm') }}</el-button>
+        <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -189,66 +191,42 @@
 <script>
 import '../../styles/commentBox.scss'
 import '../../styles/scrollbar.css'
-import { deleteRole } from '@/api/role'
 import i18n from '@/lang'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { companyList, UserList, UserAdd, UserUpdate, RelerStatus, RelerDelete } from '@/api/role'
+const fixHeight = 300
 export default {
-  components: { Pagination },
+  name: 'UserMangement',
+  // components: { Pagination },
   data() {
     return {
-      // role: Object.assign({}, defaultRole),
-      role: {
-        userName: '',
-        password: '',
-        passwords: '',
-        fullName: '',
-        roleUser: '',
-        company: '',
-        department: ''
+      tableData: [],
+      ruleForm: {}, // 编辑弹窗
+      pagination: {
+        PageIndex: 1,
+        PageSize: 50,
+        AccountName: undefined,
+        NameCN: undefined,
+        ShowBanned: false,
+        OrgCode: 'C000000003',
+        DeptCode: ''
       },
-      routes: [],
-      rolesList: [
-        {
-          userName: '管理员',
-          fullName: '王小虎',
-          title: '部长',
-          department: '开发部',
-          company: '上海灵娃技术有限公司',
-          description: '拥有所有权限',
-          status: '禁用',
-          user: '张三',
-          time: '2020-8-19'
-        },
-        {
-          userName: '管理员',
-          fullName: '王小虎',
-          title: '部长',
-          department: '开发部',
-          company: '上海灵娃技术有限公司',
-          description: '拥有所有权限',
-          status: '开启',
-          user: '夏鹏辉',
-          time: '2020-8-19'
-        }
-      ],
-      dialogVisible: false,
-      dialogType: 'new',
-
-      form: {
-        userName: '',
-        fullName: '',
-        company: '',
-        department: '',
-        showReviewer: false,
-        page: 1,
-        limit: 20
-      },
-      companyOptions: ['上海中智浩云有限公司', '上海灵娃有限公司'],
-      departmentOptions: ['研发部', '财务部'],
-      roleUserOptions: ['管理员', '生产组长'],
-      listLoading: true,
+      listLoading: false,
+      editLoading: false, // 编辑loading
       total: 10,
+      dialogFormVisible: false, // 编辑弹出框
+      dialogTableVisible: false, // 查看用户弹出框
+      tableHeight: window.innerHeight - fixHeight, // 表格高度
+      dialogType: 'new',
+      companyData: [], // 获取搜索框公司列表
+      DepFullData: [], // 获取搜索框部门列表
+      rouleOptions: [], // 获取新增框角色列表
+      rules: {
+        NameCN: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        AccountPwd: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        AccountName: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        RoleCode: [{ required: true, message: '请选择角色', trigger: 'change' }]
+      },
       content1: this.$t('permission.userName'),
       content2: this.$t('permission.fullName'),
       content3: this.$t('permission.containInfo'),
@@ -262,6 +240,17 @@ export default {
   },
   computed: {},
   watch: {
+    // 监听表格高度
+    tableHeight(val) {
+      if (!this.timer) {
+        this.tableHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
+      }
+    },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.content1 = this.$t('permission.userName')
@@ -277,79 +266,87 @@ export default {
     }
   },
   created() {
+    // 监听表格高度
+    const that = this
+    window.onresize = () => {
+      return (() => {
+        that.tableHeight = window.innerHeight - fixHeight
+      })()
+    }
     // Mock: get all routes and roles list from server
     this.getList()
     this.setFormRules()
-    var getDate = this.$getDate
-    console.log('getDate', getDate())
+  },
+  mounted() {
+    // 获取公司部门的信息
+    companyList().then(res => {
+      debugger
+      if (res.IsPass === true) {
+        this.companyData = res.Obj.OrgList
+        this.DepFullData = res.Obj.DeptList
+      }
+    })
   },
   methods: {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        userName: [{ required: true, message: this.$t('permission.userNameInfo'), trigger: 'blur' }],
-        password: [
+        NameCN: [{ required: true, message: this.$t('permission.userNameInfo'), trigger: 'blur' }],
+        AccountPwd: [
           {
             required: true,
             message: this.$t('permission.passwordInfo'),
             trigger: 'blur'
           }
         ],
-        passwords: [
-          {
-            required: true,
-            message: this.$t('permission.passwordsInfo'),
-            trigger: 'blur'
-          }
-        ],
-        fullName: [
+        // passwords: [
+        //   {
+        //     required: true,
+        //     message: this.$t('permission.passwordsInfo'),
+        //     trigger: 'blur'
+        //   }
+        // ],
+        AccountName: [
           {
             required: true,
             message: this.$t('permission.fullNamesInfo'),
             trigger: 'blur'
           }
-        ]
+        ],
+        RoleCode: [{ required: true, message: '请选择角色', trigger: 'change' }]
       }
     },
     // 禁用，启用权限
-    handleBan(scope, status) {
-      this.$message({
-        message: status + '成功',
-        type: 'success'
+    handleBan(row) {
+      const params = {
+        Status: (row.Status = row.Status === '1' ? '0' : '1'),
+        UserCode: row.UserCode
+      }
+      RelerStatus(params).then(res => {
+        this.getList()
       })
-      scope.row.status = status
     },
 
     // 查询
     handleSearch() {
-      this.form.page = 1
+      this.pagination.PageIndex = 1
       this.getList()
     },
     // 重置
     handleReset() {
-      this.form = {
-        userName: '',
-        fullName: '',
-        company: '',
-        department: '',
-        showReviewer: false,
-        page: 1,
-        limit: 20
-      }
+
     },
     // 选择框
     tableKey() {},
 
     getList() {
-      this.listLoading = false
-      // fetchList(this.listQuery).then(response => {
-      //   this.list = response.data.items
-      //   this.total = response.data.total
-      //   // Just to simulate the time of the request
-      //   setTimeout(() => {
-      //     this.listLoading = false
-      //   }, 1.5 * 1000)
-      // })
+      this.listLoading = true
+      UserList(this.pagination).then(res => {
+        debugger
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
@@ -366,74 +363,100 @@ export default {
     // 增加角色
     handleAddUser() {
       this.dialogType = 'new'
-      this.dialogVisible = true
+      this.dialogFormVisible = true
+      this.ruleForm = {}
+      companyList().then(res => {
+        if (res.IsPass === true) {
+          this.rouleOptions = res.Obj.RoleList
+        }
+      })
     },
     // 编辑角色
-    handleEdit(scope) {
+    handleEdit(row) {
+      debugger
       this.dialogType = 'edit'
-      this.dialogVisible = true
-
-      this.$nextTick(() => {
-        // set checked state of a node not affects its father and child nodess
-      })
+      this.dialogFormVisible = true
+      this.ruleForm = JSON.parse(JSON.stringify(row))
+      this.ruleForm.RoleName = row.RoleName
     },
 
     // 查看用户
     handleLook() {
-      this.$router.push('../SystemManagement/lookUser')
+
     },
     // 删除角色
-    handleDelete({ $index, row }) {
-      this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      })
-        .then(async() => {
-          await deleteRole(row.key)
-          this.rolesList.splice($index, 1)
-          this.$message({
-            type: 'success',
-            message: 'Delete succed!'
-          })
-        })
-        .catch(err => {
-          console.error(err)
-        })
-    },
-
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
-      if (isEdit) {
-        console.log(1)
-      } else {
-        debugger
-        console.log('this.role', this.role)
-      }
-
-      // const { description, key, name } = this.role
-      this.dialogVisible = false
-      if (this.role.userName === '') {
-        this.$notify({
-          title: 'warning',
-          dangerouslyUseHTMLString: true,
-          message: this.$t('permission.noInfo'),
+    handleDelete(row) {
+      if (this.tableData.length > 0) {
+        this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
+          confirmButtonText: this.$t('permission.Confirm'),
+          cancelButtonText: this.$t('permission.Cancel'),
           type: 'warning'
         })
-        return
-      } else {
-        this.$notify({
-          title: 'Success',
-          dangerouslyUseHTMLString: true,
-          // message: `
-          //     <div>Role Key: ${key}</div>
-          //     <div>Role Name: ${name}</div>
-          //     <div>Description: ${description}</div>
-          //   `,
-          message: this.$t('permission.success'),
-          type: 'success'
-        })
+          .then(() => {
+            RelerDelete({ UserCode: row.UserCode }).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.deleteSuccess')
+                })
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+            })
+            this.getList()
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: this.$t('table.deleteError')
+            })
+          })
       }
+    },
+
+    // 编辑成功
+    submitForm(formName) {
+      this.editLoading = true
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if (this.dialogType === 'edit') {
+            UserUpdate(this.ruleForm).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.editSuc')
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
+              }
+            })
+          } else {
+            UserAdd(this.ruleForm).then(res => {
+              debugger
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.addSuc')
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
+              }
+            })
+          }
+        } else {
+          this.editLoading = false
+          this.$message({
+            type: 'error',
+            message: '必填项不能为空'
+          })
+          return false
+        }
+      })
     }
   }
 }

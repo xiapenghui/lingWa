@@ -8,91 +8,121 @@
               <label class="radio-label">{{ $t('permission.ProcessRoute') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.ProcessRoute" :placeholder="$t('permission.ProcessRouteInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" :placeholder="$t('permission.ProcessRouteInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="15">
             <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionRoute') }}</el-checkbox>
+              <el-checkbox v-model="pagination.IsDelete" @change="tableKey">{{ $t('permission.inclusionRoute') }}</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
-      </el-row>
-
-      <el-row class="center">
-        <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-        <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+        <el-col :span="6">
+          <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+          <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+        </el-col>
       </el-row>
     </div>
 
     <div class="rightBtn">
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addRoute') }}</el-button>
-      <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">{{ $t('permission.exportRoute') }}</el-button>
+      <!-- <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">{{ $t('permission.exportRoute') }}</el-button> -->
       <!-- <el-button type="primary" icon="el-icon-document-remove" @click="handleImport">{{ $t('permission.importFinished') }}</el-button> -->
-      <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" />
+      <!-- <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" /> -->
     </div>
 
-    <el-table v-loading="listLoading" :data="rolesList" style="width: 100%" border>
-      <el-table-column align="center" :label="$t('permission.ProcessRoute')" width="150" fixed sortable prop="key">
+    <el-table
+      v-loading="listLoading"
+      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :data="tableData"
+      :height="tableHeight"
+      style="width: 100%"
+      border
+      element-loading-text="拼命加载中"
+      fit
+      highlight-current-row
+    >
+      <el-table-column align="center" :label="$t('permission.ProcessRoute')" width="150">
         <template slot-scope="scope">
-          {{ scope.row.ProcessRoute }}
+          {{ scope.row.Name }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.edition')" width="150">
         <template slot-scope="scope">
-          {{ scope.row.edition }}
+          {{ scope.row.ProcessCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.descriptionRoute')" width="300">
+      <el-table-column align="center" :label="$t('permission.descriptionRoute')">
         <template slot-scope="scope">
-          {{ scope.row.descriptionRoute }}
+          {{ scope.row.Describe }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">{{ scope.row.status }}</el-tag>
+          <el-tag :style="{ color: scope.row.IsDelete === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsDelete === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.user')" prop="name" sortable width="250">
         <template slot-scope="scope">
-          {{ scope.row.user }}
+          {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.time')" width="200">
         <template slot-scope="scope">
-          {{ scope.row.time }}
+          {{ scope.row.ModifyTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="550">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.EditRoute') }}</el-button>
-          <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookRoute') }}</el-button>
-          <el-button v-if="scope.row.status == '启用'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleRoute') }}</el-button>
-          <el-button v-else type="success" size="small" @click="handleBan(scope, '启用')">{{ $t('permission.SpecificationsRoute') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.deleteRoute') }}</el-button>
+          <!-- <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.EditRoute') }}</el-button>
+          <el-button type="warning" size="small" @click="handleLook(scope.row)">{{ $t('permission.lookRoute') }}</el-button>
+          <el-button v-if="scope.row.status == '启用'" type="danger" size="small" @click="handleBan(scope.row, '禁用')">{{ $t('permission.handleRoute') }}</el-button>
+          <el-button v-else type="success" size="small" @click="handleBan(scope.row, '启用')">{{ $t('permission.SpecificationsRoute') }}</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.deleteRoute') }}</el-button> -->
+
+          <el-tooltip class="item" effect="dark" content="编辑工艺路线" placement="top-start">
+            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="查看工艺路线" placement="top-start">
+            <el-button type="warning" size="small" icon="el-icon-view" plain @click="handleLook(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="禁用工艺路线" placement="top-start">
+            <el-button v-if="scope.row.IsDelete == 1" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="启用工艺路线" placement="top-start">
+            <el-button v-if="scope.row.IsDelete == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="删除工艺" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditRouter') : $t('permission.addRouter')">
-      <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
+    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditRouter') : $t('permission.addRouter')">
+      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.ProcessRoute')" prop="ProcessRoute">
-            <el-input v-model="role.ProcessRoute" :placeholder="$t('permission.ProcessRoute')" clearable />
+            <el-input v-model="ruleForm.ProcessRoute" :placeholder="$t('permission.ProcessRoute')" clearable />
           </el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-          <el-form-item :label="$t('permission.edition')" prop="edition"><el-input v-model="role.edition" :placeholder="$t('permission.edition')" clearable /></el-form-item>
+          <el-form-item :label="$t('permission.edition')" prop="edition"><el-input v-model="ruleForm.edition" :placeholder="$t('permission.edition')" clearable /></el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
           <el-form-item :label="$t('permission.descriptionRoute')">
-            <el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.descriptionRoute')" />
+            <el-input v-model="ruleForm.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.descriptionRoute')" />
           </el-form-item>
         </el-tooltip>
 
@@ -118,9 +148,7 @@
                   <span>{{ node.label }}</span>
                   <span v-show="data.show">
                     <!-- <el-tag type="danger" size="mini" @click="() => remove(node, data)">删除</el-tag> -->
-                    <el-popconfirm title="这是一段内容确定删除吗？" @onConfirm="remove(node, data)">
-                      <el-tag slot="reference" type="danger" size="mini">删除</el-tag>
-                    </el-popconfirm>
+                    <el-popconfirm title="这是一段内容确定删除吗？" @onConfirm="remove(node, data)"><el-tag slot="reference" type="danger" size="mini">删除</el-tag></el-popconfirm>
                   </span>
                 </span>
               </el-tree>
@@ -133,12 +161,7 @@
 
           <div v-if="isShow" class="boxList" :style="{ width: boxListWidth }">
             <el-form-item :label="$t('permission.changeRoute')">
-              <el-tree
-                ref="boxList"
-                :data="boxList"
-                show-checkbox
-                node-key="id"
-              />
+              <el-tree ref="boxList" :data="boxList" show-checkbox node-key="id" />
               <div class="boxBtn" style="text-align:right;">
                 <el-button type="danger" @click="cancel">{{ $t('permission.cancel') }}</el-button>
                 <el-button type="primary" @click="submit">{{ $t('permission.submit') }}</el-button>
@@ -149,7 +172,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmRole">{{ $t('permission.confirm') }}</el-button>
+        <!-- <el-button type="primary" @click="confirmRole">{{ $t('permission.confirm') }}</el-button> -->
       </div>
     </el-dialog>
 
@@ -160,13 +183,13 @@
 <script>
 import '../../../../styles/scrollbar.css'
 import '../../../../styles/commentBox.scss'
-import { deleteRole } from '@/api/role'
 import i18n from '@/lang'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination'
+import { ProduceList, ProduceAdd, ProduceDelete, ProduceModify } from '@/api/OrganlMan'
+const fixHeight = 300
 export default {
-  components: { Pagination, UploadExcelComponent },
+  name: 'RouteMaintenance',
+  // components: { Pagination },
   data() {
     return {
       boxThreeWidth: '100%',
@@ -178,28 +201,19 @@ export default {
       dialogType: 'new',
       total: 10,
       dialogType2: '标题',
-      role: {
-        ProcessRoute: '',
-        edition: '',
-        description: ''
+      tableData: [],
+      ruleForm: {}, // 编辑弹窗
+      pagination: {
+        PageIndex: 1,
+        PageSize: 50,
+        IsDelete: false,
+        Name: undefined
       },
-      rolesList: [
-        {
-          ProcessRoute: '123456',
-          edition: '123456',
-          descriptionRoute: '123',
-          status: '禁用',
-          user: '张三',
-          time: '2020-8-19'
-        }
-      ],
-      form: {
-        ProcessRoute: '',
-        edition: '',
-        showReviewer: false,
-        page: 1,
-        limit: 20
-      },
+      editLoading: false, // 编辑loading
+      dialogFormVisible: false, // 编辑弹出框
+      dialogTableVisible: false, // 查看用户弹出框
+      tableHeight: window.innerHeight - fixHeight, // 表格高度
+
       boxTree: [
         {
           id: 1,
@@ -372,82 +386,26 @@ export default {
 
     // 查询
     handleSearch() {
-      this.form.page = 1
+      this.pagination.PageIndex = 1
       this.getList()
     },
     // 重置
-    handleReset() {
-      this.form = {
-        ProcessRoute: '',
-        edition: '',
-        showReviewer: false,
-        page: 1,
-        limit: 20
-      }
-    },
+    handleReset() {},
     // 选择框
     tableKey() {},
     // 导出用户
-    handleExport() {
-      if (this.rolesList.length) {
-        import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = [
-            this.$t('permission.finishedNo'),
-            this.$t('permission.finishedName'),
-            this.$t('permission.title'),
-            this.$t('permission.department'),
-            this.$t('permission.company'),
-            this.$t('permission.description'),
-            this.$t('permission.state'),
-            this.$t('permission.user'),
-            this.$t('permission.time')
-          ]
-          const filterVal = ['finishedNo', 'name', 'title', 'department', 'company', 'description', 'state', 'user', 'time']
-          const list = this.rolesList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data
-          })
-        })
-      } else {
-        this.$message({
-          message: 'Please select at least one item',
-          type: 'warning'
-        })
-      }
-    },
-    // 导出用户
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
-    },
-    // 导入
-    beforeUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
-      if (isLt1M) {
-        return true
-      }
-      this.$message({
-        message: 'Please do not upload files larger than 1m in size.',
-        type: 'warning'
-      })
-      return false
-    },
-    handleSuccess({ results, header }) {
-      this.tableData = results
-      this.tableHeader = header
-    },
+
     // 获取列表
     getList() {
-      this.listLoading = false
-      // fetchList(this.listQuery).then(response => {
-      //   this.list = response.data.items
-      //   this.total = response.data.total
-      //   // Just to simulate the time of the request
-      //   setTimeout(() => {
-      //     this.listLoading = false
-      //   }, 1.5 * 1000)
-      // })
+      this.listLoading = true
+      ProduceList(this.pagination).then(res => {
+        debugger
+        if (res.IsPass === true) {
+          this.tableData = res.Obj
+          this.total = res.TotalRowCount
+        }
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
@@ -481,24 +439,7 @@ export default {
       this.dialogVisible2 = true
     },
     // 删除角色
-    handleDelete({ $index, row }) {
-      this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      })
-        .then(async() => {
-          await deleteRole(row.key)
-          this.rolesList.splice($index, 1)
-          this.$message({
-            type: 'success',
-            message: 'Delete succed!'
-          })
-        })
-        .catch(err => {
-          console.error(err)
-        })
-    },
+    handleDelete(row) {},
     // 提交工序列表
     submit() {
       this.$refs.boxList.getCheckedNodes().map(item => {
@@ -517,38 +458,6 @@ export default {
       this.isShow = true
     },
 
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
-      if (isEdit) {
-        debugger
-      } else {
-        debugger
-      }
-
-      // const { description, key, name } = this.role
-      this.dialogVisible = false
-      if (this.role.finishedNo === '') {
-        this.$notify({
-          title: 'warning',
-          dangerouslyUseHTMLString: true,
-          message: this.$t('permission.noInfo'),
-          type: 'warning'
-        })
-        return
-      } else {
-        this.$notify({
-          title: 'Success',
-          dangerouslyUseHTMLString: true,
-          // message: `
-          //     <div>Role Key: ${key}</div>
-          //     <div>Role Name: ${name}</div>
-          //     <div>Description: ${description}</div>
-          //   `,
-          message: this.$t('permission.success'),
-          type: 'success'
-        })
-      }
-    },
     // 鼠标悬浮出现按钮
     mouseenter(data) {
       data.show = true
