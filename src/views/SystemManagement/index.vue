@@ -31,7 +31,7 @@
     >
       <el-table-column align="center" :label="$t('permission.user')" width="150" prop="name">
         <template slot-scope="scope">
-          {{ scope.row.RoleCode }}
+          {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
@@ -69,7 +69,7 @@
           <!-- <el-button v-else v-show="scope.row.Keep == 0" type="success" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleEnable') }}</el-button> -->
           <!-- <el-button v-show="scope.row.Keep == 0" type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.delete') }}</el-button> -->
           <el-tooltip class="item" effect="dark" content="编辑角色" placement="top-start">
-            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+            <el-button v-show="scope.row.Keep == 0" type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="复制角色" placement="top-start">
@@ -357,7 +357,7 @@ export default {
             this.fn(item.children, data)
           } else {
             data.push({
-              Key:item.Key,
+              Key: item.Key,
               MenuCode: item.MenuCode,
               MenuTitle: item.MenuTitle,
               ControlTitle: item.ControlTitle
@@ -377,24 +377,25 @@ export default {
           const newTreeSelect = []
           treeSelect.map(item => {
             if (item.ParentCode === '') {
-              newTreeSelect.push({ MenuTitle: item.MenuTitle, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, IsUse: '1',Key:item.Key, children: [] })
+              newTreeSelect.push({ MenuTitle: item.MenuTitle, ControlCode: item.ControlCode, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, IsUse: '1', Key: item.Key, children: [] })
             } else {
               newTreeSelect.map(child => {
                 if (child.children) {
                   child.children.map(chi => {
                     if (item.ParentCode === chi.MenuCode) {
-                      chi.children.push({ MenuTitle: item.MenuTitle, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, ParentCode: item.ParentCode, Key:item.Key,IsUse: '1' })
+                      chi.children.push({ MenuTitle: item.MenuTitle, ControlCode: item.ControlCode, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, ParentCode: item.ParentCode, Key: item.Key, IsUse: '1' })
                     }
                   })
                 }
                 if (item.ParentCode === child.MenuCode) {
                   child.children.push({
+                    ControlCode: item.ControlCode,
                     MenuTitle: item.MenuTitle,
                     ControlTitle: item.ControlTitle,
                     MenuCode: item.MenuCode,
                     ParentCode: item.ParentCode,
                     IsUse: '1',
-                    Key:item.Key,
+                    Key: item.Key,
                     children: []
                   })
                 }
@@ -424,11 +425,16 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
-                this.editLoading = false
-                this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
             })
+            this.editLoading = false
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -461,6 +467,7 @@ export default {
 
     // 删除角色
     handleDelete(row) {
+      debugger
       if (this.tableData.length > 0) {
         this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
           confirmButtonText: this.$t('permission.Confirm'),
@@ -469,11 +476,13 @@ export default {
         })
           .then(() => {
             deleteRole({ RoleCode: row.RoleCode }).then(res => {
+              debugger
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.deleteSuccess')
                 })
+                this.getList()
               } else {
                 this.$message({
                   type: 'error',
@@ -481,7 +490,6 @@ export default {
                 })
               }
             })
-            this.getList()
           })
           .catch(() => {
             this.$message({

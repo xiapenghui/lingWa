@@ -335,7 +335,6 @@ export const asyncRoutes = [
       meta: {
         title: 'QualityAdministration',
         icon: 'tab'
-
       }
     }]
   },
@@ -413,20 +412,6 @@ export const asyncRoutes = [
   },
 
   {
-    path: '/tab',
-    component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/tab/index'),
-      name: 'Tab',
-      meta: {
-        title: 'tab',
-        icon: 'tab'
-      }
-    }]
-  },
-
-  {
     path: '/error',
     component: Layout,
     redirect: 'noRedirect',
@@ -452,57 +437,6 @@ export const asyncRoutes = [
       meta: {
         title: 'page404',
         noCache: true
-      }
-    }
-    ]
-  },
-  {
-    path: '/excel',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    name: 'Excel',
-    meta: {
-      title: 'excel',
-      icon: 'excel'
-    },
-    children: [{
-      path: 'export-excel',
-      component: () => import('@/views/excel/export-excel'),
-      name: 'ExportExcel',
-      meta: {
-        title: 'exportExcel'
-      }
-    },
-    {
-      path: 'export-selected-excel',
-      component: () => import('@/views/excel/select-excel'),
-      name: 'SelectExcel',
-      meta: {
-        title: 'selectExcel'
-      }
-    },
-    {
-      path: 'export-merge-header',
-      component: () => import('@/views/excel/merge-header'),
-      name: 'MergeHeader',
-      meta: {
-        title: 'mergeHeader'
-      }
-    },
-    {
-      path: 'upload-excel',
-      component: () => import('@/views/excel/upload-excel'),
-      name: 'UploadExcel',
-      meta: {
-        title: 'uploadExcel'
-      }
-    },
-    {
-      path: 'newTree',
-      component: () => import('@/views/excel/newTree'),
-      name: 'newTree',
-      meta: {
-        title: 'newTree'
       }
     }
     ]

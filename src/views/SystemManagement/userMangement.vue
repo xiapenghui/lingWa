@@ -21,7 +21,7 @@
         <el-col :span="6">
           <el-col :span="12">
             <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned" @change="tableKey">{{ $t('permission.containInfo') }}</el-checkbox>
+              <el-checkbox v-model="pagination.ShowBanned">{{ $t('permission.containInfo') }}</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -34,7 +34,7 @@
             </el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.OrgCode" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%">
+            <el-select v-model="pagination.OrgCode" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%" @change="companyVal">
               <el-option v-for="item in companyData" :key="item.OrgCode" :label="item.FullName" :value="item.OrgCode" />
             </el-select>
           </el-col>
@@ -142,43 +142,34 @@
           <el-tooltip class="item" effect="dark" content="删除角色" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
-
         </template>
       </el-table-column>
     </el-table>
     <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
 
-    <el-dialog
-      :close-on-click-modal="false"
-      :visible.sync="dialogFormVisible"
-      :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')"
-    >
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-
-        <el-form-item :label="$t('permission.userName')" prop="NameCN">
-          <el-input v-model="ruleForm.NameCN" :placeholder="$t('permission.userNameInfo')" clearable />
+        <el-form-item :label="$t('permission.userName')" prop="AccountName">
+          <el-input v-model="ruleForm.AccountName" :placeholder="$t('permission.userNameInfo')" clearable />
         </el-form-item>
 
-        <el-form-item :label="$t('permission.password')" prop="AccountPwd">
+        <el-form-item v-if="isPassword" :label="$t('permission.password')" prop="AccountPwd">
           <el-input v-model="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable />
         </el-form-item>
 
-        <!-- <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
-          <el-form-item :label="$t('permission.passwords')" prop="passwords">
+        <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
+          <el-form-item v-if="isPassword" :label="$t('permission.passwords')" prop="passwords">
             <el-input v-model="ruleForm.passwords" type="password" :placeholder="$t('permission.passwords')" clearable />
           </el-form-item>
-        </el-tooltip> -->
+        </el-tooltip>
 
-        <el-form-item :label="$t('permission.fullName')" prop="AccountName">
-          <el-input v-model="ruleForm.AccountName" :placeholder="$t('permission.fullNameInfo')" clearable />
-        </el-form-item>
+        <el-form-item :label="$t('permission.fullName')" prop="NameCN"><el-input v-model="ruleForm.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable /></el-form-item>
 
         <el-form-item :label="$t('permission.rouleInfo')" prop="RoleCode">
           <el-select v-model="ruleForm.RoleCode" :placeholder="$t('permission.rouleInfo')" clearable style="width: 100%">
             <el-option v-for="item in rouleOptions" :key="item.RoleCode" :label="item.RoleName" :value="item.RoleCode" />
           </el-select>
         </el-form-item>
-
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -208,7 +199,7 @@ export default {
         AccountName: undefined,
         NameCN: undefined,
         ShowBanned: false,
-        OrgCode: 'C000000003',
+        OrgCode: '',
         DeptCode: ''
       },
       listLoading: false,
@@ -218,6 +209,7 @@ export default {
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
+      isPassword: false, // 密码是否可见
       companyData: [], // 获取搜索框公司列表
       DepFullData: [], // 获取搜索框部门列表
       rouleOptions: [], // 获取新增框角色列表
@@ -283,7 +275,7 @@ export default {
       debugger
       if (res.IsPass === true) {
         this.companyData = res.Obj.OrgList
-        this.DepFullData = res.Obj.DeptList
+        this.rouleOptions = res.Obj.RoleList
       }
     })
   },
@@ -299,13 +291,13 @@ export default {
             trigger: 'blur'
           }
         ],
-        // passwords: [
-        //   {
-        //     required: true,
-        //     message: this.$t('permission.passwordsInfo'),
-        //     trigger: 'blur'
-        //   }
-        // ],
+        passwords: [
+          {
+            required: true,
+            message: this.$t('permission.passwordsInfo'),
+            trigger: 'blur'
+          }
+        ],
         AccountName: [
           {
             required: true,
@@ -316,6 +308,23 @@ export default {
         RoleCode: [{ required: true, message: '请选择角色', trigger: 'change' }]
       }
     },
+    // 公司部门联动
+    companyVal(value) {
+      debugger
+      companyList().then(res => {
+        const newDept = []
+        let newOrgCode = ''
+        res.Obj.DeptList.map(res => {
+          newOrgCode = res.OrgCode
+          newDept.push(newOrgCode)
+        })
+        console.log('newDept.push(newOrgCode)', newDept)
+        // if (res.IsPass === true) {
+        //   // this.DepFullData = res.Obj.DeptLists
+        // }
+      })
+    },
+
     // 禁用，启用权限
     handleBan(row) {
       const params = {
@@ -333,16 +342,11 @@ export default {
       this.getList()
     },
     // 重置
-    handleReset() {
-
-    },
-    // 选择框
-    tableKey() {},
+    handleReset() {},
 
     getList() {
       this.listLoading = true
       UserList(this.pagination).then(res => {
-        debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -364,32 +368,19 @@ export default {
     handleAddUser() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.isPassword = true
       this.ruleForm = {}
-      companyList().then(res => {
-        if (res.IsPass === true) {
-          this.rouleOptions = res.Obj.RoleList
-        }
-      })
     },
     // 编辑角色
     handleEdit(row) {
-      debugger
       this.dialogType = 'edit'
-      companyList().then(res => {
-        if (res.IsPass === true) {
-          this.rouleOptions = res.Obj.RoleList
-        }
-      })
       this.dialogFormVisible = true
-      console.log("row",row)
+      this.isPassword = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
-      this.ruleForm.RoleName = row.RoleName
     },
 
     // 查看用户
-    handleLook() {
-
-    },
+    handleLook() {},
     // 删除角色
     handleDelete(row) {
       if (this.tableData.length > 0) {
@@ -442,17 +433,21 @@ export default {
             })
           } else {
             UserAdd(this.ruleForm).then(res => {
-              debugger
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
-                this.editLoading = false
-                this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
             })
+            this.editLoading = false
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false

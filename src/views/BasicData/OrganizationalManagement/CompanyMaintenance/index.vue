@@ -21,7 +21,7 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <el-checkbox v-model="pagination.IsDelete" @change="tableKey">{{ $t('permission.inclusionCompany') }}</el-checkbox>
+              <el-checkbox v-model="pagination.IsDelete">{{ $t('permission.inclusionCompany') }}</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -55,7 +55,7 @@
     >
       <el-table-column align="center" :label="$t('permission.companyNo')" width="150">
         <template slot-scope="scope">
-          {{ scope.row.CompanyCode }}
+          {{ scope.row.OrgNum }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.companyName')" width="150">
@@ -86,7 +86,7 @@
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">{{ scope.row.status }}</el-tag>
+          <el-tag :style="{ color: scope.row.IsDelete === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsDelete === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -104,44 +104,59 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="250">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.editConply') }}</el-button>
+          <!-- <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.editConply') }}</el-button>
           <el-button v-if="scope.row.UseStatus == 1" type="danger" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleBan') }}</el-button>
           <el-button v-else type="success" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleEnable') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.deleteCompany') }}</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.deleteCompany') }}</el-button> -->
+
+          <el-tooltip class="item" effect="dark" content="编辑公司" placement="top-start">
+            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="禁用公司" placement="top-start">
+            <el-button v-if="scope.row.IsDelete == false" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="启用公司" placement="top-start">
+            <el-button v-if="scope.row.IsDelete == true" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="删除公司" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog
-      :close-on-click-modal="false"
-      :visible.sync="dialogFormVisible"
-      :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')"
-    >
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
+
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.companyNo')" prop="companyNo"><el-input v-model="ruleForm.companyNo" :placeholder="$t('permission.companyNo')" /></el-form-item>
+          <el-form-item :label="$t('permission.companyNo')" prop="OrgNum">
+            <el-input v-model="ruleForm.OrgNum" :placeholder="$t('permission.companyNo')" />
+          </el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-          <el-form-item :label="$t('permission.companyName')" prop="companyName">
-            <el-input v-model="ruleForm.companyName" :placeholder="$t('permission.companyName')" />
+          <el-form-item :label="$t('permission.companyName')" prop="ShortName">
+            <el-input v-model="ruleForm.ShortName" :placeholder="$t('permission.companyName')" />
           </el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
-          <el-form-item :label="$t('permission.companyAllName')" prop="companyAllName">
-            <el-input v-model="ruleForm.companyAllName" :placeholder="$t('permission.companyAllName')" />
+          <el-form-item :label="$t('permission.companyAllName')" prop="FullName">
+            <el-input v-model="ruleForm.FullName" :placeholder="$t('permission.companyAllName')" />
           </el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
-          <el-form-item :label="$t('permission.companyTel')"><el-input v-model="ruleForm.companyTel" :placeholder="$t('permission.companyTel')" /></el-form-item>
+          <el-form-item :label="$t('permission.companyTel')"><el-input v-model="ruleForm.Tel" :placeholder="$t('permission.companyTel')" /></el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
-          <el-form-item :label="$t('permission.companyAddress')"><el-input v-model="ruleForm.companyAddress" :placeholder="$t('permission.companyAddress')" /></el-form-item>
+          <el-form-item :label="$t('permission.companyAddress')"><el-input v-model="ruleForm.Address" :placeholder="$t('permission.companyAddress')" /></el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
@@ -161,7 +176,7 @@
 
         <el-tooltip class="item" effect="dark" :content="content8" placement="top-start">
           <el-form-item :label="$t('permission.companyDescription')">
-            <el-input v-model="ruleForm.companyDescription" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.companyDescription')" />
+            <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.companyDescription')" />
           </el-form-item>
         </el-tooltip>
       </el-form>
@@ -179,8 +194,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { OrganList, OrganAdd, OrganModify } from '@/api/OrganlMan'
-// import { OrganList, OrganAdd, OrganDelete, OrganModify } from '@/api/role'
+import { OrganList, OrganAdd, OrganModify, OrganDelete } from '@/api/OrganlMan'
 const fixHeight = 270
 export default {
   name: 'CompanyMaintenance',
@@ -205,7 +219,6 @@ export default {
       rules: {
         CompanyCode: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
         companyName: [{ required: true, message: '请输入公司名字', trigger: 'blur' }]
-
       },
       parentMsg: this.$t('permission.importCompany'),
       content1: this.$t('permission.companyNo'),
@@ -261,14 +274,14 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        companyNo: [
+        OrgNum: [
           {
             required: true,
             message: this.$t('permission.companyNoInfo'),
             trigger: 'blur'
           }
         ],
-        companyName: [
+        ShortName: [
           {
             required: true,
             message: this.$t('permission.companyNameInfo'),
@@ -287,8 +300,7 @@ export default {
     },
     // 重置
     handleReset() {},
-    // 选择框
-    tableKey() {},
+
     // 导出用户
     handleExport() {},
     // 导出用户
@@ -352,8 +364,7 @@ export default {
         if (valid) {
           if (this.dialogType === 'edit') {
             OrganModify(this.ruleForm).then(res => {
-              debugger
-              if (res.code === 200) {
+              if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
@@ -365,8 +376,7 @@ export default {
             })
           } else {
             OrganAdd(this.ruleForm).then(res => {
-              debugger
-              if (res.code === 200) {
+              if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
@@ -403,7 +413,37 @@ export default {
       return type && isLt5M
     },
     // 删除角色
-    handleDelete({ $index, row }) {}
+    handleDelete(row) {
+      if (this.tableData.length > 0) {
+        this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
+          confirmButtonText: this.$t('permission.Confirm'),
+          cancelButtonText: this.$t('permission.Cancel'),
+          type: 'warning'
+        })
+          .then(() => {
+            OrganDelete({ code: row.OrgCode }).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.deleteSuccess')
+                })
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+            })
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: this.$t('table.deleteError')
+            })
+          })
+      }
+    }
   }
 }
 </script>
