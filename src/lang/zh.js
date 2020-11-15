@@ -284,6 +284,17 @@ export default {
     editConply: '编辑公司',
     DescriptionInfo: '角色描述',
     rouleInfo: '角色',
+    cooplyRole: '复制角色',
+    cooplyInfo: '您确定要复制此条数据吗？',
+    cooplyTitle: '复制角色',
+    jingyongInfo:'您确定要禁用此条数据吗?',
+    jingyongTitle:'禁用',
+    qiyongInfo:'启用',
+    qiyongTitle:'您确定要启用此条数据吗？',
+    qiyongSuccess:'启用成功',
+    jingyongSuccess:'禁用成功',
+    
+
 
     // 截止
     roles: '你的权限',

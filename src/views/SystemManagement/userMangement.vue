@@ -47,7 +47,7 @@
           </el-col>
           <el-col :span="16">
             <el-select v-model="pagination.DeptCode" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
-              <el-option v-for="item in DepFullData" :key="item.DeptCode" :label="item.FullName" :value="item.DeptCode" />
+              <el-option v-for="item in DepFilterData" :key="item.DeptCode" :label="item.FullName" :value="item.DeptCode" />
             </el-select>
           </el-col>
         </el-col>
@@ -212,6 +212,7 @@ export default {
       isPassword: false, // 密码是否可见
       companyData: [], // 获取搜索框公司列表
       DepFullData: [], // 获取搜索框部门列表
+      DepFilterData:[],
       rouleOptions: [], // 获取新增框角色列表
       rules: {
         NameCN: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -275,6 +276,7 @@ export default {
       debugger
       if (res.IsPass === true) {
         this.companyData = res.Obj.OrgList
+        this.DepFullData = res.Obj.DeptList
         this.rouleOptions = res.Obj.RoleList
       }
     })
@@ -310,18 +312,11 @@ export default {
     },
     // 公司部门联动
     companyVal(value) {
-      debugger
-      companyList().then(res => {
-        const newDept = []
-        let newOrgCode = ''
-        res.Obj.DeptList.map(res => {
-          newOrgCode = res.OrgCode
-          newDept.push(newOrgCode)
-        })
-        console.log('newDept.push(newOrgCode)', newDept)
-        // if (res.IsPass === true) {
-        //   // this.DepFullData = res.Obj.DeptLists
-        // }
+     this.DepFilterData = []
+      this.DepFullData.map(item=>{
+        if(item.OrgCode ===value){
+          this.DepFilterData.push(item)
+        }
       })
     },
 

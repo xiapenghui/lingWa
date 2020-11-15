@@ -69,7 +69,7 @@
           <!-- <el-button v-else v-show="scope.row.Keep == 0" type="success" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleEnable') }}</el-button> -->
           <!-- <el-button v-show="scope.row.Keep == 0" type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.delete') }}</el-button> -->
           <el-tooltip class="item" effect="dark" content="编辑角色" placement="top-start">
-            <el-button v-show="scope.row.Keep == 0" type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+            <el-button v-show="scope.row.Keep == 0" type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row,'edit',$t('permission.editRole'))" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="复制角色" placement="top-start">
@@ -98,7 +98,15 @@
     <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
 
     <!-- 添加编辑菜单 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
+    <el-dialog
+     :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+       :title="dialogTypeTitle"
+       >
+
+
+
+
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.title')" prop="RoleName"><el-input v-model="ruleForm.RoleName" :placeholder="$t('permission.title')" /></el-form-item>
@@ -150,12 +158,12 @@
 </template>
 
 <script>
-import '../../styles/commentBox.scss'
-import '../../styles/scrollbar.css'
-import { ListRole, addRole, updateRole, deleteRole, ListMenuFunAll, ListUser, UpdateStatus, ListRoleMenuFun } from '@/api/role'
-import i18n from '@/lang'
+import '../../styles/commentBox.scss';
+import '../../styles/scrollbar.css';
+import { ListRole, addRole, updateRole, deleteRole, ListMenuFunAll, ListUser, UpdateStatus, ListRoleMenuFun } from '@/api/role';
+import i18n from '@/lang';
 // import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-const fixHeight = 280
+const fixHeight = 280;
 export default {
   name: 'RolePermission',
   // components: { Pagination },
@@ -184,55 +192,56 @@ export default {
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
+      dialogTypeTitle:'',
       rules: {
         RoleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
         Description: [{ required: true, message: '请输入角色描述', trigger: 'blur' }]
       },
       content1: this.$t('permission.title'),
       content2: this.$t('permission.DescriptionInfo')
-    }
+    };
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val
-        this.timer = true
-        const that = this
+        this.tableHeight = val;
+        this.timer = true;
+        const that = this;
         setTimeout(function() {
-          that.timer = false
-        }, 400)
+          that.timer = false;
+        }, 400);
       }
     },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
-      this.content1 = this.$t('permission.title')
-      this.content2 = this.$t('permission.DescriptionInfo')
-      this.setFormRules()
+      this.content1 = this.$t('permission.title');
+      this.content2 = this.$t('permission.DescriptionInfo');
+      this.setFormRules();
     },
     routesData: {
       handler() {
         // 我这里默认展开一级, 指定几级就往里遍历几层取到 Key 就可以了
         this.routesData.forEach(item => {
-          this.defaultShowNodes.push(item.Key)
-        })
+          this.defaultShowNodes.push(item.Key);
+        });
       },
       deep: true
     }
   },
   created() {
     // 监听表格高度
-    const that = this
+    const that = this;
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight
-      })()
-    }
+        that.tableHeight = window.innerHeight - fixHeight;
+      })();
+    };
     // Mock: get all routes and roles list from server
     // this.getRoutes()
-    this.getList()
-    this.setFormRules()
+    this.getList();
+    this.setFormRules();
   },
   methods: {
     // 表单验证切换中英文
@@ -240,91 +249,126 @@ export default {
       this.rules = {
         RoleName: [{ required: true, message: this.$t('permission.roleNameInfo') }],
         Description: [{ required: true, message: this.$t('permission.DescriptionInfo') }]
-      }
+      };
     },
     // 禁用，启用权限
-    handleBan(row, status) {
-      const params = {
-        UseStatus: (row.UseStatus = row.UseStatus === '1' ? '0' : '1'),
-        RoleCode: row.RoleCode
+    handleBan(row) {
+      let status,statusTitle;
+      if(row.UseStatus === '1'){
+        status=this.$t('permission.jingyongInfo')
+        statusTitle = this.$t('permission.jingyongTitle')
+      }else{
+        status=this.$t('permission.qiyongInfo')
+        statusTitle = this.$t('permission.qiyongTitle')
       }
-      UpdateStatus(params).then(res => {
-        this.getList()
-      })
+      this.$confirm(statusTitle , status, {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          UseStatus: row.UseStatus = row.UseStatus === '1' ? '0' : '1',
+          RoleCode: row.RoleCode
+        };
+        UpdateStatus(params).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              type: 'success',
+              message: this.$t('permission.qiyongSuccess')
+            });
+            this.getList();
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.MSG
+            });
+          }
+        });
+      });
+
     },
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1
-      this.getList()
+      this.pagination.PageIndex = 1;
+      this.getList();
     },
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       ListRole(this.pagination).then(res => {
-        this.tableData = res.Obj
-        this.total = res.TotalRowCount
-        this.listLoading = false
-      })
+        this.tableData = res.Obj;
+        this.total = res.TotalRowCount;
+        this.listLoading = false;
+      });
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`)
+        route.title = i18n.t(`route.${route.title}`);
         if (route.children) {
-          route.children = this.i18n(route.children)
+          route.children = this.i18n(route.children);
         }
-        return route
-      })
-      return app
+        return route;
+      });
+      return app;
     },
 
     // 增加角色
     handleAddUser() {
-      this.dialogType = 'new'
-      this.dialogFormVisible = true
-      this.ruleForm = {}
+      this.dialogType = 'new';
+      this.dialogTypeTitle = this.$t('permission.addRole')
+      this.dialogFormVisible = true;
+      this.ruleForm = {};
       ListMenuFunAll({}).then(res => {
         if (res.IsPass === true) {
-          debugger
-          newFn(res.Obj)
+          debugger;
+          newFn(res.Obj);
           function newFn(obj) {
             obj.map(item => {
-              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '--' + '(' + item.ControlTitle + ')'
+              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '--' + '(' + item.ControlTitle + ')';
               // item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + '(' + item.ControlCode + ')'
               if (item.children && item.children.length) {
-                newFn(item.children)
+                newFn(item.children);
               }
-            })
+            });
           }
-          console.log('res.Obj', res.Obj)
-          this.routesData = res.Obj
+          console.log('res.Obj', res.Obj);
+          this.routesData = res.Obj;
         }
-      })
+      });
     },
     // 编辑角色
-    handleEdit(row) {
-      this.dialogType = 'edit'
-      this.dialogFormVisible = true
-      this.ruleForm = JSON.parse(JSON.stringify(row))
+    handleEdit(row,type,typeTitle) {
+      // this.dialogType = 'edit';
+      // this.dialogTypeTitle = this.$t('permission.editRole')
+      this.dialogType = type
+      console.log("row",row)
+      this.dialogTypeTitle = typeTitle
+      if(type === 'copy'){
+        row.RoleName = ''
+        row.Description = ''
+      }
+      this.dialogFormVisible = true;
+      this.ruleForm = JSON.parse(JSON.stringify(row));
       ListRoleMenuFun({ RoleCode: row.RoleCode }).then(res => {
         if (res.IsPass === true) {
           // 重构代码MenuTitle、MenuCode
-          newFn(res.Obj)
+          newFn(res.Obj);
           function newFn(obj) {
             obj.map(item => {
-              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '--' + '(' + item.ControlTitle + ')'
+              item.MenuTitle = item.ControlTitle === null ? item.MenuTitle : item.MenuTitle + '--' + '(' + item.ControlTitle + ')';
               // item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + '(' + item.ControlCode + ')'
               // item.MenuCode = item.ControlCode === null ? item.MenuCode : item.MenuCode + item.ControlCode
               if (item.children && item.children.length) {
-                newFn(item.children)
+                newFn(item.children);
               }
-            })
+            });
           }
 
           // 已选择树节点进行选中效果
-          this.routesData = res.Obj
-          const data = []
+          this.routesData = res.Obj;
+          const data = [];
           // 方法一
-          this.fn(this.routesData, data)
+          this.fn(this.routesData, data);
           // 方法二
           // fn(this.routesData, data)
           // function fn(arr) {
@@ -343,29 +387,29 @@ export default {
           //   })
           // }
 
-          console.log('data', data)
+          console.log('data', data);
           this.$nextTick(function() {
-            this.$refs.tree.setCheckedNodes(data)
-          })
+            this.$refs.tree.setCheckedNodes(data);
+          });
         }
-      })
+      });
     },
     fn(arr, data) {
       arr.map(item => {
         if (item.IsUse === '1') {
           if (item.children.length > 0) {
-            this.fn(item.children, data)
+            this.fn(item.children, data);
           } else {
             data.push({
               Key: item.Key,
               MenuCode: item.MenuCode,
               MenuTitle: item.MenuTitle,
               ControlTitle: item.ControlTitle
-            })
+            });
           }
         }
-      })
-      return data
+      });
+      return data;
     },
     checkChange(data) {},
     // 编辑成功
@@ -373,101 +417,126 @@ export default {
       // this.editLoading = true;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          const treeSelect = this.$refs.tree.getCheckedNodes(false, true)
-          const newTreeSelect = []
+          const treeSelect = this.$refs.tree.getCheckedNodes(false, true);
+          const newTreeSelect = [];
           treeSelect.map(item => {
             if (item.ParentCode === '') {
-              newTreeSelect.push({ MenuTitle: item.MenuTitle, ControlCode: item.ControlCode, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, IsUse: '1', Key: item.Key, children: [] })
+              newTreeSelect.push({
+                MenuTitle: item.MenuTitle,
+                ControlCode: item.ControlCode,
+                ControlTitle: item.ControlTitle,
+                MenuCode: item.MenuCode,
+                IsUse: '1',
+                Key: item.Key,
+                children: []
+              });
             } else {
               newTreeSelect.map(child => {
                 if (child.children) {
                   child.children.map(chi => {
                     if (item.ParentCode === chi.MenuCode) {
-                      chi.children.push({ MenuTitle: item.MenuTitle, ControlCode: item.ControlCode, ControlTitle: item.ControlTitle, MenuCode: item.MenuCode, ParentCode: item.ParentCode, Key: item.Key, IsUse: '1' })
+                      chi.children.push({
+                        MenuTitle: item.MenuTitle,
+                        ControlCode: item.ControlCode,
+                        ControlTitle: item.ControlTitle,
+                        MenuCode: item.MenuCode,
+                        ParentCode: item.ParentCode,
+                        Key: item.Key,
+                        IsUse: '1'
+                      });
                     }
-                  })
+                  });
                 }
                 if (item.ParentCode === child.MenuCode) {
                   child.children.push({
-                    ControlCode: item.ControlCode,
                     MenuTitle: item.MenuTitle,
+                    ControlCode: item.ControlCode,
                     ControlTitle: item.ControlTitle,
                     MenuCode: item.MenuCode,
                     ParentCode: item.ParentCode,
                     IsUse: '1',
                     Key: item.Key,
                     children: []
-                  })
+                  });
                 }
-              })
+              });
             }
-          })
-          console.log('newTreeSelect', newTreeSelect)
+          });
+          console.log('newTreeSelect', newTreeSelect);
           // let  newTree= this.$refs.tree.getCheckedNodes() ;
-          this.ruleForm.MenuFunList = newTreeSelect
+          this.ruleForm.MenuFunList = newTreeSelect;
 
-          if (this.dialogType === 'edit') {
+          if (this.dialogType === 'edit' ) {
             updateRole(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                })
-                this.editLoading = false
-                this.dialogFormVisible = false
-                this.getList()
+                });
+                this.editLoading = false;
+                this.dialogFormVisible = false;
+                this.getList();
               }
-            })
+            });
           } else {
             addRole(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
-                })
-                this.getList()
+                });
+                this.getList();
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                })
+                });
               }
-            })
-            this.editLoading = false
-            this.dialogFormVisible = false
+            });
+            this.editLoading = false;
+            this.dialogFormVisible = false;
           }
         } else {
-          this.editLoading = false
+          this.editLoading = false;
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          })
-          return false
+          });
+          return false;
         }
-      })
+      });
     },
 
     // 复制角色
-    handleCoply() {},
+    handleCoply(row) {
+        this.$confirm(this.$t('permission.cooplyInfo'), this.$t('permission.cooplyTitle'), {
+          confirmButtonText: this.$t('permission.Confirm'),
+          cancelButtonText: this.$t('permission.Cancel'),
+          type: 'warning'
+        })
+          .then(() => {
+            this.handleEdit(row,'copy',this.$t('permission.copyRole'))
+          })
+    },
     // 查看用户
     handleLook(row) {
-      this.logId = row
+      this.logId = row;
       ListUser(this.paginationLog, { RoleCode: row.RoleCode }).then(res => {
-        debugger
+        debugger;
         if (res.TotalRowCount > 0) {
-          this.dialogTableVisible = true
-          this.userData = res.Obj
-          this.logTotal = res.TotalRowCount
+          this.dialogTableVisible = true;
+          this.userData = res.Obj;
+          this.logTotal = res.TotalRowCount;
         } else {
-          this.dialogTableVisible = false
-          this.$message('此条数据暂无用户！')
+          this.dialogTableVisible = false;
+          this.$message('此条数据暂无用户！');
         }
-      })
+      });
     },
 
     // 删除角色
     handleDelete(row) {
-      debugger
+      debugger;
       if (this.tableData.length > 0) {
         this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
           confirmButtonText: this.$t('permission.Confirm'),
@@ -476,31 +545,31 @@ export default {
         })
           .then(() => {
             deleteRole({ RoleCode: row.RoleCode }).then(res => {
-              debugger
+              debugger;
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.deleteSuccess')
-                })
-                this.getList()
+                });
+                this.getList();
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                })
+                });
               }
-            })
+            });
           })
           .catch(() => {
             this.$message({
               type: 'info',
               message: this.$t('table.deleteError')
-            })
-          })
+            });
+          });
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped></style>
