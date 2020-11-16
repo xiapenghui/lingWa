@@ -5,7 +5,7 @@
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-              <label class="radio-label">{{ $t('permission.companyNo') }}:</label>
+              <label class="radio-label">{{ $t('permission.planNo') }}:</label>
             </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.CompanyCode" :placeholder="$t('permission.companysInfo')" /></el-col>
@@ -13,17 +13,26 @@
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-              <label class="radio-label">{{ $t('permission.companyName') }}:</label>
+              <label class="radio-label">{{ $t('permission.finishNum') }}:</label>
             </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.FullName" :placeholder="$t('permission.companyNameInfo')" /></el-col>
         </el-col>
-        <el-col :span="4">
-          <el-col :span="24">
+        <el-col :span="6">
+          <el-col :span="8">
             <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <el-checkbox v-model="pagination.IsDelete" @change="tableKey">{{ $t('permission.inclusionCompany') }}</el-checkbox>
+              <label class="radio-label">{{ $t('permission.finishName') }}:</label>
             </el-tooltip>
           </el-col>
+          <el-col :span="16"><el-input v-model="pagination.FullName" :placeholder="$t('permission.companyNameInfo')" /></el-col>
+        </el-col>
+        <el-col :span="6">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+              <label class="radio-label">{{ $t('permission.finishDate') }}:</label>
+            </el-tooltip>
+          </el-col>
+          <el-col :span="16"><el-input v-model="pagination.FullName" :placeholder="$t('permission.companyNameInfo')" /></el-col>
         </el-col>
 
         <el-col :span="6">
@@ -36,7 +45,6 @@
     </div>
 
     <div class="rightBtn">
-      生产计划页面
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addCompany') }}</el-button>
       <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">{{ $t('permission.exportCompany') }}</el-button>
       <!-- <el-button type="primary" icon="el-icon-document-remove">{{ $t('permission.importcompany') }}</el-button> -->
@@ -115,11 +123,7 @@
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog
-      :close-on-click-modal="false"
-      :visible.sync="dialogFormVisible"
-      :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')"
-    >
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.companyNo')" prop="companyNo"><el-input v-model="ruleForm.companyNo" :placeholder="$t('permission.companyNo')" /></el-form-item>
@@ -206,7 +210,6 @@ export default {
       rules: {
         CompanyCode: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
         companyName: [{ required: true, message: '请输入公司名字', trigger: 'blur' }]
-
       },
       parentMsg: this.$t('permission.importCompany'),
       content1: this.$t('permission.companyNo'),
@@ -235,7 +238,7 @@ export default {
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.parentMsg = this.$t('permission.importCompany')
-      this.content1 = this.$t('permission.companyNo')
+      this.content1 = this.$t('permission.planNo')
       this.content2 = this.$t('permission.companyName')
       this.content3 = this.$t('permission.inclusionCompany')
       this.content4 = this.$t('permission.companyAllName')

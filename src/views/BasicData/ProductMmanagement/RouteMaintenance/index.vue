@@ -75,7 +75,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
           <!-- <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.EditRoute') }}</el-button>
           <el-button type="warning" size="small" @click="handleLook(scope.row)">{{ $t('permission.lookRoute') }}</el-button>

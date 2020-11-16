@@ -204,15 +204,29 @@ const asyncRoutes = [
   // 生产计划
   {
     path: '/ProductionPlan',
+    redirect: '/ProductionPlan/producPlan',
+    name: 'ProductionPlan',
+    meta: {
+      title: 'ProductionPlan',
+      icon: 'lock'
+    },
     children: [{
-      path: 'index',
-      component: () => import('@/views/ProductionPlan/index'),
-      name: 'ProductionPlan',
+      path: 'producPlan',
+      component: () => import('@/views/ProductionPlan/producPlan'),
+      name: 'producPlan',
       meta: {
-        title: 'ProductionPlan',
-        icon: 'tab'
+        title: 'producPlan'
       }
-    }]
+    },
+    {
+      path: 'orderPlan',
+      component: () => import('@/views/ProductionPlan/orderPlan'),
+      name: 'orderPlan',
+      meta: {
+        title: 'orderPlan'
+      }
+    }
+    ]
   },
   // 生产过程
   {

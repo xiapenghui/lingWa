@@ -1,5 +1,5 @@
 <template>
-  <div>生产计划</div>
+  <div>生产工单</div>
 </template>
 
 <script>

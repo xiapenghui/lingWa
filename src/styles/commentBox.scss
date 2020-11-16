@@ -1,3 +1,35 @@
+#app {
+  .el-dialog__body {
+    padding: 10px 20px;
+    .el-upload__tip {
+      margin-top: 10px;
+    }
+    .demo-ruleForm {
+      .bigUpBox {
+        display: flex;
+        justify-content: space-between;
+        .boxLeft,
+        .boxRight {
+          width: 46%;
+          .el-date-editor.el-input {
+            width: 100%;
+          }
+        }
+         .el-form-item__label {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      .bigDownBox {
+        width: 100%;
+      }
+    }
+    .el-select {
+      width: 100%;
+    }
+  }
+}
 .app-container {
   .search {
     border: 1px solid #dfe6ec;
@@ -24,6 +56,26 @@
     .center {
       text-align: center;
       margin-top: 20px;
+    }
+    .btnSearchUP{
+       padding: 5px;
+       transform:rotate(270deg);
+       -ms-transform:rotate(270deg); 	/* IE 9 */
+       -moz-transform:rotate(270deg); 	/* Firefox */
+       -webkit-transform:rotate(270deg); /* Safari 和 Chrome */
+       -o-transform:rotate(270deg); 	/* Opera */
+       background-color: #FFFFFF;
+       color: #46a6ff;
+    }
+    .btnSearchDown{
+      padding: 5px;
+      transform:rotate(90deg);
+      -ms-transform:rotate(90deg); 	/* IE 9 */
+      -moz-transform:rotate(90deg); 	/* Firefox */
+      -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+      -o-transform:rotate(90deg); 	/* Opera */
+      background-color: #FFFFFF;
+      color: #46a6ff;
     }
   }
 
@@ -58,6 +110,7 @@
     bottom: -1px;
 	border-top-color: #ffffff;
   }
+
 }
 .el-button--mini,
 .el-button--small{

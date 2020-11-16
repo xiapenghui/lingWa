@@ -85,22 +85,22 @@ export const constantRoutes = [{
  */
 // 系统管理
 export const asyncRoutes = [
-//   {
-//   path: '/',
-//   component: Layout,
-//   redirect: '/dashboard',
-//   children: [{
-//     path: 'dashboard',
-//     component: () => import('@/views/dashboard/index'),
-//     name: 'Dashboard',
-//     meta: {
-//       title: 'dashboard',
-//       icon: 'dashboard',
-//       affix: true
-//     }
-//   }]
-// },
-// 基础数据
+  //   {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/dashboard',
+  //   children: [{
+  //     path: 'dashboard',
+  //     component: () => import('@/views/dashboard/index'),
+  //     name: 'Dashboard',
+  //     meta: {
+  //       title: 'dashboard',
+  //       icon: 'dashboard',
+  //       affix: true
+  //     }
+  //   }]
+  // },
+  // 基础数据
   {
     path: '/BasicData',
     component: Layout,
@@ -113,7 +113,7 @@ export const asyncRoutes = [
     },
     // 物料信息管理模块
     children: [
-    // 组织架构管理
+      // 组织架构管理
       {
         path: 'OrganizationalManagement',
         component: () => import('@/views/BasicData/OrganizationalManagement/index'), // Parent router-view
@@ -282,17 +282,31 @@ export const asyncRoutes = [
   {
     path: '/ProductionPlan',
     component: Layout,
+    redirect: '/ProductionPlan/producPlan',
+    name: 'ProductionPlan',
+    meta: {
+      title: 'ProductionPlan',
+      icon: 'lock'
+    },
     children: [{
-      path: 'index',
-      component: () => import('@/views/ProductionPlan/index'),
-      name: 'ProductionPlan',
+      path: 'producPlan',
+      component: () => import('@/views/ProductionPlan/producPlan'),
+      name: 'producPlan',
       meta: {
-        title: 'ProductionPlan',
-        icon: 'tab'
-
+        title: 'producPlan'
       }
-    }]
+    },
+    {
+      path: 'orderPlan',
+      component: () => import('@/views/ProductionPlan/orderPlan'),
+      name: 'orderPlan',
+      meta: {
+        title: 'orderPlan'
+      }
+    }
+    ]
   },
+
   // 生产过程
   {
     path: '/ProductionManagements',
@@ -308,6 +322,7 @@ export const asyncRoutes = [
       }
     }]
   },
+
   // 安灯管理
   {
     path: '/LampManagement',
