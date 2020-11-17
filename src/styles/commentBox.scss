@@ -1,6 +1,6 @@
 #app {
   .el-dialog__body {
-    padding: 10px 20px;
+    padding: 20px;
     .el-upload__tip {
       margin-top: 10px;
     }
@@ -15,7 +15,7 @@
             width: 100%;
           }
         }
-         .el-form-item__label {
+        .el-form-item__label {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -33,7 +33,7 @@
 .app-container {
   .search {
     border: 1px solid #dfe6ec;
-    padding: 20px 0;
+    padding: 20px 0px 20px  20px;
     border-radius: 5px;
 
     label {
@@ -47,34 +47,38 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
-    .el-col-4{
+    .el-col-4 {
       line-height: 30px;
       text-align: center;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
 
     .center {
       text-align: center;
       margin-top: 20px;
     }
-    .btnSearchUP{
-       padding: 5px;
-       transform:rotate(270deg);
-       -ms-transform:rotate(270deg); 	/* IE 9 */
-       -moz-transform:rotate(270deg); 	/* Firefox */
-       -webkit-transform:rotate(270deg); /* Safari 和 Chrome */
-       -o-transform:rotate(270deg); 	/* Opera */
-       background-color: #FFFFFF;
-       color: #46a6ff;
-    }
-    .btnSearchDown{
+    .btnSearchUP {
       padding: 5px;
-      transform:rotate(90deg);
-      -ms-transform:rotate(90deg); 	/* IE 9 */
-      -moz-transform:rotate(90deg); 	/* Firefox */
-      -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
-      -o-transform:rotate(90deg); 	/* Opera */
-      background-color: #FFFFFF;
+      transform: rotate(270deg);
+      -ms-transform: rotate(270deg); /* IE 9 */
+      -moz-transform: rotate(270deg); /* Firefox */
+      -webkit-transform: rotate(270deg); /* Safari 和 Chrome */
+      -o-transform: rotate(270deg); /* Opera */
+      background-color: #ffffff;
+      color: #46a6ff;
+    }
+    .btnSearchDown {
+      padding: 5px;
+      transform: rotate(90deg);
+      -ms-transform: rotate(90deg); /* IE 9 */
+      -moz-transform: rotate(90deg); /* Firefox */
+      -webkit-transform: rotate(90deg); /* Safari 和 Chrome */
+      -o-transform: rotate(90deg); /* Opera */
+      background-color: #ffffff;
       color: #46a6ff;
     }
   }
@@ -104,25 +108,24 @@
   }
   .el-table .sort-caret.ascending {
     top: -1px;
-	border-bottom-color: #ffffff;
+    border-bottom-color: #ffffff;
   }
   .el-table .sort-caret.descending {
     bottom: -1px;
-	border-top-color: #ffffff;
+    border-top-color: #ffffff;
   }
-
 }
 .el-button--mini,
-.el-button--small{
+.el-button--small {
   padding: 5px 6px;
 }
-.el-table--mini th{
+.el-table--mini th {
   padding: 3px 0;
 }
-.el-table--mini td{
+.el-table--mini td {
   padding: 5px 0;
 }
 
-body{
+body {
   overflow: hidden;
 }

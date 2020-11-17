@@ -19,7 +19,8 @@ import './icons' // icon
 import './permission' // permission control
 
 import * as filters from './filters' // global filters
-
+import moment from 'moment'// 导入文件
+Vue.prototype.$moment = moment// 时间日期赋值使用
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
