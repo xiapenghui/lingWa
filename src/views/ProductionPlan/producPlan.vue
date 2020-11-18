@@ -880,7 +880,9 @@ export default {
       this.addShow = true
       this.splitShow = false
       this.isAlarmItem = true
-      this.ruleForm = {}
+      this.ruleForm = {
+        PlanNum:''
+      }
       productionPlanNum().then(res => {
         this.$nextTick(function() {
           this.ruleForm.PlanNum = res.Obj
@@ -944,6 +946,13 @@ export default {
               }
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
+
+            // let params = this.ruleForm;
+            // params.ProductCode=this.finshCode
+            // params.CustomCode=this.finshCode
+            // params.ProductCode=this.userCode
+            // params.PlanType=this.typeCode
+
             const params = {
               PlanNum: this.ruleForm.PlanNum,
               PlanQuantity: this.ruleForm.PlanQuantity,
