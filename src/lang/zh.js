@@ -333,6 +333,7 @@ export default {
     SchedulingQuantityOther: '可拆分数量',
     continueSplit: '继续拆分',
     ProductNane: '成品名称',
+    FullName: '客户名称',
 
     // 截止
     roles: '你的权限',
@@ -392,7 +393,8 @@ export default {
     forceInfo: '此操作将强制完工, 是否继续?',
     total: '共选择',
     dataInfo: '条数据！',
-    operationError: '操作失败'
+    operationError: '操作失败',
+    SplitSuc: '拆分成功'
 
   },
   example: {
