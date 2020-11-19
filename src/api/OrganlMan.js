@@ -199,3 +199,13 @@ export function productionSplit(data) {
     data
   })
 }
+
+// 生产工单列表
+export function orderList(data) {
+  return request({
+    url: newUrl + '/api/ProdWorkOrder/List',
+    method: 'post',
+    data
+  })
+}
+

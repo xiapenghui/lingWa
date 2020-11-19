@@ -135,18 +135,18 @@
           {{ scope.row.ProductName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.PlanQuantity')" width="200">
+      <el-table-column align="center" :label="$t('permission.PlanQuantity')" width="100">
         <template slot-scope="scope">
           {{ scope.row.PlanQuantity }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.SchedulingQuantity')" width="200">
+      <el-table-column align="center" :label="$t('permission.SchedulingQuantity')" width="100">
         <template slot-scope="scope">
           {{ scope.row.SchedulingQuantity }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.CompleteQuantity')" width="100">
+      <el-table-column align="center" :label="$t('permission.CompleteQuantity')" width="150">
         <template slot-scope="scope">
           {{ scope.row.CompleteQuantity }}
         </template>
@@ -188,51 +188,51 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.PlanTypeName')" width="150">
+      <el-table-column align="center" :label="$t('permission.PlanTypeName')" width="100">
         <template slot-scope="scope">
           {{ scope.row.PlanTypeName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.StatusName')" width="150">
+      <el-table-column align="center" :label="$t('permission.StatusName')" width="100">
         <template slot-scope="scope">
           {{ scope.row.StatusName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.PlanDeliveryDate')" width="150">
+      <el-table-column align="center" :label="$t('permission.PlanDeliveryDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.PlanDeliveryDate }}
+          {{ scope.row.PlanDeliveryDate.substring(scope.row.PlanDeliveryDate.length - 20, scope.row.PlanDeliveryDate.length - 8) }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.PlanStartDate')" width="150">
+      <el-table-column align="center" :label="$t('permission.PlanStartDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.PlanStartDate }}
+          {{ scope.row.PlanStartDate.substring(scope.row.PlanStartDate.length - 20, scope.row.PlanStartDate.length - 8) }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.PlanEndDate')" width="150">
+      <el-table-column align="center" :label="$t('permission.PlanEndDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.PlanEndDate }}
+          {{ scope.row.PlanEndDate.substring(scope.row.PlanEndDate.length - 20, scope.row.PlanEndDate.length - 8) }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.RealStartDate')" width="150">
+      <el-table-column align="center" :label="$t('permission.RealStartDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.RealStartDate }}
+          {{ scope.row.RealStartDate.substring(scope.row.RealStartDate.length - 20, scope.row.RealStartDate.length - 8) }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.RealEndDate')" width="150">
+      <el-table-column align="center" :label="$t('permission.RealEndDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.RealEndDate }}
+          {{ scope.row.RealEndDate.substring(scope.row.RealEndDate.length - 20, scope.row.RealEndDate.length - 8) }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.CreateTime')" width="200">
+      <el-table-column align="center" :label="$t('permission.CreateTime')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime }}
+          {{ scope.row.CreateTime.substring(scope.row.CreateTime.length - 20, scope.row.CreateTime.length - 8) }}
         </template>
       </el-table-column>
 
@@ -305,7 +305,11 @@
 
             <el-tooltip class="item" effect="dark" content="拆分数量" placement="top-start">
               <el-form-item v-if="planShow" :label="$t('permission.splitNumOther')" prop="SplitQuantity">
-                <el-input v-model="ruleForm.SplitQuantity" :placeholder="$t('permission.splitNumOther')" :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]" />
+                <el-input
+                  v-model="ruleForm.SplitQuantity"
+                  :placeholder="$t('permission.splitNumOther')"
+                  :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]"
+                />
               </el-form-item>
             </el-tooltip>
 
@@ -580,6 +584,285 @@
         </el-table-column>
       </el-table>
     </el-dialog>
+
+    <!-- 关联工单弹窗 -->
+    <el-dialog :close-on-click-modal="false" :visible.sync="orderFormVisible" title="关联工单" width="70%" height="50%">
+      <el-table
+        v-loading="orderBoxLoading"
+        :height="tableBoxHeight"
+        :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+        :data="orderData"
+        style="width: 100%"
+        border
+        element-loading-text="拼命加载中"
+        fit
+        highlight-current-row
+      >
+        <el-table-column align="center" label="生产计划单号" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.PlanCode }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="生产工单号" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.FullName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="成品编码" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ShortName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="成品名称" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ProductCode }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="工单数量" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.Color }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="工单类型" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.OrderType }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="客户名称" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialType }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="已投人数" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.InputQuantity }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="完工数量" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.CompleteQuantity }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="未完工人数" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ModifyTime }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="报废数量" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ScrapQuantity }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="销售单号" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ModifyTime }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="销售单行号" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ModifyTime }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="客户编号" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ModifyTime }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="创建人" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.CreateUser }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="工单状态" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.PrevStatus }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="计开始日期" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.PlanStartDate }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="计划完成日期" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.PlanEndDate }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="实际开始日期" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.RealStartDate }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="实际完成日期" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.RealEndDate }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="创建日期" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.CreateTime }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+
+    <!-- BOM弹窗 -->
+    <el-dialog :close-on-click-modal="false" :visible.sync="bomFormVisible" title=" BOM弹窗" width="70%" height="50%">
+      <el-table
+        v-loading="bomBoxLoading"
+        :height="tableBoxHeight"
+        :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+        :data="bomData"
+        style="width: 100%"
+        border
+        element-loading-text="拼命加载中"
+        fit
+        highlight-current-row
+      >
+        <el-table-column align="center" label="工序编号" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.CustomerNum }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="工序名称" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.FullName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="原料编号" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ShortName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="原料名称" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.Describe }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="用量" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.Color }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="替代原料编号" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialTypeText }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="替代原料名称" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialType }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="创建人" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.user }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="创建时间" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ModifyTime }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+
+    <!-- 工艺线路弹窗 -->
+    <el-dialog :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线" width="70%" height="50%">
+      <el-table
+        v-loading="lineBoxLoading"
+        :height="tableBoxHeight"
+        :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+        :data="lineData"
+        style="width: 100%"
+        border
+        element-loading-text="拼命加载中"
+        fit
+        highlight-current-row
+      >
+        <el-table-column align="center" label="工序代码" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.CustomerNum }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="工序名称" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.FullName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否检验" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ShortName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="检验方式" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.Describe }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否必过" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.Color }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否打印" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialTypeText }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="顺序" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialType }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="备注" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.user }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="创建时间" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.ModifyTime }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -604,7 +887,8 @@ import {
   productionUpdate,
   SplitQuery,
   GetLine,
-  productionSplit
+  productionSplit,
+  orderList
 } from '@/api/OrganlMan'
 const fixHeight = 270
 const fixHeightBox = 350
@@ -630,6 +914,9 @@ export default {
       StatusNameData: [], // 计划状态下拉框
       finshData: [], // 成品弹窗数组
       userData: [], // 客户名称弹窗数组
+      orderData: [], // 关联工单弹窗
+      bomData: [], // BOM弹窗
+      lineData: [], // 工艺路线弹窗
       isGive: [], // 弹窗计划类型radio数组
       PriorityList: [], // 优先级下拉列表
       ProductList: [], // 计划投入产线
@@ -666,11 +953,17 @@ export default {
       listLoading: false, // 主列表
       listBoxLoading: false, // 成品名称搜索loading
       userBoxLoading: false, // 客户名称搜索loading
+      orderBoxLoading: false, // 关联工单弹窗loading
+      bomBoxLoading: false, // bom弹窗loading
+      lineBoxLoading: false, // 工艺路线弹窗loading
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
       finshFormVisible: false, // input产品名称弹窗
       userFormVisible: false, // input客户名称弹窗
+      orderFormVisible: false, // 关联工单弹窗
+      bomFormVisible: false, // BOM弹窗
+      lineFormVisible: false, // 工艺路线弹窗
       dialogTypeTitle: null,
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 表格高度
@@ -769,7 +1062,6 @@ export default {
     // 计划类型下拉
     GetDictionary({ code: '0008' }).then(res => {
       if (res.IsPass === true) {
-        debugger
         this.PlanTypeNameData = res.Obj
         this.isGive = res.Obj
       }
@@ -788,7 +1080,6 @@ export default {
     })
     // 拆分生产计划产线下拉
     GetLine().then(res => {
-      debugger
       if (res.IsPass === true) {
         this.ProductList = res.Obj
       }
@@ -852,7 +1143,6 @@ export default {
     getList() {
       this.listLoading = true
       productionList(this.pagination).then(res => {
-        debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -881,7 +1171,7 @@ export default {
       this.splitShow = false
       this.isAlarmItem = true
       this.ruleForm = {
-        PlanNum:''
+        PlanNum: ''
       }
       productionPlanNum().then(res => {
         this.$nextTick(function() {
@@ -911,23 +1201,13 @@ export default {
     submitForm(formName) {
       this.editLoading = true
       this.$refs[formName].validate(valid => {
-        const params = {
-          PlanCode: this.ruleForm.PlanCode,
-          PlanNum: this.ruleForm.PlanNum,
-          PlanQuantity: this.ruleForm.PlanQuantity,
-          ProductCode: this.finshCode, // 成品名称code值
-          CustomCode: this.userCode, // 客户名称code值
-          PlanType: this.ruleForm.PlanType, // 计划类型code值
-          SaleNum: this.ruleForm.SaleNum,
-          SaleLineNum: this.ruleForm.SaleLineNum,
-          PlanStartDate: this.ruleForm.PlanStartDate,
-          PlanEndDate: this.ruleForm.PlanEndDate,
-          PlanDeliveryDate: this.ruleForm.PlanDeliveryDate
-        }
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditProduction')) {
+            const params = this.ruleForm
+            console.log('params.ProductCode', params.ProductCode)
+            // params.ProductCode=this.finshCode
+            // params.CustomerCode = this.userCode
             productionUpdate(params).then(res => {
-              debugger
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -946,27 +1226,12 @@ export default {
               }
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
-
-            // let params = this.ruleForm;
-            // params.ProductCode=this.finshCode
-            // params.CustomCode=this.finshCode
-            // params.ProductCode=this.userCode
-            // params.PlanType=this.typeCode
-
-            const params = {
-              PlanNum: this.ruleForm.PlanNum,
-              PlanQuantity: this.ruleForm.PlanQuantity,
-              ProductCode: this.finshCode, // 成品名称code值
-              CustomCode: this.userCode, // 客户名称code值
-              PlanType: this.typeCode, // 计划类型code值
-              SaleNum: this.ruleForm.SaleNum,
-              SaleLineNum: this.ruleForm.SaleLineNum,
-              PlanStartDate: this.ruleForm.PlanStartDate,
-              PlanEndDate: this.ruleForm.PlanEndDate,
-              PlanDeliveryDate: this.ruleForm.PlanDeliveryDate
-            }
+            debugger
+            const params = this.ruleForm
+            params.ProductCode = this.finshCode
+            params.CustomCode = this.userCode
+            params.PlanType = this.typeCode
             productionAdd(params).then(res => {
-              debugger
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -983,24 +1248,16 @@ export default {
               }
             })
           } else {
-            const params = {
-              ProductCode: this.ruleForm.ProductCode, // 成品名称code值
-              CustomerCode: this.ruleForm.CustomerCode, // 客户名称code值
-              RemainingQuantity: this.ruleForm.RemainingQuantity,
-              ProductLineCode: this.ruleForm.ProductLineCode,
-              SplitQuantity: this.ruleForm.SplitQuantity,
-              Priority: this.ruleForm.Priority,
-              PlanQuantity: this.ruleForm.PlanQuantity,
-              PlanCode: this.ruleForm.PlanCode,
-              PlanType: this.ruleForm.PlanType, // 计划类型code值
-              PlanStartDate: this.ruleForm.PlanStartDate,
-              PlanEndDate: this.ruleForm.PlanEndDate
-            }
-            productionSplit(params).then(res => {
+            productionSplit(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.SplitSuc')
+                })
+                SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
+                  if (res.IsPass === true) {
+                    this.ruleForm = res.Obj
+                  }
                 })
                 this.editLoading = false
                 this.getList()
@@ -1024,13 +1281,26 @@ export default {
       })
     },
     // 关联工单
-    handleRelation() {},
+    handleRelation(row) {
+      this.orderFormVisible = true
+      this.orderBoxLoading = true
+      orderList({ PlanCode: row.PlanCode }).then(res => {
+        if (res.IsPass === true) {
+          this.orderData = res.Obj
+        }
+        this.orderBoxLoading = false
+      })
+    },
     // BOM
-    handleBOM() {},
+    handleBOM(row) {
+      this.bomFormVisible = true
+    },
     // 查看工艺路线
-    handleLine() {},
+    handleLine(row) {
+      this.lineFormVisible = true
+    },
 
-    // 删除按钮
+    // 除按钮
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -1079,33 +1349,19 @@ export default {
     // 继续拆分
     submitSplit() {
       this.editLoading = true
-      const params = {
-        ProductCode: this.ruleForm.ProductCode, // 成品名称code值
-        CustomerCode: this.ruleForm.CustomerCode, // 客户名称code值
-        RemainingQuantity: this.ruleForm.RemainingQuantity,
-        ProductLineCode: this.ruleForm.ProductLineCode,
-        SplitQuantity: this.ruleForm.SplitQuantity,
-        Priority: this.ruleForm.Priority,
-        PlanQuantity: this.ruleForm.PlanQuantity,
-        PlanCode: this.ruleForm.PlanCode,
-        PlanType: this.ruleForm.PlanType, // 计划类型code值
-        PlanStartDate: this.ruleForm.PlanStartDate,
-        PlanEndDate: this.ruleForm.PlanEndDate
-      }
-      productionSplit(params).then(res => {
-        debugger
+      productionSplit(this.ruleForm).then(res => {
         if (res.IsPass === true) {
           this.$message({
             type: 'success',
             message: this.$t('table.SplitSuc')
           })
-          this.editLoading = false
-          this.getList()
           SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
             if (res.IsPass === true) {
               this.ruleForm = res.Obj
             }
           })
+          this.editLoading = false
+          this.getList()
         } else {
           this.$message({
             type: 'error',
