@@ -1,5 +1,5 @@
-// const newUrl = 'http://192.168.1.151:20000' // 本地地址
-const newUrl = 'http://121.196.123.158/WebAPI' // 服务器地址
+const newUrl = 'http://192.168.1.151:20000' // 本地地址
+// const newUrl = 'http://121.196.123.158/WebAPI' // 服务器地址
 import request from '@/utils/request'
 
 // 获取管理角色列表
@@ -112,7 +112,7 @@ export function UserUpdate(data) {
   })
 }
 
-//设置用户可用或者禁用状态
+// 设置用户可用或者禁用状态
 export function RelerStatus(data) {
   return request({
     url: newUrl + '/api/User/UpdateStatus',
@@ -121,8 +121,7 @@ export function RelerStatus(data) {
   })
 }
 
-
-//删除用户
+// 删除用户
 export function RelerDelete(data) {
   return request({
     url: newUrl + '/api/User/Delete',

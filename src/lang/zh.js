@@ -334,6 +334,13 @@ export default {
     continueSplit: '继续拆分',
     ProductNane: '成品名称',
     FullName: '客户名称',
+    orderSend: '工单发布',
+    cancelSend: '取消发布',
+    dongjInfo: '您确定要冻结此条数据么？',
+    cancelInfo: '您确定要取消冻结此条数据么？',
+    overInfo: '您确定要强制完工此条数据么？',
+    sendInfo: '您确定要发布此条数据么？',
+    cancelOtherInfo: '您确定要取消发布此条数据么？',
 
     // 截止
     roles: '你的权限',
@@ -394,7 +401,8 @@ export default {
     total: '共选择',
     dataInfo: '条数据！',
     operationError: '操作失败',
-    SplitSuc: '拆分成功'
+    SplitSuc: '拆分成功',
+    cancelSuccess: '取消成功'
 
   },
   example: {

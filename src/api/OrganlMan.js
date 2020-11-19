@@ -1,5 +1,5 @@
-// const newUrl = 'http://192.168.1.151:20000' // 本地地址
-const newUrl = 'http://121.196.123.158/WebAPI' // 服务器地址
+const newUrl = 'http://192.168.1.151:20000' // 本地地址
+// const newUrl = 'http://121.196.123.158/WebAPI' // 服务器地址
 import request from '@/utils/request'
 
 // 通用下拉选择框
@@ -209,3 +209,34 @@ export function orderList(data) {
   })
 }
 
+// 生产工单删除
+export function orderDelete(data) {
+  return request({
+    url: newUrl + '/api/ProdWorkOrder/Delete',
+    method: 'post',
+    data
+  })
+}
+//
+// 生产工单冻结
+// 修改生产工单状态
+// 功能范围：工单发布、取消发布、工单冻结、强制完工
+export function orderStatus(data) {
+  return request({
+    url: newUrl + '/api/ProdWorkOrder/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 生产工单冻结取消
+// 修改生产工单状态
+// 功能范围：取消冻结
+
+export function orderFreeze(data) {
+  return request({
+    url: newUrl + '/api/ProdWorkOrder/ModifyUnfreeze',
+    method: 'post',
+    data
+  })
+}
