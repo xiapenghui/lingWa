@@ -99,10 +99,6 @@
     <div class="rightBtn">
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addPlan') }}</el-button>
       <el-button type="primary" icon="el-icon-upload2" @click="handleExport">{{ $t('permission.exportPlan') }}</el-button>
-      <el-button type="danger" icon="el-icon-remove-outline" @click="planFrozen">{{ $t('permission.planFrozen') }}</el-button>
-      <el-button type="success" icon="el-icon-circle-check" @click="cancelFrozen">{{ $t('permission.cancelFrozen') }}</el-button>
-      <el-button type="danger" icon="el-icon-remove-outline" @click="forceOver">{{ $t('permission.forceOver') }}</el-button>
-
       <!-- <el-button type="primary" icon="el-icon-document-remove">{{ $t('permission.importcompany') }}</el-button> -->
       <!-- <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" /> -->
     </div>
@@ -236,7 +232,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="250">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="350">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="关联工单" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-link" plain @click="handleRelation(scope.row)" />
@@ -258,6 +254,18 @@
             <el-button type="warning" size="small" icon="el-icon-scissors" plain @click="planOpen(scope.row)" />
           </el-tooltip>
 
+          <el-tooltip class="item" effect="dark" content="计划冻结" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-remove-outline" plain @click="planFrozen(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="取消冻结" placement="top-start">
+            <el-button type="success" size="small" icon="el-icon-circle-check" plain @click="cancelFrozen(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="强制完工" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-remove-outline" plain @click="forceOver(scope.row)" />
+          </el-tooltip>
+
           <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon=" el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
@@ -274,67 +282,45 @@
     > -->
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
-      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="100px" label-position="left" class="demo-ruleForm">
+      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="120px" label-position="left" class="demo-ruleForm">
         <div class="bigUpBox">
           <div class="boxLeft">
-            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-              <el-form-item :label="$t('permission.PlanNum')" prop="PlanNum" :rules="[{ required: isAlarmItem, message: '请输入生产计划单号', trigger: 'blur' }]">
-                <el-input v-model="ruleForm.PlanNum" :placeholder="$t('permission.PlanNum')" :disabled="isDisabled" />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item :label="$t('permission.PlanNum')" prop="PlanNum" :rules="[{ required: isAlarmItem, message: '请输入生产计划单号', trigger: 'blur' }]">
+              <el-input v-model="ruleForm.PlanNum" :placeholder="$t('permission.PlanNum')" :disabled="isDisabled" />
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
-              <el-form-item :label="$t('permission.PlanTypeName')" prop="PlanType" :rules="[{ required: isAlarmItem, message: '请选择生产计划类型', trigger: 'change' }]">
-                <el-radio-group v-model="ruleForm.PlanType" @change="changeRadio">
-                  <el-radio v-for="item in isGive" :key="item.value" :label="item.value" :value="item.value">{{ item.text }}</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item :label="$t('permission.PlanTypeName')" prop="PlanType" :rules="[{ required: isAlarmItem, message: '请选择生产计划类型', trigger: 'change' }]">
+              <el-radio-group v-model="ruleForm.PlanType" @change="changeRadio">
+                <el-radio v-for="item in isGive" :key="item.value" :label="item.value" :value="item.value">{{ item.text }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="计划数量" placement="top-start">
-              <el-form-item :label="$t('permission.PlanQuantity')" prop="PlanQuantity" :rules="[{ required: isAlarmItem, message: '请输入计划数量', trigger: 'blur' }]">
-                <el-input v-model="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" :disabled="isDisabled" />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item :label="$t('permission.PlanQuantity')" prop="PlanQuantity" :rules="[{ required: isAlarmItem, message: '请输入计划数量', trigger: 'blur' }]">
+              <el-input v-model="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" :disabled="isDisabled" />
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="可拆分数量" placement="top-start">
-              <el-form-item v-if="planShow" :label="$t('permission.SchedulingQuantityOther')" prop="SchedulingQuantityOther">
-                <el-input v-model="ruleForm.RemainingQuantity" :placeholder="$t('permission.SchedulingQuantityOther')" :disabled="isDisabled" />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item v-if="planShow" :label="$t('permission.SchedulingQuantityOther')" prop="SchedulingQuantityOther">
+              <el-input v-model="ruleForm.RemainingQuantity" :placeholder="$t('permission.SchedulingQuantityOther')" :disabled="isDisabled" />
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="拆分数量" placement="top-start">
-              <el-form-item v-if="planShow" :label="$t('permission.splitNumOther')" prop="SplitQuantity">
-                <el-input
-                  v-model="ruleForm.SplitQuantity"
-                  :placeholder="$t('permission.splitNumOther')"
-                  :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]"
-                />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item v-if="planShow" :label="$t('permission.splitNumOther')" prop="SplitQuantity">
+              <el-input v-model="ruleForm.SplitQuantity" :placeholder="$t('permission.splitNumOther')" :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]" />
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="销售单号" placement="top-start">
-              <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" /></el-form-item>
-            </el-tooltip>
+            <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" /></el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="计划开始日期" placement="top-start">
-              <el-form-item :label="$t('permission.PlanStartDate')" prop="PlanStartDate" :rules="[{ required: isAlarmItem, message: '请输入计划开始日期', trigger: 'blur' }]">
-                <el-date-picker v-model="ruleForm.PlanStartDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item :label="$t('permission.PlanStartDate')" prop="PlanStartDate" :rules="[{ required: isAlarmItem, message: '请输入计划开始日期', trigger: 'blur' }]">
+              <el-date-picker v-model="ruleForm.PlanStartDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
+            </el-form-item>
           </div>
           <div class="boxRight">
-            <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start">
-              <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
-                <el-input v-model="ruleForm.ProductName" :placeholder="$t('permission.ProductName')" :disabled="isDisabled" @focus="finshBox" />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
+              <el-input v-model="ruleForm.ProductName" :placeholder="$t('permission.ProductName')" :disabled="isDisabled" @focus="finshBox" />
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start">
-              <el-form-item :label="$t('permission.CustomerName')" prop="CustomerName">
-                <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" :disabled="isDisabled" @focus="userBox" />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item :label="$t('permission.CustomerName')" prop="CustomerName">
+              <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" :disabled="isDisabled" @focus="userBox" />
+            </el-form-item>
 
             <!-- <el-tooltip class="item" effect="dark" content="计划投入产线" placement="top-start">
               <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
@@ -342,42 +328,32 @@
               </el-form-item>
             </el-tooltip> -->
 
-            <el-tooltip class="item" effect="dark" content="计划投入产线" placement="top-start">
-              <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
-                <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%">
-                  <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
-                </el-select>
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
+              <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%">
+                <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
+              </el-select>
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="优先级" placement="top-start">
-              <!-- <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
+            <!-- <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
                 <el-input v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" />
               </el-form-item> -->
-              <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
-                <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%">
-                  <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
-                </el-select>
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
+              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%">
+                <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
+              </el-select>
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="销售单行号" placement="top-start">
-              <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')" prop="ProductName">
-                <el-input v-model="ruleForm.companyAllName" :placeholder="$t('permission.SaleLineNum')" />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')" prop="ProductName">
+              <el-input v-model="ruleForm.companyAllName" :placeholder="$t('permission.SaleLineNum')" />
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="计划发货日期" placement="top-start">
-              <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
-                <el-date-picker v-model="ruleForm.PlanDeliveryDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
+              <el-date-picker v-model="ruleForm.PlanDeliveryDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" />
+            </el-form-item>
 
-            <el-tooltip class="item" effect="dark" content="计划完成日期" placement="top-start">
-              <el-form-item :label="$t('permission.PlanEndDate')" prop="PlanEndDate" :rules="[{ required: isAlarmItem, message: '请输入计划完成日期', trigger: 'blur' }]">
-                <el-date-picker v-model="ruleForm.PlanEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" />
-              </el-form-item>
-            </el-tooltip>
+            <el-form-item :label="$t('permission.PlanEndDate')" prop="PlanEndDate" :rules="[{ required: isAlarmItem, message: '请输入计划完成日期', trigger: 'blur' }]">
+              <el-date-picker v-model="ruleForm.PlanEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
+            </el-form-item>
           </div>
         </div>
       </el-form>
@@ -1048,8 +1024,7 @@ export default {
     // 搜索框初始化开始结束时间
     // this.pagination.importDate[0] = this.$moment(new Date()).format('YYYY-MM-DD')
     // this.pagination.importDate[1] = this.$moment(new Date()).format('YYYY-MM-DD')
-    this.pagination.CreateStartDate = this.pagination.importDate[0]
-    this.pagination.CreateEndDate = this.pagination.importDate[1]
+
     // 监听表格高度
     const that = this
     window.onresize = () => {
@@ -1084,15 +1059,17 @@ export default {
         this.ProductList = res.Obj
       }
     })
-
     // Mock: get all routes and roles list from server
     this.getList()
   },
   methods: {
     // 改变搜索框开始结束时间触发
     importChange(val) {
+      debugger
       this.pagination.importDate[0] = val[0]
       this.pagination.importDate[1] = val[1]
+      this.pagination.CreateStartDate = this.pagination.importDate[0]
+      this.pagination.CreateEndDate = this.pagination.importDate[1]
     },
 
     // 折叠按钮互斥
@@ -1300,7 +1277,7 @@ export default {
       this.lineFormVisible = true
     },
 
-    // 除按钮
+    // 删除按钮
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -1372,115 +1349,99 @@ export default {
       })
     },
     // 计划冻结
-    planFrozen() {
-      if (this.selectedData.length > 0) {
-        this.$confirm(this.$t('table.FrozenInfo'), this.$t('table.Tips') + this.$t('table.total') + this.selectedData.length + this.$t('table.dataInfo'), {
-          confirmButtonText: this.$t('table.confirm'),
-          cancelButtonText: this.$t('table.cancel'),
-          type: 'warning'
+    planFrozen(row) {
+      this.$confirm(this.$t('permission.dongjInfo'), this.$t('permission.errorTitle'), {
+        confirmButtonText: this.$t('table.confirm'),
+        cancelButtonText: this.$t('table.cancel'),
+        type: 'warning'
+      })
+        .then(() => {
+          productionFreeze({ PlanCodes: [row.PlanCode] }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: res.MSG
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+          })
         })
-          .then(() => {
-            const idList = []
-            this.selectedData.map(item => {
-              const newFeatid = item.PlanCode
-              idList.push(newFeatid)
-            })
-            productionFreeze({ PlanCodes: idList }).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: res.MSG
-                })
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-            })
+        .catch(() => {
+          this.$message({
+            type: 'error',
+            message: this.$t('table.operationError')
           })
-          .catch(() => {
-            this.$message({
-              type: 'error',
-              message: this.$t('table.operationError')
-            })
-          })
-      }
+        })
     },
     // 取消冻结
-    cancelFrozen() {
-      if (this.selectedData.length > 0) {
-        this.$confirm(this.$t('table.CancelInfo'), this.$t('table.Tips') + this.$t('table.total') + this.selectedData.length + this.$t('table.dataInfo'), {
-          confirmButtonText: this.$t('table.confirm'),
-          cancelButtonText: this.$t('table.cancel'),
-          type: 'warning'
+    cancelFrozen(row) {
+      this.$confirm(this.$t('permission.cancelInfo'), this.$t('permission.errorTitle'), {
+        confirmButtonText: this.$t('table.confirm'),
+        cancelButtonText: this.$t('table.cancel'),
+        type: 'warning'
+      })
+        .then(() => {
+          productionUnFreeze({ PlanCodes: [row.PlanCode] }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: res.MSG
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+          })
         })
-          .then(() => {
-            const idList = []
-            this.selectedData.map(item => {
-              const newFeatid = item.PlanCode
-              idList.push(newFeatid)
-            })
-            productionUnFreeze({ PlanCodes: idList }).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: res.MSG
-                })
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-            })
+        .catch(() => {
+          this.$message({
+            type: 'error',
+            message: this.$t('table.operationError')
           })
-          .catch(() => {
-            this.$message({
-              type: 'error',
-              message: this.$t('table.operationError')
-            })
-          })
-      }
+        })
     },
     // 强制完工
-    forceOver() {
-      if (this.selectedData.length > 0) {
-        this.$confirm(this.$t('table.forceInfo'), this.$t('table.Tips') + this.$t('table.total') + this.selectedData.length + this.$t('table.dataInfo'), {
-          confirmButtonText: this.$t('table.confirm'),
-          cancelButtonText: this.$t('table.cancel'),
-          type: 'warning'
+    forceOver(row) {
+      this.$confirm(this.$t('permission.overInfo'), this.$t('permission.errorTitle'), {
+        confirmButtonText: this.$t('table.confirm'),
+        cancelButtonText: this.$t('table.cancel'),
+        type: 'warning'
+      })
+        .then(() => {
+          const idList = []
+          this.selectedData.map(item => {
+            const newFeatid = item.PlanCode
+            idList.push(newFeatid)
+          })
+          ForceComplete({ PlanCodes: [row.PlanCode] }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: res.MSG
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+          })
         })
-          .then(() => {
-            const idList = []
-            this.selectedData.map(item => {
-              const newFeatid = item.PlanCode
-              idList.push(newFeatid)
-            })
-            ForceComplete({ PlanCodes: idList }).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: res.MSG
-                })
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-            })
+        .catch(() => {
+          this.$message({
+            type: 'error',
+            message: this.$t('table.operationError')
           })
-          .catch(() => {
-            this.$message({
-              type: 'error',
-              message: this.$t('table.operationError')
-            })
-          })
-      }
+        })
     },
     // 新增获取单选value的值
     changeRadio(val) {

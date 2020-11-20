@@ -115,7 +115,6 @@
       fit
       highlight-current-row
     >
-      <el-table-column type="selection" align="center" width="55" fixed />
 
       <el-table-column align="center" label="生产计划单号" width="150">
         <template slot-scope="scope">
@@ -215,6 +214,7 @@
 
       <el-table-column align="center" label="计开始日期" width="150">
         <template slot-scope="scope">
+          <!-- {{ scope.row.PlanStartDate }} -->
           {{ scope.row.PlanStartDate }}
         </template>
       </el-table-column>
@@ -257,10 +257,6 @@
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
-          </el-tooltip>
-
           <el-tooltip class="item" effect="dark" content="工单发布" placement="top-start">
             <el-button type="success" size="small" icon="el-icon-s-promotion" plain @click="orderSend(scope.row)" />
           </el-tooltip>
@@ -280,6 +276,11 @@
           <el-tooltip class="item" effect="dark" content="强制完工" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-success" plain @click="forceOver(scope.row)" />
           </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
+
         </template>
       </el-table-column>
     </el-table>
@@ -296,7 +297,7 @@
           <div class="boxLeft">
 
             <el-form-item label="生产工单号" prop="PlanNum" :rules="[{ required: true, message: '请输入生产工单号', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.PlanNum" :placeholder="$t('permission.PlanNum')" :disabled="isDisabled" />
+              <el-input v-model="ruleForm.PlanNum" :placeholder="$t('permission.PlanNum')" />
             </el-form-item>
 
             <el-form-item label="工单类型" prop="PlanType" :rules="[{ required: true, message: '请选择生产计划类型', trigger: 'change' }]">
@@ -306,7 +307,7 @@
             </el-form-item>
 
             <el-form-item label="计划数量" prop="PlanQuantity" :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" :disabled="isDisabled" />
+              <el-input v-model="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" />
             </el-form-item>
 
             <el-form-item label="计划开始日期" prop="PlanStartDate" :rules="[{ required: true, message: '请输入计划开始日期', trigger: 'blur' }]">
@@ -318,11 +319,11 @@
           <div class="boxRight">
 
             <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.ProductName" :placeholder="$t('permission.ProductName')" :disabled="isDisabled" @focus="finshBox" />
+              <el-input v-model="ruleForm.ProductName" :placeholder="$t('permission.ProductName')" @focus="finshBox" />
             </el-form-item>
 
             <el-form-item label="客户名称" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" :disabled="isDisabled" @focus="userBox" />
+              <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" @focus="userBox" />
             </el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
@@ -340,7 +341,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button v-if="addShow" type="primary" @click="submitAdd">{{ $t('permission.continueAdd') }}</el-button>
+        <el-button type="primary" @click="submitAdd">{{ $t('permission.continueAdd') }}</el-button>
         <!-- <el-button v-if="splitShow" type="primary" @click="submitSplit">{{ $t('permission.continueSplit') }}</el-button>s -->
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
@@ -742,7 +743,6 @@ export default {
         CustomerNum: undefined,
         FullName: undefined
       },
-
       listLoading: false, // 主列表
       listBoxLoading: false, // 成品名称搜索loading
       userBoxLoading: false, // 客户名称搜索loading
@@ -930,6 +930,7 @@ export default {
     getList() {
       this.listLoading = true
       orderList(this.pagination).then(res => {
+        debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -953,8 +954,6 @@ export default {
       this.dialogFormVisible = true
       this.planAdd = true
       this.planShow = false
-      this.isDisabled = false
-      this.addShow = true
       this.splitShow = false
       this.true = true
       this.ruleForm = {}
@@ -970,9 +969,7 @@ export default {
       this.dialogFormVisible = true
       this.planAdd = true
       this.planShow = false
-      this.isDisabled = false
       this.splitShow = false
-      this.addShow = false
       this.true = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
