@@ -345,6 +345,7 @@ export default {
     cancelOtherInfo: '您确定要取消发布此条数据么？',
     addCustomer: '新增客户',
     editCustomer: '编辑客户',
+    editMaterial: '编辑原料',
 
     // 截止
     roles: '你的权限',

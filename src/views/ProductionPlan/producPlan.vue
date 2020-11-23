@@ -198,37 +198,37 @@
 
       <el-table-column align="center" :label="$t('permission.PlanDeliveryDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.PlanDeliveryDate.substring(scope.row.PlanDeliveryDate.length - 20, scope.row.PlanDeliveryDate.length - 8) }}
+          {{ scope.row.PlanDeliveryDate.substring(0,10) }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.PlanStartDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.PlanStartDate.substring(scope.row.PlanStartDate.length - 20, scope.row.PlanStartDate.length - 8) }}
+          {{ scope.row.PlanStartDate.substring(0,10) }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.PlanEndDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.PlanEndDate.substring(scope.row.PlanEndDate.length - 20, scope.row.PlanEndDate.length - 8) }}
+          {{ scope.row.PlanEndDate.substring(0,10) }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.RealStartDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.RealStartDate.substring(scope.row.RealStartDate.length - 20, scope.row.RealStartDate.length - 8) }}
+          {{ scope.row.RealStartDate.substring(0,10) }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.RealEndDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.RealEndDate.substring(scope.row.RealEndDate.length - 20, scope.row.RealEndDate.length - 8) }}
+          {{ scope.row.RealEndDate.substring(0,10) }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.CreateTime')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime.substring(scope.row.CreateTime.length - 20, scope.row.CreateTime.length - 8) }}
+          {{ scope.row.CreateTime.substring(0,10) }}
         </template>
       </el-table-column>
 

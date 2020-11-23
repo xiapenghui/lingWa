@@ -4,29 +4,29 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+            <el-tooltip class="item" effect="dark" content="公司编号" placement="top-start">
               <label class="radio-label">{{ $t('permission.companyNo') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.CompanyCode" :placeholder="$t('permission.companysInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.OrgNum" placeholder="公司编号)" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+            <el-tooltip class="item" effect="dark" content="公司简称" placement="top-start">
               <label class="radio-label">{{ $t('permission.companyName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.FullName" :placeholder="$t('permission.companyNameInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.FullName" placeholder="公司简称" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <el-checkbox v-model="pagination.IsDelete">{{ $t('permission.inclusionCompany') }}</el-checkbox>
+            <el-tooltip class="item" effect="dark" content="包含禁用状态的公司" placement="top-start">
+              <el-checkbox v-model="pagination.IsDelete">包含禁用状态的公司</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
 
-        <el-col :span="6">
+        <el-col :span="4">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
             <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
@@ -86,13 +86,13 @@
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150">
         <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.IsDelete === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsDelete === false ? '禁用' : '启用' }}</el-tag>
+          <el-tag :style="{ color: scope.row.Status === '0' ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === '0' ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.user')" width="100">
         <template slot-scope="scope">
-          {{ scope.row.ModifyUser }}
+          {{ scope.row.CreateUserName }}
         </template>
       </el-table-column>
 
@@ -102,23 +102,18 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="250">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <!-- <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.editConply') }}</el-button>
-          <el-button v-if="scope.row.UseStatus == 1" type="danger" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleBan') }}</el-button>
-          <el-button v-else type="success" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleEnable') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.deleteCompany') }}</el-button> -->
-
           <el-tooltip class="item" effect="dark" content="编辑公司" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="禁用公司" placement="top-start">
-            <el-button v-if="scope.row.IsDelete == false" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status == '1' " type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="启用公司" placement="top-start">
-            <el-button v-if="scope.row.IsDelete == true" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status == '0'" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="删除公司" placement="top-start">
@@ -128,57 +123,38 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
+    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
+        <el-form-item label="公司编号"><el-input v-model="ruleForm.OrgNum" placeholder="公司编号" /></el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.companyNo')" prop="OrgNum">
-            <el-input v-model="ruleForm.OrgNum" :placeholder="$t('permission.companyNo')" />
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item label="公司简称" prop="ShortName"><el-input v-model="ruleForm.ShortName" placeholder="公司简称" /></el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-          <el-form-item :label="$t('permission.companyName')" prop="ShortName">
-            <el-input v-model="ruleForm.ShortName" :placeholder="$t('permission.companyName')" />
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item label="公司全称" prop="FullName">
+          <el-input v-model="ruleForm.FullName" placeholder="公司编号" />
+        </el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
-          <el-form-item :label="$t('permission.companyAllName')" prop="FullName">
-            <el-input v-model="ruleForm.FullName" :placeholder="$t('permission.companyAllName')" />
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item label="公司电话"><el-input v-model="ruleForm.Tel" placeholder="公司电话" /></el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
-          <el-form-item :label="$t('permission.companyTel')"><el-input v-model="ruleForm.Tel" :placeholder="$t('permission.companyTel')" /></el-form-item>
-        </el-tooltip>
+        <el-form-item label="公司地址"><el-input v-model="ruleForm.Address" placeholder="公司地址" /></el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
-          <el-form-item :label="$t('permission.companyAddress')"><el-input v-model="ruleForm.Address" :placeholder="$t('permission.companyAddress')" /></el-form-item>
-        </el-tooltip>
+        <el-form-item label="公司LOGO">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
+        </el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
-          <el-form-item :label="$t('permission.companyLogo')">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-            >
-              <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon" />
-            </el-upload>
-          </el-form-item>
-        </el-tooltip>
-
-        <el-tooltip class="item" effect="dark" :content="content8" placement="top-start">
-          <el-form-item :label="$t('permission.companyDescription')">
-            <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.companyDescription')" />
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item label="公司描述">
+          <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="公司描述" />
+        </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -192,13 +168,13 @@
 import '../../../../styles/scrollbar.css'
 import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { OrganList, OrganAdd, OrganModify, OrganDelete } from '@/api/OrganlMan'
+import { OrganList, OrganAdd, OrganStatus, OrganModify, OrganDelete } from '@/api/OrganlMan'
 const fixHeight = 270
 export default {
   name: 'CompanyMaintenance',
-  components: { Pagination },
+  // components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -206,8 +182,8 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 10,
-        CompanyCode: undefined,
-        companyName: undefined,
+        OrgNum: undefined,
+        FullName: undefined,
         IsDelete: false
       },
       listLoading: false,
@@ -217,18 +193,17 @@ export default {
       dialogType: 'new',
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       rules: {
-        CompanyCode: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
-        companyName: [{ required: true, message: '请输入公司名字', trigger: 'blur' }]
+        ShortName: [{ required: true, message: '请输入公司简称', trigger: 'blur' }]
       },
-      parentMsg: this.$t('permission.importCompany'),
-      content1: this.$t('permission.companyNo'),
-      content2: this.$t('permission.companyName'),
-      content3: this.$t('permission.inclusionCompany'),
-      content4: this.$t('permission.companyAllName'),
-      content5: this.$t('permission.companyTel'),
-      content6: this.$t('permission.companyAddress'),
-      content7: this.$t('permission.companyLogo'),
-      content8: this.$t('permission.companyDescription')
+      parentMsg: this.$t('permission.importCompany')
+      // content1: this.$t('permission.companyNo'),
+      // content2: this.$t('permission.companyName'),
+      // content3: this.$t('permission.inclusionCompany'),
+      // content4: this.$t('permission.companyAllName'),
+      // content5: this.$t('permission.companyTel'),
+      // content6: this.$t('permission.companyAddress'),
+      // content7: this.$t('permission.companyLogo'),
+      // content8: this.$t('permission.companyDescription')
     }
   },
   computed: {},
@@ -246,15 +221,15 @@ export default {
     },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
-      this.parentMsg = this.$t('permission.importCompany')
-      this.content1 = this.$t('permission.companyNo')
-      this.content2 = this.$t('permission.companyName')
-      this.content3 = this.$t('permission.inclusionCompany')
-      this.content4 = this.$t('permission.companyAllName')
-      this.content5 = this.$t('permission.companyTel')
-      this.content6 = this.$t('permission.companyAddress')
-      this.content7 = this.$t('permission.companyLogo')
-      this.content8 = this.$t('permission.companyDescription')
+      // this.parentMsg = this.$t('permission.importCompany')
+      // this.content1 = this.$t('permission.companyNo')
+      // this.content2 = this.$t('permission.companyName')
+      // this.content3 = this.$t('permission.inclusionCompany')
+      // this.content4 = this.$t('permission.companyAllName')
+      // this.content5 = this.$t('permission.companyTel')
+      // this.content6 = this.$t('permission.companyAddress')
+      // this.content7 = this.$t('permission.companyLogo')
+      // this.content8 = this.$t('permission.companyDescription')
       this.setFormRules()
     }
   },
@@ -274,24 +249,45 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        OrgNum: [
-          {
-            required: true,
-            message: this.$t('permission.companyNoInfo'),
-            trigger: 'blur'
-          }
-        ],
-        ShortName: [
-          {
-            required: true,
-            message: this.$t('permission.companyNameInfo'),
-            trigger: 'blur'
-          }
-        ]
+        ShortName: [{ required: true, message: '请输入公司简称', trigger: 'blur' }]
       }
     },
     // 禁用，启用权限
-    handleBan(scope, status) {},
+    handleBan(row) {
+      debugger
+      let status, statusTitle
+      if (row.Status === true) {
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
+      } else {
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
+      }
+      this.$confirm(statusTitle, status, {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          Status: (row.Status = row.Status !== 1),
+          CustomerCode: row.CustomerCode
+        }
+        OrganStatus(params).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              type: 'success',
+              message: res.MSG
+            })
+            this.getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.MSG
+            })
+          }
+        })
+      })
+    },
 
     // 查询
     handleSearch() {
@@ -319,10 +315,7 @@ export default {
       })
       return false
     },
-    // handleSuccess({ results, header }) {
-    //   this.tableData = results
-    //   this.tableHeader = header
-    // },
+
     // 获取列表
     getList() {
       this.listLoading = true
@@ -414,35 +407,33 @@ export default {
     },
     // 删除角色
     handleDelete(row) {
-      if (this.tableData.length > 0) {
-        this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
-          confirmButtonText: this.$t('permission.Confirm'),
-          cancelButtonText: this.$t('permission.Cancel'),
-          type: 'warning'
+      this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      })
+        .then(() => {
+          OrganDelete({ OrgCode: row.OrgCode }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: this.$t('table.deleteSuccess')
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+          })
+          this.getList()
         })
-          .then(() => {
-            OrganDelete({ code: row.OrgCode }).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.deleteSuccess')
-                })
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-            })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: this.$t('table.deleteError')
           })
-          .catch(() => {
-            this.$message({
-              type: 'info',
-              message: this.$t('table.deleteError')
-            })
-          })
-      }
+        })
     }
   }
 }

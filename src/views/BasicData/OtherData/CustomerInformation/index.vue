@@ -4,26 +4,33 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="客户编号" placement="top-start"><label class="radio-label">客户编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="客户编号" placement="top-start">
+              <label class="radio-label">{{ $t('permission.CustomerNum') }}:</label>
+            </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.CustomerNum" :placeholder="$t('permission.userNameInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.OrgNum" placeholder="客户编号" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start"><label class="radio-label">客户名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start">
+              <label class="radio-label">{{ $t('permission.companyName') }}:</label>
+            </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.FullName" :placeholder="$t('permission.fullNameInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.FullName" placeholder="客户名称" /></el-col>
         </el-col>
-        <el-col :span="6">
-          <el-col :span="12">
+        <el-col :span="4">
+          <el-col :span="24">
             <el-tooltip class="item" effect="dark" content="包含禁状态的成品" placement="top-start">
               <el-checkbox v-model="pagination.ShowBanned">包含禁状态的成品</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
+
         <el-col :span="4">
-          <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-          <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+          <el-col :span="24">
+            <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+            <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+          </el-col>
         </el-col>
       </el-row>
     </div>
@@ -79,7 +86,7 @@
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -97,19 +104,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑客户" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用客户" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用客户" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除客户" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -233,6 +240,7 @@ export default {
     },
     // 禁用，启用权限
     handleBan(row) {
+      debugger
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')

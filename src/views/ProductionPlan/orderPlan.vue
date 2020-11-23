@@ -6,7 +6,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="生产工单号" placement="top-start"><label class="radio-label">生产工单号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.OrderCode" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.OrderNum" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="8">
@@ -72,8 +72,8 @@
             <el-tooltip class="item" effect="dark" content="工单类型" placement="top-start"><label class="radio-label">工单类型:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.OrderType" clearable style="width: 100%">
-              <el-option v-for="item in StatusNameData" :key="item.value" :label="item.text" :value="item.value" />
+            <el-select v-model="pagination.s" clearable style="width: 100%">
+              <el-option v-for="item in PlanTypeNameData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
         </el-col>
@@ -83,7 +83,7 @@
             <el-tooltip class="item" effect="dark" content="工单状态" placement="top-start"><label class="radio-label">工单状态:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.PrevStatus" clearable style="width: 100%">
+            <el-select v-model="pagination.Status" clearable style="width: 100%">
               <el-option v-for="item in StatusNameData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
@@ -115,7 +115,6 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="生产计划单号" width="150">
         <template slot-scope="scope">
           {{ scope.row.PlanCode }}
@@ -124,7 +123,7 @@
 
       <el-table-column align="center" label="生产工单号" width="150">
         <template slot-scope="scope">
-          {{ scope.row.OrderCode }}
+          {{ scope.row.OrderNum }}
         </template>
       </el-table-column>
 
@@ -154,11 +153,11 @@
 
       <el-table-column align="center" label="客户名称" width="150">
         <template slot-scope="scope">
-          {{ scope.row.MaterialType }}
+          {{ scope.row.CustomerName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="已投人数" width="150">
+      <el-table-column align="center" label="已投数量" width="150">
         <template slot-scope="scope">
           {{ scope.row.InputQuantity }}
         </template>
@@ -170,7 +169,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="未完工人数" width="150">
+      <el-table-column align="center" label="未完工数" width="150">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime }}
         </template>
@@ -202,7 +201,7 @@
 
       <el-table-column align="center" label="创建人" width="150">
         <template slot-scope="scope">
-          {{ scope.row.CreateUser }}
+          {{ scope.row.CreateUserName }}
         </template>
       </el-table-column>
 
@@ -214,31 +213,31 @@
 
       <el-table-column align="center" label="计开始日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.PlanStartDate }}
+          {{ scope.row.PlanStartDate === null ? '' : scope.row.PlanStartDate.substring(0, 10) }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="计划完成日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.PlanEndDate }}
+          {{ scope.row.PlanEndDate === null ? '' : scope.row.PlanEndDate.substring(0, 10) }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="实际开始日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.RealStartDate }}
+          {{ scope.row.RealStartDate === null ? '' : scope.row.RealStartDate.substring(0, 10) }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="实际完成日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.RealEndDate }}
+          {{ scope.row.RealEndDate === null ? '' : scope.row.RealEndDate.substring(0, 10) }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="创建日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime }}
+          {{ scope.row.CreateTime === null ? '' : scope.row.CreateTime.substring(0, 10) }}
         </template>
       </el-table-column>
 
@@ -279,22 +278,16 @@
           <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
-
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
+    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
 
-    <el-dialog
-      :close-on-click-modal="false"
-      :visible.sync="dialogFormVisible"
-      :title="dialogTypeTitle"
-    >
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="100px" label-position="left" class="demo-ruleForm">
         <div class="bigUpBox">
           <div class="boxLeft">
-
             <el-form-item label="生产工单号" prop="OrderNum" :rules="[{ required: true, message: '请输入生产工单号', trigger: 'blur' }]">
               <el-input v-model="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" />
             </el-form-item>
@@ -317,18 +310,14 @@
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
-
           </div>
 
           <div class="boxRight">
-
             <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'blur' }]">
               <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" @focus="finshBox" />
             </el-form-item>
 
-            <el-form-item label="客户名称" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" @focus="userBox" />
-            </el-form-item>
+            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" @focus="userBox" /></el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
               <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%">
@@ -340,10 +329,7 @@
               <el-date-picker v-model="ruleForm.PlanEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" />
             </el-form-item>
 
-            <el-form-item label="备注">
-              <el-input v-model="ruleForm.Description" type="textarea" />
-            </el-form-item>
-
+            <el-form-item label="备注"><el-input v-model="ruleForm.Description" type="textarea" /></el-form-item>
           </div>
         </div>
       </el-form>
@@ -696,7 +682,7 @@ import '../../styles/scrollbar.css'
 import '../../styles/commentBox.scss'
 import i18n from '@/lang'
 // import moment from 'moment'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary, GetMaterialList, GetCustomerList, productionUpdate, GetLine } from '@/api/OrganlMan'
 import { orderList, orderDelete, orderFreeze, orderStatus, orderAdd } from '@/api/OrganlMan'
@@ -705,7 +691,7 @@ const fixHeightBox = 350
 
 export default {
   name: 'CompanyMaintenance',
-  components: { Pagination },
+  // components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -713,8 +699,8 @@ export default {
       CreateTime: null,
       btnShow: true, // 互斥按钮
       showSearch: false, // 隐藏搜素条件
-      PlanTypeNameData: [], // 计划类型下拉框
-      StatusNameData: [], // 计划状态下拉框
+      PlanTypeNameData: [], // 工单类型下拉框
+      StatusNameData: [], // 工单状态下拉框
       finshData: [], // 成品弹窗数组
       userData: [], // 客户名称弹窗数组
       bomData: [], // BOM弹窗
@@ -729,7 +715,7 @@ export default {
         PageIndex: 1,
         PageSize: 10,
         importDate: [],
-        OrderCode: undefined,
+        OrderNum: undefined,
         ProductCode: undefined,
         ProductName: undefined,
         CustomerName: undefined,
@@ -858,15 +844,15 @@ export default {
       })()
     }
 
-    // 计划类型下拉
+    // 工单类型下拉
     GetDictionary({ code: '0008' }).then(res => {
       if (res.IsPass === true) {
         this.PlanTypeNameData = res.Obj
         this.isGive = res.Obj
       }
     })
-    // 计划状态下拉
-    GetDictionary({ code: '0016' }).then(res => {
+    // 工单状态下拉
+    GetDictionary({ code: '0010' }).then(res => {
       if (res.IsPass === true) {
         this.StatusNameData = res.Obj
       }

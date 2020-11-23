@@ -73,6 +73,14 @@ export function OrganModify(data) {
     data
   })
 }
+// 修改公司信息状态
+export function OrganStatus(data) {
+  return request({
+    url: newUrl + '/api/OrganizationCorp',
+    method: 'post',
+    data
+  })
+}
 
 // 查看工序分页列表
 export function ProduceList(data) {
@@ -270,6 +278,25 @@ export function CustomerAdd(data) {
 export function CustomerModify(data) {
   return request({
     url: newUrl + '/api/MasterCustomer/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 物料信息管理
+// 原料信息维护列表
+export function MaterialList(data) {
+  return request({
+    url: newUrl + '/api/Material/List',
+    method: 'post',
+    data
+  })
+}
+
+// 原料信息维护删除
+export function MaterialDelete(data) {
+  return request({
+    url: newUrl + '/api/Material/Delete',
     method: 'post',
     data
   })
