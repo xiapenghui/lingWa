@@ -229,13 +229,66 @@ export function orderStatus(data) {
   })
 }
 
+// 其他主数据维护
+// 客户信息维护列表
+export function CustomerList(data) {
+  return request({
+    url: newUrl + '/api/MasterCustomer/List',
+    method: 'post',
+    data
+  })
+}
+
+// 客户信息删除
+export function CustomerDelete(data) {
+  return request({
+    url: newUrl + '/api/MasterCustomer/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 客户信息禁用启用
+export function CustomerStatus(data) {
+  return request({
+    url: newUrl + '/api/MasterCustomer/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 客户信息新增
+export function CustomerAdd(data) {
+  return request({
+    url: newUrl + '/api/MasterCustomer/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 客户信息编辑
+export function CustomerModify(data) {
+  return request({
+    url: newUrl + '/api/MasterCustomer/Modify',
+    method: 'post',
+    data
+  })
+}
+
 // 生产工单冻结取消
 // 修改生产工单状态
 // 功能范围：取消冻结
-
 export function orderFreeze(data) {
   return request({
     url: newUrl + '/api/ProdWorkOrder/ModifyUnfreeze',
+    method: 'post',
+    data
+  })
+}
+
+export function orderAdd(data) {
+  return request({
+    url: newUrl + '/api/ProdWorkOrder/Add',
     method: 'post',
     data
   })

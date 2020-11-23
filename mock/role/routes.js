@@ -170,6 +170,27 @@ const asyncRoutes = [
           }
         }
         ]
+      },
+
+      // 其他主数据管理
+      {
+        path: 'OtherData',
+        component: () => import('@/views/BasicData/OtherData/index'), // Parent router-view
+        name: 'OtherData',
+        meta: {
+          title: 'OtherData'
+        },
+        // 客户信息管理
+        redirect: '/BasicData/OtherData/CustomerInformation',
+        children: [{
+          path: 'CustomerInformation',
+          component: () => import('@/views/BasicData/OtherData/CustomerInformation'),
+          name: 'CustomerInformation',
+          meta: {
+            title: 'CustomerInformation'
+          }
+        }
+        ]
       }
     ]
   },

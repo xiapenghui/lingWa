@@ -1120,6 +1120,7 @@ export default {
     getList() {
       this.listLoading = true
       productionList(this.pagination).then(res => {
+		  debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false

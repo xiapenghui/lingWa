@@ -31,6 +31,8 @@ export default {
     // do
     orderPlan: '生产工单',
     producPlan: '生产计划',
+    OtherData: '其他主数据管理',
+    CustomerInformation: '客户信息维护',
 
     // 截止
 
@@ -341,6 +343,8 @@ export default {
     overInfo: '您确定要强制完工此条数据么？',
     sendInfo: '您确定要发布此条数据么？',
     cancelOtherInfo: '您确定要取消发布此条数据么？',
+    addCustomer: '新增客户',
+    editCustomer: '编辑客户',
 
     // 截止
     roles: '你的权限',
