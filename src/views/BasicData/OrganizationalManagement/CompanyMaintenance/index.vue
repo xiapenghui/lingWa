@@ -21,7 +21,7 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" content="包含禁用状态的公司" placement="top-start">
-              <el-checkbox v-model="pagination.IsDelete">包含禁用状态的公司</el-checkbox>
+              <el-checkbox v-model="pagination.Status">包含禁用状态的公司</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -86,7 +86,7 @@
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150">
         <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === '0' ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === '0' ? '禁用' : '启用' }}</el-tag>
+          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -109,11 +109,11 @@
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="禁用公司" placement="top-start">
-            <el-button v-if="scope.row.Status == '1' " type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status == true " type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="启用公司" placement="top-start">
-            <el-button v-if="scope.row.Status == '0'" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="删除公司" placement="top-start">
@@ -184,7 +184,7 @@ export default {
         PageSize: 10,
         OrgNum: undefined,
         FullName: undefined,
-        IsDelete: false
+        Status: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -269,7 +269,7 @@ export default {
         type: 'warning'
       }).then(() => {
         const params = {
-          Status: (row.Status = row.Status !== 1),
+          Status: (row.Status = row.Status !== true),
           CustomerCode: row.CustomerCode
         }
         OrganStatus(params).then(res => {

@@ -228,12 +228,11 @@
 
       <el-table-column align="center" :label="$t('permission.CreateTime')" width="120">
         <template slot-scope="scope">
-          <!-- {{ scope.row.CreateTime.substring(0,10) }} -->
           {{ scope.row.CreateTime | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="350">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="250">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="关联工单" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-link" plain @click="handleRelation(scope.row)" />
@@ -251,25 +250,31 @@
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="计划拆分" placement="top-start">
-            <el-button type="warning" size="small" icon="el-icon-scissors" plain @click="planOpen(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="计划冻结" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-remove-outline" plain @click="planFrozen(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="取消冻结" placement="top-start">
-            <el-button type="success" size="small" icon="el-icon-circle-check" plain @click="cancelFrozen(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="强制完工" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-remove-outline" plain @click="forceOver(scope.row)" />
-          </el-tooltip>
-
           <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon=" el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
+
+          <el-popover placement="top" trigger="hover">
+
+            <el-tooltip class="item" effect="dark" content="计划拆分" placement="top-start">
+              <el-button type="warning" size="small" icon="el-icon-scissors" plain @click="planOpen(scope.row)" />
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark" content="计划冻结" placement="top-start">
+              <el-button type="danger" size="small" icon="el-icon-remove-outline" plain @click="planFrozen(scope.row)" />
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark" content="取消冻结" placement="top-start">
+              <el-button type="success" size="small" icon="el-icon-circle-check" plain @click="cancelFrozen(scope.row)" />
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark" content="强制完工" placement="top-start">
+              <el-button type="danger" size="small" icon="el-icon-remove-outline" plain @click="forceOver(scope.row)" />
+            </el-tooltip>
+
+            <el-button slot="reference" type="success" size="small" icon="el-icon-menu" plain style="margin-left: 10px;" />
+          </el-popover>
+
         </template>
       </el-table-column>
     </el-table>
@@ -323,29 +328,20 @@
               <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" :disabled="isDisabled" @focus="userBox" />
             </el-form-item>
 
-            <!-- <el-tooltip class="item" effect="dark" content="计划投入产线" placement="top-start">
-              <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
-                <el-input v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" />
-              </el-form-item>
-            </el-tooltip> -->
-
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
               <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%">
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
 
-            <!-- <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
-                <el-input v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" />
-              </el-form-item> -->
             <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
               <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%">
                 <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
 
-            <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')" prop="ProductName">
-              <el-input v-model="ruleForm.companyAllName" :placeholder="$t('permission.SaleLineNum')" />
+            <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')">
+              <el-input v-model="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" />
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
@@ -1009,6 +1005,28 @@ export default {
       }
     },
 
+    // 监听编辑时成品名称和客户名称值是否更新
+    // 'ruleForm.ProductName': {
+    //   handler(newVal, oldVal) {
+    //     debugger
+    //   if (newVal === oldVal) {
+
+    //   } else {
+
+    //   }
+    //   }
+    // },
+    // 'ruleForm.CustomerName': {
+    //   handler(newVal, oldVal) {
+    //     debugger
+    //   if (newVal === oldVal) {
+
+    //   } else {
+
+    //   }
+    //   }
+    // },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.parentMsg = this.$t('permission.importCompany')
@@ -1177,8 +1195,8 @@ export default {
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditProduction')) {
             const params = this.ruleForm
-            // params.ProductCode = this.finshCode
-            // params.CustomerCode = this.userCode
+            params.ProductCode = this.finshCode
+            params.CustomerCode = this.userCode
             productionUpdate(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -1200,7 +1218,7 @@ export default {
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
             const params = this.ruleForm
             params.ProductCode = this.finshCode
-            params.CustomCode = this.userCode
+            params.CustomerCode = this.userCode
             params.PlanType = this.typeCode
             productionAdd(params).then(res => {
               if (res.IsPass === true) {
@@ -1231,6 +1249,7 @@ export default {
                   }
                 })
                 this.editLoading = false
+                this.dialogFormVisible = false
                 this.getList()
               } else {
                 this.$message({
@@ -1410,11 +1429,6 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          const idList = []
-          this.selectedData.map(item => {
-            const newFeatid = item.PlanCode
-            idList.push(newFeatid)
-          })
           ForceComplete({ PlanCodes: [row.PlanCode] }).then(res => {
             if (res.IsPass === true) {
               this.$message({

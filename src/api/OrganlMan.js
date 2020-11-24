@@ -302,6 +302,32 @@ export function MaterialDelete(data) {
   })
 }
 
+// 原料信息维护心新增
+export function MaterialAdd(data) {
+  return request({
+    url: newUrl + '/api/Material/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 原料信息维护心编辑
+export function MaterialModify(data) {
+  return request({
+    url: newUrl + '/api/Material/Modify',
+    method: 'post',
+    data
+  })
+}
+
+export function MaterialStatus(data) {
+  return request({
+    url: newUrl + '/api/Material/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
 // 生产工单冻结取消
 // 修改生产工单状态
 // 功能范围：取消冻结

@@ -17,11 +17,10 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" content="包含禁状态原料" placement="top-start">
-              <el-checkbox v-model="pagination.IsDelete">包含禁状态原料</el-checkbox>
+              <el-checkbox v-model="pagination.Status">包含禁状态原料</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
-
         <el-col :span="4">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
@@ -63,56 +62,63 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述" width="250">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="颜色" width="150">
+      <el-table-column align="center" label="颜色" width="100">
         <template slot-scope="scope">
           {{ scope.row.Color }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="单位" width="300">
+      <el-table-column align="center" label="单位" width="100">
         <template slot-scope="scope">
-          {{ scope.row.Unit }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="状态" width="150">
-        <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.IsDelete === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsDelete === false ? '禁用' : '启用' }}</el-tag>
+          {{ scope.row.UnitText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="250">
+      <el-table-column align="center" label="是否免检" width="100">
         <template slot-scope="scope">
-          {{ scope.row.ModifyUser }}
+          <el-tag :style="{ color: scope.row.IsInspection === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsInspection === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="状态" width="100">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="描述">
+        <template slot-scope="scope">
+          {{ scope.row.Description }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="维护者" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.CreateUserName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="维护时间" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.CreateTime | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑客户" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑原料" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用客户" placement="top-start">
-            <el-button v-if="scope.row.IsDelete == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          <el-tooltip class="item" effect="dark" content="禁用原料" placement="top-start">
+            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用客户" placement="top-start">
-            <el-button v-if="scope.row.IsDelete == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          <el-tooltip class="item" effect="dark" content="启用原料" placement="top-start">
+            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除客户" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除原料" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -122,12 +128,22 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="客户编号" prop="CustomerNum"><el-input v-model="ruleForm.CustomerNum" placeholder="客户编号" clearable /></el-form-item>
-        <el-form-item label="客户名称" prop="FullName"><el-input v-model="ruleForm.FullName" placeholder="客户名称" clearable /></el-form-item>
-        <el-form-item label="联系人"><el-input v-model="ruleForm.Contact" placeholder="联系人" clearable /></el-form-item>
-        <el-form-item label="电话"><el-input v-model="ruleForm.Tel" placeholder="电话" clearable /></el-form-item>
-        <el-form-item label="邮箱"><el-input v-model="ruleForm.Email" placeholder="邮箱" clearable /></el-form-item>
-        <el-form-item label="地址"><el-input v-model="ruleForm.Address" placeholder="地址" clearable /></el-form-item>
+        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model="ruleForm.MaterialNum" placeholder="原料编号" clearable /></el-form-item>
+        <el-form-item label="原料名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="原料名称" clearable /></el-form-item>
+        <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="原料规格" clearable /></el-form-item>
+        <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
+
+        </el-form-item>
+        <el-form-item label="单位" prop="UnitText">
+          <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" @change="changeUnit">
+            <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="是否免检">
+          <el-radio v-model="ruleForm.IsInspection" :label="true">是</el-radio>
+          <el-radio v-model="ruleForm.IsInspection" :label="false">否</el-radio>
+        </el-form-item>
         <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -143,7 +159,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 // import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { MaterialList, MaterialDelete, CustomerAdd, CustomerModify, CustomerStatus } from '@/api/OrganlMan'
+import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary } from '@/api/OrganlMan'
 const fixHeight = 270
 export default {
   name: 'MaterialInformation',
@@ -157,7 +173,7 @@ export default {
         PageSize: 50,
         MaterialNum: undefined,
         Name: undefined,
-        IsDelete: false
+        Status: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -166,14 +182,12 @@ export default {
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
-      isPassword: false, // 密码是否可见
-      companyData: [], // 获取搜索框公司列表
-      DepFullData: [], // 获取搜索框部门列表
-      DepFilterData: [],
-      rouleOptions: [], // 获取新增框角色列表
+      UnitTextList: [], // 获取新增页面单位下拉
+      newUnit: null,
       rules: {
-        MaterialNum: [{ required: true, message: '请输入客户编号', trigger: 'blur' }],
-        FullName: [{ required: true, message: '请输入客户名称', trigger: 'blur' }]
+        MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
+        UnitText: [{ required: true, message: '请选择单位', trigger: 'change' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -221,18 +235,31 @@ export default {
         that.tableHeight = window.innerHeight - fixHeight
       })()
     }
-    // Mock: get all routes and roles list from server
+
+    // 单位下拉
+    GetDictionary({ code: '0021' }).then(res => {
+      debugger
+      if (res.IsPass === true) {
+        this.UnitTextList = res.Obj
+      }
+    })
+
     this.getList()
     this.setFormRules()
   },
-  mounted() {},
   methods: {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        CustomerNum: [{ required: true, message: '请输入客户编号', trigger: 'blur' }],
-        FullName: [{ required: true, message: '请输入客户名称', trigger: 'blur' }]
+        MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
+        UnitText: [{ required: true, message: '请输入单位', trigger: 'blur' }]
       }
+    },
+    // 获取下拉选择单位的最新值
+    changeUnit(val) {
+      debugger
+      this.newUnit = val
     },
     // 禁用，启用权限
     handleBan(row) {
@@ -252,9 +279,9 @@ export default {
       }).then(() => {
         const params = {
           Status: (row.Status = row.Status !== true),
-          CustomerCode: row.CustomerCode
+          MaterialCode: row.MaterialCode
         }
-        CustomerStatus(params).then(res => {
+        MaterialStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
@@ -303,14 +330,12 @@ export default {
     handleAddUser() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
-      this.isPassword = true
       this.ruleForm = {}
     },
     // 编辑角色
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
-      this.isPassword = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -328,6 +353,7 @@ export default {
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
               })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
@@ -335,7 +361,6 @@ export default {
               })
             }
           })
-          this.getList()
         })
         .catch(() => {
           this.$message({
@@ -351,7 +376,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            CustomerModify(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.Unit = this.newUnit
+            MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -363,7 +390,9 @@ export default {
               }
             })
           } else {
-            CustomerAdd(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.Unit = this.newUnit
+            MaterialAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',

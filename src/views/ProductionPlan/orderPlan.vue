@@ -72,7 +72,7 @@
             <el-tooltip class="item" effect="dark" content="工单类型" placement="top-start"><label class="radio-label">工单类型:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.s" clearable style="width: 100%">
+            <el-select v-model="pagination.OrderType" clearable style="width: 100%">
               <el-option v-for="item in PlanTypeNameData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
