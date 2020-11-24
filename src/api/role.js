@@ -23,7 +23,7 @@ export function addRole(data) {
 // 编辑角色
 export function updateRole(data) {
   return request({
-    url: newUrl + '/api/Role/Update',
+    url: newUrl + '/api/Role/Modify',
     method: 'post',
     data
   })
@@ -60,7 +60,7 @@ export function ListUser(query, data) {
 // 启用，禁用状态
 export function UpdateStatus(data) {
   return request({
-    url: newUrl + '/api/Role/UpdateStatus',
+    url: newUrl + '/api/Role/ModifyStatus',
     method: 'post',
     data
   })
@@ -106,7 +106,7 @@ export function UserAdd(data) {
 // 编辑用户
 export function UserUpdate(data) {
   return request({
-    url: newUrl + '/api/User/Update',
+    url: newUrl + '/api/User/Modify',
     method: 'post',
     data
   })
@@ -115,7 +115,7 @@ export function UserUpdate(data) {
 // 设置用户可用或者禁用状态
 export function RelerStatus(data) {
   return request({
-    url: newUrl + '/api/User/UpdateStatus',
+    url: newUrl + '/api/User/ModifyStatus',
     method: 'post',
     data
   })

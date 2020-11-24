@@ -346,6 +346,8 @@ export default {
     addCustomer: '新增客户',
     editCustomer: '编辑客户',
     editMaterial: '编辑原料',
+    addOrder: '新增工单',
+    EditOrder: '编辑工单',
 
     // 截止
     roles: '你的权限',

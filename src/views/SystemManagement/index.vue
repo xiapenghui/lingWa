@@ -37,7 +37,7 @@
 
       <el-table-column align="center" :label="$t('permission.state')" width="100" prop="status">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.UseStatus" :style="{ color: scope.row.UseStatus === '0' ? '#FF5757' : '#13ce66' }">{{ scope.row.UseStatus === '0' ? '禁用' : '启用' }}</el-tag>
+          <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status ===false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -81,11 +81,11 @@
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="禁用角色" placement="top-start">
-            <el-button v-if="scope.row.UseStatus == 1" v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status == true" v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="启用角色" placement="top-start">
-            <el-button v-show="scope.row.Keep == 0" v-if="scope.row.UseStatus == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status == false" v-show="scope.row.Keep == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="删除角色" placement="top-start">
@@ -246,7 +246,7 @@ export default {
     // 禁用，启用权限
     handleBan(row) {
       let status, statusTitle
-      if (row.UseStatus === '1') {
+      if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')
         statusTitle = this.$t('permission.jingyongInfo')
       } else {
@@ -259,7 +259,7 @@ export default {
         type: 'warning'
       }).then(() => {
         const params = {
-          UseStatus: (row.UseStatus = row.UseStatus === '1' ? '0' : '1'),
+          Status: (row.Status = row.Status !== true),
           RoleCode: row.RoleCode
         }
         UpdateStatus(params).then(res => {

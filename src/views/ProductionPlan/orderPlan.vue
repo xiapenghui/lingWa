@@ -92,7 +92,7 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addPlan') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addOrder') }}</el-button>
       <el-button type="primary" icon="el-icon-upload2" @click="handleExport">{{ $t('permission.exportPlan') }}</el-button>
       <!-- <el-button type="success" icon="el-icon-circle-plus-outline" @click="orderSend">{{ $t('permission.orderSend') }}</el-button>
       <el-button type="danger" icon="el-icon-circle-plus-outline" @click="cancelSend">{{ $t('permission.cancelSend') }}</el-button> -->
@@ -213,31 +213,31 @@
 
       <el-table-column align="center" label="计开始日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.PlanStartDate === null ? '' : scope.row.PlanStartDate.substring(0, 10) }}
+          {{ scope.row.PlanStartDate | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="计划完成日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.PlanEndDate === null ? '' : scope.row.PlanEndDate.substring(0, 10) }}
+          {{ scope.row.PlanEndDate | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="实际开始日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.RealStartDate === null ? '' : scope.row.RealStartDate.substring(0, 10) }}
+          {{ scope.row.RealStartDate | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="实际完成日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.RealEndDate === null ? '' : scope.row.RealEndDate.substring(0, 10) }}
+          {{ scope.row.RealEndDate | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="创建日期" width="150">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime === null ? '' : scope.row.CreateTime.substring(0, 10) }}
+          {{ scope.row.CreateTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -282,7 +282,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="100px" label-position="left" class="demo-ruleForm">
@@ -317,7 +317,9 @@
               <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" @focus="finshBox" />
             </el-form-item>
 
-            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" @focus="userBox" /></el-form-item>
+            <el-form-item label="客户名称" prop="CustomerName">
+              <el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" @focus="userBox" />
+            </el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
               <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%">
@@ -682,16 +684,16 @@ import '../../styles/scrollbar.css'
 import '../../styles/commentBox.scss'
 import i18n from '@/lang'
 // import moment from 'moment'
-// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetMaterialList, GetCustomerList, productionUpdate, GetLine } from '@/api/OrganlMan'
+import { GetDictionary, GetMaterialList, GetCustomerList, orderModify, GetLine } from '@/api/OrganlMan'
 import { orderList, orderDelete, orderFreeze, orderStatus, orderAdd } from '@/api/OrganlMan'
 const fixHeight = 270
 const fixHeightBox = 350
 
 export default {
   name: 'CompanyMaintenance',
-  // components: { Pagination },
+  components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -830,11 +832,6 @@ export default {
     }
   },
   created() {
-    // 搜索框初始化开始结束时间
-    // this.pagination.importDate[0] = this.$moment(new Date()).format('YYYY-MM-DD')
-    // this.pagination.importDate[1] = this.$moment(new Date()).format('YYYY-MM-DD')
-    this.pagination.CreateStartDate = this.pagination.importDate[0]
-    this.pagination.CreateEndDate = this.pagination.importDate[1]
     // 监听表格高度
     const that = this
     window.onresize = () => {
@@ -878,6 +875,8 @@ export default {
     importChange(val) {
       this.pagination.importDate[0] = val[0]
       this.pagination.importDate[1] = val[1]
+      this.pagination.CreateTimeStart = this.pagination.importDate[0]
+      this.pagination.CreateTimeEnd = this.pagination.importDate[1]
     },
 
     // 折叠按钮互斥
@@ -944,7 +943,7 @@ export default {
 
     // 增加
     handleAdd() {
-      this.dialogTypeTitle = this.$t('permission.addProductiony')
+      this.dialogTypeTitle = this.$t('permission.addOrder')
       this.dialogFormVisible = true
       this.planAdd = true
       this.planShow = false
@@ -959,7 +958,7 @@ export default {
 
     // 编辑
     handleEdit(row) {
-      this.dialogTypeTitle = this.$t('permission.EditProduction')
+      this.dialogTypeTitle = this.$t('permission.EditOrder')
       this.dialogFormVisible = true
       this.planAdd = true
       this.planShow = false
@@ -973,11 +972,11 @@ export default {
       this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.dialogTypeTitle === this.$t('permission.EditProduction')) {
+          if (this.dialogTypeTitle === this.$t('permission.EditOrder')) {
             const params = this.ruleForm
-            // params.ProductCode=this.finshCode
-            // params.CustomerCode = this.userCode
-            productionUpdate(params).then(res => {
+            params.ProductCode = this.finshCode
+            params.CustomerCode = this.userCode
+            orderModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -995,7 +994,7 @@ export default {
                 this.dialogFormVisible = false
               }
             })
-          } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
+          } else if (this.dialogTypeTitle === this.$t('permission.addOrder')) {
             const params = this.ruleForm
             params.ProductCode = this.finshCode
             params.CustomCode = this.userCode

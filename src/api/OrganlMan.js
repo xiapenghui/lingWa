@@ -184,7 +184,7 @@ export function productionAdd(data) {
 // 生产计划编辑修改
 export function productionUpdate(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/Update',
+    url: newUrl + '/api/ProdPlanning/Modify',
     method: 'post',
     data
   })
@@ -313,9 +313,19 @@ export function orderFreeze(data) {
   })
 }
 
+// 生产工单新增
 export function orderAdd(data) {
   return request({
     url: newUrl + '/api/ProdWorkOrder/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 生产工单编辑
+export function orderModify(data) {
+  return request({
+    url: newUrl + '/api/ProdWorkOrder/Modify',
     method: 'post',
     data
   })

@@ -50,6 +50,13 @@ Vue.use(Element, {
   i18n: (key, value) => i18n.t(key, value)
 })
 
+// 时间截取保留年月日过滤器
+Vue.filter('substringTime', function(value) {
+  if (value === null) return ''
+  value = value.substring(0, 10)
+  return value
+})
+
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

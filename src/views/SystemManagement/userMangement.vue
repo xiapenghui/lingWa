@@ -109,7 +109,7 @@
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status === '0' ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === '0' ? '禁用' : '启用' }}</el-tag>
+          <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -132,11 +132,11 @@
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="禁用角色" placement="top-start">
-            <el-button v-if="scope.row.Status == 1" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="启用角色" placement="top-start">
-            <el-button v-if="scope.row.Status == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="删除角色" placement="top-start">
@@ -212,7 +212,7 @@ export default {
       isPassword: false, // 密码是否可见
       companyData: [], // 获取搜索框公司列表
       DepFullData: [], // 获取搜索框部门列表
-      DepFilterData:[],
+      DepFilterData: [],
       rouleOptions: [], // 获取新增框角色列表
       rules: {
         NameCN: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -312,9 +312,9 @@ export default {
     },
     // 公司部门联动
     companyVal(value) {
-     this.DepFilterData = []
-      this.DepFullData.map(item=>{
-        if(item.OrgCode ===value){
+      this.DepFilterData = []
+      this.DepFullData.map(item => {
+        if (item.OrgCode === value) {
           this.DepFilterData.push(item)
         }
       })
@@ -322,12 +322,37 @@ export default {
 
     // 禁用，启用权限
     handleBan(row) {
-      const params = {
-        Status: (row.Status = row.Status === '1' ? '0' : '1'),
-        UserCode: row.UserCode
+      let status, statusTitle
+      if (row.Status === true) {
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
+      } else {
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
       }
-      RelerStatus(params).then(res => {
-        this.getList()
+      this.$confirm(statusTitle, status, {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          Status: (row.Status = row.Status !== true),
+          UserCode: row.UserCode
+        }
+        RelerStatus(params).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              type: 'success',
+              message: res.MSG
+            })
+            this.getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.MSG
+            })
+          }
+        })
       })
     },
 

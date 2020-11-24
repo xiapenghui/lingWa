@@ -198,37 +198,38 @@
 
       <el-table-column align="center" :label="$t('permission.PlanDeliveryDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.PlanDeliveryDate.substring(0,10) }}
+          {{ scope.row.PlanDeliveryDate | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.PlanStartDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.PlanStartDate.substring(0,10) }}
+          {{ scope.row.PlanStartDate | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.PlanEndDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.PlanEndDate.substring(0,10) }}
+          {{ scope.row.PlanEndDate | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.RealStartDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.RealStartDate.substring(0,10) }}
+          {{ scope.row.RealStartDate | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.RealEndDate')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.RealEndDate.substring(0,10) }}
+          {{ scope.row.RealEndDate | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.CreateTime')" width="120">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime.substring(0,10) }}
+          <!-- {{ scope.row.CreateTime.substring(0,10) }} -->
+          {{ scope.row.CreateTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -314,7 +315,7 @@
             </el-form-item>
           </div>
           <div class="boxRight">
-            <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
+            <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'change' }]">
               <el-input v-model="ruleForm.ProductName" :placeholder="$t('permission.ProductName')" :disabled="isDisabled" @focus="finshBox" />
             </el-form-item>
 
@@ -1021,10 +1022,6 @@ export default {
     }
   },
   created() {
-    // 搜索框初始化开始结束时间
-    // this.pagination.importDate[0] = this.$moment(new Date()).format('YYYY-MM-DD')
-    // this.pagination.importDate[1] = this.$moment(new Date()).format('YYYY-MM-DD')
-
     // 监听表格高度
     const that = this
     window.onresize = () => {
@@ -1065,7 +1062,6 @@ export default {
   methods: {
     // 改变搜索框开始结束时间触发
     importChange(val) {
-      debugger
       this.pagination.importDate[0] = val[0]
       this.pagination.importDate[1] = val[1]
       this.pagination.CreateStartDate = this.pagination.importDate[0]
@@ -1120,7 +1116,6 @@ export default {
     getList() {
       this.listLoading = true
       productionList(this.pagination).then(res => {
-		  debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -1182,8 +1177,7 @@ export default {
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditProduction')) {
             const params = this.ruleForm
-            console.log('params.ProductCode', params.ProductCode)
-            // params.ProductCode=this.finshCode
+            // params.ProductCode = this.finshCode
             // params.CustomerCode = this.userCode
             productionUpdate(params).then(res => {
               if (res.IsPass === true) {
@@ -1204,7 +1198,6 @@ export default {
               }
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
-            debugger
             const params = this.ruleForm
             params.ProductCode = this.finshCode
             params.CustomCode = this.userCode
