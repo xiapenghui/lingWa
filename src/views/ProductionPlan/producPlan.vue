@@ -115,7 +115,6 @@
       highlight-current-row
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" align="center" width="55" fixed />
       <el-table-column align="center" :label="$t('permission.PlanNum')" width="150">
         <template slot-scope="scope">
           {{ scope.row.PlanNum }}
@@ -254,7 +253,7 @@
             <el-button type="danger" size="small" icon=" el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
 
-          <el-popover placement="top" trigger="hover">
+          <el-popover placement="top" trigger="hover" popper-class="popoverBackB">
 
             <el-tooltip class="item" effect="dark" content="计划拆分" placement="top-start">
               <el-button type="warning" size="small" icon="el-icon-scissors" plain @click="planOpen(scope.row)" />
@@ -316,7 +315,7 @@
             <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" /></el-form-item>
 
             <el-form-item :label="$t('permission.PlanStartDate')" prop="PlanStartDate" :rules="[{ required: isAlarmItem, message: '请输入计划开始日期', trigger: 'blur' }]">
-              <el-date-picker v-model="ruleForm.PlanStartDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
+              <el-date-picker v-model="ruleForm.PlanStartDate" format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
           </div>
           <div class="boxRight">
@@ -345,11 +344,11 @@
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
-              <el-date-picker v-model="ruleForm.PlanDeliveryDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" />
+              <el-date-picker v-model="ruleForm.PlanDeliveryDate" format="yyyy-MM-dd" placeholder="选择日期" />
             </el-form-item>
 
             <el-form-item :label="$t('permission.PlanEndDate')" prop="PlanEndDate" :rules="[{ required: isAlarmItem, message: '请输入计划完成日期', trigger: 'blur' }]">
-              <el-date-picker v-model="ruleForm.PlanEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
+              <el-date-picker v-model="ruleForm.PlanEndDate" format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
           </div>
         </div>
@@ -781,59 +780,48 @@
         fit
         highlight-current-row
       >
-        <el-table-column align="center" label="工序代码" width="150">
+        <el-table-column align="center" label="工艺路线名称" width="150">
           <template slot-scope="scope">
             {{ scope.row.CustomerNum }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="工序名称" width="150">
+        <el-table-column align="center" label="版本" width="150">
           <template slot-scope="scope">
             {{ scope.row.FullName }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="是否检验" width="150">
+        <el-table-column align="center" label="描述" width="150">
           <template slot-scope="scope">
             {{ scope.row.ShortName }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="检验方式" width="150">
+        <el-table-column align="center" label="生效时间" width="150">
           <template slot-scope="scope">
             {{ scope.row.Describe }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="是否必过" width="150">
+        <el-table-column align="center" label="状态" width="150">
           <template slot-scope="scope">
             {{ scope.row.Color }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="是否打印" width="150">
+        <el-table-column align="center" label="维护者" width="150">
           <template slot-scope="scope">
             {{ scope.row.MaterialTypeText }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="顺序" width="150">
+        <el-table-column align="center" label="维护时间" width="150">
           <template slot-scope="scope">
             {{ scope.row.MaterialType }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="备注" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.user }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="创建时间" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.ModifyTime }}
-          </template>
-        </el-table-column>
       </el-table>
     </el-dialog>
   </div>
@@ -939,7 +927,7 @@ export default {
       lineFormVisible: false, // 工艺路线弹窗
       dialogTypeTitle: null,
       tableHeight: window.innerHeight - fixHeight, // 表格高度
-      tableBoxHeight: window.innerHeight - fixHeightBox, // 表格高度
+      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
         shortcuts: [
           {
@@ -1004,28 +992,6 @@ export default {
         }, 400)
       }
     },
-
-    // 监听编辑时成品名称和客户名称值是否更新
-    // 'ruleForm.ProductName': {
-    //   handler(newVal, oldVal) {
-    //     debugger
-    //   if (newVal === oldVal) {
-
-    //   } else {
-
-    //   }
-    //   }
-    // },
-    // 'ruleForm.CustomerName': {
-    //   handler(newVal, oldVal) {
-    //     debugger
-    //   if (newVal === oldVal) {
-
-    //   } else {
-
-    //   }
-    //   }
-    // },
 
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
@@ -1195,8 +1161,8 @@ export default {
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditProduction')) {
             const params = this.ruleForm
-            params.ProductCode = this.finshCode
-            params.CustomerCode = this.userCode
+            // params.ProductCode = this.finshCode
+            // params.CustomerCode = this.userCode
             productionUpdate(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({

@@ -17,7 +17,7 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" content="包含禁状态原料" placement="top-start">
-              <el-checkbox v-model="pagination.Status">包含禁状态原料</el-checkbox>
+              <el-checkbox v-model="pagination.IsDelete">包含禁状态原料</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -173,7 +173,8 @@ export default {
         PageSize: 50,
         MaterialNum: undefined,
         Name: undefined,
-        Status: false
+        MaterialType: 0,
+        IsDelete: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading

@@ -338,7 +338,6 @@
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
         <el-button type="primary" @click="submitAdd">{{ $t('permission.continueAdd') }}</el-button>
-        <!-- <el-button v-if="splitShow" type="primary" @click="submitSplit">{{ $t('permission.continueSplit') }}</el-button>s -->
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -945,10 +944,6 @@ export default {
     handleAdd() {
       this.dialogTypeTitle = this.$t('permission.addOrder')
       this.dialogFormVisible = true
-      this.planAdd = true
-      this.planShow = false
-      this.splitShow = false
-      this.true = true
       this.ruleForm = {}
     },
     // 继续新增
@@ -960,10 +955,6 @@ export default {
     handleEdit(row) {
       this.dialogTypeTitle = this.$t('permission.EditOrder')
       this.dialogFormVisible = true
-      this.planAdd = true
-      this.planShow = false
-      this.splitShow = false
-      this.true = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -997,7 +988,7 @@ export default {
           } else if (this.dialogTypeTitle === this.$t('permission.addOrder')) {
             const params = this.ruleForm
             params.ProductCode = this.finshCode
-            params.CustomCode = this.userCode
+            params.CustomerCode = this.userCode
             params.PlanType = this.typeCode
             orderAdd(params).then(res => {
               debugger

@@ -129,3 +129,10 @@
 body {
   overflow: hidden;
 }
+body .popoverBackB{
+   background-color: #000000;
+   border: 1px solid #000000;
+}
+body .popoverBackB[x-placement^=top] .popper__arrow::after{
+  border-top-color: #000000
+}

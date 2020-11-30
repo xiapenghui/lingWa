@@ -419,6 +419,7 @@ export default {
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
               })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',

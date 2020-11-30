@@ -5,7 +5,7 @@ import request from '@/utils/request'
 // 通用下拉选择框
 export function GetDictionary(query) {
   return request({
-    url: newUrl + '/GetDictionary',
+    url: newUrl + '/api/Common/GetDictionary',
     method: 'post',
     params: query
   })
@@ -14,7 +14,7 @@ export function GetDictionary(query) {
 // 通用物料数据
 export function GetMaterialList(data) {
   return request({
-    url: newUrl + '/GetMaterialList',
+    url: newUrl + '/api/Common/GetMaterialList',
     method: 'post',
     data
   })
@@ -23,7 +23,7 @@ export function GetMaterialList(data) {
 // 通用客户信息数据
 export function GetCustomerList(data) {
   return request({
-    url: newUrl + '/GetCustomerList',
+    url: newUrl + '/api/Common/GetCustomerList',
     method: 'post',
     data
   })
@@ -32,7 +32,7 @@ export function GetCustomerList(data) {
 // 产线接口
 export function GetLine(data) {
   return request({
-    url: newUrl + '/GetProductLineTextValuePair',
+    url: newUrl + '/api/Common/GetProductLineTextValuePair',
     method: 'post',
     data
   })
@@ -41,7 +41,7 @@ export function GetLine(data) {
 // 公司信息管理列表
 export function OrganList(data) {
   return request({
-    url: newUrl + '/api/OrganizationCorp/List',
+    url: newUrl + '/api/BaseOrganizationCorp/List',
     method: 'post',
     data
   })
@@ -50,7 +50,7 @@ export function OrganList(data) {
 // 增加公司信息
 export function OrganAdd(data) {
   return request({
-    url: newUrl + '/api/OrganizationCorp/Add',
+    url: newUrl + '/api/BaseOrganizationCorp/Add',
     method: 'post',
     data
   })
@@ -59,7 +59,7 @@ export function OrganAdd(data) {
 // 删除公司信息
 export function OrganDelete(data) {
   return request({
-    url: newUrl + '/api/OrganizationCorp/Delete',
+    url: newUrl + '/api/BaseOrganizationCorp/Delete',
     method: 'post',
     data
   })
@@ -68,7 +68,7 @@ export function OrganDelete(data) {
 // 修改公司信息
 export function OrganModify(data) {
   return request({
-    url: newUrl + '/api/OrganizationCorp/Modify',
+    url: newUrl + '/api/BaseOrganizationCorp/Modify',
     method: 'post',
     data
   })
@@ -76,7 +76,7 @@ export function OrganModify(data) {
 // 修改公司信息状态
 export function OrganStatus(data) {
   return request({
-    url: newUrl + '/api/OrganizationCorp',
+    url: newUrl + '/api/BaseOrganizationCorp',
     method: 'post',
     data
   })
@@ -120,7 +120,7 @@ export function ProduceModify(data) {
 // 生产工单
 export function productionList(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/List',
+    url: newUrl + '/api/PlanSchedule/List',
     method: 'post',
     data
   })
@@ -129,7 +129,7 @@ export function productionList(data) {
 // 冻结
 export function productionFreeze(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/Freeze',
+    url: newUrl + '/api/PlanSchedule/Freeze',
     method: 'post',
     data
   })
@@ -138,7 +138,7 @@ export function productionFreeze(data) {
 // 解冻
 export function productionUnFreeze(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/UnFreeze',
+    url: newUrl + '/api/PlanSchedule/UnFreeze',
     method: 'post',
     data
   })
@@ -147,7 +147,7 @@ export function productionUnFreeze(data) {
 // 强制完工
 export function ForceComplete(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/ForceComplete',
+    url: newUrl + '/api/PlanSchedule/ForceComplete',
     method: 'post',
     data
   })
@@ -156,7 +156,7 @@ export function ForceComplete(data) {
 // 删除
 export function productionDelete(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/Delete',
+    url: newUrl + '/api/PlanSchedule/Delete',
     method: 'post',
     data
   })
@@ -166,7 +166,7 @@ export function productionDelete(data) {
 
 export function productionPlanNum(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/PlanNum',
+    url: newUrl + '/api/PlanSchedule/PlanNum',
     method: 'post',
     data
   })
@@ -175,7 +175,7 @@ export function productionPlanNum(data) {
 // 生产计划新增
 export function productionAdd(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/Add',
+    url: newUrl + '/api/PlanSchedule/Add',
     method: 'post',
     data
   })
@@ -184,7 +184,7 @@ export function productionAdd(data) {
 // 生产计划编辑修改
 export function productionUpdate(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/Modify',
+    url: newUrl + '/api/PlanSchedule/Modify',
     method: 'post',
     data
   })
@@ -193,7 +193,7 @@ export function productionUpdate(data) {
 // 生产计划获取要拆分的数据
 export function SplitQuery(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/SplitQuery',
+    url: newUrl + '/api/PlanSchedule/SplitQuery',
     method: 'post',
     data
   })
@@ -202,7 +202,7 @@ export function SplitQuery(data) {
 // 生产计划获取要拆分的数据
 export function productionSplit(data) {
   return request({
-    url: newUrl + '/api/ProdPlanning/Split',
+    url: newUrl + '/api/PlanSchedule/Split',
     method: 'post',
     data
   })
@@ -211,7 +211,7 @@ export function productionSplit(data) {
 // 生产工单列表
 export function orderList(data) {
   return request({
-    url: newUrl + '/api/ProdWorkOrder/List',
+    url: newUrl + '/api/PlanWorkOrder/List',
     method: 'post',
     data
   })
@@ -220,7 +220,7 @@ export function orderList(data) {
 // 生产工单删除
 export function orderDelete(data) {
   return request({
-    url: newUrl + '/api/ProdWorkOrder/Delete',
+    url: newUrl + '/api/PlanWorkOrder/Delete',
     method: 'post',
     data
   })
@@ -231,7 +231,7 @@ export function orderDelete(data) {
 // 功能范围：工单发布、取消发布、工单冻结、强制完工
 export function orderStatus(data) {
   return request({
-    url: newUrl + '/api/ProdWorkOrder/ModifyStatus',
+    url: newUrl + '/api/PlanWorkOrder/ModifyStatus',
     method: 'post',
     data
   })
@@ -241,7 +241,7 @@ export function orderStatus(data) {
 // 客户信息维护列表
 export function CustomerList(data) {
   return request({
-    url: newUrl + '/api/MasterCustomer/List',
+    url: newUrl + '/api/BaseMasterCustomer/List',
     method: 'post',
     data
   })
@@ -250,7 +250,7 @@ export function CustomerList(data) {
 // 客户信息删除
 export function CustomerDelete(data) {
   return request({
-    url: newUrl + '/api/MasterCustomer/Delete',
+    url: newUrl + '/api/BaseMasterCustomer/Delete',
     method: 'post',
     data
   })
@@ -259,7 +259,7 @@ export function CustomerDelete(data) {
 // 客户信息禁用启用
 export function CustomerStatus(data) {
   return request({
-    url: newUrl + '/api/MasterCustomer/ModifyStatus',
+    url: newUrl + '/api/BaseMasterCustomer/ModifyStatus',
     method: 'post',
     data
   })
@@ -268,7 +268,7 @@ export function CustomerStatus(data) {
 // 客户信息新增
 export function CustomerAdd(data) {
   return request({
-    url: newUrl + '/api/MasterCustomer/Add',
+    url: newUrl + '/api/BaseMasterCustomer/Add',
     method: 'post',
     data
   })
@@ -277,7 +277,7 @@ export function CustomerAdd(data) {
 // 客户信息编辑
 export function CustomerModify(data) {
   return request({
-    url: newUrl + '/api/MasterCustomer/Modify',
+    url: newUrl + '/api/BaseMasterCustomer/Modify',
     method: 'post',
     data
   })
@@ -287,7 +287,7 @@ export function CustomerModify(data) {
 // 原料信息维护列表
 export function MaterialList(data) {
   return request({
-    url: newUrl + '/api/Material/List',
+    url: newUrl + '/api/BaseMaterial/List',
     method: 'post',
     data
   })
@@ -296,7 +296,7 @@ export function MaterialList(data) {
 // 原料信息维护删除
 export function MaterialDelete(data) {
   return request({
-    url: newUrl + '/api/Material/Delete',
+    url: newUrl + '/api/BaseMaterial/Delete',
     method: 'post',
     data
   })
@@ -305,7 +305,7 @@ export function MaterialDelete(data) {
 // 原料信息维护心新增
 export function MaterialAdd(data) {
   return request({
-    url: newUrl + '/api/Material/Add',
+    url: newUrl + '/api/BaseMaterial/Add',
     method: 'post',
     data
   })
@@ -314,7 +314,7 @@ export function MaterialAdd(data) {
 // 原料信息维护心编辑
 export function MaterialModify(data) {
   return request({
-    url: newUrl + '/api/Material/Modify',
+    url: newUrl + '/api/BaseMaterial/Modify',
     method: 'post',
     data
   })
@@ -322,7 +322,7 @@ export function MaterialModify(data) {
 
 export function MaterialStatus(data) {
   return request({
-    url: newUrl + '/api/Material/ModifyStatus',
+    url: newUrl + '/api/BaseMaterial/ModifyStatus',
     method: 'post',
     data
   })
@@ -333,7 +333,7 @@ export function MaterialStatus(data) {
 // 功能范围：取消冻结
 export function orderFreeze(data) {
   return request({
-    url: newUrl + '/api/ProdWorkOrder/ModifyUnfreeze',
+    url: newUrl + '/api/PlanWorkOrder/ModifyUnfreeze',
     method: 'post',
     data
   })
@@ -342,7 +342,7 @@ export function orderFreeze(data) {
 // 生产工单新增
 export function orderAdd(data) {
   return request({
-    url: newUrl + '/api/ProdWorkOrder/Add',
+    url: newUrl + '/api/PlanWorkOrder/Add',
     method: 'post',
     data
   })
@@ -351,7 +351,7 @@ export function orderAdd(data) {
 // 生产工单编辑
 export function orderModify(data) {
   return request({
-    url: newUrl + '/api/ProdWorkOrder/Modify',
+    url: newUrl + '/api/PlanWorkOrder/Modify',
     method: 'post',
     data
   })
