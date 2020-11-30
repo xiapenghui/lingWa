@@ -285,11 +285,10 @@ export function CustomerModify(data) {
 
 // 物料信息管理
 // 原料信息维护列表
-export function MaterialList(query, data) {
+export function MaterialList(data) {
   return request({
     url: newUrl + '/api/BaseMaterial/List',
     method: 'post',
-    params: query,
     data
   })
 }

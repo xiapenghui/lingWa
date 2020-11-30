@@ -1,6 +1,6 @@
 <template>
   <el-dialog :close-on-click-modal="false" :visible.sync="fishShow" :before-close="fishClose" title="成品名称" width="70%" height="50%">
-    <!--    <div class="searchBox" style="margin-bottom: 20px;">
+       <div class="searchBox" style="margin-bottom: 20px;">
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="6">
@@ -26,7 +26,7 @@
           </el-col>
         </el-col>
       </el-row>
-    </div> -->
+    </div>
 
     <el-table
       v-loading="listBoxLoading"
@@ -40,15 +40,59 @@
       highlight-current-row
       @row-dblclick="fishClick"
     >
-      <el-table-column align="center" label="成品编号" width="150" />
-      <el-table-column align="center" label="成品名称" width="150" />
-      <el-table-column align="center" label="成品规格" width="150" />
-      <el-table-column align="center" label="描述" width="150" />
-      <el-table-column align="center" label="颜色" width="150" />
-      <el-table-column align="center" label="工艺路线" width="150" />
-      <el-table-column align="center" label="状态" width="150" />
-      <el-table-column align="center" label="维护者" width="150" />
-      <el-table-column align="center" label="维护时间" width="150" />
+      <el-table-column align="center" label="成品编号" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.MaterialNum }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="成品名称" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.Name }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="成品规格" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.Spec }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="描述" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.Describe }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="颜色" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.Color }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工艺路线" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.MaterialTypeText }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="状态" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.MaterialType }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="维护者" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.user }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="维护时间" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.ModifyTime }}
+        </template>
+      </el-table-column>
     </el-table>
   </el-dialog>
 </template>
@@ -75,6 +119,12 @@ export default {
       default: function() {
         return []
       }
+    },
+    paginationSearch: {
+      type: Object,
+      default: function() {
+        return {}
+      }
     }
   },
   data() {
@@ -86,8 +136,8 @@ export default {
       this.$emit('fishClose')
     },
     // 成品名称双击确认
-    fishClick() {
-      this.$emit('fishClick')
+    fishClick(row) {
+      this.$emit('fishClick',row)
     },
     // 成品名称查询
     handleSearchBox() {

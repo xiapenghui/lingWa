@@ -29,7 +29,6 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-            <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
           </el-col>
         </el-col>
       </el-row>
@@ -294,9 +293,6 @@ export default {
       this.pagination.PageIndex = 1
       this.getList()
     },
-    // 重置
-    handleReset() {},
-
     // 导出用户
     handleExport() {},
     // 导出用户

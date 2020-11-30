@@ -43,7 +43,7 @@
         <el-col :span="3">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-            <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+    
           </el-col>
         </el-col>
         <el-col :span="1">
@@ -342,201 +342,29 @@
       </div>
     </el-dialog>
 
-    <!-- 成品名称对应弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="finshFormVisible" title="成品名称" width="70%" height="50%">
-      <div class="searchBox" style="margin-bottom: 20px;">
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-col :span="6">
-              <el-tooltip class="item" effect="dark" content="成名编码" placement="top-start">
-                <label class="radio-label">{{ $t('permission.ProductNum') }}:</label>
-              </el-tooltip>
-            </el-col>
-            <el-col :span="16"><el-input v-model="paginationSearch.MaterialNum" /></el-col>
-          </el-col>
-
-          <el-col :span="8">
-            <el-col :span="6">
-              <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start">
-                <label class="radio-label">{{ $t('permission.ProductNane') }}:</label>
-              </el-tooltip>
-            </el-col>
-            <el-col :span="16"><el-input v-model="paginationSearch.Name" /></el-col>
-          </el-col>
-
-          <el-col :span="4">
-            <el-col :span="8">
-              <el-button type="primary" icon="el-icon-search" @click="handleSearchBox">{{ $t('permission.search') }}</el-button>
-            </el-col>
-          </el-col>
-        </el-row>
-      </div>
-
-      <el-table
-        v-loading="listBoxLoading"
-        :height="tableBoxHeight"
-        :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
-        :data="finshData"
-        style="width: 100%"
-        border
-        element-loading-text="拼命加载中"
-        fit
-        highlight-current-row
-        @row-dblclick="rowDblclick"
-      >
-        <el-table-column align="center" label="成品编号" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.MaterialNum }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="成品名称" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.Name }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="成品规格" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.Spec }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="描述" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.Describe }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="颜色" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.Color }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="工艺路线" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.MaterialTypeText }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="状态" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.MaterialType }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="维护者" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.user }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="维护时间" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.ModifyTime }}
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
-
-    <!-- 新增加页面客户名称聚焦弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="userFormVisible" title="客户名称" width="70%" height="50%">
-      <div class="searchBox" style="margin-bottom: 20px;">
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-col :span="6">
-              <el-tooltip class="item" effect="dark" content="客户编码" placement="top-start">
-                <label class="radio-label">{{ $t('permission.CustomerNum') }}:</label>
-              </el-tooltip>
-            </el-col>
-            <el-col :span="16"><el-input v-model="paginationUser.CustomerNum" /></el-col>
-          </el-col>
-
-          <el-col :span="8">
-            <el-col :span="6">
-              <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start">
-                <label class="radio-label">{{ $t('permission.FullName') }}:</label>
-              </el-tooltip>
-            </el-col>
-            <el-col :span="16"><el-input v-model="paginationUser.FullName" /></el-col>
-          </el-col>
-
-          <el-col :span="4">
-            <el-col :span="8">
-              <el-button type="primary" icon="el-icon-search" @click="handleUserhBox">{{ $t('permission.search') }}</el-button>
-            </el-col>
-          </el-col>
-        </el-row>
-      </div>
-
-      <el-table
-        v-loading="userBoxLoading"
-        :height="tableBoxHeight"
-        :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
-        :data="userData"
-        style="width: 100%"
-        border
-        element-loading-text="拼命加载中"
-        fit
-        highlight-current-row
-        @row-dblclick="UserDblclick"
-      >
-        <el-table-column align="center" label="客户编号" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.CustomerNum }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="客户名称" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.FullName }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="联系人" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.ShortName }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="电话" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.Describe }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="邮箱" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.Color }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="地址" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.MaterialTypeText }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="状态" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.MaterialType }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="维护者" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.user }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="维护时间" width="150">
-          <template slot-scope="scope">
-            {{ scope.row.ModifyTime }}
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
+   <!-- 成品名称对应弹窗 -->
+   <FinshName
+     :fish-show="finshFormVisible"
+     :list-box-loading="listBoxLoading"
+     :table-box-height="tableBoxHeight"
+     :finsh-data="finshData"
+     :pagination-search="paginationSearch"
+     @fishClose="fishClose"
+     @fishClick="fishClick"
+     @handleSearchBox="handleSearchBox"
+   />
+   
+   <!-- 新增加页面客户名称聚焦弹窗 -->
+   <CustomerName
+     :user-show="userFormVisible"
+     :user-box-loading="userBoxLoading"
+     :table-box-height="tableBoxHeight"
+     :user-data="userData"
+     :pagination-user="paginationUser"
+     @userClose="userClose"
+     @userClick="userClick"
+     @handleUserBox="handleUserBox"
+   />
 
     <!-- BOM弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="bomFormVisible" title=" BOM弹窗" width="70%" height="50%">
@@ -687,12 +515,14 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary, GetMaterialList, GetCustomerList, orderModify, GetLine } from '@/api/OrganlMan'
 import { orderList, orderDelete, orderFreeze, orderStatus, orderAdd } from '@/api/OrganlMan'
+import FinshName from '@/components/FinshName'; //成品名称弹窗
+import CustomerName from '@/components/CustomerName'; //客户名称弹窗
 const fixHeight = 270
 const fixHeightBox = 350
 
 export default {
   name: 'CompanyMaintenance',
-  components: { Pagination },
+  components: { Pagination,FinshName, CustomerName },
   data() {
     return {
       tableData: [],
@@ -894,8 +724,7 @@ export default {
       this.pagination.PageIndex = 1
       this.getList()
     },
-    // 重置
-    handleReset() {},
+
     // 导出用户
     handleExport() {},
     // 导出用户
@@ -1251,10 +1080,14 @@ export default {
       this.finshBox()
     },
     // 增加成品名称双击事件获取当前行的值
-    rowDblclick(row) {
+    fishClick(row) {
       this.ruleForm.ProductName = row.Name
       this.finshCode = row.MaterialCode
       this.finshFormVisible = false
+    },
+    // 关闭成品名称查询弹窗
+    fishClose() {
+      this.finshFormVisible = false;
     },
     // 聚焦事件客户弹窗
     userBox() {
@@ -1267,16 +1100,20 @@ export default {
         }
       })
     },
-    handleUserhBox() {
+    handleUserBox() {
       this.paginationUser.PageIndex = 1
       this.userBox()
     },
     // 增加客户名称双击事件获取当前行的值
-    UserDblclick(row) {
+    userClick(row) {
       this.ruleForm.CustomerName = row.FullName
       this.userCode = row.CustomerCode
       this.userFormVisible = false
-    }
+    },
+    // 关闭客户名称查询弹窗
+    userClose() {
+      this.userFormVisible = false;
+    },
   }
 }
 </script>

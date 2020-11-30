@@ -29,7 +29,7 @@
 
       <el-row class="center">
         <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-        <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+
       </el-row>
     </div>
 
@@ -243,16 +243,6 @@ export default {
     handleSearch() {
       this.form.page = 1
       this.getList()
-    },
-    // 重置
-    handleReset() {
-      this.form = {
-        serialNo: '',
-        serialName: '',
-        showReviewer: false,
-        page: 1,
-        limit: 20
-      }
     },
     // 选择框
     tableKey() {},

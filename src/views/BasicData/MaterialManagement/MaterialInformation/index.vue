@@ -24,7 +24,6 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-            <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
           </el-col>
         </el-col>
       </el-row>
@@ -172,7 +171,8 @@ export default {
         PageSize: 50,
         MaterialNum: undefined,
         Name: undefined,
-        ShowBanned: false
+        ShowBanned: false,
+        MaterialType: 0,
       },
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -302,12 +302,11 @@ export default {
       this.pagination.PageIndex = 1
       this.getList()
     },
-    // 重置
-    handleReset() {},
+
 
     getList() {
       this.listLoading = true
-      MaterialList({ MaterialType: 0 }, this.pagination).then(res => {
+      MaterialList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -329,7 +328,9 @@ export default {
     handleAddUser() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
-      this.ruleForm = {}
+      this.ruleForm = {
+         MaterialType: 0
+      }
     },
     // 编辑角色
     handleEdit(row) {
@@ -377,7 +378,7 @@ export default {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            MaterialModify({ MaterialType: 0 }, params).then(res => {
+            MaterialModify( params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -391,7 +392,7 @@ export default {
           } else {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            MaterialAdd({ MaterialType: 0 }, params).then(res => {
+            MaterialAdd( params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',

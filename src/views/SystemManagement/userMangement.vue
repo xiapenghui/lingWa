@@ -53,7 +53,7 @@
         </el-col>
         <el-col :span="4">
           <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-          <el-button type="danger" icon="el-icon-refresh" @click="handleReset">{{ $t('permission.reset') }}</el-button>
+  
         </el-col>
       </el-row>
     </div>
@@ -361,8 +361,6 @@ export default {
       this.pagination.PageIndex = 1
       this.getList()
     },
-    // 重置
-    handleReset() {},
 
     getList() {
       this.listLoading = true
