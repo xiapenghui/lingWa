@@ -285,10 +285,11 @@ export function CustomerModify(data) {
 
 // 物料信息管理
 // 原料信息维护列表
-export function MaterialList(data) {
+export function MaterialList(query, data) {
   return request({
     url: newUrl + '/api/BaseMaterial/List',
     method: 'post',
+    params: query,
     data
   })
 }
@@ -352,6 +353,60 @@ export function orderAdd(data) {
 export function orderModify(data) {
   return request({
     url: newUrl + '/api/PlanWorkOrder/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护列表分页
+export function bomList(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOM/List',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护列表--增加
+export function bomAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOM/Add',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护列表--编辑
+export function bomModify(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOM/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护列表 --状态
+export function bomModifyStatus(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOM/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护列表 --删除
+export function bomDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOM/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护列表 --删除
+export function bomCopy(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOM/Copy',
     method: 'post',
     data
   })

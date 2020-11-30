@@ -17,7 +17,7 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" content="包含禁状态成品" placement="top-start">
-              <el-checkbox v-model="pagination.IsDelete">包含禁状态成品</el-checkbox>
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态成品</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -133,14 +133,13 @@
         <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="成品规格" clearable /></el-form-item>
         <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
-        </el-form-item>
         <el-form-item label="单位" prop="UnitText">
           <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" @change="changeUnit">
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工艺路线"><el-input v-model="ruleForm.Color" placeholder="工艺路线" clearable /></el-form-item>
+        <el-form-item label="工艺路线"><el-input v-model="ruleForm.Color" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
       </el-form>
@@ -160,11 +159,11 @@
                 <label class="radio-label">工艺路线名称:</label>
               </el-tooltip>
             </el-col>
-            <el-col :span="16"><el-input v-model="paginationUser.CustomerNum" /></el-col>
+            <el-col :span="16"><el-input v-model="paginationSearch.CustomerNum" /></el-col>
           </el-col>
           <el-col :span="4">
             <el-col :span="8">
-              <el-button type="primary" icon="el-icon-search" @click="handleUserhBox">{{ $t('permission.search') }}</el-button>
+              <el-button type="primary" icon="el-icon-search" @click="handleFishBox">{{ $t('permission.search') }}</el-button>
             </el-col>
           </el-col>
         </el-row>
@@ -180,7 +179,7 @@
         element-loading-text="拼命加载中"
         fit
         highlight-current-row
-        @row-dblclick="lineDblclick"
+        @row-dblclick="lineDbclick"
       >
         <el-table-column align="center" label="工艺路线名称" width="150">
           <template slot-scope="scope">
@@ -220,7 +219,7 @@
 
         <el-table-column align="center" label="维护时间" width="150">
           <template slot-scope="scope">
-            {{ scope.row.MaterialType }}
+            {{ scope.row.CreateTime }}
           </template>
         </el-table-column>
       </el-table>
@@ -249,7 +248,12 @@ export default {
         PageSize: 50,
         MaterialNum: undefined,
         Name: undefined,
-        IsDelete: false
+        ShowBanned: false
+      },
+      // 搜索条件
+      paginationSearch: {
+        PageIndex: 1,
+        PageSize: 10
       },
       listLoading: false,
       lineLoading: false, // 新增工艺路线搜索loading
@@ -396,7 +400,7 @@ export default {
 
     getList() {
       this.listLoading = true
-      MaterialList(this.pagination, { MaterialType: 0 }).then(res => {
+      MaterialList({ MaterialType: 1 }, this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -466,7 +470,7 @@ export default {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            MaterialModify(params).then(res => {
+            MaterialModify({ MaterialType: 1 }, params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -480,7 +484,7 @@ export default {
           } else {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            MaterialAdd(params).then(res => {
+            MaterialAdd( { MaterialType: 1 },params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -506,7 +510,31 @@ export default {
           return false
         }
       })
+    },
+
+    // 聚焦事件工艺路线弹窗
+    lineBox() {
+      this.lineFormVisible = true
+      this.lineLoading = true
+      // GetMaterialList(this.paginationSearch).then(res => {
+      //   if (res.IsPass === true) {
+      //     this.finshData = res.Obj
+      //     this.listBoxLoading = false
+      //   }
+      // })
+    },
+    // 工艺路线弹窗搜索
+    handleFishBox() {
+      // this.paginationSearch.PageIndex = 1
+      // this.finshBox()
+    },
+    // 增加工艺路线双击事件获取当前行的值
+    lineDbclick(row) {
+      // this.ruleForm.ProductName = row.Name
+      // this.finshCode = row.MaterialCode
+      // this.finshFormVisible = false
     }
+
   }
 }
 </script>

@@ -254,7 +254,6 @@
           </el-tooltip>
 
           <el-popover placement="top" trigger="hover" popper-class="popoverBackB">
-
             <el-tooltip class="item" effect="dark" content="计划拆分" placement="top-start">
               <el-button type="warning" size="small" icon="el-icon-scissors" plain @click="planOpen(scope.row)" />
             </el-tooltip>
@@ -273,7 +272,6 @@
 
             <el-button slot="reference" type="success" size="small" icon="el-icon-menu" plain style="margin-left: 10px;" />
           </el-popover>
-
         </template>
       </el-table-column>
     </el-table>
@@ -362,7 +360,7 @@
     </el-dialog>
 
     <!-- 成品名称对应弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="finshFormVisible" title="成品名称" width="70%" height="50%">
+    <!--    <el-dialog :close-on-click-modal="false" :visible.sync="finshFormVisible" title="成品名称" width="70%" height="50%">
       <div class="searchBox" style="margin-bottom: 20px;">
         <el-row :gutter="20">
           <el-col :span="8">
@@ -457,7 +455,16 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-dialog>
+    </el-dialog> -->
+    <FinshName
+      :fish-show="finshFormVisible"
+      :list-box-loading="listBoxLoading"
+      :table-box-height="tableBoxHeight"
+      :finsh-data="finshData"
+      @fishClose="fishClose"
+      @fishClick="fishClick"
+      @handleSearchBox="handleSearchBox"
+    />
 
     <!-- 新增加页面客户名称聚焦弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="userFormVisible" title="客户名称" width="70%" height="50%">
@@ -821,7 +828,6 @@
             {{ scope.row.MaterialType }}
           </template>
         </el-table-column>
-
       </el-table>
     </el-dialog>
   </div>
@@ -831,9 +837,9 @@
 import '../../styles/scrollbar.css'
 import '../../styles/commentBox.scss'
 import i18n from '@/lang'
-// import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
+import FinshName from '@/components/FinshName'
 import {
   productionList,
   productionFreeze,
@@ -856,7 +862,7 @@ const fixHeightBox = 350
 
 export default {
   name: 'CompanyMaintenance',
-  components: { Pagination },
+  components: { Pagination, FinshName },
   data() {
     return {
       tableData: [],
@@ -1423,10 +1429,12 @@ export default {
     },
     // 聚焦事件产成品弹窗
     finshBox() {
+      debugger
       this.finshFormVisible = true
       this.listBoxLoading = true
       GetMaterialList(this.paginationSearch).then(res => {
         if (res.IsPass === true) {
+          debugger
           this.finshData = res.Obj
           this.listBoxLoading = false
         }
@@ -1438,9 +1446,13 @@ export default {
       this.finshBox()
     },
     // 增加成品名称双击事件获取当前行的值
-    rowDblclick(row) {
+    fishClick(row) {
       this.ruleForm.ProductName = row.Name
       this.finshCode = row.MaterialCode
+      this.finshFormVisible = false
+    },
+    // 关闭成品名称查询弹窗
+    fishClose() {
       this.finshFormVisible = false
     },
     // 聚焦事件客户弹窗
@@ -1464,6 +1476,7 @@ export default {
       this.userCode = row.CustomerCode
       this.userFormVisible = false
     }
+
   }
 }
 </script>

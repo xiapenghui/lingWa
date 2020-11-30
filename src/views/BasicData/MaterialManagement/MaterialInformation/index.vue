@@ -17,7 +17,7 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" content="包含禁状态原料" placement="top-start">
-              <el-checkbox v-model="pagination.IsDelete">包含禁状态原料</el-checkbox>
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态原料</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -133,7 +133,6 @@
         <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="原料规格" clearable /></el-form-item>
         <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
-        </el-form-item>
         <el-form-item label="单位" prop="UnitText">
           <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" @change="changeUnit">
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
@@ -173,8 +172,7 @@ export default {
         PageSize: 50,
         MaterialNum: undefined,
         Name: undefined,
-        MaterialType: 0,
-        IsDelete: false
+        ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -259,7 +257,6 @@ export default {
     },
     // 获取下拉选择单位的最新值
     changeUnit(val) {
-      debugger
       this.newUnit = val
     },
     // 禁用，启用权限
@@ -283,6 +280,7 @@ export default {
           MaterialCode: row.MaterialCode
         }
         MaterialStatus(params).then(res => {
+          debugger
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
@@ -309,7 +307,7 @@ export default {
 
     getList() {
       this.listLoading = true
-      MaterialList(this.pagination).then(res => {
+      MaterialList({ MaterialType: 0 }, this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -379,7 +377,7 @@ export default {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            MaterialModify(params).then(res => {
+            MaterialModify({ MaterialType: 0 }, params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -393,7 +391,7 @@ export default {
           } else {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            MaterialAdd(params).then(res => {
+            MaterialAdd({ MaterialType: 0 }, params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
