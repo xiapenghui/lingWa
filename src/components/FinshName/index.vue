@@ -1,6 +1,6 @@
 <template>
   <el-dialog :close-on-click-modal="false" :visible.sync="fishShow" :before-close="fishClose" title="成品名称" width="70%" height="50%">
-       <div class="searchBox" style="margin-bottom: 20px;">
+    <div class="searchBox" style="margin-bottom: 20px;">
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="6">
@@ -137,7 +137,7 @@ export default {
     },
     // 成品名称双击确认
     fishClick(row) {
-      this.$emit('fishClick',row)
+      this.$emit('fishClick', row)
     },
     // 成品名称查询
     handleSearchBox() {
@@ -148,4 +148,14 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+  .el-dialog__body {
+    .searchBox{
+      .el-col-6{
+        height: 30px;
+        line-height: 25px;
+        text-align: right;
+      }
+    }
+  }
+</style>

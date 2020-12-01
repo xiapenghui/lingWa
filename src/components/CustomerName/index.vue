@@ -98,56 +98,65 @@
 </template>
 
 <script>
-  const fixHeightBox = 350
-  export default {
-    name: 'CustomerName',
-    props: {
-      userShow: {
-        type: Boolean,
-        default: true
-      },
-      userBoxLoading: {
-        type: Boolean,
-        default: true
-      },
-      tableBoxHeight: {
-        type: Number,
-        default: window.innerHeight - fixHeightBox
-      },
-      userData: {
-        type: Array,
-        default: function() {
-          return []
-        }
-      },
-      paginationUser: {
-        type: Object,
-        default: function() {
-          return {}
-        }
+const fixHeightBox = 350
+export default {
+  name: 'CustomerName',
+  props: {
+    userShow: {
+      type: Boolean,
+      default: true
+    },
+    userBoxLoading: {
+      type: Boolean,
+      default: true
+    },
+    tableBoxHeight: {
+      type: Number,
+      default: window.innerHeight - fixHeightBox
+    },
+    userData: {
+      type: Array,
+      default: function() {
+        return []
       }
     },
-    data() {
-      return {}
-    },
-    methods: {
-      // 客户名称弹窗关闭
-      userClose() {
-        this.$emit('userClose')
-      },
-      //  客户名称双击确认
-       userClick(row) {
-        this.$emit('userClick',row)
-      },
-      //  客户名称查询
-      handleUserBox() {
-        this.$emit('handleUserBox')
+    paginationUser: {
+      type: Object,
+      default: function() {
+        return {}
       }
-
     }
+  },
+  data() {
+    return {}
+  },
+  methods: {
+    // 客户名称弹窗关闭
+    userClose() {
+      this.$emit('userClose')
+    },
+    //  客户名称双击确认
+    userClick(row) {
+      this.$emit('userClick', row)
+    },
+    //  客户名称查询
+    handleUserBox() {
+      this.$emit('handleUserBox')
+    }
+
   }
-  </script>
+}
+</script>
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .el-dialog__body {
+    .searchBox{
+      .el-col-6{
+        height: 30px;
+        line-height: 25px;
+        text-align: right;
+      }
+    }
+  }
 </style>

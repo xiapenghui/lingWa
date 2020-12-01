@@ -93,13 +93,13 @@
 
       <el-table-column align="center" label="维护者" width="150">
         <template slot-scope="scope">
-          {{ scope.row.CreateUserName }}
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="维护时间" width="150">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime | substringTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -123,7 +123,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
@@ -156,12 +156,12 @@
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary } from '@/api/OrganlMan'
 const fixHeight = 270
 export default {
   name: 'MaterialInformation',
-  // components: { Pagination },
+  components: { Pagination },
   data() {
     return {
       tableData: [],

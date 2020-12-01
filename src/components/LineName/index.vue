@@ -6,7 +6,7 @@
           <el-col :span="7">
             <el-tooltip class="item" effect="dark" content="工艺路线名称" placement="top-start"><label class="radio-label">工艺路线名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationSearch.Name" /></el-col>
+          <el-col :span="16"><el-input v-model="paginationSearchLine.Name" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="8">
@@ -96,7 +96,7 @@ export default {
         return []
       }
     },
-    paginationSearch: {
+    paginationSearchLine: {
       type: Object,
       default: function() {
         return {}
@@ -122,5 +122,14 @@ export default {
   }
 }
 </script>
-
-<style></style>
+<style lang="scss" scoped>
+  .el-dialog__body {
+    .searchBox{
+      .el-col-6{
+        height: 30px;
+        line-height: 25px;
+        text-align: right;
+      }
+    }
+  }
+</style>

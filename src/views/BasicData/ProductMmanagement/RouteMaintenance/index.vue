@@ -434,7 +434,7 @@ export default {
 
     // 查看详情
     handleLook() {
-      this.dialogVisible2 = true
+      // this.dialogVisible2 = true
     },
     // 删除角色
     handleDelete(row) {},
