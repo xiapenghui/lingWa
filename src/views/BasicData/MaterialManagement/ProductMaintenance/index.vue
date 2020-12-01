@@ -75,7 +75,7 @@
 
       <el-table-column align="center" label="工艺路线名称" width="100">
         <template slot-scope="scope">
-          {{ scope.row.UnitText }}
+          {{ scope.row.ProcessRouteName }}
         </template>
       </el-table-column>
 
@@ -123,7 +123,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
@@ -138,7 +138,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工艺路线"><el-input v-model="ruleForm.Color" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
+        <el-form-item label="工艺路线"><el-input v-model="ruleForm.ProcessRouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
       </el-form>
@@ -149,18 +149,29 @@
     </el-dialog>
 
     <!-- 新增加页面工艺路线聚焦弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线" width="70%" height="50%">
+    <LineName
+      :line-show="lineFormVisible"
+      :line-loading="lineLoading"
+      :table-box-height="tableBoxHeight"
+      :line-data="lineData"
+      :pagination-search="paginationSearch"
+      @lineClick="lineClick"
+      @lineClose="lineClose"
+      @lineBox="lineBox"
+    />
+
+    <!--   <el-dialog :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线" width="70%" height="50%">
       <div class="searchBox" style="margin-bottom: 20px;">
         <el-row :gutter="20">
           <el-col :span="8">
             <el-col :span="7">
               <el-tooltip class="item" effect="dark" content="工艺路线名称" placement="top-start"><label class="radio-label">工艺路线名称:</label></el-tooltip>
             </el-col>
-            <el-col :span="16"><el-input v-model="paginationSearch.CustomerNum" /></el-col>
+            <el-col :span="16"><el-input v-model="paginationSearch.Name" /></el-col>
           </el-col>
           <el-col :span="4">
             <el-col :span="8">
-              <el-button type="primary" icon="el-icon-search" @click="handleFishBox">{{ $t('permission.search') }}</el-button>
+              <el-button type="primary" icon="el-icon-search" @click="LineBox">{{ $t('permission.search') }}</el-button>
             </el-col>
           </el-col>
         </el-row>
@@ -170,57 +181,57 @@
         v-loading="lineLoading"
         :height="tableBoxHeight"
         :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
-        :data="linerData"
+        :data="lineData"
         style="width: 100%"
         border
         element-loading-text="拼命加载中"
         fit
         highlight-current-row
-        @row-dblclick="lineDbclick"
+        @row-dblclick="lineClick"
       >
-        <el-table-column align="center" label="工艺路线名称" width="150">
+        <el-table-column align="center" label="工艺路线名称" width="200">
           <template slot-scope="scope">
-            {{ scope.row.CustomerNum }}
+            {{ scope.row.Name }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="版本" width="150">
+        <el-table-column align="center" label="版本" width="200">
           <template slot-scope="scope">
-            {{ scope.row.FullName }}
+            {{ scope.row.Version }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="描述" width="150">
+        <el-table-column align="center" label="描述">
           <template slot-scope="scope">
-            {{ scope.row.ShortName }}
+            {{ scope.row.Description }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="生效时间" width="150">
+        <el-table-column align="center" label="生效时间" width="200">
           <template slot-scope="scope">
-            {{ scope.row.Describe }}
+            {{ scope.row.EffectiveDate }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="状态" width="150">
+        <el-table-column align="center" label="状态" width="200">
           <template slot-scope="scope">
-            {{ scope.row.Color }}
+            <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="维护者" width="150">
+        <el-table-column align="center" label="维护者" width="200">
           <template slot-scope="scope">
-            {{ scope.row.MaterialTypeText }}
+            {{ scope.row.ModifyUserName }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="维护时间" width="150">
+        <el-table-column align="center" label="维护时间" width="200">
           <template slot-scope="scope">
-            {{ scope.row.CreateTime }}
+            {{ scope.row.ModifyTime }}
           </template>
         </el-table-column>
       </el-table>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -228,13 +239,14 @@
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary } from '@/api/OrganlMan'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, lineList } from '@/api/OrganlMan'
+import LineName from '@/components/LineName' // 工艺路线弹
 const fixHeight = 270
 const fixHeightBox = 350
 export default {
   name: 'MaterialInformation',
-  // components: { Pagination },
+  components: { Pagination, LineName },
   data() {
     return {
       tableData: [],
@@ -249,9 +261,12 @@ export default {
       },
       // 搜索条件
       paginationSearch: {
+        Name: undefined,
         PageIndex: 1,
         PageSize: 10
       },
+      lineData: [], // 工艺路线弹窗
+      lineCode: null, // 工艺路线code
       listLoading: false,
       lineLoading: false, // 新增工艺路线搜索loading
       lineFormVisible: false, // 新增工艺路线弹窗
@@ -324,6 +339,7 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
 
@@ -465,6 +481,7 @@ export default {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
             params.Unit = this.newUnit
+            params.ProcessRouteCode = this.lineCode
             MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -479,6 +496,7 @@ export default {
           } else {
             const params = this.ruleForm
             params.Unit = this.newUnit
+            params.ProcessRouteCode = this.lineCode
             MaterialAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -511,23 +529,28 @@ export default {
     lineBox() {
       this.lineFormVisible = true
       this.lineLoading = true
-      // GetMaterialList(this.paginationSearch).then(res => {
-      //   if (res.IsPass === true) {
-      //     this.finshData = res.Obj
-      //     this.listBoxLoading = false
-      //   }
-      // })
+      lineList(this.paginationSearch).then(res => {
+        if (res.IsPass === true) {
+          this.lineData = res.Obj
+          this.lineLoading = false
+        }
+      })
     },
     // 工艺路线弹窗搜索
-    handleFishBox() {
-      // this.paginationSearch.PageIndex = 1
-      // this.finshBox()
+    LineBox() {
+      this.paginationSearch.PageIndex = 1
+      this.lineBox()
     },
     // 增加工艺路线双击事件获取当前行的值
-    lineDbclick(row) {
-      // this.ruleForm.ProductName = row.Name
-      // this.finshCode = row.MaterialCode
-      // this.finshFormVisible = false
+    lineClick(row) {
+      debugger
+      this.ruleForm.ProcessRouteName = row.Name
+      this.lineCode = row.ProcessRouteCode
+      this.lineFormVisible = false
+    },
+    // 关闭工艺路线查询弹窗
+    lineClose() {
+      this.lineFormVisible = false
     }
   }
 }

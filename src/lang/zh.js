@@ -348,7 +348,8 @@ export default {
     editMaterial: '编辑原料',
     addOrder: '新增工单',
     EditOrder: '编辑工单',
-
+    editBasePro: '编辑工序',
+    addBasePro: '增加工序',
     // 截止
     roles: '你的权限',
     switchRoles: '切换权限',

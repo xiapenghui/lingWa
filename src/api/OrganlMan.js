@@ -419,3 +419,47 @@ export function lineList(data) {
     data
   })
 }
+
+// 工艺路线列表--分页
+export function BaseProList(data) {
+  return request({
+    url: newUrl + '/api/BaseProcess/List',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线列表--分页
+export function BaseProAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseProcess/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线列表--删除
+export function BaseProDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseProcess/Delete',
+    method: 'post',
+    data
+  })
+}
+// 工艺路线列表--修改
+export function BaseProModify(data) {
+  return request({
+    url: newUrl + '/api/BaseProcess/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线列表--状态
+export function BaseProStatus(data) {
+  return request({
+    url: newUrl + '/api/BaseProcess/ModifyStatus',
+    method: 'post',
+    data
+  })
+}

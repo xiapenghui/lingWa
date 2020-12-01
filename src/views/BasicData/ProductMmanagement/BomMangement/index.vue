@@ -24,7 +24,7 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-    
+
           </el-col>
         </el-col>
       </el-row>
@@ -90,15 +90,15 @@
         <template slot-scope="scope">
 
           <el-tooltip class="item" effect="dark" content="BOM明细" placement="top-start">
-            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleLook(scope.row)" />
+            <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="handleLook(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="编辑BOM" placement="top-start">
-            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+            <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="复制BOM" placement="top-start">
-            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleCopy(scope.row)" />
+            <el-button type="success" size="small" icon="el-icon-star-on" plain @click="handleCopy(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="禁用BOM" placement="top-start">
