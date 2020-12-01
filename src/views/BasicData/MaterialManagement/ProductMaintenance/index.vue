@@ -153,7 +153,7 @@
       <div class="searchBox" style="margin-bottom: 20px;">
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-col :span="6">
+            <el-col :span="7">
               <el-tooltip class="item" effect="dark" content="工艺路线名称" placement="top-start"><label class="radio-label">工艺路线名称:</label></el-tooltip>
             </el-col>
             <el-col :span="16"><el-input v-model="paginationSearch.CustomerNum" /></el-col>
@@ -225,13 +225,13 @@
 </template>
 
 <script>
-import '../../../../styles/commentBox.scss';
-import '../../../../styles/scrollbar.css';
-import i18n from '@/lang';
+import '../../../../styles/commentBox.scss'
+import '../../../../styles/scrollbar.css'
+import i18n from '@/lang'
 // import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary } from '@/api/OrganlMan';
-const fixHeight = 270;
-const fixHeightBox = 350;
+import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary } from '@/api/OrganlMan'
+const fixHeight = 270
+const fixHeightBox = 350
 export default {
   name: 'MaterialInformation',
   // components: { Pagination },
@@ -279,29 +279,29 @@ export default {
       // content7: this.$t('permission.passwords'),
       // content8: this.$t('permission.roleUser'),
       // content9: this.$t('permission.description')
-    };
+    }
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
     tableBoxHeight(val) {
       if (!this.timer) {
-        this.tableBoxHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableBoxHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
     // 监听data属性中英文切换问题
@@ -315,28 +315,27 @@ export default {
       // this.content7 = this.$t('permission.passwords')
       // this.content8 = this.$t('permission.roleUser')
       // this.content9 = this.$t('permission.description')
-      this.setFormRules();
+      this.setFormRules()
     }
   },
   created() {
     // 监听表格高度
-    const that = this;
+    const that = this
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight;
-      })();
-    };
+        that.tableHeight = window.innerHeight - fixHeight
+      })()
+    }
 
     // 单位下拉
     GetDictionary({ code: '0021' }).then(res => {
-      debugger;
       if (res.IsPass === true) {
-        this.UnitTextList = res.Obj;
+        this.UnitTextList = res.Obj
       }
-    });
+    })
 
-    this.getList();
-    this.setFormRules();
+    this.getList()
+    this.setFormRules()
   },
   methods: {
     // 表单验证切换中英文
@@ -345,21 +344,21 @@ export default {
         MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
         Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
         UnitText: [{ required: true, message: '请输入单位', trigger: 'blur' }]
-      };
+      }
     },
     // 获取下拉选择单位的最新值
     changeUnit(val) {
-      this.newUnit = val;
+      this.newUnit = val
     },
     // 禁用，启用权限
     handleBan(row) {
-      let status, statusTitle;
+      let status, statusTitle
       if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle');
-        statusTitle = this.$t('permission.jingyongInfo');
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
       } else {
-        status = this.$t('permission.qiyongTitle');
-        statusTitle = this.$t('permission.qiyongInfo');
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
       }
       this.$confirm(statusTitle, status, {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -369,62 +368,62 @@ export default {
         const params = {
           Status: (row.Status = row.Status !== true),
           MaterialCode: row.MaterialCode
-        };
+        }
         MaterialStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
               message: res.MSG
-            });
-            this.getList();
+            })
+            this.getList()
           } else {
             this.$message({
               type: 'error',
               message: res.MSG
-            });
+            })
           }
-        });
-      });
+        })
+      })
     },
 
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1;
-      this.getList();
+      this.pagination.PageIndex = 1
+      this.getList()
     },
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       MaterialList(this.pagination).then(res => {
-        this.tableData = res.Obj;
-        this.total = res.TotalRowCount;
-        this.listLoading = false;
-      });
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`);
+        route.title = i18n.t(`route.${route.title}`)
         if (route.children) {
-          route.children = this.i18n(route.children);
+          route.children = this.i18n(route.children)
         }
-        return route;
-      });
-      return app;
+        return route
+      })
+      return app
     },
 
     // 增加角色
     handleAddUser() {
-      this.dialogType = 'new';
-      this.dialogFormVisible = true;
+      this.dialogType = 'new'
+      this.dialogFormVisible = true
       this.ruleForm = {
         MaterialType: 1
-      };
+      }
     },
     // 编辑角色
     handleEdit(row) {
-      this.dialogType = 'edit';
-      this.dialogFormVisible = true;
-      this.ruleForm = JSON.parse(JSON.stringify(row));
+      this.dialogType = 'edit'
+      this.dialogFormVisible = true
+      this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
     // 删除角色
@@ -440,78 +439,78 @@ export default {
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
-              });
-              this.getList();
+              })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              });
+              })
             }
-          });
+          })
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: this.$t('table.deleteError')
-          });
-        });
+          })
+        })
     },
 
     // 编辑成功
     submitForm(formName) {
-      this.editLoading = true;
+      this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            const params = this.ruleForm;
-            params.Unit = this.newUnit;
+            const params = this.ruleForm
+            params.Unit = this.newUnit
             MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                });
-                this.editLoading = false;
-                this.dialogFormVisible = false;
-                this.getList();
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
               }
-            });
+            })
           } else {
-            const params = this.ruleForm;
-            params.Unit = this.newUnit;
+            const params = this.ruleForm
+            params.Unit = this.newUnit
             MaterialAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
-                });
-                this.getList();
+                })
+                this.getList()
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                });
+                })
               }
-            });
-            this.editLoading = false;
-            this.dialogFormVisible = false;
+            })
+            this.editLoading = false
+            this.dialogFormVisible = false
           }
         } else {
-          this.editLoading = false;
+          this.editLoading = false
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          });
-          return false;
+          })
+          return false
         }
-      });
+      })
     },
 
     // 聚焦事件工艺路线弹窗
     lineBox() {
-      this.lineFormVisible = true;
-      this.lineLoading = true;
+      this.lineFormVisible = true
+      this.lineLoading = true
       // GetMaterialList(this.paginationSearch).then(res => {
       //   if (res.IsPass === true) {
       //     this.finshData = res.Obj
@@ -531,7 +530,15 @@ export default {
       // this.finshFormVisible = false
     }
   }
-};
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-dialog__body {
+  .el-col-7 {
+    height: 30px;
+    line-height: 25px;
+    text-align: right;
+  }
+}
+</style>

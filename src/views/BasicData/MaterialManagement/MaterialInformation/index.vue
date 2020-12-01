@@ -172,7 +172,7 @@ export default {
         MaterialNum: undefined,
         Name: undefined,
         ShowBanned: false,
-        MaterialType: 0,
+        MaterialType: 0
       },
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -303,7 +303,6 @@ export default {
       this.getList()
     },
 
-
     getList() {
       this.listLoading = true
       MaterialList(this.pagination).then(res => {
@@ -329,7 +328,7 @@ export default {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {
-         MaterialType: 0
+        MaterialType: 0
       }
     },
     // 编辑角色
@@ -378,7 +377,7 @@ export default {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            MaterialModify( params).then(res => {
+            MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -392,7 +391,7 @@ export default {
           } else {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            MaterialAdd( params).then(res => {
+            MaterialAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',

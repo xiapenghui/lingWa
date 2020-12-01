@@ -410,3 +410,12 @@ export function bomCopy(data) {
     data
   })
 }
+
+// 工艺路线列表--分页
+export function lineList(data) {
+  return request({
+    url: newUrl + '/api/Route/List',
+    method: 'post',
+    data
+  })
+}
