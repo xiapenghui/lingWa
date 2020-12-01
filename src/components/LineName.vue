@@ -76,7 +76,7 @@
 <script>
 const fixHeightBox = 350
 export default {
-  name: 'FinshName',
+  name: 'LineName',
   props: {
     lineShow: {
       type: Boolean,
