@@ -4,34 +4,33 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工序编号" placement="top-start"><label class="radio-label">工序编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProcessNum" placeholder="工序编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="成品编号" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工序名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="成品名称" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态的工序" placement="top-start">
-              <el-checkbox v-model="pagination.Status">包含禁状态的工序</el-checkbox>
+            <el-tooltip class="item" effect="dark" content="包含禁状态成品" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态成品</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
-
         <el-col :span="4">
           <el-col :span="24">
-            <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}工序信息</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
           </el-col>
         </el-col>
       </el-row>
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addCustomer') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addMaterial') }}</el-button>
     </div>
 
     <el-table
@@ -46,41 +45,59 @@
       highlight-current-row
     >
       >
-      <el-table-column align="center" label="工序编号">
+      <el-table-column align="center" label="成品编码" width="150">
         <template slot-scope="scope">
-          {{ scope.row.ProcessNum }}
+          {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称">
+      <el-table-column align="center" label="成品名称" width="150">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序描述">
+      <el-table-column align="center" label="成品规格" width="150">
         <template slot-scope="scope">
-          {{ scope.row.Description }}
+          {{ scope.row.Spec }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="倒扣账标识" width="250">
+      <el-table-column align="center" label="颜色" width="100">
         <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.IsBackFlush === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsBackFlush === false ? '否' : '是' }}</el-tag>
+          {{ scope.row.Color }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')">
+      <el-table-column align="center" label="单位" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.UnitText }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工艺路线名称" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.RouteName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="状态" width="100">
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="250">
+      <el-table-column align="center" label="描述">
         <template slot-scope="scope">
-          {{ scope.row.ModifyUser }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="维护者" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.ModifyUserName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="维护时间" width="150">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -88,19 +105,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑成品" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用成品" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用成品" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除成品" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -108,23 +125,40 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editBasePro') : $t('permission.addBasePro')">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工序编号"><el-input v-model="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
-        <el-form-item label="工序名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>
-        <el-form-item label="倒扣账标识" prop="IsBackFlush">
-          <el-radio v-model="ruleForm.IsBackFlush" :label="true">是</el-radio>
-          <el-radio v-model="ruleForm.IsBackFlush" :label="false">否</el-radio>
+        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model="ruleForm.MaterialNum" placeholder="成品编号" clearable /></el-form-item>
+        <el-form-item label="原料名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="成品名称" clearable /></el-form-item>
+        <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="成品规格" clearable /></el-form-item>
+        <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
+
+        <el-form-item label="单位" prop="UnitText">
+          <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" @change="changeUnit">
+            <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="倒扣账代码"><el-input v-model="ruleForm.BackFlushCode" placeholder="倒扣账代码" clearable /></el-form-item>
-        <el-form-item label="工序描述"><el-input v-model="ruleForm.Description" placeholder="工序描述" clearable /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
+
+        <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
+
+        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
+
+    <!-- 新增加页面工艺路线聚焦弹窗 -->
+    <LineName
+      :line-show="lineFormVisible"
+      :line-loading="lineLoading"
+      :table-box-height="tableBoxHeight"
+      :line-data="lineData"
+      :pagination-search-line="paginationSearchLine"
+      @lineClick="lineClick"
+      @lineClose="lineClose"
+      @lineBox="lineBox"
+    />
   </div>
 </template>
 
@@ -133,11 +167,13 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { BaseProList, BaseProDelete, BaseProAdd, BaseProModify, BaseProStatus } from '@/api/OrganlMan'
+import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, lineList } from '@/api/OrganlMan'
+import LineName from '@/components/LineName' // 工艺路线弹
 const fixHeight = 270
+const fixHeightBox = 350
 export default {
-  name: 'CustomerInformation',
-  components: { Pagination },
+  name: 'MaterialInformation',
+  components: { Pagination, LineName },
   data() {
     return {
       tableData: [],
@@ -145,19 +181,36 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 50,
-        WorkingProcedureNum: undefined,
+        MaterialNum: undefined,
         Name: undefined,
-        Status: false
+        ShowBanned: false,
+        MaterialType: 1
       },
+      // 搜索条件
+      paginationSearchLine: {
+        Name: undefined,
+        PageIndex: 1,
+        PageSize: 10
+      },
+      lineData: [], // 工艺路线弹窗
+      lineCode: null, // 工艺路线code
       listLoading: false,
+      lineLoading: false, // 新增工艺路线搜索loading
+      lineFormVisible: false, // 新增工艺路线弹窗
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
+      dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
+      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
+      UnitTextList: [], // 获取新增页面单位下拉
+      linerData: [], // 工艺路线数组
+      newUnit: null,
       rules: {
-        Name: [{ required: true, message: '请输入工序名称', trigger: 'blur' }],
-        IsBackFlush: [{ required: true, message: '请选择倒扣账标识', trigger: 'change' }]
+        MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
+        UnitText: [{ required: true, message: '请选择单位', trigger: 'change' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -176,6 +229,16 @@ export default {
     tableHeight(val) {
       if (!this.timer) {
         this.tableHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
+      }
+    },
+    tableBoxHeight(val) {
+      if (!this.timer) {
+        this.tableBoxHeight = val
         this.timer = true
         const that = this
         setTimeout(function() {
@@ -203,24 +266,35 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
-    // Mock: get all routes and roles list from server
+
+    // 单位下拉
+    GetDictionary({ code: '0021' }).then(res => {
+      if (res.IsPass === true) {
+        this.UnitTextList = res.Obj
+      }
+    })
+
     this.getList()
     this.setFormRules()
   },
-  mounted() {},
   methods: {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        Name: [{ required: true, message: '请输入工序名称', trigger: 'blur' }],
-        IsBackFlush: [{ required: true, message: '请选择倒扣账标识', trigger: 'change' }]
+        MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
+        UnitText: [{ required: true, message: '请输入单位', trigger: 'blur' }]
       }
+    },
+    // 获取下拉选择单位的最新值
+    changeUnit(val) {
+      this.newUnit = val
     },
     // 禁用，启用权限
     handleBan(row) {
-      debugger
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')
@@ -236,9 +310,9 @@ export default {
       }).then(() => {
         const params = {
           Status: (row.Status = row.Status !== true),
-          ProcessCode: row.ProcessCode
+          MaterialCode: row.MaterialCode
         }
-        BaseProStatus(params).then(res => {
+        MaterialStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
@@ -262,7 +336,7 @@ export default {
     },
     getList() {
       this.listLoading = true
-      BaseProList(this.pagination).then(res => {
+      MaterialList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -284,7 +358,9 @@ export default {
     handleAddUser() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
-      this.ruleForm = {}
+      this.ruleForm = {
+        MaterialType: 1
+      }
     },
     // 编辑角色
     handleEdit(row) {
@@ -301,7 +377,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          BaseProDelete({ ProcessCode: row.ProcessCode }).then(res => {
+          MaterialDelete({ MaterialCode: row.MaterialCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -330,7 +406,10 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            BaseProModify(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.Unit = this.newUnit
+            params.RouteCode = this.lineCode
+            MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -342,7 +421,10 @@ export default {
               }
             })
           } else {
-            BaseProAdd(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.Unit = this.newUnit
+            params.RouteCode = this.lineCode
+            MaterialAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -368,9 +450,45 @@ export default {
           return false
         }
       })
+    },
+
+    // 聚焦事件工艺路线弹窗
+    lineBox() {
+      this.lineFormVisible = true
+      this.lineLoading = true
+      lineList(this.paginationSearchLine).then(res => {
+        if (res.IsPass === true) {
+          this.lineData = res.Obj
+          this.lineLoading = false
+        }
+      })
+    },
+    // 工艺路线弹窗搜索
+    LineBox() {
+      this.paginationSearchLine.PageIndex = 1
+      this.lineBox()
+    },
+    // 增加工艺路线双击事件获取当前行的值
+    lineClick(row) {
+      debugger
+      this.ruleForm.RouteName = row.Name
+      this.lineCode = row.ProcessRouteCode
+      this.lineFormVisible = false
+    },
+    // 关闭工艺路线查询弹窗
+    lineClose() {
+      this.lineFormVisible = false
     }
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-dialog__body {
+  .el-col-7 {
+    height: 30px;
+    line-height: 25px;
+    text-align: right;
+  }
+}
+</style>

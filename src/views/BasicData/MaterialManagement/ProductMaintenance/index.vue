@@ -75,7 +75,7 @@
 
       <el-table-column align="center" label="工艺路线名称" width="100">
         <template slot-scope="scope">
-          {{ scope.row.ProcessRouteName }}
+          {{ scope.row.RouteName }}
         </template>
       </el-table-column>
 
@@ -99,7 +99,7 @@
 
       <el-table-column align="center" label="维护时间" width="150">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime | substringTime  }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -138,7 +138,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工艺路线"><el-input v-model="ruleForm.ProcessRouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
+        <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
       </el-form>
@@ -408,7 +408,7 @@ export default {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            params.ProcessRouteCode = this.lineCode
+            params.RouteCode = this.lineCode
             MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -423,7 +423,7 @@ export default {
           } else {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            params.ProcessRouteCode = this.lineCode
+            params.RouteCode = this.lineCode
             MaterialAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -471,7 +471,7 @@ export default {
     // 增加工艺路线双击事件获取当前行的值
     lineClick(row) {
       debugger
-      this.ruleForm.ProcessRouteName = row.Name
+      this.ruleForm.RouteName = row.Name
       this.lineCode = row.ProcessRouteCode
       this.lineFormVisible = false
     },
