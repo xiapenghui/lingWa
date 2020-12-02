@@ -463,3 +463,192 @@ export function BaseProStatus(data) {
     data
   })
 }
+
+// 生产组织管理树状图
+export function treeList(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ListProductionOrganization',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工厂分页
+export function factoryList(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ListFactory',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--车间分页
+export function workShopList(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ListWorkShop',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--产线分页
+export function productLineList(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ListProductLine',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工作中心分页
+export function workList(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ListWorkCenter',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工位分页
+export function stationList(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ListTerminal',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工厂增加
+export function factoryAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/AddFactory',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--车间增加
+export function workShopAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/AddWorkShop',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--产线增加
+export function productAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/AddProductLine',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工作中心增加
+export function workAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/AddWorkCenter',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工位增加
+export function stationAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/AddTerminal',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工厂删除
+export function factoryDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/DeleteFactory',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--车间删除
+export function workShopDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/DeleteWorkShop',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--产线删除
+export function productDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/DeleteProductLine',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工作中心删除
+export function workDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/DeleteWorkCenter',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工位删除
+export function stationDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/DeleteTerminal',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工厂编辑
+export function factoryModify(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ModifyFactory',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--车间编辑
+export function workShopModify(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ModifyWorkShop',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--产线编辑
+export function productModify(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ModifyProductLine',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工作中心编辑
+export function workModify(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ModifyWorkCenter',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工位编辑
+export function stationModify(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ModifyTerminal',
+    method: 'post',
+    data
+  })
+}

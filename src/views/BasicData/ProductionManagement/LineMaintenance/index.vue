@@ -4,21 +4,19 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="预留查询" placement="top-start"><label class="radio-label">预留查询:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="成品编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="预留查询" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="预留查询" placement="top-start"><label class="radio-label">预留查询:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="成品名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="预留查询" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态成品" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态成品</el-checkbox>
-            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="预留查询" placement="top-start"><el-checkbox v-model="pagination.ShowBanned">预留查询</el-checkbox></el-tooltip>
           </el-col>
         </el-col>
         <el-col :span="4">
@@ -30,135 +28,386 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addMaterial') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser('1')">{{ $t('permission.addFactory') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser('2')">{{ $t('permission.addWorkshop') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser('3')">{{ $t('permission.addLine') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser('4')">{{ $t('permission.addWord') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser('5')">{{ $t('permission.addStation') }}</el-button>
+      <el-tag type="success" style="margin-left: 2%;">上级组织：{{ organization }}</el-tag>
     </div>
 
-    <el-table
-      v-loading="listLoading"
-      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
-      :data="tableData"
-      :height="tableHeight"
-      style="width: 100%"
-      border
-      element-loading-text="拼命加载中"
-      fit
-      highlight-current-row
-    >
-      >
-      <el-table-column align="center" label="成品编码" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.MaterialNum }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="成品名称" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.Name }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="成品规格" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.Spec }}
-        </template>
-      </el-table-column>
+    <!-- 工厂对应表格 -->
+    <div class="centerBox">
+      <div class="centerTree" :style="{ height: centerTree }"><el-tree :data="treeData" node-key="Key" :props="defaultProps" :default-expand-all="true" /></div>
+      <div v-if="factoryShow" class="centerTable">
+        <el-table
+          v-loading="listLoading"
+          :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+          :data="factoryData"
+          :height="tableHeight"
+          style="width: 100%"
+          border
+          element-loading-text="拼命加载中"
+          fit
+          highlight-current-row
+        >
+          <el-table-column align="center" label="工厂编码">
+            <template slot-scope="scope">
+              {{ scope.row.FactoryNum }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="工厂名称">
+            <template slot-scope="scope">
+              {{ scope.row.Name }}
+            </template>
+          </el-table-column>
 
-      <el-table-column align="center" label="颜色" width="100">
-        <template slot-scope="scope">
-          {{ scope.row.Color }}
-        </template>
-      </el-table-column>
+          <el-table-column align="center" label="工厂描述">
+            <template slot-scope="scope">
+              {{ scope.row.Description }}
+            </template>
+          </el-table-column>
 
-      <el-table-column align="center" label="单位" width="100">
-        <template slot-scope="scope">
-          {{ scope.row.UnitText }}
-        </template>
-      </el-table-column>
+          <el-table-column align="center" label="维护者">
+            <template slot-scope="scope">
+              {{ scope.row.CreateUser }}
+            </template>
+          </el-table-column>
 
-      <el-table-column align="center" label="工艺路线名称" width="100">
-        <template slot-scope="scope">
-          {{ scope.row.RouteName }}
-        </template>
-      </el-table-column>
+          <el-table-column align="center" label="维护时间">
+            <template slot-scope="scope">
+              {{ scope.row.CreateTime | substringTime }}
+            </template>
+          </el-table-column>
 
-      <el-table-column align="center" label="状态" width="100">
-        <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
-        </template>
-      </el-table-column>
+          <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" content="编辑工厂" placement="top-start">
+                <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row, '1')" />
+              </el-tooltip>
 
-      <el-table-column align="center" label="描述">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
-        </template>
-      </el-table-column>
+              <el-tooltip class="item" effect="dark" content="禁用工厂" placement="top-start">
+                <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
 
-      <el-table-column align="center" label="维护者" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyUserName }}
-        </template>
-      </el-table-column>
+              <el-tooltip class="item" effect="dark" content="启用工厂" placement="top-start">
+                <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
 
-      <el-table-column align="center" label="维护时间" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyTime | substringTime }}
-        </template>
-      </el-table-column>
+              <el-tooltip class="item" effect="dark" content="删除工厂" placement="top-start">
+                <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row, '1')" />
+              </el-tooltip>
+            </template>
+          </el-table-column>
+        </el-table>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑成品" placement="top-start">
-            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
-          </el-tooltip>
+        <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getFactory" />
+      </div>
 
-          <el-tooltip class="item" effect="dark" content="禁用成品" placement="top-start">
-            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
-          </el-tooltip>
+      <!-- 车间对应表格 -->
+      <div v-if="workshopShow" class="centerTable">
+        <el-table
+          v-loading="listLoading"
+          :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+          :data="workshopData"
+          :height="tableHeight"
+          style="width: 100%"
+          border
+          element-loading-text="拼命加载中"
+          fit
+          highlight-current-row
+        >
+          <el-table-column align="center" label="车间编码">
+            <template slot-scope="scope">
+              {{ scope.row.WorkshopNum }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="车间名称">
+            <template slot-scope="scope">
+              {{ scope.row.Name }}
+            </template>
+          </el-table-column>
 
-          <el-tooltip class="item" effect="dark" content="启用成品" placement="top-start">
-            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
-          </el-tooltip>
+          <el-table-column align="center" label="车间描述">
+            <template slot-scope="scope">
+              {{ scope.row.Description }}
+            </template>
+          </el-table-column>
 
-          <el-tooltip class="item" effect="dark" content="删除成品" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </el-table>
-    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
+          <el-table-column align="center" label="维护者">
+            <template slot-scope="scope">
+              {{ scope.row.CreateUser }}
+            </template>
+          </el-table-column>
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
-      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model="ruleForm.MaterialNum" placeholder="成品编号" clearable /></el-form-item>
-        <el-form-item label="原料名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="成品名称" clearable /></el-form-item>
-        <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="成品规格" clearable /></el-form-item>
-        <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
+          <el-table-column align="center" label="维护时间">
+            <template slot-scope="scope">
+              {{ scope.row.CreateTime | substringTime }}
+            </template>
+          </el-table-column>
 
-        <el-form-item label="单位" prop="UnitText">
-          <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" @change="changeUnit">
-            <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </el-form-item>
+          <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" content="编辑车间" placement="top-start">
+                <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row, '2')" />
+              </el-tooltip>
 
-        <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
+              <el-tooltip class="item" effect="dark" content="禁用车间" placement="top-start">
+                <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
 
-        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
+              <el-tooltip class="item" effect="dark" content="启用车间" placement="top-start">
+                <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="删除车间" placement="top-start">
+                <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row, '2')" />
+              </el-tooltip>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+      </div>
+
+      <!-- 产线对应表格 -->
+      <div v-if="lineShow" class="centerTable">
+        <el-table
+          v-loading="listLoading"
+          :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+          :data="lineData"
+          :height="tableHeight"
+          style="width: 100%"
+          border
+          element-loading-text="拼命加载中"
+          fit
+          highlight-current-row
+        >
+          <el-table-column align="center" label="产线编码">
+            <template slot-scope="scope">
+              {{ scope.row.FactoryNum }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="产线名称">
+            <template slot-scope="scope">
+              {{ scope.row.Name }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="产线描述">
+            <template slot-scope="scope">
+              {{ scope.row.Description }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="维护者">
+            <template slot-scope="scope">
+              {{ scope.row.CreateUser }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="维护时间">
+            <template slot-scope="scope">
+              {{ scope.row.CreateTime | substringTime }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" content="编辑产线" placement="top-start">
+                <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row, '3')" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="禁用产线" placement="top-start">
+                <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="启用产线" placement="top-start">
+                <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="删除产线" placement="top-start">
+                <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row, '3')" />
+              </el-tooltip>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+      </div>
+
+      <!-- 工作中心表格 -->
+      <div v-if="wordShow" class="centerTable">
+        <el-table
+          v-loading="listLoading"
+          :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+          :data="wordData"
+          :height="tableHeight"
+          style="width: 100%"
+          border
+          element-loading-text="拼命加载中"
+          fit
+          highlight-current-row
+        >
+          <el-table-column align="center" label="工作中心编码">
+            <template slot-scope="scope">
+              {{ scope.row.FactoryNum }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="工作中心名称">
+            <template slot-scope="scope">
+              {{ scope.row.Name }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="工作中心描述">
+            <template slot-scope="scope">
+              {{ scope.row.Description }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="维护者">
+            <template slot-scope="scope">
+              {{ scope.row.CreateUser }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="维护时间">
+            <template slot-scope="scope">
+              {{ scope.row.CreateTime | substringTime }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" content="编辑工作中心" placement="top-start">
+                <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row, '4')" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="禁用工作中心" placement="top-start">
+                <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="启用工作中心" placement="top-start">
+                <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="删除工作中心" placement="top-start">
+                <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row, '4')" />
+              </el-tooltip>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+      </div>
+
+      <!-- 工位表格 -->
+      <div v-if="stationShow" class="centerTable">
+        <el-table
+          v-loading="listLoading"
+          :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+          :data="stationData"
+          :height="tableHeight"
+          style="width: 100%"
+          border
+          element-loading-text="拼命加载中"
+          fit
+          highlight-current-row
+        >
+          <el-table-column align="center" label="工位编码">
+            <template slot-scope="scope">
+              {{ scope.row.FactoryNum }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="工位名称">
+            <template slot-scope="scope">
+              {{ scope.row.Name }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="工位描述">
+            <template slot-scope="scope">
+              {{ scope.row.Description }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="维护者">
+            <template slot-scope="scope">
+              {{ scope.row.CreateUser }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="维护时间">
+            <template slot-scope="scope">
+              {{ scope.row.CreateTime | substringTime }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" content="编辑工位" placement="top-start">
+                <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row, '5')" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="禁用工位" placement="top-start">
+                <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="启用工位" placement="top-start">
+                <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+              </el-tooltip>
+
+              <el-tooltip class="item" effect="dark" content="删除工位" placement="top-start">
+                <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row, '5')" />
+              </el-tooltip>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+      </div>
+    </div>
+
+    <!-- 编辑新增工厂 -->
+
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
+      <el-form ref="ruleForm" v-loading="listLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
+        <el-form-item v-if="factoryShow" label="工厂编号"><el-input v-model="ruleForm.FactoryNum" placeholder="工厂编号" /></el-form-item>
+        <el-form-item v-if="factoryShow" label="工厂名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="工厂名称" /></el-form-item>
+        <el-form-item v-if="factoryShow" label="工厂电话"><el-input v-model="ruleForm.Tel" placeholder="工厂电话" /></el-form-item>
+        <el-form-item v-if="factoryShow" label="工厂地址"><el-input v-model="ruleForm.Address" placeholder="工厂地址" /></el-form-item>
+        <el-form-item v-if="factoryShow" label="工厂描述"><el-input v-model="ruleForm.Description" type="textarea" placeholder="工厂描述" /></el-form-item>
+        <el-form-item v-if="factoryShow" label="工厂备注"><el-input v-model="ruleForm.Remark" type="textarea" placeholder="工厂备注" /></el-form-item>
+
+        <el-form-item v-if="workshopShow" label="车间编号"><el-input v-model="ruleForm.WorkshopNum" placeholder="车间编号" /></el-form-item>
+        <el-form-item v-if="workshopShow" label="车间名称" prop="WorkshopName"><el-input v-model="ruleForm.WorkshopName" placeholder="车间名称" /></el-form-item>
+        <el-form-item v-if="workshopShow" label="车间电话"><el-input v-model="ruleForm.Tel" placeholder="车间电话" /></el-form-item>
+        <el-form-item v-if="workshopShow" label="车间描述"><el-input v-model="ruleForm.Description" type="textarea" placeholder="车间描述" /></el-form-item>
+        <el-form-item v-if="workshopShow" label="车间备注"><el-input v-model="ruleForm.Remark" type="textarea" placeholder="车间备注" /></el-form-item>
+
+        <el-form-item v-if="lineShow" label="产线编号"><el-input v-model="ruleForm.LineNum" placeholder="产线编号" /></el-form-item>
+        <el-form-item v-if="lineShow" label="产线名称" prop="LineName"><el-input v-model="ruleForm.LineName" placeholder="产线名称" /></el-form-item>
+        <el-form-item v-if="lineShow" label="产线类别"><el-input v-model="ruleForm.LineType" placeholder="产线类别" /></el-form-item>
+        <el-form-item v-if="lineShow" label="车间描述"><el-input v-model="ruleForm.Description" type="textarea" placeholder="车间描述" /></el-form-item>
+        <el-form-item v-if="lineShow" label="车间备注"><el-input v-model="ruleForm.Remark" type="textarea" placeholder="车间备注" /></el-form-item>
+
+        <el-form-item v-if="wordShow" label="工作中心编号"><el-input v-model="ruleForm.WorkCenterNum" placeholder="工作中心编号" /></el-form-item>
+        <el-form-item v-if="wordShow" label="工作中心名称" prop="WorkCenterName"><el-input v-model="ruleForm.WorkCenterName" placeholder="工作中心名称" /></el-form-item>
+        <el-form-item v-if="wordShow" label="工作中心类别"><el-input v-model="ruleForm.WorkCenterType" placeholder="工作中心类别" /></el-form-item>
+        <el-form-item v-if="wordShow" label="工作中心描述"><el-input v-model="ruleForm.Description" type="textarea" placeholder="工作中心描述" /></el-form-item>
+        <el-form-item v-if="wordShow" label="工作中心备注"><el-input v-model="ruleForm.Remark" type="textarea" placeholder="工作中心备注" /></el-form-item>
+
+        <el-form-item v-if="stationShow" label="工位编号"><el-input v-model="ruleForm.TerminalNum" placeholder="工位编号" /></el-form-item>
+        <el-form-item v-if="stationShow" label="工位名称" prop="TerminalName"><el-input v-model="ruleForm.TerminalName" placeholder="工位名称" /></el-form-item>
+        <el-form-item v-if="stationShow" label="工位类别"><el-input v-model="ruleForm.ProcessCode" placeholder="工位类别" /></el-form-item>
+        <el-form-item v-if="stationShow" label="工位描述"><el-input v-model="ruleForm.Description" type="textarea" placeholder="工位描述" /></el-form-item>
+        <el-form-item v-if="stationShow" label="工位备注"><el-input v-model="ruleForm.Remark" type="textarea" placeholder="工位备注" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
-
-    <!-- 新增加页面工艺路线聚焦弹窗 -->
-    <LineName
-      :line-show="lineFormVisible"
-      :line-loading="lineLoading"
-      :table-box-height="tableBoxHeight"
-      :line-data="lineData"
-      :pagination-search-line="paginationSearchLine"
-      @lineClick="lineClick"
-      @lineClose="lineClose"
-      @lineBox="lineBox"
-    />
   </div>
 </template>
 
@@ -167,50 +416,78 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, lineList } from '@/api/OrganlMan'
-import LineName from '@/components/LineName' // 工艺路线弹
+import { MaterialModify, MaterialStatus } from '@/api/OrganlMan'
+import {
+  treeList,
+  factoryList,
+  workShopList,
+  productLineList,
+  workList,
+  stationList,
+  factoryAdd,
+  workShopAdd,
+  productAdd,
+  workAdd,
+  stationAdd,
+  factoryDelete,
+  workShopDelete,
+  productDelete,
+  workDelete,
+  stationDelete,
+  factoryModify,
+  workShopModify,
+  productModify,
+  workModify,
+  stationModify
+} from '@/api/OrganlMan'
 const fixHeight = 270
 const fixHeightBox = 350
 export default {
   name: 'MaterialInformation',
-  components: { Pagination, LineName },
+  components: { Pagination },
   data() {
     return {
-      tableData: [],
+      factoryData: [], // 工厂数组
+      workshopData: [], // 车间数组
+      lineData: [], // 产线数组
+      wordData: [], // 工作中心数组
+      stationData: [], // 工位数组
+      treeData: [], // 树状图
+      organization: null, // 上级组织名字
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
       ruleForm: {}, // 编辑弹窗
       pagination: {
         PageIndex: 1,
-        PageSize: 50,
-        MaterialNum: undefined,
-        Name: undefined,
-        ShowBanned: false,
-        MaterialType: 1
+        PageSize: 50
       },
-      // 搜索条件
-      paginationSearchLine: {
-        Name: undefined,
-        PageIndex: 1,
-        PageSize: 10
-      },
-      lineData: [], // 工艺路线弹窗
-      lineCode: null, // 工艺路线code
+
       listLoading: false,
-      lineLoading: false, // 新增工艺路线搜索loading
-      lineFormVisible: false, // 新增工艺路线弹窗
-      editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
-      dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
+      centerTree: window.innerHeight - 270 + 'px',
       dialogType: 'new',
-      UnitTextList: [], // 获取新增页面单位下拉
-      linerData: [], // 工艺路线数组
-      newUnit: null,
+      factoryShow: true, // 默认工厂表格出现
+      workshopShow: false, //  默认车间表格因隐藏
+      lineShow: false, // 默认产线表格隐藏
+      wordShow: false, // 默工作中心隐藏
+      stationShow: false, // 默认工位隐藏
+      dialogTypeTitle: null, // 弹窗标题
+      FactoryCode: null, // 工厂code
+      WorkshopCode: null, //  车间code
+      LineCode: null, // 产线code
+      WorkCenterCode: null, // 工作中心code
+      TerminalCode: null, // 工位code
       rules: {
-        MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
-        UnitText: [{ required: true, message: '请选择单位', trigger: 'change' }]
+        FactoryName: [{ required: true, message: '请输入工厂名字', trigger: 'blur' }],
+        WorkshopName: [{ required: true, message: '请输入车间名字', trigger: 'blur' }],
+        LineName: [{ required: true, message: '请输入产线名字', trigger: 'blur' }],
+        WorkCenterName: [{ required: true, message: '请输入工作中心名称', trigger: 'blur' }],
+        TerminalName: [{ required: true, message: '请输入工位名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -269,30 +546,26 @@ export default {
         that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
-
-    // 单位下拉
-    GetDictionary({ code: '0021' }).then(res => {
-      if (res.IsPass === true) {
-        this.UnitTextList = res.Obj
-      }
-    })
-
-    this.getList()
+    this.getFactory() // 工厂查询
+    this.getWorkshop() // 车间查询
+    this.getLine() // 产线查询
+    this.getword() // 工作中心查询
+    this.getStation() // 车间查询
     this.setFormRules()
+    this.funTree() // 获取树状图
   },
   methods: {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
-        UnitText: [{ required: true, message: '请输入单位', trigger: 'blur' }]
+        FactoryName: [{ required: true, message: '请输入工厂名字', trigger: 'blur' }],
+        WorkshopName: [{ required: true, message: '请输入车间名字', trigger: 'blur' }],
+        LineName: [{ required: true, message: '请输入产线名字', trigger: 'blur' }],
+        WorkCenterName: [{ required: true, message: '请输入工作中心名称', trigger: 'blur' }],
+        TerminalName: [{ required: true, message: '请输入工位名称', trigger: 'blur' }]
       }
     },
-    // 获取下拉选择单位的最新值
-    changeUnit(val) {
-      this.newUnit = val
-    },
+
     // 禁用，启用权限
     handleBan(row) {
       let status, statusTitle
@@ -318,7 +591,7 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
+            this.getFactory()
           } else {
             this.$message({
               type: 'error',
@@ -332,12 +605,63 @@ export default {
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
-      this.getList()
+      this.getFactory()
     },
-    getList() {
+
+    //  获取树状图
+    funTree() {
+      treeList().then(res => {
+        if (res.IsPass === true) {
+          this.treeData = res.Obj
+          this.organization = res.Obj[0].label
+        }
+      })
+    },
+    // 工厂查询
+    getFactory() {
       this.listLoading = true
-      MaterialList(this.pagination).then(res => {
-        this.tableData = res.Obj
+      factoryList(this.pagination).then(res => {
+        this.factoryData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
+    },
+
+    // 车间查询
+    getWorkshop() {
+      this.listLoading = true
+      workShopList(this.pagination).then(res => {
+        this.workshopData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
+    },
+
+    // 产线查询
+    getLine() {
+      this.listLoading = true
+      productLineList(this.pagination).then(res => {
+        this.lineData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
+    },
+
+    // 工作中心查询
+    getword() {
+      this.listLoading = true
+      workList(this.pagination).then(res => {
+        this.wordData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
+    },
+
+    // 车间查询
+    getStation() {
+      this.listLoading = true
+      stationList(this.pagination).then(res => {
+        this.stationData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
       })
@@ -354,43 +678,148 @@ export default {
       return app
     },
 
-    // 增加角色
-    handleAddUser() {
-      this.dialogType = 'new'
-      this.dialogFormVisible = true
-      this.ruleForm = {
-        MaterialType: 1
+    // 增加
+    handleAddUser(status) {
+      if (status === '1') {
+        this.dialogTypeTitle = '增加工厂'
+        this.factoryShow = true
+        this.workshopShow = false
+        this.lineShow = false
+        this.wordShow = false
+        this.stationShow = false
+      } else if (status === '2') {
+        this.dialogTypeTitle = '增加车间'
+        this.factoryShow = false
+        this.workshopShow = true
+        this.lineShow = false
+        this.wordShow = false
+        this.stationShow = false
+      } else if (status === '3') {
+        this.dialogTypeTitle = '增加产线'
+        this.factoryShow = false
+        this.workshopShow = false
+        this.lineShow = true
+        this.wordShow = false
+        this.stationShow = false
+      } else if (status === '4') {
+        this.dialogTypeTitle = '增加工作中心'
+        this.factoryShow = false
+        this.workshopShow = false
+        this.lineShow = false
+        this.wordShow = true
+        this.stationShow = false
+      } else {
+        this.dialogTypeTitle = '增加工位'
+        this.factoryShow = false
+        this.workshopShow = false
+        this.lineShow = false
+        this.wordShow = false
+        this.stationShow = true
       }
+      this.dialogFormVisible = true
+      this.ruleForm = {}
     },
-    // 编辑角色
-    handleEdit(row) {
-      this.dialogType = 'edit'
+    // 编辑
+    handleEdit(row, status) {
+      if (status === '1') {
+        this.dialogTypeTitle = '编辑工厂'
+      } else if (status === '2') {
+        this.dialogTypeTitle = '编辑车间'
+      } else if (status === '3') {
+        this.dialogTypeTitle = '编辑产线'
+      } else if (status === '4') {
+        this.dialogTypeTitle = '编辑工作中心'
+      } else {
+        this.dialogTypeTitle = '编辑工位'
+      }
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
     // 删除角色
-    handleDelete(row) {
+    handleDelete(row, status) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
         cancelButtonText: this.$t('permission.Cancel'),
         type: 'warning'
       })
         .then(() => {
-          MaterialDelete({ MaterialCode: row.MaterialCode }).then(res => {
-            if (res.IsPass === true) {
-              this.$message({
-                type: 'success',
-                message: this.$t('table.deleteSuccess')
-              })
-              this.getList()
-            } else {
-              this.$message({
-                type: 'error',
-                message: res.MSG
-              })
-            }
-          })
+          if (status === '1') {
+            factoryDelete({ FactoryCode: row.FactoryCode }).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.deleteSuccess')
+                })
+                this.getFactory()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+            })
+          } else if (status === '2') {
+            workShopDelete({ WorkshopCode: row.WorkshopCode }).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.deleteSuccess')
+                })
+                this.getWorkshop()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+            })
+          } else if (status === '3') {
+            productDelete({ LineCode: row.LineCode }).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.deleteSuccess')
+                })
+                this.getLine()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+            })
+          } else if (status === '4') {
+            workDelete({ WorkCenterCode: row.WorkCenterCode }).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.deleteSuccess')
+                })
+                this.getword()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+            })
+          } else {
+            stationDelete({ TerminalCode: row.TerminalCode }).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.deleteSuccess')
+                })
+                this.getStation()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+            })
+          }
         })
         .catch(() => {
           this.$message({
@@ -405,10 +834,8 @@ export default {
       this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.dialogType === 'edit') {
+          if (this.dialogTypeTitle === '增加工厂') {
             const params = this.ruleForm
-            params.Unit = this.newUnit
-            params.RouteCode = this.lineCode
             MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -417,27 +844,95 @@ export default {
                 })
                 this.editLoading = false
                 this.dialogFormVisible = false
-                this.getList()
+                this.getFactory()
               }
             })
+          } else if (this.dialogTypeTitle === '增加车间') {
+            debugger
+          } else if (this.dialogTypeTitle === '增加产线') {
+            debugger
+          } else if (this.dialogTypeTitle === '增加工作中心') {
+            debugger
+          } else if (this.dialogTypeTitle === '增加工位') {
+            debugger
           } else {
             const params = this.ruleForm
-            params.Unit = this.newUnit
-            params.RouteCode = this.lineCode
-            MaterialAdd(params).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.addSuc')
-                })
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-            })
+            if (this.dialogTypeTitle === '增加工厂') {
+              factoryAdd(params).then(res => {
+                if (res.IsPass === true) {
+                  this.$message({
+                    type: 'success',
+                    message: this.$t('table.addSuc')
+                  })
+                  this.getFactory()
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: res.MSG
+                  })
+                }
+              })
+            } else if (this.dialogTypeTitle === '增加车间') {
+              workShopAdd(params).then(res => {
+                if (res.IsPass === true) {
+                  this.$message({
+                    type: 'success',
+                    message: this.$t('table.addSuc')
+                  })
+                  this.getFactory()
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: res.MSG
+                  })
+                }
+              })
+            } else if (this.dialogTypeTitle === '增加产线') {
+              productAdd(params).then(res => {
+                if (res.IsPass === true) {
+                  this.$message({
+                    type: 'success',
+                    message: this.$t('table.addSuc')
+                  })
+                  this.getFactory()
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: res.MSG
+                  })
+                }
+              })
+            } else if (this.dialogTypeTitle === '增加工作中心') {
+              workAdd(params).then(res => {
+                if (res.IsPass === true) {
+                  this.$message({
+                    type: 'success',
+                    message: this.$t('table.addSuc')
+                  })
+                  this.getFactory()
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: res.MSG
+                  })
+                }
+              })
+            } else {
+              stationAdd(params).then(res => {
+                if (res.IsPass === true) {
+                  this.$message({
+                    type: 'success',
+                    message: this.$t('table.addSuc')
+                  })
+                  this.getFactory()
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: res.MSG
+                  })
+                }
+              })
+            }
             this.editLoading = false
             this.dialogFormVisible = false
           }
@@ -450,34 +945,6 @@ export default {
           return false
         }
       })
-    },
-
-    // 聚焦事件工艺路线弹窗
-    lineBox() {
-      this.lineFormVisible = true
-      this.lineLoading = true
-      lineList(this.paginationSearchLine).then(res => {
-        if (res.IsPass === true) {
-          this.lineData = res.Obj
-          this.lineLoading = false
-        }
-      })
-    },
-    // 工艺路线弹窗搜索
-    LineBox() {
-      this.paginationSearchLine.PageIndex = 1
-      this.lineBox()
-    },
-    // 增加工艺路线双击事件获取当前行的值
-    lineClick(row) {
-      debugger
-      this.ruleForm.RouteName = row.Name
-      this.lineCode = row.ProcessRouteCode
-      this.lineFormVisible = false
-    },
-    // 关闭工艺路线查询弹窗
-    lineClose() {
-      this.lineFormVisible = false
     }
   }
 }
@@ -489,6 +956,20 @@ export default {
     height: 30px;
     line-height: 25px;
     text-align: right;
+  }
+}
+.main-container .centerBox {
+  width: 100%;
+  .centerTree {
+    width: 28%;
+    float: left;
+    border: 1px solid #dfe6ec;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  .centerTable {
+    width: 70%;
+    float: right;
   }
 }
 </style>
