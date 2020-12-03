@@ -33,6 +33,8 @@ export default {
     producPlan: '生产计划',
     OtherData: '其他主数据管理',
     CustomerInformation: '客户信息维护',
+    BomMangementDetaile: 'BOM明细',
+    RouteMaintenanceDetaile: '工艺路线明细',
 
     // 截止
 
@@ -350,6 +352,8 @@ export default {
     EditOrder: '编辑工单',
     editBasePro: '编辑工序',
     addBasePro: '增加工序',
+    addBomDelite: '新增BOM',
+
     // 截止
     roles: '你的权限',
     switchRoles: '切换权限',

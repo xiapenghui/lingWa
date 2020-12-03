@@ -194,24 +194,41 @@ export const asyncRoutes = [
 
         },
         redirect: '/BasicData/ProductMmanagement/BomMangement',
-        children: [{
-          path: 'BomMangement',
-          component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
-          name: 'BomMangement',
-          meta: {
-            title: 'BomMangement'
+        children: [
+          {
+            path: 'BomMangement',
+            component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
+            name: 'BomMangement',
+            meta: {
+              title: 'BomMangement'
 
-          }
-        },
-        {
-          path: 'RouteMaintenance',
-          component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
-          name: 'RouteMaintenance',
-          meta: {
-            title: 'RouteMaintenance'
+            }
+          },
+          {
+            path: 'BomMangementDetaile',
+            component: () => import('@/views/BasicData/ProductMmanagement/BomMangementDetaile'),
+            name: 'BomMangementDetaile',
+            meta: {
+              title: 'BomMangementDetaile'
+            }
+          },
+          {
+            path: 'RouteMaintenance',
+            component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
+            name: 'RouteMaintenance',
+            meta: {
+              title: 'RouteMaintenance'
 
+            }
+          },
+          {
+            path: 'RouteMaintenanceDetaile',
+            component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenanceDetaile'),
+            name: 'RouteMaintenanceDetaile',
+            meta: {
+              title: 'RouteMaintenanceDetaile'
+            }
           }
-        }
         ]
       },
       // 物料信息管理模块

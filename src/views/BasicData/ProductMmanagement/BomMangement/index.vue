@@ -322,6 +322,18 @@ export default {
       })
     },
 
+    // 查看BOM明细
+    handleLook(row) {
+      debugger
+      this.$router.push({
+        path: '/BasicData/ProductMmanagement/BomMangementDetaile',
+        query: {
+          BomCode: row.BomCode,
+          ProcessRouteCode: row.ProcessRouteCode,
+          ProductCode: row.ProductCode
+        }
+      })
+    },
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
@@ -410,6 +422,13 @@ export default {
                 this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
               }
             })
           } else {
@@ -492,8 +511,6 @@ export default {
     },
     // 增加工艺路线双击事件获取当前行的值
     lineClick(row) {
-      debugger
-      console.log('row1111', row)
       this.ruleForm.ProcessRouteName = row.Name
       this.lineCode = row.ProcessRouteCode
       this.lineFormVisible = false

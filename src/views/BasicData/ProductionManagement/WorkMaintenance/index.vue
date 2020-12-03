@@ -45,7 +45,7 @@
       fit
       highlight-current-row
     >
-      >
+
       <el-table-column align="center" label="工序编号">
         <template slot-scope="scope">
           {{ scope.row.ProcessNum }}

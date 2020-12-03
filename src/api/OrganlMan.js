@@ -402,10 +402,46 @@ export function bomDelete(data) {
   })
 }
 
-// BOM信息维护列表 --删除
+// BOM信息维护列表 --复制
 export function bomCopy(data) {
   return request({
     url: newUrl + '/api/BaseProductBOM/Copy',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护明细列表 --分页
+export function bomDetailList(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOMDetail/List',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护明细列表 --新增
+export function bomDetailAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOMDetail/Add',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护明细列表 --修改
+export function bomDetailModify(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOMDetail/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// BOM信息维护明细列表 --删除
+export function bomDetailDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseProductBOMDetail/Delete',
     method: 'post',
     data
   })

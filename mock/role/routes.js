@@ -81,39 +81,50 @@ const asyncRoutes = [
         ]
       },
 
-      // 生产信息管理
       {
-        path: 'ProductionManagement',
-        component: () => import('@/views/BasicData/ProductionManagement/index'), // Parent router-view
-        name: 'ProductionManagement',
+        path: 'ProductMmanagement',
+        component: () => import('@/views/BasicData/ProductMmanagement/index'), // Parent router-view
+        name: 'ProductMmanagement',
         meta: {
-          title: 'ProductionManagement'
+          title: 'ProductMmanagement'
+
         },
-        redirect: '/BasicData/ProductionManagement/LineMaintenance',
-        children: [{
-          path: 'LineMaintenance',
-          component: () => import('@/views/BasicData/ProductionManagement/LineMaintenance'),
-          name: 'LineMaintenance',
-          meta: {
-            title: 'LineMaintenance'
+        redirect: '/BasicData/ProductMmanagement/BomMangement',
+        children: [
+          {
+            path: 'BomMangement',
+            component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
+            name: 'BomMangement',
+            meta: {
+              title: 'BomMangement'
+
+            }
+          },
+          {
+            path: 'BomMangementDetaile',
+            component: () => import('@/views/BasicData/ProductMmanagement/BomMangement/BomMangementDetaile'),
+            name: 'BomMangementDetaile',
+            meta: {
+              title: 'BomMangementDetaile'
+            }
+          },
+          {
+            path: 'RouteMaintenance',
+            component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
+            name: 'RouteMaintenance',
+            meta: {
+              title: 'RouteMaintenance'
+
+            }
+          },
+          {
+            path: 'RouteMaintenanceDetaile',
+            component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance/RouteMaintenanceDetaile'),
+            name: 'RouteMaintenanceDetaile',
+            meta: {
+              title: 'RouteMaintenanceDetaile'
+            }
           }
-        },
-        {
-          path: 'WorkMaintenance',
-          component: () => import('@/views/BasicData/ProductionManagement/WorkMaintenance'),
-          name: 'WorkMaintenance',
-          meta: {
-            title: 'WorkMaintenance'
-          }
-        },
-        {
-          path: 'ProcessMaintenance',
-          component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
-          name: 'ProcessMaintenance',
-          meta: {
-            title: 'ProcessMaintenance'
-          }
-        }
         ]
       },
 
