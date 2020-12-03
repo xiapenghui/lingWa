@@ -164,7 +164,7 @@
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, lineList } from '@/api/OrganlMan'
+import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, lineList, bomCopy } from '@/api/OrganlMan'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import FinshName from '@/components/FinshName' // 成品名称
 import LineName from '@/components/LineName' // 工艺路线名称
@@ -311,7 +311,6 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -319,6 +318,7 @@ export default {
             })
           }
         })
+        this.getList()
       })
     },
 
@@ -400,6 +400,37 @@ export default {
           this.$message({
             type: 'info',
             message: this.$t('table.deleteError')
+          })
+        })
+    },
+
+    // 复制BOM
+    handleCopy(row) {
+      this.$confirm('您确定要复制此条数据么？', '复制', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'success'
+      })
+        .then(() => {
+          bomCopy({ BomCode: row.BomCode }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: res.MSG
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
           })
         })
     },
