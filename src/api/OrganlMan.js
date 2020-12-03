@@ -29,6 +29,15 @@ export function GetCustomerList(data) {
   })
 }
 
+// 通用通用工艺路线
+export function GetByRouteList(data) {
+  return request({
+    url: newUrl + '/api/Common/GetWorkingProcedureByRouteList',
+    method: 'post',
+    data
+  })
+}
+
 // 产线接口
 export function GetLine(data) {
   return request({

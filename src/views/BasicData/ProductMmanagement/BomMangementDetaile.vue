@@ -96,15 +96,14 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
-
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工序" prop="WorkingProcedureName"><el-input v-model="ruleForm.WorkingProcedureName" placeholder="工序" @focus="workingBox" /></el-form-item>
-        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="原料名称" @focus="materialBox" /></el-form-item>
+        <el-form-item label="工序" prop="WorkingProcedureName"><el-input v-model="ruleForm.WorkingProcedureName" placeholder="请选择工序" @focus="workingBox" /></el-form-item>
+        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" @focus="materialBox" /></el-form-item>
         <el-form-item label="原料用量" prop="Usage"><el-input v-model="ruleForm.Usage" placeholder="原料用量" /></el-form-item>
-        <el-form-item label="替代物料"><el-input v-model="ruleForm.ProcessRouteName" placeholder="替代物料" /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" /></el-form-item>
+        <!-- <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请选择替代物料" @focus="replaceBox" /></el-form-item> -->
+        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -142,7 +141,7 @@
 import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, bomModifyStatus, MaterialList, BaseProList } from '@/api/OrganlMan'
+import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, MaterialList, GetByRouteList } from '@/api/OrganlMan'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WorkingName from '@/components/WorkingName' // 工序名称
 import MaterialName from '@/components/MaterialName' // 物料名称
@@ -177,8 +176,10 @@ export default {
       paginationSearchWorking: {
         PageIndex: 1,
         PageSize: 20,
-        ProductCode: this.$route.query.ProductCode,
         ProcessRouteCode: this.$route.query.ProcessRouteCode,
+        // RouteCode: 'RT00000001',
+        RouteCode: this.$route.query.ProcessRouteCode,
+        Status: true,
         WorkingProcedureNum: undefined,
         Name: undefined
       },
@@ -198,10 +199,11 @@ export default {
       workingData: [], // 工序数组
       materialCode: null, // 成品名称code值
       workingCode: null, // 工序的code值
+      SubMaterialCode: null, // 替换物料code值
       rules: {
         WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'change' }],
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'change' }],
-        ProcessRouteName: [{ required: true, message: '请输入用量', trigger: 'blur' }]
+        Usage: [{ required: true, message: '请输入用量', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -252,7 +254,6 @@ export default {
     }
   },
   created() {
-    debugger
     // 监听表格高度
     const that = this
     window.onresize = () => {
@@ -269,43 +270,8 @@ export default {
       this.rules = {
         WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'change' }],
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'change' }],
-        ProcessRouteName: [{ required: true, message: '请输入用量', trigger: 'blur' }]
+        Usage: [{ required: true, message: '请输入用量', trigger: 'blur' }]
       }
-    },
-    // 禁用，启用权限
-    handleBan(row) {
-      let status, statusTitle
-      if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle')
-        statusTitle = this.$t('permission.jingyongInfo')
-      } else {
-        status = this.$t('permission.qiyongTitle')
-        statusTitle = this.$t('permission.qiyongInfo')
-      }
-      this.$confirm(statusTitle, status, {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      }).then(() => {
-        const params = {
-          Status: (row.Status = row.Status !== true),
-          BomCode: row.BomCode
-        }
-        bomModifyStatus(params).then(res => {
-          if (res.IsPass === true) {
-            this.$message({
-              type: 'success',
-              message: res.MSG
-            })
-            this.getList()
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.MSG
-            })
-          }
-        })
-      })
     },
 
     // 查询
@@ -317,7 +283,6 @@ export default {
     getList() {
       this.listLoading = true
       bomDetailList(this.pagination).then(res => {
-        debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -356,7 +321,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          bomDetailDelete({ BomCode: row.BomCode }).then(res => {
+          bomDetailDelete({ BomDetailID: row.BomDetailID }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -386,8 +351,10 @@ export default {
         if (valid) {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
-            params.ProductCode = this.materialCode
-            params.ProcessRouteCode = this.lineCode
+            params.BomCode = this.$route.query.BomCode
+            params.ProcessRouteCode = this.$route.query.ProcessRouteCode
+            params.WorkingProcedureCode = this.workingCode
+            params.MaterialCode = this.materialCode
             bomDetailModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -408,8 +375,10 @@ export default {
             })
           } else {
             const params = this.ruleForm
-            params.ProductCode = this.materialCode
-            params.ProcessRouteCode = this.lineCode
+            params.BomCode = this.$route.query.BomCode
+            params.ProcessRouteCode = this.$route.query.ProcessRouteCode
+            params.WorkingProcedureCode = this.workingCode
+            params.MaterialCode = this.materialCode
             bomDetailAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -456,9 +425,10 @@ export default {
     },
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
-      debugger
-      this.ruleForm.ProductName = row.Name
+      this.ruleForm.MaterialName = row.Name
       this.materialCode = row.MaterialCode
+      // this.ruleForm.SubMaterialName = row.Name
+      // this.SubMaterialCode = row.MaterialCode
       this.materialFormVisible = false
     },
     // 关闭成品名称查询弹窗
@@ -466,11 +436,23 @@ export default {
       this.materialFormVisible = false
     },
 
+    // 替换物料
+    replaceBox() {
+      this.materialFormVisible = true
+      this.materialBoxLoading = true
+      MaterialList(this.paginationSearchMaterial).then(res => {
+        if (res.IsPass === true) {
+          this.materialData = res.Obj
+          this.materialBoxLoading = false
+        }
+      })
+    },
+
     // 工序聚焦事件原料弹窗
     workingBox() {
       this.workingFormVisible = true
       this.workingBoxLoading = true
-      BaseProList(this.paginationSearchWorking).then(res => {
+      GetByRouteList(this.paginationSearchWorking).then(res => {
         debugger
         if (res.IsPass === true) {
           this.workingData = res.Obj
@@ -487,10 +469,10 @@ export default {
     workingClick(row) {
       debugger
       this.ruleForm.WorkingProcedureName = row.Name
-      this.workingCode = row.WorkingProcedureCode
+      this.workingCode = row.ProcessCode
       this.workingFormVisible = false
     },
-    // 关闭成品名称查询弹窗
+    // 关闭工序名称查询弹窗
     workingClose() {
       this.workingFormVisible = false
     }
