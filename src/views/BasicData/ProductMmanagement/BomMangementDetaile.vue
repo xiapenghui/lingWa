@@ -100,9 +100,9 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="工序" prop="WorkingProcedureName"><el-input v-model="ruleForm.WorkingProcedureName" placeholder="请选择工序" @focus="workingBox" /></el-form-item>
-        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" @focus="materialBox" /></el-form-item>
+        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" @focus="materialBox(1)" /></el-form-item>
         <el-form-item label="原料用量" prop="Usage"><el-input v-model="ruleForm.Usage" placeholder="原料用量" /></el-form-item>
-        <!-- <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请选择替代物料" @focus="replaceBox" /></el-form-item> -->
+        <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请选择替代物料" @focus="materialBox(2)" /></el-form-item>
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -152,6 +152,7 @@ export default {
   components: { Pagination, WorkingName, MaterialName },
   data() {
     return {
+      materialActiveIndex:1,
       tableData: [],
       ruleForm: {}, // 编辑弹窗
       pagination: {
@@ -355,6 +356,7 @@ export default {
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
             params.WorkingProcedureCode = this.workingCode
             params.MaterialCode = this.materialCode
+            params.SubMaterialCode = this.SubMaterialCode
             bomDetailModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -379,6 +381,7 @@ export default {
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
             params.WorkingProcedureCode = this.workingCode
             params.MaterialCode = this.materialCode
+            params.SubMaterialCode = this.SubMaterialCode
             bomDetailAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -408,7 +411,8 @@ export default {
     },
 
     // 原料聚焦事件原料弹窗
-    materialBox() {
+    materialBox(index) {
+      this.materialActiveIndex = index;
       this.materialFormVisible = true
       this.materialBoxLoading = true
       MaterialList(this.paginationSearchMaterial).then(res => {
@@ -425,10 +429,13 @@ export default {
     },
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
-      this.ruleForm.MaterialName = row.Name
-      this.materialCode = row.MaterialCode
-      // this.ruleForm.SubMaterialName = row.Name
-      // this.SubMaterialCode = row.MaterialCode
+      if(this.materialActiveIndex === 1){
+        this.ruleForm.MaterialName = row.Name
+         this.materialCode = row.MaterialCode
+      }else{
+        this.ruleForm.SubMaterialName = row.Name
+        this.SubMaterialCode = row.MaterialCode
+      }
       this.materialFormVisible = false
     },
     // 关闭成品名称查询弹窗
