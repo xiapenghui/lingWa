@@ -151,36 +151,71 @@ export const asyncRoutes = [
         name: 'ProductionManagement',
         meta: {
           title: 'ProductionManagement'
-
         },
         redirect: '/BasicData/ProductionManagement/LineMaintenance',
-        children: [{
-          path: 'LineMaintenance',
-          component: () => import('@/views/BasicData/ProductionManagement/LineMaintenance'),
-          name: 'LineMaintenance',
-          meta: {
-            title: 'LineMaintenance'
+        children: [
+          {
+            path: 'LineMaintenance',
+            component: () => import('@/views/BasicData/ProductionManagement/LineMaintenance'),
+            name: 'LineMaintenance',
+            meta: {
+              title: 'LineMaintenance'
+            }
+          },
 
-          }
-        },
-        {
-          path: 'WorkMaintenance',
-          component: () => import('@/views/BasicData/ProductionManagement/WorkMaintenance'),
-          name: 'WorkMaintenance',
-          meta: {
-            title: 'WorkMaintenance'
+          {
+            path: 'FactoryInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/FactoryInfo'),
+            name: 'FactoryInfo',
+            meta: {
+              title: 'FactoryInfo'
+            }
+          },
 
-          }
-        },
-        {
-          path: 'ProcessMaintenance',
-          component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
-          name: 'ProcessMaintenance',
-          meta: {
-            title: 'ProcessMaintenance'
+          {
+            path: 'WorkInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/WorkInfo'),
+            name: 'WorkInfo',
+            meta: {
+              title: 'WorkInfo'
+            }
+          },
 
+          {
+            path: 'LineInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/LineInfo'),
+            name: 'LineInfo',
+            meta: {
+              title: 'LineInfo'
+            }
+          },
+
+          {
+            path: 'CenterInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/CenterInfo'),
+            name: 'CenterInfo',
+            meta: {
+              title: 'CenterInfo'
+            }
+          },
+
+          {
+            path: 'TerminalInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/TerminalInfo'),
+            name: 'TerminalInfo',
+            meta: {
+              title: 'TerminalInfo'
+            }
+          },
+
+          {
+            path: 'ProcessMaintenance',
+            component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
+            name: 'ProcessMaintenance',
+            meta: {
+              title: 'ProcessMaintenance'
+            }
           }
-        }
         ]
       },
 

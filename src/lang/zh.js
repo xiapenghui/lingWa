@@ -35,6 +35,11 @@ export default {
     CustomerInformation: '客户信息维护',
     BomMangementDetaile: 'BOM明细',
     RouteMaintenanceDetaile: '工艺路线明细',
+    FactoryInfo: '工厂信息',
+    WorkInfo: '车间信息',
+    LineInfo: '产线信息',
+    CenterInfo: '工作中心',
+    TerminalInfo: '工位信息',
 
     // 截止
 

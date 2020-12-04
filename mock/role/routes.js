@@ -128,31 +128,80 @@ const asyncRoutes = [
         ]
       },
 
-      // 产品信息管理
+      // 生产信息管理
       {
-        path: 'ProductMmanagement',
-        component: () => import('@/views/BasicData/ProductMmanagement/index'), // Parent router-view
-        name: 'ProductMmanagement',
+        path: 'ProductionManagement',
+        component: () => import('@/views/BasicData/ProductionManagement/index'), // Parent router-view
+        name: 'ProductionManagement',
         meta: {
-          title: 'ProductMmanagement'
+          title: 'ProductionManagement'
+
         },
-        redirect: '/BasicData/ProductMmanagement/BomMangement',
-        children: [{
-          path: 'BomMangement',
-          component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
-          name: 'BomMangement',
-          meta: {
-            title: 'BomMangement'
+        redirect: '/BasicData/ProductionManagement/LineMaintenance',
+        children: [
+          {
+            path: 'LineMaintenance',
+            component: () => import('@/views/BasicData/ProductionManagement/LineMaintenance'),
+            name: 'LineMaintenance',
+            meta: {
+              title: 'LineMaintenance'
+            }
+          },
+
+          {
+            path: 'FactoryInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/FactoryInfo'),
+            name: 'FactoryInfo',
+            meta: {
+              title: 'FactoryInfo'
+            }
+          },
+
+          {
+            path: 'WorkInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/WorkInfo'),
+            name: 'WorkInfo',
+            meta: {
+              title: 'WorkInfo'
+            }
+          },
+
+          {
+            path: 'LineInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/LineInfo'),
+            name: 'LineInfo',
+            meta: {
+              title: 'LineInfo'
+            }
+          },
+
+          {
+            path: 'CenterInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/CenterInfo'),
+            name: 'CenterInfo',
+            meta: {
+              title: 'CenterInfo'
+            }
+          },
+
+          {
+            path: 'TerminalInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/TerminalInfo'),
+            name: 'TerminalInfo',
+            meta: {
+              title: 'TerminalInfo'
+            }
+          },
+
+          {
+            path: 'ProcessMaintenance',
+            component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
+            name: 'ProcessMaintenance',
+            meta: {
+              title: 'ProcessMaintenance'
+
+            }
           }
-        },
-        {
-          path: 'RouteMaintenance',
-          component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
-          name: 'RouteMaintenance',
-          meta: {
-            title: 'RouteMaintenance'
-          }
-        }
         ]
       },
       // 物料信息管理模块

@@ -4,309 +4,269 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-              <label class="radio-label">{{ $t('permission.serialNo') }}:</label>
-            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="工序编号" placement="top-start"><label class="radio-label">工序编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.serialNo" :placeholder="$t('permission.serialInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProcessNum" placeholder="工序编号" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-              <label class="radio-label">{{ $t('permission.serialName') }}:</label>
-            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="form.serialName" :placeholder="$t('permission.serialNameInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工序名称" /></el-col>
         </el-col>
-        <el-col :span="6">
-          <el-col :span="12">
-            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionProhibition') }}</el-checkbox>
+        <el-col :span="4">
+          <el-col :span="24">
+            <el-tooltip class="item" effect="dark" content="包含禁状态的工序" placement="top-start">
+              <el-checkbox v-model="pagination.Status">包含禁状态的工序</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
-      </el-row>
 
-      <el-row class="center">
-        <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-
+        <el-col :span="4">
+          <el-col :span="24">
+            <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+          </el-col>
+        </el-col>
       </el-row>
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addSerial') }}</el-button>
-      <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">{{ $t('permission.exportSerial') }}</el-button>
-      <!-- <el-button type="primary" icon="el-icon-document-remove">{{ $t('permission.importserial') }}</el-button> -->
-      <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" />
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addCustomer') }}</el-button>
     </div>
 
-    <el-table v-loading="listLoading" :data="rolesList" style="width: 100%" border>
-      <el-table-column align="center" :label="$t('permission.serialNo')" width="150" fixed sortable prop="key">
+    <el-table
+      v-loading="listLoading"
+      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :data="tableData"
+      :height="tableHeight"
+      style="width: 100%"
+      border
+      element-loading-text="拼命加载中"
+      fit
+      highlight-current-row
+    >
+
+      <el-table-column align="center" label="工序编号">
         <template slot-scope="scope">
-          {{ scope.row.serialNo }}
+          {{ scope.row.ProcessNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.serialName')" width="150">
+      <el-table-column align="center" label="工序名称">
         <template slot-scope="scope">
-          {{ scope.row.serialName }}
+          {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.serialIdentification')" width="300">
+      <el-table-column align="center" label="工序描述">
         <template slot-scope="scope">
-          {{ scope.row.serialIdentification }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" :label="$t('permission.serialCode')" width="300">
-        <template slot-scope="scope">
-          {{ scope.row.serialCode }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.serialDescription')" width="300">
+      <el-table-column align="center" label="倒扣账标识" width="250">
         <template slot-scope="scope">
-          {{ scope.row.serialDescription }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">{{ scope.row.status }}</el-tag>
+          <el-tag :style="{ color: scope.row.IsBackFlush === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsBackFlush === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" prop="name" sortable width="250">
+      <el-table-column align="center" :label="$t('permission.state')">
         <template slot-scope="scope">
-          {{ scope.row.user }}
+          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="200">
+      <el-table-column align="center" label="维护者" width="250">
         <template slot-scope="scope">
-          {{ scope.row.time }}
+          {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="400">
+      <el-table-column align="center" label="维护时间" width="200">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.EditSerial') }}</el-button>
-          <el-button type="warning" size="small" @click="handleLook(scope)">{{ $t('permission.lookPermission') }}</el-button>
-          <el-button v-if="scope.row.status == '启用'" type="danger" size="small" @click="handleBan(scope, '禁用')">{{ $t('permission.handleSerial') }}</el-button>
-          <el-button v-else type="success" size="small" @click="handleBan(scope, '启用')">{{ $t('permission.SpecificationsSerial') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.deleteSerial') }}</el-button>
+          {{ scope.row.ModifyTime | substringTime }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" content="编辑工序" placement="top-start">
+            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="禁用工序" placement="top-start">
+            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="启用工序" placement="top-start">
+            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="删除工序" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
+    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-table v-if="isShow" :data="tableData" border highlight-current-row><el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" /></el-table>
-
-    <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditSerial') : $t('permission.addSerial')">
-      <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-
-        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.serialNo')" prop="serialNo">
-            <el-input v-model="role.serialNo" :placeholder="$t('permission.serialNo')" clearable />
-          </el-form-item>
-        </el-tooltip>
-
-        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-          <el-form-item :label="$t('permission.serialName')" prop="serialName">
-            <el-input v-model="role.serialName" :placeholder="$t('permission.serialName')" clearable />
-          </el-form-item>
-        </el-tooltip>
-
-        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
-          <el-form-item :label="$t('permission.serialIdentification')">
-            <el-radio v-model="role.serialIdentification" label="1">{{ this.$t('permission.yes') }}</el-radio>
-            <el-radio v-model="role.serialIdentification" label="2">{{ this.$t('permission.no') }}</el-radio>
-          </el-form-item>
-        </el-tooltip>
-
-        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
-          <el-form-item :label="$t('permission.serialCode')">
-            <el-input v-model="role.serialCode" :placeholder="$t('permission.serialCode')" clearable />
-          </el-form-item>
-        </el-tooltip>
-
-        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
-          <el-form-item :label="$t('permission.serialDescription')">
-            <el-input v-model="role.serialDescription" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.serialDescription')" />
-          </el-form-item>
-        </el-tooltip>
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editBasePro') : $t('permission.addBasePro')">
+      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
+        <el-form-item label="工序编号"><el-input v-model="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
+        <el-form-item label="工序名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>
+        <el-form-item label="倒扣账标识" prop="IsBackFlush">
+          <el-radio v-model="ruleForm.IsBackFlush" :label="true">是</el-radio>
+          <el-radio v-model="ruleForm.IsBackFlush" :label="false">否</el-radio>
+        </el-form-item>
+        <el-form-item label="倒扣账代码"><el-input v-model="ruleForm.BackFlushCode" placeholder="倒扣账代码" clearable /></el-form-item>
+        <el-form-item label="工序描述"><el-input v-model="ruleForm.Description" placeholder="工序描述" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmRole">{{ $t('permission.confirm') }}</el-button>
+        <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import '../../../../styles/scrollbar.css'
 import '../../../../styles/commentBox.scss'
-import { deleteRole } from '@/api/role'
+import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-
+import { BaseProList, BaseProDelete, BaseProAdd, BaseProModify, BaseProStatus } from '@/api/OrganlMan'
+const fixHeight = 270
 export default {
-  components: { Pagination, UploadExcelComponent },
+  name: 'CustomerInformation',
+  components: { Pagination },
   data() {
     return {
-      // role: Object.assign({}, defaultRole),
-      role: {
-        serialNo: '',
-        serialName: '',
-        serialIdentification: '1',
-        serialCode: '',
-        serialDescription: ''
-      },
-      routes: [],
-      rolesList: [
-        {
-          serialNo: '123456',
-          serialName: '熟料',
-          serialDescription: '不错',
-          serialIdentification: '是',
-          serialCode: '代码',
-          status: '禁用',
-          user: '张三',
-          time: '2020-8-19'
-        }
-      ],
-      dialogVisible: false,
-      dialogType: 'new',
-      form: {
-        serialNo: '',
-        serialName: '',
-        showReviewer: false,
-        page: 1,
-        limit: 20
-      },
-
-      listLoading: true,
-      total: 10,
       tableData: [],
-      tableHeader: [],
-      isShow: true,
-      parentMsg: this.$t('permission.importSerial'),
-      content1: this.$t('permission.serialNo'),
-      content2: this.$t('permission.serialName'),
-      content3: this.$t('permission.inclusionProhibition'),
-      content4: this.$t('permission.serialIdentification'),
-      content5: this.$t('permission.serialCode'),
-      content6: this.$t('permission.serialDescription')
+      ruleForm: {}, // 编辑弹窗
+      pagination: {
+        PageIndex: 1,
+        PageSize: 50,
+        WorkingProcedureNum: undefined,
+        Name: undefined,
+        Status: false
+      },
+      listLoading: false,
+      editLoading: false, // 编辑loading
+      total: 10,
+      dialogFormVisible: false, // 编辑弹出框
+      tableHeight: window.innerHeight - fixHeight, // 表格高度
+      dialogType: 'new',
+      rules: {
+        Name: [{ required: true, message: '请输入工序名称', trigger: 'blur' }],
+        IsBackFlush: [{ required: true, message: '请选择倒扣账标识', trigger: 'change' }]
+      }
+      // content1: this.$t('permission.userName'),
+      // content2: this.$t('permission.fullName'),
+      // content3: this.$t('permission.containInfo'),
+      // content4: this.$t('permission.company'),
+      // content5: this.$t('permission.department'),
+      // content6: this.$t('permission.password'),
+      // content7: this.$t('permission.passwords'),
+      // content8: this.$t('permission.roleUser'),
+      // content9: this.$t('permission.description')
     }
   },
   computed: {},
   watch: {
+    // 监听表格高度
+    tableHeight(val) {
+      if (!this.timer) {
+        this.tableHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
+      }
+    },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
-      this.parentMsg = this.$t('permission.importSerial')
-      this.content1 = this.$t('permission.serialNo')
-      this.content2 = this.$t('permission.serialName')
-      this.content3 = this.$t('permission.inclusionProhibition')
-      this.content4 = this.$t('permission.serialIdentification')
-      this.content5 = this.$t('permission.serialCode')
-      this.content6 = this.$t('permission.serialDescriptions')
+      // this.content1 = this.$t('permission.userName')
+      // this.content2 = this.$t('permission.fullName')
+      // this.content3 = this.$t('permission.containInfo')
+      // this.content4 = this.$t('permission.company')
+      // this.content5 = this.$t('permission.department')
+      // this.content6 = this.$t('permission.password')
+      // this.content7 = this.$t('permission.passwords')
+      // this.content8 = this.$t('permission.roleUser')
+      // this.content9 = this.$t('permission.description')
       this.setFormRules()
     }
   },
   created() {
+    // 监听表格高度
+    const that = this
+    window.onresize = () => {
+      return (() => {
+        that.tableHeight = window.innerHeight - fixHeight
+      })()
+    }
     // Mock: get all routes and roles list from server
     this.getList()
     this.setFormRules()
   },
+  mounted() {},
   methods: {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        serialName: [
-          {
-            required: true,
-            message: this.$t('permission.serialNameInfo'),
-            trigger: 'blur'
-          }
-        ]
+        Name: [{ required: true, message: '请输入工序名称', trigger: 'blur' }],
+        IsBackFlush: [{ required: true, message: '请选择倒扣账标识', trigger: 'change' }]
       }
     },
     // 禁用，启用权限
-    handleBan(scope, status) {
-      this.$message({
-        message: status + '成功',
-        type: 'success'
+    handleBan(row) {
+      debugger
+      let status, statusTitle
+      if (row.Status === true) {
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
+      } else {
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
+      }
+      this.$confirm(statusTitle, status, {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          Status: (row.Status = row.Status !== true),
+          ProcessCode: row.ProcessCode
+        }
+        BaseProStatus(params).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              type: 'success',
+              message: res.MSG
+            })
+            this.getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.MSG
+            })
+          }
+        })
       })
-      scope.row.status = status
     },
 
     // 查询
     handleSearch() {
-      this.form.page = 1
+      this.pagination.PageIndex = 1
       this.getList()
     },
-    // 选择框
-    tableKey() {},
-    // 导出用户
-    handleExport() {
-      if (this.rolesList.length) {
-        import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = [
-            this.$t('permission.serialNo'),
-            this.$t('permission.serialName'),
-            this.$t('permission.title'),
-            this.$t('permission.department'),
-            this.$t('permission.company'),
-            this.$t('permission.description'),
-            this.$t('permission.state'),
-            this.$t('permission.user'),
-            this.$t('permission.time')
-          ]
-          const filterVal = ['serialNo', 'name', 'title', 'department', 'company', 'description', 'state', 'user', 'time']
-          const list = this.rolesList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data
-          })
-        })
-      } else {
-        this.$message({
-          message: 'Please select at least one item',
-          type: 'warning'
-        })
-      }
-    },
-    // 导出用户
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
-    },
-    // 导入
-    beforeUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
-      if (isLt1M) {
-        return true
-      }
-      this.$message({
-        message: 'Please do not upload files larger than 1m in size.',
-        type: 'warning'
-      })
-      return false
-    },
-    handleSuccess({ results, header }) {
-      this.tableData = results
-      this.tableHeader = header
-    },
-    // 获取列表
     getList() {
-      this.listLoading = false
-      // fetchList(this.listQuery).then(response => {
-      //   this.list = response.data.items
-      //   this.total = response.data.total
-      //   // Just to simulate the time of the request
-      //   setTimeout(() => {
-      //     this.listLoading = false
-      //   }, 1.5 * 1000)
-      // })
+      this.listLoading = true
+      BaseProList(this.pagination).then(res => {
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
@@ -321,84 +281,96 @@ export default {
     },
 
     // 增加角色
-    handleAdd() {
+    handleAddUser() {
       this.dialogType = 'new'
-      this.dialogVisible = true
+      this.dialogFormVisible = true
+      this.ruleForm = {}
     },
     // 编辑角色
-    handleEdit(scope) {
+    handleEdit(row) {
       this.dialogType = 'edit'
-      this.dialogVisible = true
-
-      this.$nextTick(() => {
-        // set checked state of a node not affects its father and child nodess
-      })
+      this.dialogFormVisible = true
+      this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 查看用户
-    handleLook() {
-      this.$router.push('../SystemManagement/lookUser')
-    },
     // 删除角色
-    handleDelete({ $index, row }) {
+    handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
         cancelButtonText: this.$t('permission.Cancel'),
         type: 'warning'
       })
-        .then(async() => {
-          await deleteRole(row.key)
-          this.rolesList.splice($index, 1)
-          this.$message({
-            type: 'success',
-            message: 'Delete succed!'
+        .then(() => {
+          BaseProDelete({ ProcessCode: row.ProcessCode }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: this.$t('table.deleteSuccess')
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
           })
         })
-        .catch(err => {
-          console.error(err)
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: this.$t('table.deleteError')
+          })
         })
     },
 
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
-      if (isEdit) {
-        debugger
-      } else {
-        debugger
-      }
-
-      // const { description, key, name } = this.role
-      this.dialogVisible = false
-      if (this.role.serialNo === '') {
-        this.$notify({
-          title: 'warning',
-          dangerouslyUseHTMLString: true,
-          message: this.$t('permission.noInfo'),
-          type: 'warning'
-        })
-        return
-      } else {
-        this.$notify({
-          title: 'Success',
-          dangerouslyUseHTMLString: true,
-          // message: `
-          //     <div>Role Key: ${key}</div>
-          //     <div>Role Name: ${name}</div>
-          //     <div>Description: ${description}</div>
-          //   `,
-          message: this.$t('permission.success'),
-          type: 'success'
-        })
-      }
+    // 编辑成功
+    submitForm(formName) {
+      this.editLoading = true
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if (this.dialogType === 'edit') {
+            BaseProModify(this.ruleForm).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.editSuc')
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
+              }
+            })
+          } else {
+            BaseProAdd(this.ruleForm).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.addSuc')
+                })
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+            })
+            this.editLoading = false
+            this.dialogFormVisible = false
+          }
+        } else {
+          this.editLoading = false
+          this.$message({
+            type: 'error',
+            message: '必填项不能为空'
+          })
+          return false
+        }
+      })
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-::v-deep .el-form-item__label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-</style>
+<style lang="scss" scoped></style>

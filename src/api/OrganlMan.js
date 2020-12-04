@@ -456,7 +456,95 @@ export function bomDetailDelete(data) {
   })
 }
 
-// 工艺路线列表--分页
+// 工艺路线列表 --分页
+export function baseRouteList(data) {
+  return request({
+    url: newUrl + '/api/BaseRoute/List',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线列表 --新增
+export function baseRouteAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseRoute/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线列表 --修改
+export function baseRouteModify(data) {
+  return request({
+    url: newUrl + '/api/BaseRoute/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线列表 --删除
+export function baseRouteDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseRoute/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线列表 --复制
+export function baseRouteCopy(data) {
+  return request({
+    url: newUrl + '/api/BaseRoute/Copy',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线列表 --状态
+export function baseRouteStatus(data) {
+  return request({
+    url: newUrl + '/api/BaseRoute/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线明细列表 --分页
+export function baseDetailList(data) {
+  return request({
+    url: newUrl + '/api/BaseRouteDetail/List',
+    method: 'post',
+    data
+  })
+}
+
+// 工艺路线明细 --新增
+export function baseDetailAdd(data) {
+  return request({
+    url: newUrl + '/api/BaseRouteDetail/Add',
+    method: 'post',
+    data
+  })
+}
+// 工艺路线明细 --修改
+export function baseDetailModify(data) {
+  return request({
+    url: newUrl + '/api/BaseRouteDetail/Modify',
+    method: 'post',
+    data
+  })
+}
+// 工艺路线明细 --删除
+export function baseDetailDelete(data) {
+  return request({
+    url: newUrl + '/api/BaseRouteDetail/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 工序列表--分页
 export function lineList(data) {
   return request({
     url: newUrl + '/api/Route/List',
@@ -465,7 +553,7 @@ export function lineList(data) {
   })
 }
 
-// 工艺路线列表--分页
+// 工序列表--分页
 export function BaseProList(data) {
   return request({
     url: newUrl + '/api/BaseProcess/List',
@@ -474,7 +562,7 @@ export function BaseProList(data) {
   })
 }
 
-// 工艺路线列表--分页
+// 工序列表--分页
 export function BaseProAdd(data) {
   return request({
     url: newUrl + '/api/BaseProcess/Add',
@@ -483,7 +571,7 @@ export function BaseProAdd(data) {
   })
 }
 
-// 工艺路线列表--删除
+// 工序列表--删除
 export function BaseProDelete(data) {
   return request({
     url: newUrl + '/api/BaseProcess/Delete',
@@ -491,7 +579,7 @@ export function BaseProDelete(data) {
     data
   })
 }
-// 工艺路线列表--修改
+// 工序列表--修改
 export function BaseProModify(data) {
   return request({
     url: newUrl + '/api/BaseProcess/Modify',
@@ -500,7 +588,7 @@ export function BaseProModify(data) {
   })
 }
 
-// 工艺路线列表--状态
+// 工序列表--状态
 export function BaseProStatus(data) {
   return request({
     url: newUrl + '/api/BaseProcess/ModifyStatus',
