@@ -265,7 +265,7 @@ export default {
     // 查看工艺路线
     handleLook(row) {
       this.$router.push({
-        path: '/BasicData/ProductMmanagement/BomMangementDetaile',
+        path: '/BasicData/ProductMmanagement/RouteMaintenanceDetaile',
         query: {
           ProcessRouteCode: row.ProcessRouteCode
         }

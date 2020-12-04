@@ -4,16 +4,9 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工艺路线名称" placement="top-start"><label class="radio-label">工艺路线名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工艺路线名称" /></el-col>
-        </el-col>
-        <el-col :span="4">
-          <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态BOM" placement="top-start">
-              <el-checkbox v-model="pagination.Status">包含禁状态BOM</el-checkbox>
-            </el-tooltip>
-          </el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工序名称" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -22,9 +15,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增工艺路线</el-button>
-    </div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增工序</el-button></div>
     <el-table
       v-loading="listLoading"
       :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
@@ -37,70 +28,66 @@
       highlight-current-row
     >
       >
-      <el-table-column align="center" label="工艺路路线名称" width="200">
+      <el-table-column align="center" label="工序代码" width="200">
         <template slot-scope="scope">
-          {{ scope.row.Name }}
+          {{ scope.row.ProcessCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="版本" width="200">
+      <el-table-column align="center" label="工序名称" width="200">
         <template slot-scope="scope">
-          {{ scope.row.Version }}
+          {{ scope.row.ProcessName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述">
+      <el-table-column align="center" label="是否检验">
+        <template slot-scope="scope">
+          {{ scope.row.IsChecked }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="检验方式">
+        <template slot-scope="scope">
+          {{ scope.row.CheckedTypeText }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="是否必过">
+        <template slot-scope="scope">
+          {{ scope.row.IsMustPass }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="是否打印">
+        <template slot-scope="scope">
+          {{ scope.row.IsPrint }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="顺序">
+        <template slot-scope="scope">
+          {{ scope.row.OrderNum }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间">
-        <template slot-scope="scope">
-          {{ scope.row.EffectiveDate | substringTime }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="状态" width="150">
-        <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护者" width="200">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyUserName }}
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" label="维护时间" width="200">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime | substringTime }}
+          {{ scope.row.ModifyTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="工艺明细" placement="top-start">
-            <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="handleLook(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="编辑工艺" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑工序" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="复制工艺" placement="top-start">
-            <el-button type="success" size="small" icon="el-icon-star-on" plain @click="handleCopy(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="禁用工艺" placement="top-start">
-            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="启用工艺" placement="top-start">
-            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="删除工艺" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除工序" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -109,13 +96,34 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工艺路线' : '新增工艺路线'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工序' : '新增工序'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
+        <el-form-item label="工序代码" prop="WorkingProcedureCode"><el-input v-model="ruleForm.WorkingProcedureCode" placeholder="工序代码" @focus="workingBox" /></el-form-item>
 
-        <el-form-item label="工艺路线名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工艺路线名称" /></el-form-item>
-        <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" /></el-form-item>
+        <el-form-item label="工序名称" prop="WorkingProcedureName"><el-input v-model="ruleForm.WorkingProcedureName" placeholder="工序名称" :disabled="true" /></el-form-item>
 
-        <el-form-item label="生效时间"><el-date-picker v-model="ruleForm.EffectiveDate" format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" /></el-form-item>
+        <el-form-item label="是否检验">
+          <el-radio v-model="ruleForm.IsChecked" :label="true">是</el-radio>
+          <el-radio v-model="ruleForm.IsChecked" :label="false">否</el-radio>
+        </el-form-item>
+
+        <el-form-item label="检验方式">
+          <el-radio-group v-model="ruleForm.CheckedType" @change="changeRadio">
+            <el-radio v-for="item in checkData" :key="item.value" :label="item.value" :value="item.value">{{ item.text }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="是否必过">
+          <el-radio v-model="ruleForm.IsMustPass" :label="true">是</el-radio>
+          <el-radio v-model="ruleForm.IsMustPass" :label="false">否</el-radio>
+        </el-form-item>
+
+        <el-form-item label="是否打印">
+          <el-radio v-model="ruleForm.IsPrint" :label="true">是</el-radio>
+          <el-radio v-model="ruleForm.IsPrint" :label="false">否</el-radio>
+        </el-form-item>
+
+        <el-form-item label="顺序"><el-input v-model="ruleForm.OrderNum" placeholder="顺序" /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
@@ -125,19 +133,32 @@
       </div>
     </el-dialog>
 
-  </div></template>
+    <!-- 工序对应弹窗 -->
+    <working-name
+      :working-show="workingFormVisible"
+      :working-box-loading="workingBoxLoading"
+      :table-box-height="tableBoxHeight"
+      :working-data="workingData"
+      :pagination-search-workingl="paginationSearchWorking"
+      @workingClose="workingClose"
+      @workingClick="workingClick"
+      @handleSearchWorking="handleSearchWorking"
+    />
+  </div>
+</template>
 
 <script>
 import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { baseDetailList, baseDetailAdd, baseDetailDelete, baseDetailModify } from '@/api/OrganlMan'
+import { baseDetailList, baseDetailAdd, baseDetailDelete, baseDetailModify, GetDictionary, BaseProList } from '@/api/OrganlMan'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import WorkingName from '@/components/WorkingName' // 工序名称
 const fixHeight = 270
 const fixHeightBox = 350
 export default {
   name: 'BomMangement',
-  components: { Pagination },
+  components: { Pagination, WorkingName },
   data() {
     return {
       tableData: [],
@@ -145,19 +166,33 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
+        ProcessRouteCode: this.$route.query.ProcessRouteCode,
         Name: undefined,
         Status: false
+      },
+      // 工序搜索条件
+      paginationSearchWorking: {
+        PageIndex: 1,
+        PageSize: 20,
+        WorkingProcedureNum: undefined,
+        Name: undefined
       },
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
+      checkVal: null, // 选择检验方式
+      checkData: [], // 新增编辑弹窗检验方式radio
+      workingData: [], // 工序数组
+      workingCode: null, // 工序的code值
       dialogFormVisible: false, // 编辑弹出框
+      workingBoxLoading: false, // 工序搜索loading
+      workingFormVisible: false, // input工序名称弹窗
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
       rules: {
-        Name: [{ required: true, message: '请输入工艺路线', trigger: 'blur' }],
-        Version: [{ required: true, message: '请输入版本', trigger: 'blur' }]
+        WorkingProcedureCode: [{ required: true, message: '请输入工艺路线', trigger: 'change' }],
+        WorkingProcedureName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -215,6 +250,12 @@ export default {
         that.tableHeight = window.innerHeight - fixHeight
       })()
     }
+    // 新增检验方式radio
+    GetDictionary({ code: '0019' }).then(res => {
+      if (res.IsPass === true) {
+        this.checkData = res.Obj
+      }
+    })
     this.getList()
     this.setFormRules()
   },
@@ -222,22 +263,17 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        Name: [{ required: true, message: '请输入工艺路线', trigger: 'blur' }],
-        Version: [{ required: true, message: '请输入版本', trigger: 'blur' }]
+        WorkingProcedureCode: [{ required: true, message: '请输入工艺路线', trigger: 'change' }],
+        WorkingProcedureName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
       }
     },
 
-    // 查看工艺路线
-    handleLook(row) {
-      this.$router.push({
-        path: '/BasicData/ProductMmanagement/BomMangementDetaile',
-        query: {
-          BomCode: row.BomCode,
-          ProcessRouteCode: row.ProcessRouteCode,
-          ProductCode: row.ProductCode
-        }
-      })
+    // 选择检验方式
+    changeRadio(val) {
+      debugger
+      this.checkVal = val
     },
+
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
@@ -285,7 +321,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          baseDetailDelete({ ProcessRouteCode: row.ProcessRouteCode }).then(res => {
+          baseDetailDelete({ ProcessRouteDetailCode: row.ProcessRouteDetailCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -315,6 +351,9 @@ export default {
         if (valid) {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
+            params.ProcessRouteCode = this.$route.query.ProcessRouteCode
+            params.WorkingProcedureCode = this.workingCode
+            params.CheckedType = this.checkVal
             baseDetailModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -335,6 +374,9 @@ export default {
             })
           } else {
             const params = this.ruleForm
+            params.ProcessRouteCode = this.$route.query.ProcessRouteCode
+            params.WorkingProcedureCode = this.workingCode
+            params.CheckedType = this.checkVal
             baseDetailAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -361,6 +403,34 @@ export default {
           return false
         }
       })
+    },
+
+    // 工序聚焦事件原料弹窗
+    workingBox() {
+      this.workingFormVisible = true
+      this.workingBoxLoading = true
+      BaseProList(this.paginationSearchWorking).then(res => {
+        if (res.IsPass === true) {
+          this.workingData = res.Obj
+          this.workingBoxLoading = false
+        }
+      })
+    },
+    // 工序弹窗搜索
+    handleSearchWorking() {
+      this.paginationSearchWorking.PageIndex = 1
+      this.workingBox()
+    },
+    // 增加工序名称双击事件获取当前行的值
+    workingClick(row) {
+      this.ruleForm.WorkingProcedureCode = row.ProcessCode
+      this.ruleForm.WorkingProcedureName = row.Name
+      this.workingCode = row.ProcessCode
+      this.workingFormVisible = false
+    },
+    // 关闭工序名称查询弹窗
+    workingClose() {
+      this.workingFormVisible = false
     }
   }
 }

@@ -117,7 +117,7 @@
       :working-box-loading="workingBoxLoading"
       :table-box-height="tableBoxHeight"
       :working-data="workingData"
-      :pagination-search-workingl="paginationSearchWorking"
+      :pagination-search-working="paginationSearchWorking"
       @workingClose="workingClose"
       @workingClick="workingClick"
       @handleSearchWorking="handleSearchWorking"
@@ -152,7 +152,7 @@ export default {
   components: { Pagination, WorkingName, MaterialName },
   data() {
     return {
-      materialActiveIndex:1,
+      materialActiveIndex: 1,
       tableData: [],
       ruleForm: {}, // 编辑弹窗
       pagination: {
@@ -178,7 +178,6 @@ export default {
         PageIndex: 1,
         PageSize: 20,
         ProcessRouteCode: this.$route.query.ProcessRouteCode,
-        // RouteCode: 'RT00000001',
         RouteCode: this.$route.query.ProcessRouteCode,
         Status: true,
         WorkingProcedureNum: undefined,
@@ -189,7 +188,7 @@ export default {
       materialBoxLoading: false, // 产品名称loading
       workingBoxLoading: false, // 工序搜索loading
       materialFormVisible: false, // input产品名称弹窗
-      workingFormVisible: false, // input产品名称弹窗
+      workingFormVisible: false, // input工序名称弹窗
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
@@ -412,7 +411,7 @@ export default {
 
     // 原料聚焦事件原料弹窗
     materialBox(index) {
-      this.materialActiveIndex = index;
+      this.materialActiveIndex = index
       this.materialFormVisible = true
       this.materialBoxLoading = true
       MaterialList(this.paginationSearchMaterial).then(res => {
@@ -429,10 +428,10 @@ export default {
     },
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
-      if(this.materialActiveIndex === 1){
+      if (this.materialActiveIndex === 1) {
         this.ruleForm.MaterialName = row.Name
-         this.materialCode = row.MaterialCode
-      }else{
+        this.materialCode = row.MaterialCode
+      } else {
         this.ruleForm.SubMaterialName = row.Name
         this.SubMaterialCode = row.MaterialCode
       }
@@ -460,7 +459,6 @@ export default {
       this.workingFormVisible = true
       this.workingBoxLoading = true
       GetByRouteList(this.paginationSearchWorking).then(res => {
-        debugger
         if (res.IsPass === true) {
           this.workingData = res.Obj
           this.workingBoxLoading = false
@@ -474,7 +472,6 @@ export default {
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
-      debugger
       this.ruleForm.WorkingProcedureName = row.Name
       this.workingCode = row.ProcessCode
       this.workingFormVisible = false
