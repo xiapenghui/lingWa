@@ -115,7 +115,7 @@
         <el-form-item label="工艺路线名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工艺路线名称" /></el-form-item>
         <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" /></el-form-item>
 
-        <el-form-item label="生效时间"><el-date-picker v-model="ruleForm.EffectiveDate" format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" /></el-form-item>
+        <el-form-item label="生效时间"><el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>

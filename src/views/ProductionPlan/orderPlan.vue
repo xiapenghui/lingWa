@@ -43,7 +43,7 @@
         <el-col :span="3">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-    
+
           </el-col>
         </el-col>
         <el-col :span="1">
@@ -328,7 +328,7 @@
             </el-form-item>
 
             <el-form-item label="计划结束日期">
-              <el-date-picker v-model="ruleForm.PlanEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" />
+              <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" />
             </el-form-item>
 
             <el-form-item label="备注"><el-input v-model="ruleForm.Description" type="textarea" /></el-form-item>
@@ -342,29 +342,29 @@
       </div>
     </el-dialog>
 
-   <!-- 成品名称对应弹窗 -->
-   <FinshName
-     :fish-show="finshFormVisible"
-     :list-box-loading="listBoxLoading"
-     :table-box-height="tableBoxHeight"
-     :finsh-data="finshData"
-     :pagination-search="paginationSearch"
-     @fishClose="fishClose"
-     @fishClick="fishClick"
-     @handleSearchBox="handleSearchBox"
-   />
-   
-   <!-- 新增加页面客户名称聚焦弹窗 -->
-   <CustomerName
-     :user-show="userFormVisible"
-     :user-box-loading="userBoxLoading"
-     :table-box-height="tableBoxHeight"
-     :user-data="userData"
-     :pagination-user="paginationUser"
-     @userClose="userClose"
-     @userClick="userClick"
-     @handleUserBox="handleUserBox"
-   />
+    <!-- 成品名称对应弹窗 -->
+    <FinshName
+      :fish-show="finshFormVisible"
+      :list-box-loading="listBoxLoading"
+      :table-box-height="tableBoxHeight"
+      :finsh-data="finshData"
+      :pagination-search="paginationSearch"
+      @fishClose="fishClose"
+      @fishClick="fishClick"
+      @handleSearchBox="handleSearchBox"
+    />
+
+    <!-- 新增加页面客户名称聚焦弹窗 -->
+    <CustomerName
+      :user-show="userFormVisible"
+      :user-box-loading="userBoxLoading"
+      :table-box-height="tableBoxHeight"
+      :user-data="userData"
+      :pagination-user="paginationUser"
+      @userClose="userClose"
+      @userClick="userClick"
+      @handleUserBox="handleUserBox"
+    />
 
     <!-- BOM弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="bomFormVisible" title=" BOM弹窗" width="70%" height="50%">
@@ -515,14 +515,14 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary, GetMaterialList, GetCustomerList, orderModify, GetLine } from '@/api/OrganlMan'
 import { orderList, orderDelete, orderFreeze, orderStatus, orderAdd } from '@/api/OrganlMan'
-import FinshName from '@/components/FinshName'; //成品名称弹窗
-import CustomerName from '@/components/CustomerName'; //客户名称弹窗
+import FinshName from '@/components/FinshName' // 成品名称弹窗
+import CustomerName from '@/components/CustomerName' // 客户名称弹窗
 const fixHeight = 270
 const fixHeightBox = 350
 
 export default {
   name: 'CompanyMaintenance',
-  components: { Pagination,FinshName, CustomerName },
+  components: { Pagination, FinshName, CustomerName },
   data() {
     return {
       tableData: [],
@@ -539,8 +539,6 @@ export default {
       isGive: [], // 弹窗计划类型radio数组
       PriorityList: [], // 优先级下拉列表
       ProductList: [], // 计划投入产线
-      finshCode: null, // 成品名称code值
-      userCode: null, // 客户名称code值
       typeCode: null, // 计划类型code值
       pagination: {
         PageIndex: 1,
@@ -672,6 +670,7 @@ export default {
 
     // 工单类型下拉
     GetDictionary({ code: '0008' }).then(res => {
+      debugger
       if (res.IsPass === true) {
         this.PlanTypeNameData = res.Obj
         this.isGive = res.Obj
@@ -794,8 +793,6 @@ export default {
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditOrder')) {
             const params = this.ruleForm
-            params.ProductCode = this.finshCode
-            params.CustomerCode = this.userCode
             orderModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -816,11 +813,8 @@ export default {
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addOrder')) {
             const params = this.ruleForm
-            params.ProductCode = this.finshCode
-            params.CustomerCode = this.userCode
             params.PlanType = this.typeCode
             orderAdd(params).then(res => {
-              debugger
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -1082,12 +1076,12 @@ export default {
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
       this.ruleForm.ProductName = row.Name
-      this.finshCode = row.MaterialCode
+      this.ruleForm.ProductCode = row.MaterialCode
       this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗
     fishClose() {
-      this.finshFormVisible = false;
+      this.finshFormVisible = false
     },
     // 聚焦事件客户弹窗
     userBox() {
@@ -1107,13 +1101,13 @@ export default {
     // 增加客户名称双击事件获取当前行的值
     userClick(row) {
       this.ruleForm.CustomerName = row.FullName
-      this.userCode = row.CustomerCode
+      this.ruleForm.CustomerCode = row.CustomerCode
       this.userFormVisible = false
     },
     // 关闭客户名称查询弹窗
     userClose() {
-      this.userFormVisible = false;
-    },
+      this.userFormVisible = false
+    }
   }
 }
 </script>

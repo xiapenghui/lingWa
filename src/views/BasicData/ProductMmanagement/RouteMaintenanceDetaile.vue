@@ -41,7 +41,7 @@
 
       <el-table-column align="center" label="是否检验">
         <template slot-scope="scope">
-          {{ scope.row.IsChecked }}
+          <el-tag :style="{ color: scope.row.IsChecked === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsChecked === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -53,13 +53,13 @@
 
       <el-table-column align="center" label="是否必过">
         <template slot-scope="scope">
-          {{ scope.row.IsMustPass }}
+          <el-tag :style="{ color: scope.row.IsMustPass === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsMustPass === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="是否打印">
         <template slot-scope="scope">
-          {{ scope.row.IsPrint }}
+          <el-tag :style="{ color: scope.row.IsPrint === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsPrint === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -98,9 +98,9 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工序' : '新增工序'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工序代码" prop="WorkingProcedureCode"><el-input v-model="ruleForm.WorkingProcedureCode" placeholder="工序代码" @focus="workingBox" /></el-form-item>
+        <el-form-item label="工序代码" prop="ProcessCode"><el-input v-model="ruleForm.ProcessCode" placeholder="工序代码" @focus="workingBox" /></el-form-item>
 
-        <el-form-item label="工序名称" prop="WorkingProcedureName"><el-input v-model="ruleForm.WorkingProcedureName" placeholder="工序名称" :disabled="true" /></el-form-item>
+        <el-form-item label="工序名称" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="工序名称" :disabled="true" /></el-form-item>
 
         <el-form-item label="是否检验">
           <el-radio v-model="ruleForm.IsChecked" :label="true">是</el-radio>
@@ -108,8 +108,8 @@
         </el-form-item>
 
         <el-form-item label="检验方式">
-          <el-radio-group v-model="ruleForm.CheckedType" @change="changeRadio">
-            <el-radio v-for="item in checkData" :key="item.value" :label="item.value" :value="item.value">{{ item.text }}</el-radio>
+          <el-radio-group v-model="ruleForm.CheckedType">
+            <el-radio v-for="item in checkData" :key="item.value" :label="item.value" :value="item.value" @change="changeRadio">{{ item.text }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -183,7 +183,7 @@ export default {
       checkVal: null, // 选择检验方式
       checkData: [], // 新增编辑弹窗检验方式radio
       workingData: [], // 工序数组
-      workingCode: null, // 工序的code值
+      // workingCode: null, // 工序的code值
       dialogFormVisible: false, // 编辑弹出框
       workingBoxLoading: false, // 工序搜索loading
       workingFormVisible: false, // input工序名称弹窗
@@ -191,8 +191,8 @@ export default {
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
       rules: {
-        WorkingProcedureCode: [{ required: true, message: '请输入工艺路线', trigger: 'change' }],
-        WorkingProcedureName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
+        ProcessCode: [{ required: true, message: '请输入工艺路线', trigger: 'change' }],
+        ProcessName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -252,6 +252,7 @@ export default {
     }
     // 新增检验方式radio
     GetDictionary({ code: '0019' }).then(res => {
+      debugger
       if (res.IsPass === true) {
         this.checkData = res.Obj
       }
@@ -263,8 +264,8 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        WorkingProcedureCode: [{ required: true, message: '请输入工艺路线', trigger: 'change' }],
-        WorkingProcedureName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
+        ProcessCode: [{ required: true, message: '请输入工艺路线', trigger: 'change' }],
+        ProcessName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
       }
     },
 
@@ -308,6 +309,7 @@ export default {
     },
     // 编辑工艺路线
     handleEdit(row) {
+      debugger
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
@@ -352,8 +354,7 @@ export default {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-            params.WorkingProcedureCode = this.workingCode
-            params.CheckedType = this.checkVal
+            // params.CheckedType = this.checkVal
             baseDetailModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -375,7 +376,6 @@ export default {
           } else {
             const params = this.ruleForm
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-            params.WorkingProcedureCode = this.workingCode
             params.CheckedType = this.checkVal
             baseDetailAdd(params).then(res => {
               if (res.IsPass === true) {
@@ -423,9 +423,10 @@ export default {
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
+      debugger
+      this.ruleForm.ProcessCode = row.ProcessCode
+      this.ruleForm.ProcessName = row.Name
       this.ruleForm.WorkingProcedureCode = row.ProcessCode
-      this.ruleForm.WorkingProcedureName = row.Name
-      this.workingCode = row.ProcessCode
       this.workingFormVisible = false
     },
     // 关闭工序名称查询弹窗

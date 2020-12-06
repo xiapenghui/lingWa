@@ -124,10 +124,11 @@
 
         <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
-        <el-form-item label="生效时间"><el-date-picker v-model="ruleForm.ModifyTime" format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" /></el-form-item>
+        <el-form-item label="生效时间">
+          <!-- <el-date-picker v-model="ruleForm.ModifyTime" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" /></el-form-item>s -->
 
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
-      </el-form>
+          <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
+        </el-form-item></el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
@@ -164,7 +165,7 @@
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, lineList, bomCopy } from '@/api/OrganlMan'
+import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, baseRouteList, bomCopy } from '@/api/OrganlMan'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import FinshName from '@/components/FinshName' // 成品名称
 import LineName from '@/components/LineName' // 工艺路线名称
@@ -211,8 +212,8 @@ export default {
       dialogType: 'new',
       lineData: [], // 工艺路线数组
       finshData: [], // 成品编号
-      finshCode: null, // 成品名称code值
-      lineCode: null, // 工艺路线的code值
+      // finshCode: null, // 成品名称code值
+      // lineCode: null, // 工艺路线的code值
       rules: {
         ProductNum: [{ required: true, message: '请输入成品编码', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入BOM版本', trigger: 'blur' }],
@@ -442,8 +443,8 @@ export default {
         if (valid) {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
-            params.ProductCode = this.finshCode
-            params.ProcessRouteCode = this.lineCode
+            // params.ProductCode = this.finshCode
+            // params.ProcessRouteCode = this.lineCode
             bomModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -464,8 +465,8 @@ export default {
             })
           } else {
             const params = this.ruleForm
-            params.ProductCode = this.finshCode
-            params.ProcessRouteCode = this.lineCode
+            // params.ProductCode = this.finshCode
+            // params.ProcessRouteCode = this.lineCode
             bomAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -512,11 +513,9 @@ export default {
     },
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
-      console.log('row', row)
-      console.log(123)
       this.ruleForm.ProductNum = row.MaterialNum
       this.ruleForm.ProductName = row.Name
-      this.finshCode = row.MaterialCode
+      this.ruleForm.ProductCode = row.MaterialCode
       this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗
@@ -528,7 +527,7 @@ export default {
     lineBox() {
       this.lineFormVisible = true
       this.lineLoading = true
-      lineList(this.paginationSearchLine).then(res => {
+      baseRouteList(this.paginationSearchLine).then(res => {
         if (res.IsPass === true) {
           this.lineData = res.Obj
           this.lineLoading = false
@@ -543,7 +542,7 @@ export default {
     // 增加工艺路线双击事件获取当前行的值
     lineClick(row) {
       this.ruleForm.ProcessRouteName = row.Name
-      this.lineCode = row.ProcessRouteCode
+      this.ruleForm.ProcessRouteCode = row.ProcessRouteCode
       this.lineFormVisible = false
     },
     // 关闭工艺路线查询弹窗

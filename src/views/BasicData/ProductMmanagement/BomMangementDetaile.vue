@@ -197,9 +197,9 @@ export default {
       dialogType: 'new',
       materialData: [], // 原料数组
       workingData: [], // 工序数组
-      materialCode: null, // 成品名称code值
-      workingCode: null, // 工序的code值
-      SubMaterialCode: null, // 替换物料code值
+      // materialCode: null, // 成品名称code值
+      // workingCode: null, // 工序的code值
+      // SubMaterialCode: null, // 替换物料code值
       rules: {
         WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'change' }],
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'change' }],
@@ -353,11 +353,12 @@ export default {
             const params = this.ruleForm
             params.BomCode = this.$route.query.BomCode
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-            params.WorkingProcedureCode = this.workingCode
-            params.MaterialCode = this.materialCode
-            params.SubMaterialCode = this.SubMaterialCode
+            // params.WorkingProcedureCode = this.workingCode
+            // params.MaterialCode = this.materialCode
+            // params.SubMaterialCode = this.SubMaterialCode
             bomDetailModify(params).then(res => {
               if (res.IsPass === true) {
+                debugger
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
@@ -378,9 +379,9 @@ export default {
             const params = this.ruleForm
             params.BomCode = this.$route.query.BomCode
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-            params.WorkingProcedureCode = this.workingCode
-            params.MaterialCode = this.materialCode
-            params.SubMaterialCode = this.SubMaterialCode
+            // params.WorkingProcedureCode = this.workingCode
+            // params.MaterialCode = this.materialCode
+            // params.SubMaterialCode = this.SubMaterialCode
             bomDetailAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -430,10 +431,10 @@ export default {
     materialClick(row) {
       if (this.materialActiveIndex === 1) {
         this.ruleForm.MaterialName = row.Name
-        this.materialCode = row.MaterialCode
+        this.ruleForm.materialCode = row.MaterialCode
       } else {
         this.ruleForm.SubMaterialName = row.Name
-        this.SubMaterialCode = row.MaterialCode
+        this.ruleForm.SubMaterialCode = row.MaterialCode
       }
       this.materialFormVisible = false
     },
@@ -473,7 +474,7 @@ export default {
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
       this.ruleForm.WorkingProcedureName = row.Name
-      this.workingCode = row.ProcessCode
+      this.ruleForm.WorkingProcedureCode = row.ProcessCode
       this.workingFormVisible = false
     },
     // 关闭工序名称查询弹窗

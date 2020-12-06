@@ -307,7 +307,7 @@
             <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" /></el-form-item>
 
             <el-form-item :label="$t('permission.PlanStartDate')" prop="PlanStartDate" :rules="[{ required: isAlarmItem, message: '请输入计划开始日期', trigger: 'blur' }]">
-              <el-date-picker v-model="ruleForm.PlanStartDate" format="yyyy-MM-dd" type="date" placeholder="选择日期" />
+              <el-date-picker v-model="ruleForm.PlanStartDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
           </div>
           <div class="boxRight">
@@ -336,11 +336,11 @@
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
-              <el-date-picker v-model="ruleForm.PlanDeliveryDate" format="yyyy-MM-dd" placeholder="选择日期" />
+              <el-date-picker v-model="ruleForm.PlanDeliveryDate" value-format="yyyy-MM-dd" placeholder="选择日期" />
             </el-form-item>
 
             <el-form-item :label="$t('permission.PlanEndDate')" prop="PlanEndDate" :rules="[{ required: isAlarmItem, message: '请输入计划完成日期', trigger: 'blur' }]">
-              <el-date-picker v-model="ruleForm.PlanEndDate" format="yyyy-MM-dd" type="date" placeholder="选择日期" />
+              <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
           </div>
         </div>
@@ -702,8 +702,6 @@ export default {
       isGive: [], // 弹窗计划类型radio数组
       PriorityList: [], // 优先级下拉列表
       ProductList: [], // 计划投入产线
-      finshCode: null, // 成品名称code值
-      userCode: null, // 客户名称code值
       typeCode: null, // 计划类型code值
       pagination: {
         PageIndex: 1,
@@ -980,8 +978,6 @@ export default {
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditProduction')) {
             const params = this.ruleForm
-            params.ProductCode = this.finshCode
-            params.CustomerCode = this.userCode
             productionUpdate(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -1002,8 +998,6 @@ export default {
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
             const params = this.ruleForm
-            params.ProductCode = this.finshCode
-            params.CustomerCode = this.userCode
             params.PlanType = this.typeCode
             productionAdd(params).then(res => {
               if (res.IsPass === true) {
@@ -1259,7 +1253,7 @@ export default {
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
       this.ruleForm.ProductName = row.Name
-      this.finshCode = row.MaterialCode
+      this.ruleForm.ProductCode = row.MaterialCode
       this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗
@@ -1284,7 +1278,7 @@ export default {
     // 增加客户名称双击事件获取当前行的值
     userClick(row) {
       this.ruleForm.CustomerName = row.FullName
-      this.userCode = row.CustomerCode
+      this.ruleForm.CustomerCode = row.CustomerCode
       this.userFormVisible = false
     },
     // 关闭客户名称查询弹窗
@@ -1294,4 +1288,3 @@ export default {
   }
 }
 </script>
-

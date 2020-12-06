@@ -167,7 +167,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, lineList } from '@/api/OrganlMan'
+import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, baseRouteList } from '@/api/OrganlMan'
 import LineName from '@/components/LineName' // 工艺路线弹
 const fixHeight = 270
 const fixHeightBox = 350
@@ -193,7 +193,7 @@ export default {
         PageSize: 10
       },
       lineData: [], // 工艺路线弹窗
-      lineCode: null, // 工艺路线code
+      // lineCode: null, // 工艺路线code
       listLoading: false,
       lineLoading: false, // 新增工艺路线搜索loading
       lineFormVisible: false, // 新增工艺路线弹窗
@@ -408,7 +408,7 @@ export default {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            params.RouteCode = this.lineCode
+            // params.RouteCode = this.lineCode
             MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -423,7 +423,7 @@ export default {
           } else {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            params.RouteCode = this.lineCode
+            // params.RouteCode = this.lineCode
             MaterialAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -456,7 +456,7 @@ export default {
     lineBox() {
       this.lineFormVisible = true
       this.lineLoading = true
-      lineList(this.paginationSearchLine).then(res => {
+      baseRouteList(this.paginationSearchLine).then(res => {
         if (res.IsPass === true) {
           this.lineData = res.Obj
           this.lineLoading = false
@@ -470,9 +470,8 @@ export default {
     },
     // 增加工艺路线双击事件获取当前行的值
     lineClick(row) {
-      debugger
       this.ruleForm.RouteName = row.Name
-      this.lineCode = row.ProcessRouteCode
+      this.ruleForm.RouteCode = row.ProcessRouteCode
       this.lineFormVisible = false
     },
     // 关闭工艺路线查询弹窗
