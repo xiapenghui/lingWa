@@ -172,7 +172,7 @@
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, baseRouteList, bomCopy } from '@/api/OrganlMan'
+import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, baseRouteList, bomCopy } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import FinshName from '@/components/FinshName' // 成品名称
 import LineName from '@/components/LineName' // 工艺路线名称

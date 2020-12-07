@@ -125,127 +125,6 @@ export function ProduceModify(data) {
   })
 }
 
-// 生产计划
-// 生产工单
-export function productionList(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/List',
-    method: 'post',
-    data
-  })
-}
-
-// 冻结
-export function productionFreeze(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/Freeze',
-    method: 'post',
-    data
-  })
-}
-
-// 解冻
-export function productionUnFreeze(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/UnFreeze',
-    method: 'post',
-    data
-  })
-}
-
-// 强制完工
-export function ForceComplete(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/ForceComplete',
-    method: 'post',
-    data
-  })
-}
-
-// 删除
-export function productionDelete(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/Delete',
-    method: 'post',
-    data
-  })
-}
-
-// 生产计划 新增时画面的“生产计划单号”
-
-export function productionPlanNum(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/PlanNum',
-    method: 'post',
-    data
-  })
-}
-
-// 生产计划新增
-export function productionAdd(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/Add',
-    method: 'post',
-    data
-  })
-}
-
-// 生产计划编辑修改
-export function productionUpdate(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/Modify',
-    method: 'post',
-    data
-  })
-}
-
-// 生产计划获取要拆分的数据
-export function SplitQuery(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/SplitQuery',
-    method: 'post',
-    data
-  })
-}
-
-// 生产计划获取要拆分的数据
-export function productionSplit(data) {
-  return request({
-    url: newUrl + '/api/PlanSchedule/Split',
-    method: 'post',
-    data
-  })
-}
-
-// 生产工单列表
-export function orderList(data) {
-  return request({
-    url: newUrl + '/api/PlanWorkOrder/List',
-    method: 'post',
-    data
-  })
-}
-
-// 生产工单删除
-export function orderDelete(data) {
-  return request({
-    url: newUrl + '/api/PlanWorkOrder/Delete',
-    method: 'post',
-    data
-  })
-}
-//
-// 生产工单冻结
-// 修改生产工单状态
-// 功能范围：工单发布、取消发布、工单冻结、强制完工
-export function orderStatus(data) {
-  return request({
-    url: newUrl + '/api/PlanWorkOrder/ModifyStatus',
-    method: 'post',
-    data
-  })
-}
-
 // 其他主数据维护
 // 客户信息维护列表
 export function CustomerList(data) {
@@ -609,7 +488,7 @@ export function treeList(data) {
 // 生产组织管理--工厂分页
 export function factoryList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ListFactory',
+    url: newUrl + '/api/BaseProduceOrganization/FactoryList',
     method: 'post',
     data
   })
@@ -618,25 +497,25 @@ export function factoryList(data) {
 // 生产组织管理--车间分页
 export function workShopList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ListWorkShop',
+    url: newUrl + '/api/BaseProduceOrganization/WorkShopList',
     method: 'post',
     data
   })
 }
 
 // 生产组织管理--产线分页
-export function productLineList(data) {
+export function ProductLineList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ListProductLine',
+    url: newUrl + '/api/BaseProduceOrganization/ProductLineList',
     method: 'post',
     data
   })
 }
 
 // 生产组织管理--工作中心分页
-export function workList(data) {
+export function WorkCenterList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ListWorkCenter',
+    url: newUrl + '/api/BaseProduceOrganization/WorkCenterList',
     method: 'post',
     data
   })
@@ -645,7 +524,7 @@ export function workList(data) {
 // 生产组织管理--工位分页
 export function stationList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ListTerminal',
+    url: newUrl + '/api/BaseProduceOrganization/TerminalList',
     method: 'post',
     data
   })
@@ -654,7 +533,7 @@ export function stationList(data) {
 // 生产组织管理--工厂增加
 export function factoryAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/AddFactory',
+    url: newUrl + '/api/BaseProduceOrganization/FactoryAdd',
     method: 'post',
     data
   })
@@ -663,25 +542,25 @@ export function factoryAdd(data) {
 // 生产组织管理--车间增加
 export function workShopAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/AddWorkShop',
+    url: newUrl + '/api/BaseProduceOrganization/WorkShopAdd',
     method: 'post',
     data
   })
 }
 
 // 生产组织管理--产线增加
-export function productAdd(data) {
+export function ProductLineAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/AddProductLine',
+    url: newUrl + '/api/BaseProduceOrganization/ProductLineAdd',
     method: 'post',
     data
   })
 }
 
 // 生产组织管理--工作中心增加
-export function workAdd(data) {
+export function WorkCenterAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/AddWorkCenter',
+    url: newUrl + '/api/BaseProduceOrganization/WorkCenterAdd',
     method: 'post',
     data
   })
@@ -690,7 +569,7 @@ export function workAdd(data) {
 // 生产组织管理--工位增加
 export function stationAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/AddTerminal',
+    url: newUrl + '/api/BaseProduceOrganization/TerminalAdd',
     method: 'post',
     data
   })
@@ -699,7 +578,7 @@ export function stationAdd(data) {
 // 生产组织管理--工厂删除
 export function factoryDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/DeleteFactory',
+    url: newUrl + '/api/BaseProduceOrganization/FactoryDelete',
     method: 'post',
     data
   })
@@ -708,25 +587,25 @@ export function factoryDelete(data) {
 // 生产组织管理--车间删除
 export function workShopDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/DeleteWorkShop',
+    url: newUrl + '/api/BaseProduceOrganization/eWorkShopDelete',
     method: 'post',
     data
   })
 }
 
 // 生产组织管理--产线删除
-export function productDelete(data) {
+export function ProductLineDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/DeleteProductLine',
+    url: newUrl + '/api/BaseProduceOrganization/ProductLineDelete',
     method: 'post',
     data
   })
 }
 
 // 生产组织管理--工作中心删除
-export function workDelete(data) {
+export function WorkCenterDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/DeleteWorkCenter',
+    url: newUrl + '/api/BaseProduceOrganization/WorkCenterDelete',
     method: 'post',
     data
   })
@@ -735,7 +614,7 @@ export function workDelete(data) {
 // 生产组织管理--工位删除
 export function stationDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/DeleteTerminal',
+    url: newUrl + '/api/BaseProduceOrganization/TerminalDelete',
     method: 'post',
     data
   })
@@ -744,7 +623,7 @@ export function stationDelete(data) {
 // 生产组织管理--工厂编辑
 export function factoryModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ModifyFactory',
+    url: newUrl + '/api/BaseProduceOrganization/FactoryModify',
     method: 'post',
     data
   })
@@ -753,25 +632,25 @@ export function factoryModify(data) {
 // 生产组织管理--车间编辑
 export function workShopModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ModifyWorkShop',
+    url: newUrl + '/api/BaseProduceOrganization/WorkShopModify',
     method: 'post',
     data
   })
 }
 
 // 生产组织管理--产线编辑
-export function productModify(data) {
+export function ProductLineModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ModifyProductLine',
+    url: newUrl + '/api/BaseProduceOrganization/ProductLineModify',
     method: 'post',
     data
   })
 }
 
 // 生产组织管理--工作中心编辑
-export function workModify(data) {
+export function WorkCenterModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ModifyWorkCenter',
+    url: newUrl + '/api/BaseProduceOrganization/WorkCenterModify',
     method: 'post',
     data
   })
@@ -780,7 +659,7 @@ export function workModify(data) {
 // 生产组织管理--工位编辑
 export function stationModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ModifyTerminal',
+    url: newUrl + '/api/BaseProduceOrganization/TerminalModify',
     method: 'post',
     data
   })

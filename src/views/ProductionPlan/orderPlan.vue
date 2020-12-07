@@ -513,8 +513,8 @@ import i18n from '@/lang'
 // import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetMaterialList, GetCustomerList, orderModify, GetLine } from '@/api/OrganlMan'
-import { orderList, orderDelete, orderFreeze, orderStatus, orderAdd } from '@/api/OrganlMan'
+import { GetDictionary, GetMaterialList, GetCustomerList, orderModify, GetLine } from '@/api/ProductionPlan'
+import { orderList, orderDelete, orderFreeze, orderStatus, orderAdd } from '@/api/ProductionPlan'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
 const fixHeight = 270

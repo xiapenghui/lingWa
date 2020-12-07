@@ -416,7 +416,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { MaterialModify, MaterialStatus } from '@/api/OrganlMan'
+import { MaterialModify, MaterialStatus } from '@/api/BasicData'
 import {
   treeList,
   factoryList,
@@ -439,7 +439,7 @@ import {
   productModify,
   workModify,
   stationModify
-} from '@/api/OrganlMan'
+} from '@/api/BasicData'
 const fixHeight = 270
 const fixHeightBox = 350
 export default {

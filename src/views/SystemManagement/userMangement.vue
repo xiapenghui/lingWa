@@ -53,7 +53,7 @@
         </el-col>
         <el-col :span="4">
           <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-  
+
         </el-col>
       </el-row>
     </div>
@@ -275,6 +275,7 @@ export default {
     companyList().then(res => {
       debugger
       if (res.IsPass === true) {
+        debugger
         this.companyData = res.Obj.OrgList
         this.DepFullData = res.Obj.DeptList
         this.rouleOptions = res.Obj.RoleList

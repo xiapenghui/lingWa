@@ -4,19 +4,23 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工厂编号" placement="top-start">
-              <label class="radio-label">工厂编号:</label>
-            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="工厂编号" placement="top-start"><label class="radio-label">工厂编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.FactoryNum" placeholder="工厂编号" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工厂名称" placement="top-start">
-              <label class="radio-label">工厂名称:</label>
-            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="工厂名称" placement="top-start"><label class="radio-label">工厂名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.FactoryName" placeholder="工厂名称" /></el-col>
+        </el-col>
+
+        <el-col :span="4">
+          <el-col :span="24">
+            <el-tooltip class="item" effect="dark" content="包含禁状态的公司" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的公司</el-checkbox>
+            </el-tooltip>
+          </el-col>
         </el-col>
 
         <el-col :span="4">
@@ -27,9 +31,7 @@
       </el-row>
     </div>
 
-    <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增</el-button>
-    </div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增</el-button></div>
 
     <el-table
       v-loading="listLoading"
@@ -48,7 +50,7 @@
           {{ scope.row.FactoryNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工厂名称" width="150">
+      <el-table-column align="center" label="工厂名称">
         <template slot-scope="scope">
           {{ scope.row.FactoryName }}
         </template>
@@ -59,13 +61,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工厂地址" width="250">
+      <el-table-column align="center" label="工厂地址">
         <template slot-scope="scope">
           {{ scope.row.Address }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工厂描述" width="150">
+      <el-table-column align="center" label="工厂描述">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
@@ -105,15 +107,15 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editCustomer') : $t('permission.addCustomer')">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工厂': '增加工厂'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="客户编号" prop="CustomerNum"><el-input v-model="ruleForm.CustomerNum" placeholder="客户编号" clearable /></el-form-item>
-        <el-form-item label="客户名称" prop="FullName"><el-input v-model="ruleForm.FullName" placeholder="客户名称" clearable /></el-form-item>
-        <el-form-item label="联系人"><el-input v-model="ruleForm.Contact" placeholder="联系人" clearable /></el-form-item>
-        <el-form-item label="电话"><el-input v-model="ruleForm.Tel" placeholder="电话" clearable /></el-form-item>
-        <el-form-item label="邮箱"><el-input v-model="ruleForm.Email" placeholder="邮箱" clearable /></el-form-item>
-        <el-form-item label="地址"><el-input v-model="ruleForm.Address" placeholder="地址" clearable /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
+
+        <el-form-item label="工厂编号" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="工厂编号" /></el-form-item>
+        <el-form-item label="工厂名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="工厂名称" /></el-form-item>
+        <el-form-item label="工厂电话"><el-input v-model="ruleForm.Tel" placeholder="工厂电话" /></el-form-item>
+        <el-form-item label="工厂地址"><el-input v-model="ruleForm.Address" placeholder="工厂地址" /></el-form-item>
+        <el-form-item label="工厂描述"><el-input v-model="ruleForm.Description" placeholder="工厂描述" type="textarea" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -128,7 +130,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { factoryList, factoryDelete, factoryAdd, CustomerModify, CustomerStatus } from '@/api/OrganlMan'
+import { factoryList, factoryDelete, factoryAdd, factoryModify } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'CustomerInformation',
@@ -140,8 +142,8 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 50,
-        CustomerNum: undefined,
-        FullName: undefined,
+        FactoryNum: undefined,
+        FactoryName: undefined,
         ShowBanned: false
       },
       listLoading: false,
@@ -157,8 +159,8 @@ export default {
       DepFilterData: [],
       rouleOptions: [], // 获取新增框角色列表
       rules: {
-        CustomerNum: [{ required: true, message: '请输入客户编号', trigger: 'blur' }],
-        FullName: [{ required: true, message: '请输入客户名称', trigger: 'blur' }]
+        FactoryNum: [{ required: true, message: '请输入工厂编号', trigger: 'blur' }],
+        FactoryName: [{ required: true, message: '请输入工厂名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -215,45 +217,9 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        CustomerNum: [{ required: true, message: '请输入客户编号', trigger: 'blur' }],
-        FullName: [{ required: true, message: '请输入客户名称', trigger: 'blur' }]
+        FactoryNum: [{ required: true, message: '请输入工厂编号', trigger: 'blur' }],
+        FactoryName: [{ required: true, message: '请输入工厂名称', trigger: 'blur' }]
       }
-    },
-    // 禁用，启用权限
-    handleBan(row) {
-      debugger
-      let status, statusTitle
-      if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle')
-        statusTitle = this.$t('permission.jingyongInfo')
-      } else {
-        status = this.$t('permission.qiyongTitle')
-        statusTitle = this.$t('permission.qiyongInfo')
-      }
-      this.$confirm(statusTitle, status, {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      }).then(() => {
-        const params = {
-          Status: (row.Status = row.Status !== true),
-          CustomerCode: row.CustomerCode
-        }
-        CustomerStatus(params).then(res => {
-          if (res.IsPass === true) {
-            this.$message({
-              type: 'success',
-              message: res.MSG
-            })
-            this.getList()
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.MSG
-            })
-          }
-        })
-      })
     },
 
     // 查询
@@ -263,7 +229,7 @@ export default {
     },
     getList() {
       this.listLoading = true
-      CustomerList(this.pagination).then(res => {
+      factoryList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -304,7 +270,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          CustomerDelete({ CustomerCode: row.CustomerCode }).then(res => {
+          factoryDelete({ FactoryCode: row.FactoryCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -316,8 +282,8 @@ export default {
                 message: res.MSG
               })
             }
+            this.getList()
           })
-          this.getList()
         })
         .catch(() => {
           this.$message({
@@ -333,7 +299,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            CustomerModify(this.ruleForm).then(res => {
+            factoryModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -345,7 +311,7 @@ export default {
               }
             })
           } else {
-            CustomerAdd(this.ruleForm).then(res => {
+            factoryAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',

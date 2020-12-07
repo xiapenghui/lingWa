@@ -151,7 +151,7 @@
 import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { baseDetailList, baseDetailAdd, baseDetailDelete, baseDetailModify, GetDictionary, BaseProList } from '@/api/OrganlMan'
+import { baseDetailList, baseDetailAdd, baseDetailDelete, baseDetailModify, GetDictionary, BaseProList } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WorkingName from '@/components/WorkingName' // 工序名称
 const fixHeight = 270

@@ -141,7 +141,7 @@
 import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, MaterialList, GetByRouteList } from '@/api/OrganlMan'
+import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, MaterialList, GetByRouteList } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WorkingName from '@/components/WorkingName' // 工序名称
 import MaterialName from '@/components/MaterialName' // 物料名称

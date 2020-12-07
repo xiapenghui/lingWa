@@ -133,7 +133,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { BaseProList, BaseProDelete, BaseProAdd, BaseProModify, BaseProStatus } from '@/api/OrganlMan'
+import { BaseProList, BaseProDelete, BaseProAdd, BaseProModify, BaseProStatus } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'CustomerInformation',

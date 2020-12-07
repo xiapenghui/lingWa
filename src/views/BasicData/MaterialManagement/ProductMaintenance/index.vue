@@ -167,7 +167,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, baseRouteList } from '@/api/OrganlMan'
+import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, baseRouteList } from '@/api/BasicData'
 import LineName from '@/components/LineName' // 工艺路线弹
 const fixHeight = 270
 const fixHeightBox = 350

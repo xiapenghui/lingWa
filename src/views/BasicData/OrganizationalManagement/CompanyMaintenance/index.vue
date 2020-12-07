@@ -169,7 +169,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 // import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { OrganList, OrganAdd, OrganStatus, OrganModify, OrganDelete } from '@/api/OrganlMan'
+import { OrganList, OrganAdd, OrganStatus, OrganModify, OrganDelete } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'CompanyMaintenance',
