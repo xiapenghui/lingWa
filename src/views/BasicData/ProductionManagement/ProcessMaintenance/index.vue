@@ -145,7 +145,7 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 50,
-        WorkingProcedureNum: undefined,
+        ProcessNum: undefined,
         Name: undefined,
         Status: false
       },

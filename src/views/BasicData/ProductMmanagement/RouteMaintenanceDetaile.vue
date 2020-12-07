@@ -139,7 +139,7 @@
       :working-box-loading="workingBoxLoading"
       :table-box-height="tableBoxHeight"
       :working-data="workingData"
-      :pagination-search-workingl="paginationSearchWorking"
+      :pagination-search-working="paginationSearchWorking"
       @workingClose="workingClose"
       @workingClick="workingClick"
       @handleSearchWorking="handleSearchWorking"
@@ -174,7 +174,7 @@ export default {
       paginationSearchWorking: {
         PageIndex: 1,
         PageSize: 20,
-        WorkingProcedureNum: undefined,
+        ProcessNum: undefined,
         Name: undefined
       },
       listLoading: false,
@@ -252,7 +252,6 @@ export default {
     }
     // 新增检验方式radio
     GetDictionary({ code: '0019' }).then(res => {
-      debugger
       if (res.IsPass === true) {
         this.checkData = res.Obj
       }
@@ -271,7 +270,6 @@ export default {
 
     // 选择检验方式
     changeRadio(val) {
-      debugger
       this.checkVal = val
     },
 
@@ -309,7 +307,6 @@ export default {
     },
     // 编辑工艺路线
     handleEdit(row) {
-      debugger
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
@@ -423,7 +420,6 @@ export default {
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
-      debugger
       this.ruleForm.ProcessCode = row.ProcessCode
       this.ruleForm.ProcessName = row.Name
       this.ruleForm.WorkingProcedureCode = row.ProcessCode

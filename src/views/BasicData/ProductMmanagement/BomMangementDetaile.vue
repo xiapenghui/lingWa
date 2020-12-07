@@ -180,7 +180,7 @@ export default {
         ProcessRouteCode: this.$route.query.ProcessRouteCode,
         RouteCode: this.$route.query.ProcessRouteCode,
         Status: true,
-        WorkingProcedureNum: undefined,
+        ProcessNum: undefined,
         Name: undefined
       },
 

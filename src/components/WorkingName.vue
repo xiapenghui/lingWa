@@ -5,10 +5,10 @@
         <el-col :span="8">
           <el-col :span="6">
             <el-tooltip class="item" effect="dark" content="工序编号" placement="top-start">
-              <label class="radio-label">{{ $t('permission.ProductNum') }}:</label>
+              <label class="radio-label">工序编号:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationSearchWorking.WorkingProcedureNum" /></el-col>
+          <el-col :span="16"><el-input v-model="paginationSearchWorking.ProcessNum" /></el-col>
         </el-col>
 
         <el-col :span="8">

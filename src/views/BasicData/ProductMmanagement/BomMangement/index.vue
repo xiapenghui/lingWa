@@ -79,6 +79,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="生效时间">
+        <template slot-scope="scope">
+          {{ scope.row.EffectiveDate | substringTime }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="维护时间" width="200">
         <template slot-scope="scope">
           {{ scope.row.CreateTime | substringTime }}
@@ -125,10 +131,11 @@
         <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
         <el-form-item label="生效时间">
-          <!-- <el-date-picker v-model="ruleForm.ModifyTime" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" /></el-form-item>s -->
+          <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" />
+        </el-form-item>
 
-          <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
-        </el-form-item></el-form>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
+      </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
