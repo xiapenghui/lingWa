@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.companyNo') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.OrgNum" placeholder="公司编号)" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.OrgNum" placeholder="公司编号" /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
@@ -122,7 +122,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
@@ -167,13 +167,13 @@
 import '../../../../styles/scrollbar.css'
 import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
-// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { OrganList, OrganAdd, OrganStatus, OrganModify, OrganDelete } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'CompanyMaintenance',
-  // components: { Pagination },
+  components: { Pagination },
   data() {
     return {
       tableData: [],

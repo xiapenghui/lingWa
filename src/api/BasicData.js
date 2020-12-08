@@ -664,3 +664,40 @@ export function stationModify(data) {
     data
   })
 }
+
+// 生产组织管理--车间状态
+export function workShopStatus(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/WorkShopModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--产线状态
+export function ProductLineStatus(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/ProductLineModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工作中心状态
+export function WorkCenterStatus(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/WorkCenterModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 生产组织管理--工位状态
+export function stationStatus(data) {
+  return request({
+    url: newUrl + '/api/BaseProduceOrganization/TerminalModifyStatus',
+    method: 'post',
+    data
+  })
+}
+

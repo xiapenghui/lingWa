@@ -37,6 +37,7 @@ export function generaMenu(routes, data, parent, parents) {
           component: loadView(viewpath, item.path),
           children: [],
           name: item.path,
+          hidden: item.hidden,
           meta: {
             title: item.meta ? item.meta.title : item.name
           }
@@ -48,6 +49,7 @@ export function generaMenu(routes, data, parent, parents) {
           component: loadView(str, item.path),
           children: [],
           name: item.path,
+          hidden: item.hidden,
           meta: {
             title: item.meta ? item.meta.title : item.name
           }

@@ -243,6 +243,7 @@ export const asyncRoutes = [
             path: 'BomMangementDetaile',
             component: () => import('@/views/BasicData/ProductMmanagement/BomMangementDetaile'),
             name: 'BomMangementDetaile',
+            hidden: true,
             meta: {
               title: 'BomMangementDetaile'
             }
@@ -260,6 +261,7 @@ export const asyncRoutes = [
             path: 'RouteMaintenanceDetaile',
             component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenanceDetaile'),
             name: 'RouteMaintenanceDetaile',
+            hidden: true,
             meta: {
               title: 'RouteMaintenanceDetaile'
             }
@@ -320,6 +322,44 @@ export const asyncRoutes = [
 
     ]
   },
+
+  // 质量管理
+  // {
+  //   path: '/QualityData',
+  //   component: Layout,
+  //   redirect: '/QualityData/BasicData',
+  //   name: 'QualityData',
+  //   meta: {
+  //     title: 'QualityData',
+  //     icon: 'tab'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'BasicData',
+  //       component: () => import('@/views/QualityData/BasicData'),
+  //       name: 'BasicData',
+  //       meta: {
+  //         title: 'BasicData'
+  //       }
+  //     },
+  //     {
+  //       path: 'InspectionTask',
+  //       component: () => import('@/views/QualityData/InspectionTask'),
+  //       name: 'InspectionTask',
+  //       meta: {
+  //         title: 'InspectionTask'
+  //       }
+  //     },
+  //     {
+  //       path: 'MobileInspection',
+  //       component: () => import('@/views/QualityData/MobileInspection'),
+  //       name: 'MobileInspection',
+  //       meta: {
+  //         title: 'MobileInspection'
+  //       }
+  //     }
+  //   ]
+  // },
 
   // 参数信息
   {

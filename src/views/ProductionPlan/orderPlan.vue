@@ -43,7 +43,6 @@
         <el-col :span="3">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-
           </el-col>
         </el-col>
         <el-col :span="1">
@@ -317,9 +316,7 @@
               <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" @focus="finshBox" />
             </el-form-item>
 
-            <el-form-item label="客户名称" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" @focus="userBox" />
-            </el-form-item>
+            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" @focus="userBox" /></el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
               <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%">
@@ -327,9 +324,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="计划结束日期">
-              <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" />
-            </el-form-item>
+            <el-form-item label="计划结束日期"><el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" /></el-form-item>
 
             <el-form-item label="备注"><el-input v-model="ruleForm.Description" type="textarea" /></el-form-item>
           </div>
@@ -513,8 +508,8 @@ import i18n from '@/lang'
 // import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetMaterialList, GetCustomerList, orderModify, GetLine } from '@/api/ProductionPlan'
-import { orderList, orderDelete, orderFreeze, orderStatus, orderAdd } from '@/api/ProductionPlan'
+import { GetDictionary, GetMaterialList, GetCustomerList, orderModify, GetLine, orderAdd, orderFreeze } from '@/api/BasicData'
+import { orderList, orderDelete, orderStatus } from '@/api/ProductionPlan'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
 const fixHeight = 270

@@ -2,25 +2,13 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <!-- <el-col :span="4">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工厂名称" placement="top-start"><label class="radio-label">工厂名称:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16">
-            <el-input v-model="pagination.FactoryNum" placeholder="工厂名称" />
-            <el-select v-model="pagination.OrgCode" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%" @change="companyVal">
-              <el-option v-for="item in companyData" :key="item.OrgCode" :label="item.FullName" :value="item.OrgCode" />
-            </el-select>
-          </el-col>
-        </el-col> -->
-
         <el-col :span="4">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工厂名称" placement="top-start"><label class="radio-label">工厂名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.OrgCode" placeholder="工厂名称" clearable style="width: 100%" @change="FullNameVal">
-              <el-option v-for="item in FullNameData" :key="item.OrgCode" :label="item.FullName" :value="item.OrgCode" />
+            <el-select v-model="pagination.companyCode" placeholder="公司名称" clearable style="width: 100%" @change="changeName">
+              <el-option v-for="item in companyData" :key="item.companyCode" :label="item.companyName" :value="item.companyCode" />
             </el-select>
           </el-col>
         </el-col>
@@ -35,12 +23,12 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="车间名称" placement="top-start"><label class="radio-label">车间名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.WorkshopName" placeholder="车间名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="车间名称" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态的工厂" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的工厂</el-checkbox>
+            <el-tooltip class="item" effect="dark" content="包含禁状态的公司" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的公司</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -52,7 +40,7 @@
       </el-row>
     </div>
 
-    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增</el-button></div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
 
     <el-table
       v-loading="listLoading"
@@ -73,17 +61,17 @@
       </el-table-column>
       <el-table-column align="center" label="车间名称">
         <template slot-scope="scope">
-          {{ scope.row.WorkshopName }}
+          {{ scope.row.Name }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工厂编号" width="150">
+      <el-table-column align="center" label="公司编号" width="150">
         <template slot-scope="scope">
           {{ scope.row.FactoryNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工厂名称">
+      <el-table-column align="center" label="公司名称">
         <template slot-scope="scope">
           {{ scope.row.FactoryName }}
         </template>
@@ -129,13 +117,17 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工厂' : '增加工厂'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑车间' : '增加车间'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="车间编号" prop="WorkshopNum"><el-input v-model="ruleForm.WorkshopNum" placeholder="车间编号" /></el-form-item>
-        <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model="ruleForm.WorkshopName" placeholder="车间名称" /></el-form-item>
-        <el-form-item label="工厂编号" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="工厂编号" /></el-form-item>
-        <el-form-item label="工厂名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="工厂名称" :disabled="true" /></el-form-item>
-        <el-form-item label="车间描述"><el-input v-model="ruleForm.Description" placeholder="工厂描述" type="textarea" /></el-form-item>
+        <el-form-item label="车间名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="车间名称" /></el-form-item>
+        <el-form-item label="公司编号" prop="FactoryNum">
+          <el-select v-model="pagination.OrgCode" placeholder="公司编号" clearable style="width: 100%" @change="companyNum">
+            <el-option v-for="item in companyNumDate" :key="item.OrgCode" :label="item.FullNum" :value="item.OrgCode" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="公司名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="公司名称" :disabled="true" /></el-form-item>
+        <el-form-item label="车间描述"><el-input v-model="ruleForm.Description" placeholder="公司描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -151,7 +143,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { workShopList, workShopDelete, workShopAdd, workShopModify } from '@/api/BasicData'
+import { workShopList, workShopDelete, workShopAdd, workShopModify, workShopStatus } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'CustomerInformation',
@@ -163,8 +155,8 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 50,
-        FactoryNum: undefined,
-        FactoryName: undefined,
+        WorkshopNum: undefined,
+        Name: undefined,
         ShowBanned: false
       },
       listLoading: false,
@@ -174,16 +166,15 @@ export default {
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
-      isPassword: false, // 密码是否可见
+      companyVal: null, // 获取公司下拉值
+      companyNumVal: null, // 获取公司编号下拉值
       companyData: [], // 获取搜索框公司列表
-      DepFullData: [], // 获取搜索框部门列表
-      DepFilterData: [],
-      rouleOptions: [], // 获取新增框角色列表
+      companyNumDate: [], // 获取公司编号
       rules: {
-        FactoryNum: [{ required: true, message: '请输入工厂编号', trigger: 'blur' }],
-        FactoryName: [{ required: true, message: '请输入工厂名称', trigger: 'blur' }],
+        FactoryNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
+        FactoryName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
         WorkshopNum: [{ required: true, message: '请输入车间编号', trigger: 'blur' }],
-        WorkshopName: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
+        Name: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -232,7 +223,7 @@ export default {
       })()
     }
 
-    // 获取搜索工厂下来
+    // 获取搜索公司下来
 
     this.getList()
     this.setFormRules()
@@ -242,18 +233,21 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        FactoryNum: [{ required: true, message: '请输入工厂编号', trigger: 'blur' }],
-        FactoryName: [{ required: true, message: '请输入工厂名称', trigger: 'blur' }],
+        FactoryNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
+        FactoryName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
         WorkshopNum: [{ required: true, message: '请输入车间编号', trigger: 'blur' }],
-        WorkshopName: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
+        Name: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
       }
     },
 
-    // 工厂下拉获取值
-    FullNameVal(val) {
-      debugger
+    // 公司下拉获取值
+    changeName(val) {
+      this.companyVal = val
     },
-
+    // 公司下拉获编号取值
+    companyNum(val) {
+      this.companyNumVal = val
+    },
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
@@ -279,22 +273,56 @@ export default {
       return app
     },
 
-    // 增加角色
-    handleAddUser() {
+    // 禁用，启用权限
+    handleBan(row) {
+      let status, statusTitle
+      if (row.Status === true) {
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
+      } else {
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
+      }
+      this.$confirm(statusTitle, status, {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          Status: (row.Status = row.Status !== true),
+          WorkshopCode: row.WorkshopCode
+        }
+        workShopStatus(params).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              type: 'success',
+              message: res.MSG
+            })
+            this.getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.MSG
+            })
+          }
+        })
+      })
+    },
+
+    // 增加车间
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
-      this.isPassword = true
       this.ruleForm = {}
     },
-    // 编辑角色
+    // 编辑车间
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
-      this.isPassword = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 删除角色
+    // 删除车间
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),

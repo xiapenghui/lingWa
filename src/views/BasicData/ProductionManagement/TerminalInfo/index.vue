@@ -4,31 +4,31 @@
       <el-row :gutter="20">
         <el-col :span="4">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工厂名称" placement="top-start"><label class="radio-label">工厂名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.OrgCode" placeholder="工厂名称" clearable style="width: 100%" @change="FullNameVal">
-              <el-option v-for="item in FullNameData" :key="item.OrgCode" :label="item.FullName" :value="item.OrgCode" />
+            <el-select v-model="pagination.companyCode" placeholder="公司名称" clearable style="width: 100%" @change="changeName">
+              <el-option v-for="item in companyData" :key="item.companyCode" :label="item.companyName" :value="item.companyCode" />
             </el-select>
           </el-col>
         </el-col>
 
         <el-col :span="4">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工作中心编号" placement="top-start"><label class="radio-label">工作中心编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="工位编号" placement="top-start"><label class="radio-label">工位编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.WorkCenterNum" placeholder="工作中心编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.WorkCenterNum" placeholder="工位编号" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工作中心名称" placement="top-start"><label class="radio-label">工作中心名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="工位名称" placement="top-start"><label class="radio-label">工位名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.WorkCenterName" placeholder="工作中心名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.WorkCenterName" placeholder="工位名称" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态的工作中心" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的工作中心</el-checkbox>
+            <el-tooltip class="item" effect="dark" content="包含禁状态的工位" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的工位</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -40,7 +40,7 @@
       </el-row>
     </div>
 
-    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增</el-button></div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
 
     <el-table
       v-loading="listLoading"
@@ -53,13 +53,25 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="工作中心编号" width="150">
+      <el-table-column align="center" label="工位编号" width="150">
         <template slot-scope="scope">
-          {{ scope.row.WorkCenterNum }}
+          {{ scope.row.TerminalNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工作中心名称">
+      <el-table-column align="center" label="工位名称" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.TerminalName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工作中心编号" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.WorkCenterName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工作中心名称" width="150">
         <template slot-scope="scope">
           {{ scope.row.WorkCenterName }}
         </template>
@@ -70,7 +82,7 @@
           {{ scope.row.WorkshopNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="产线名称">
+      <el-table-column align="center" label="产线名称" width="150">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
@@ -81,7 +93,7 @@
           {{ scope.row.WorkshopNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="车间名称">
+      <el-table-column align="center" label="车间名称" width="150">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
@@ -92,13 +104,13 @@
           {{ scope.row.WorkshopNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工厂名称">
+      <el-table-column align="center" label="工厂名称" width="150">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工作中心描述">
+      <el-table-column align="center" label="工作中心描述" width="150">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
@@ -141,17 +153,25 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工厂' : '增加工厂'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
 
-        <el-form-item label="工作中心编号" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="工作中心编号" /></el-form-item>
-        <el-form-item label="工作中心名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="工作中心名称" /></el-form-item>
+        <el-form-item label="工位编号" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="工位编号" /></el-form-item>
+        <el-form-item label="工位名称" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="工位名称" /></el-form-item>
 
-        <el-form-item label="工厂编号" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="工厂编号" /></el-form-item>
-        <el-form-item label="工厂名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="工厂名称" :disabled="true" /></el-form-item>
+        <el-form-item label="公司编号" prop="FactoryNum">
+          <el-select v-model="pagination.OrgCode" placeholder="公司编号" clearable style="width: 100%" @change="companyNum">
+            <el-option v-for="item in companyNumDate" :key="item.OrgCode" :label="item.FullNum" :value="item.OrgCode" />
+          </el-select>
+        </el-form-item>
 
-        <el-form-item label="车间编号" prop="WorkshopNum"><el-input v-model="ruleForm.WorkshopNum" placeholder="车间编号" /></el-form-item>
-        <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model="ruleForm.WorkshopName" placeholder="车间名称" :disabled="true" /></el-form-item>
+        <el-form-item label="公司名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="公司名称" /></el-form-item>
 
-        <el-form-item label="产线编号" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="产线编号" /></el-form-item>
-        <el-form-item label="产线名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="产线名称" :disabled="true" /></el-form-item>
+        <el-form-item label="工作中心名称" prop="CenterName">
+          <el-cascader
+            v-model="CenterValue"
+            style="width: 100%"
+            :options="optionCenter"
+            @change="handleChange"
+          />
+        </el-form-item>
 
         <el-form-item label="产线类别" prop="WorkshopName"><el-input v-model="ruleForm.WorkshopName" placeholder="产线类别" /></el-form-item>
 
@@ -171,7 +191,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { WorkCenterList, WorkCenterDelete, WorkCenterAdd, WorkCenterModify } from '@/api/BasicData'
+import { stationList, stationDelete, stationAdd, stationModify, stationStatus } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'CenterInfo',
@@ -193,7 +213,10 @@ export default {
       dialogFormVisible: false, // 编辑弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
-      FullNameData: [], // 获取搜索框工厂列表
+      companyVal: null, // 获取公司下拉值
+      companyNumVal: null, // 获取公司编号下拉值
+      companyData: [], // 获取搜索框公司列表
+      companyNumDate: [], // 获取公司编号
       rules: {
         FactoryNum: [{ required: true, message: '请输入工厂编号', trigger: 'blur' }],
         FactoryName: [{ required: true, message: '请输入工厂名称', trigger: 'blur' }],
@@ -264,9 +287,17 @@ export default {
       }
     },
 
-    // 工厂下拉获取值
-    FullNameVal(val) {
-      debugger
+    // 公司下拉获取值
+    changeName(val) {
+      this.companyVal = val
+    },
+    // 公司下拉获编号取值
+    companyNum(val) {
+      this.companyNumVal = val
+    },
+    // 新增获取级联的新数组
+    handleChange(value) {
+      this.CenterValue = value
     },
 
     // 查询
@@ -277,7 +308,7 @@ export default {
     getList() {
       debugger
       this.listLoading = true
-      WorkCenterList(this.pagination).then(res => {
+      stationList(this.pagination).then(res => {
         debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
@@ -296,20 +327,56 @@ export default {
       return app
     },
 
-    // 增加角色
-    handleAddUser() {
+    // 禁用，启用权限
+    handleBan(row) {
+      let status, statusTitle
+      if (row.Status === true) {
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
+      } else {
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
+      }
+      this.$confirm(statusTitle, status, {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          Status: (row.Status = row.Status !== true),
+          TerminalCode: row.TerminalCode
+        }
+        stationStatus(params).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              type: 'success',
+              message: res.MSG
+            })
+            this.getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.MSG
+            })
+          }
+        })
+      })
+    },
+
+    // 增加工位
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {}
     },
-    // 编辑角色
+    // 编辑工位
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 删除角色
+    // 删除工位
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -317,7 +384,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          WorkCenterDelete({ FactoryCode: row.FactoryCode }).then(res => {
+          stationDelete({ FactoryCode: row.FactoryCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -346,7 +413,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            WorkCenterModify(this.ruleForm).then(res => {
+            stationModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -358,7 +425,7 @@ export default {
               }
             })
           } else {
-            WorkCenterAdd(this.ruleForm).then(res => {
+            stationAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',

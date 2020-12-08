@@ -654,21 +654,22 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
-
+import {
+  GetDictionary,
+  GetMaterialList,
+  GetCustomerList,
+  GetLine
+} from '@/api/BasicData'
 import {
   productionList,
   productionFreeze,
   productionUnFreeze,
   ForceComplete,
-  GetDictionary,
-  GetMaterialList,
   productionDelete,
-  GetCustomerList,
   productionPlanNum,
   productionAdd,
   productionUpdate,
   SplitQuery,
-  GetLine,
   productionSplit,
   orderList
 } from '@/api/ProductionPlan'

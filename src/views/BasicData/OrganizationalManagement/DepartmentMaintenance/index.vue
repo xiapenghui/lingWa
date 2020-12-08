@@ -4,38 +4,41 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-              <label class="radio-label">{{ $t('permission.planNo') }}:</label>
-            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="来料检验规则编号" placement="top-start"><label class="radio-label">来料检验规则编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.CompanyCode" :placeholder="$t('permission.companysInfo')" /></el-col>
-        </el-col>
-        <el-col :span="6">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-              <label class="radio-label">{{ $t('permission.finishNum') }}:</label>
-            </el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model="pagination.FullName" :placeholder="$t('permission.companyNameInfo')" /></el-col>
-        </el-col>
-        <el-col :span="6">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <label class="radio-label">{{ $t('permission.finishName') }}:</label>
-            </el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model="pagination.FullName" :placeholder="$t('permission.companyNameInfo')" /></el-col>
-        </el-col>
-        <el-col :span="6">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <label class="radio-label">{{ $t('permission.finishDate') }}:</label>
-            </el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model="pagination.FullName" :placeholder="$t('permission.companyNameInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.RuleNum" placeholder="公司编号" /></el-col>
         </el-col>
 
-        <el-col :span="6">
+        <el-col :span="8">
+          <el-col :span="4">
+            <el-tooltip class="item" effect="dark" content="创建日期" placement="top-start"><label class="radio-label">创建日期:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16">
+            <el-date-picker
+              v-model="pagination.importDate"
+              type="daterange"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :clearable="false"
+              :picker-options="pickerOptions"
+              @change="importChange"
+            />
+          </el-col>
+        </el-col>
+
+        <el-col :span="4">
+          <el-col :span="24">
+            <el-tooltip class="item" effect="dark" content="包含禁用状态的来料" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">包含禁用状态的来料</el-checkbox>
+            </el-tooltip>
+          </el-col>
+        </el-col>
+
+        <el-col :span="4">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
           </el-col>
@@ -44,8 +47,8 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addCompany') }}</el-button>
-      <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">{{ $t('permission.exportCompany') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button>
+      <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">导出</el-button>
       <!-- <el-button type="primary" icon="el-icon-document-remove">{{ $t('permission.importcompany') }}</el-button> -->
       <!-- <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" /> -->
     </div>
@@ -61,61 +64,73 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" :label="$t('permission.companyNo')" width="150">
+      <el-table-column align="center" label="检验规则编号" width="150">
         <template slot-scope="scope">
-          {{ scope.row.CompanyCode }}
+          {{ scope.row.RuleNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyName')" width="150">
+      <el-table-column align="center" label="描述">
         <template slot-scope="scope">
-          {{ scope.row.ShortName }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyAllName')" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="批量范围从" width="150">
         <template slot-scope="scope">
-          {{ scope.row.FullName }}
+          {{ scope.row.StartQty }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyTel')" width="150">
+      <el-table-column align="center" label="批量范围至" width="150">
         <template slot-scope="scope">
-          {{ scope.row.Tel }}
+          {{ scope.row.EndQty }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyAddress')" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="采样数量" width="150">
         <template slot-scope="scope">
-          {{ scope.row.Address }}
+          {{ scope.row.SampleQty }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.companyDescription')" width="300">
+      <el-table-column align="center" label="拒绝数量" width="150">
         <template slot-scope="scope">
-          {{ scope.row.Remark }}
+          {{ scope.row.RejQty }}
         </template>
       </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.state')" width="150">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">{{ scope.row.status }}</el-tag>
+          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="100">
+      <el-table-column align="center" :label="$t('permission.user')" width="200">
         <template slot-scope="scope">
-          {{ scope.row.ModifyUser }}
+          {{ scope.row.CreateUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="150">
+      <el-table-column align="center" :label="$t('permission.time')" width="200">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.CreateTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="250">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.editConply') }}</el-button>
-          <el-button v-if="scope.row.UseStatus == 1" type="danger" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleBan') }}</el-button>
-          <el-button v-else type="success" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleEnable') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.deleteCompany') }}</el-button>
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
+            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
+            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
+            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -124,50 +139,22 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.companyNo')" prop="companyNo"><el-input v-model="ruleForm.companyNo" :placeholder="$t('permission.companyNo')" /></el-form-item>
-        </el-tooltip>
+        <el-form-item label="来料检验编号" prop="RuleNum"><el-input v-model="ruleForm.RuleNum" placeholder="来料检验编号" /></el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
-          <el-form-item :label="$t('permission.companyName')" prop="companyName">
-            <el-input v-model="ruleForm.companyName" :placeholder="$t('permission.companyName')" />
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item label="批量范围" prop="StartQty">
+          <el-input v-model="ruleForm.StartQty" style="width: 48%;" />
+          -----
+          <el-input v-model="ruleForm.EndQty" style="width: 48%;" />
+        </el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
-          <el-form-item :label="$t('permission.companyAllName')" prop="companyAllName">
-            <el-input v-model="ruleForm.companyAllName" :placeholder="$t('permission.companyAllName')" />
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item label="采样数量" prop="SampleQty"><el-input v-model="ruleForm.SampleQty" placeholder="采样数量" /></el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
-          <el-form-item :label="$t('permission.companyTel')"><el-input v-model="ruleForm.companyTel" :placeholder="$t('permission.companyTel')" /></el-form-item>
-        </el-tooltip>
+        <el-form-item label="拒绝数量" prop="RejQty"><el-input v-model="ruleForm.RejQty" placeholder="拒绝数量" /></el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
-          <el-form-item :label="$t('permission.companyAddress')"><el-input v-model="ruleForm.companyAddress" :placeholder="$t('permission.companyAddress')" /></el-form-item>
-        </el-tooltip>
+        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
-          <el-form-item :label="$t('permission.companyLogo')">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-            >
-              <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon" />
-            </el-upload>
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Remarks" placeholder="备注" type="textarea" /></el-form-item>
 
-        <el-tooltip class="item" effect="dark" :content="content8" placement="top-start">
-          <el-form-item :label="$t('permission.companyDescription')">
-            <el-input v-model="ruleForm.companyDescription" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.companyDescription')" />
-          </el-form-item>
-        </el-tooltip>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -183,8 +170,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { OrganList, OrganAdd, OrganModify } from '@/api/BasicData'
-// import { OrganList, OrganAdd, OrganDelete, OrganModify } from '@/api/role'
+import { QuaIqcList, QuaIqcAdd, QuaIqcDelete, QuaIqcModify, QuaIqcStatus } from '@/api/QualityData'
 const fixHeight = 270
 export default {
   name: 'CompanyMaintenance',
@@ -196,9 +182,9 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 10,
-        CompanyCode: undefined,
-        companyName: undefined,
-        IsDelete: false
+        importDate: [],
+        RuleNum: undefined,
+        ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -206,19 +192,52 @@ export default {
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
       tableHeight: window.innerHeight - fixHeight, // 表格高度
-      rules: {
-        CompanyCode: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
-        companyName: [{ required: true, message: '请输入公司名字', trigger: 'blur' }]
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }
+        ]
       },
-      parentMsg: this.$t('permission.importCompany'),
-      content1: this.$t('permission.companyNo'),
-      content2: this.$t('permission.companyName'),
-      content3: this.$t('permission.inclusionCompany'),
-      content4: this.$t('permission.companyAllName'),
-      content5: this.$t('permission.companyTel'),
-      content6: this.$t('permission.companyAddress'),
-      content7: this.$t('permission.companyLogo'),
-      content8: this.$t('permission.companyDescription')
+      rules: {
+        RuleNum: [{ required: true, message: '请输入检验规则编号', trigger: 'blur' }],
+        SampleQty: [{ required: true, message: '请输入采样数量', trigger: 'blur' }],
+        StartQty: [{ required: true, message: '请输入批量范围', trigger: 'blur' }],
+        RejQty: [{ required: true, message: '请输入拒绝数量', trigger: 'blur' }]
+      },
+      parentMsg: this.$t('permission.importCompany')
+      // content1: this.$t('permission.companyNo'),
+      // content2: this.$t('permission.companyName'),
+      // content3: this.$t('permission.inclusionCompany'),
+      // content4: this.$t('permission.companyAllName'),
+      // content5: this.$t('permission.companyTel'),
+      // content6: this.$t('permission.companyAddress'),
+      // content7: this.$t('permission.companyLogo'),
+      // content8: this.$t('permission.companyDescription')
     }
   },
   computed: {},
@@ -236,15 +255,15 @@ export default {
     },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
-      this.parentMsg = this.$t('permission.importCompany')
-      this.content1 = this.$t('permission.planNo')
-      this.content2 = this.$t('permission.companyName')
-      this.content3 = this.$t('permission.inclusionCompany')
-      this.content4 = this.$t('permission.companyAllName')
-      this.content5 = this.$t('permission.companyTel')
-      this.content6 = this.$t('permission.companyAddress')
-      this.content7 = this.$t('permission.companyLogo')
-      this.content8 = this.$t('permission.companyDescription')
+      // this.parentMsg = this.$t('permission.importCompany')
+      // this.content1 = this.$t('permission.companyNo')
+      // this.content2 = this.$t('permission.companyName')
+      // this.content3 = this.$t('permission.inclusionCompany')
+      // this.content4 = this.$t('permission.companyAllName')
+      // this.content5 = this.$t('permission.companyTel')
+      // this.content6 = this.$t('permission.companyAddress')
+      // this.content7 = this.$t('permission.companyLogo')
+      // this.content8 = this.$t('permission.companyDescription')
       this.setFormRules()
     }
   },
@@ -264,32 +283,61 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        companyNo: [
-          {
-            required: true,
-            message: this.$t('permission.companyNoInfo'),
-            trigger: 'blur'
-          }
-        ],
-        companyName: [
-          {
-            required: true,
-            message: this.$t('permission.companyNameInfo'),
-            trigger: 'blur'
-          }
-        ]
+        RuleNum: [{ required: true, message: '请输入检验规则编号', trigger: 'blur' }],
+        SampleQty: [{ required: true, message: '请输入采样数量', trigger: 'blur' }],
+        StartQty: [{ required: true, message: '请输入批量范围', trigger: 'blur' }],
+        RejQty: [{ required: true, message: '请输入拒绝数量', trigger: 'blur' }]
       }
     },
+    // 改变搜索框开始结束时间触发
+    importChange(val) {
+      this.pagination.importDate[0] = val[0]
+      this.pagination.importDate[1] = val[1]
+      this.pagination.CreateStartDate = this.pagination.importDate[0]
+      this.pagination.CreateEndDate = this.pagination.importDate[1]
+    },
     // 禁用，启用权限
-    handleBan(scope, status) {},
+    handleBan(row) {
+      debugger
+      let status, statusTitle
+      if (row.Status === true) {
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
+      } else {
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
+      }
+      this.$confirm(statusTitle, status, {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          Status: (row.Status = row.Status !== true),
+          IQCCode: row.IQCCode
+        }
+        QuaIqcStatus(params).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              type: 'success',
+              message: res.MSG
+            })
+            this.getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.MSG
+            })
+          }
+        })
+      })
+    },
 
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
       this.getList()
     },
-    // 选择框
-    tableKey() {},
     // 导出用户
     handleExport() {},
     // 导出用户
@@ -308,14 +356,11 @@ export default {
       })
       return false
     },
-    // handleSuccess({ results, header }) {
-    //   this.tableData = results
-    //   this.tableHeader = header
-    // },
+
     // 获取列表
     getList() {
       this.listLoading = true
-      OrganList(this.pagination).then(res => {
+      QuaIqcList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -352,9 +397,8 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            OrganModify(this.ruleForm).then(res => {
-              debugger
-              if (res.code === 200) {
+            QuaIqcModify(this.ruleForm).then(res => {
+              if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
@@ -365,9 +409,8 @@ export default {
               }
             })
           } else {
-            OrganAdd(this.ruleForm).then(res => {
-              debugger
-              if (res.code === 200) {
+            QuaIqcAdd(this.ruleForm).then(res => {
+              if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
@@ -389,22 +432,37 @@ export default {
       })
     },
 
-    // 图片上传
-    handleAvatarSuccess(res, file) {},
-    beforeAvatarUpload(file) {
-      const type = file.type === 'image/jpeg' || 'image/jpg' || 'image/webp' || 'image/png'
-      const isLt5M = file.size / 1024 / 1024 < 2
-
-      if (!type) {
-        this.$message.error(this.$t('permission.imgErrorInfo'))
-      }
-      if (!isLt5M) {
-        this.$message.error(this.$t('permission.imgSize'))
-      }
-      return type && isLt5M
-    },
     // 删除角色
-    handleDelete({ $index, row }) {}
+    handleDelete(row) {
+      this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      })
+        .then(() => {
+          QuaIqcDelete({ IQCCode: row.IQCCode }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: this.$t('table.deleteSuccess')
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+          })
+          this.getList()
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: this.$t('table.deleteError')
+          })
+        })
+    }
   }
 }
 </script>

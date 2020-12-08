@@ -31,7 +31,7 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addCustomer') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增工序</el-button>
     </div>
 
     <el-table
@@ -108,7 +108,7 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editBasePro') : $t('permission.addBasePro')">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工序' :'新增工序'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="工序编号"><el-input v-model="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
         <el-form-item label="工序名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>
@@ -280,20 +280,20 @@ export default {
       return app
     },
 
-    // 增加角色
-    handleAddUser() {
+    // 增加工序
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {}
     },
-    // 编辑角色
+    // 编辑工序
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 删除角色
+    // 删除工序
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
