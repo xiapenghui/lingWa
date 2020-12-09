@@ -29,10 +29,19 @@ export function GetCustomerList(data) {
   })
 }
 
-// 通用通用工艺路线
+// 通用工艺路线
 export function GetByRouteList(data) {
   return request({
     url: newUrl + '/api/Common/GetWorkingProcedureByRouteList',
+    method: 'post',
+    data
+  })
+}
+
+// 通用获取当前公司
+export function GetAuthOrganizationRange(data) {
+  return request({
+    url: newUrl + '/api/Common/GetAuthOrganizationRange',
     method: 'post',
     data
   })

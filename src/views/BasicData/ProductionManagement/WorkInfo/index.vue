@@ -7,8 +7,8 @@
             <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.companyCode" placeholder="公司名称" clearable style="width: 100%" @change="changeName">
-              <el-option v-for="item in companyData" :key="item.companyCode" :label="item.companyName" :value="item.companyCode" />
+            <el-select v-model="pagination.WorkshopName" placeholder="公司名称" style="width: 100%" @change="changeName">
+              <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
         </el-col>
@@ -53,7 +53,6 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="车间编号" width="150">
         <template slot-scope="scope">
           {{ scope.row.WorkshopNum }}
@@ -121,12 +120,11 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="车间编号" prop="WorkshopNum"><el-input v-model="ruleForm.WorkshopNum" placeholder="车间编号" /></el-form-item>
         <el-form-item label="车间名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="车间名称" /></el-form-item>
-        <el-form-item label="公司编号" prop="FactoryNum">
-          <el-select v-model="pagination.OrgCode" placeholder="公司编号" clearable style="width: 100%" @change="companyNum">
-            <el-option v-for="item in companyNumDate" :key="item.OrgCode" :label="item.FullNum" :value="item.OrgCode" />
+        <el-form-item label="公司名称" prop="FactoryNum">
+          <el-select v-model="pagination.WorkshopName" placeholder="公司名称" style="width: 100%" @change="changeName">
+            <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="公司名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="公司名称" :disabled="true" /></el-form-item>
         <el-form-item label="车间描述"><el-input v-model="ruleForm.Description" placeholder="公司描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
@@ -143,7 +141,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { workShopList, workShopDelete, workShopAdd, workShopModify, workShopStatus } from '@/api/BasicData'
+import { workShopList, workShopDelete, workShopAdd, workShopModify, workShopStatus, GetAuthOrganizationRange } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'CustomerInformation',
@@ -224,6 +222,12 @@ export default {
     }
 
     // 获取搜索公司下来
+    GetAuthOrganizationRange().then(res => {
+      if (res.IsPass === true) {
+        debugger
+        this.companyData = res.Obj
+      }
+    })
 
     this.getList()
     this.setFormRules()
