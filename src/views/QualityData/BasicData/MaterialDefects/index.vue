@@ -1,5 +1,5 @@
 <template>
-  <div>待删除菜单</div>
+  <div>原料缺陷暂停开发</div>
 </template>
 
 <script>

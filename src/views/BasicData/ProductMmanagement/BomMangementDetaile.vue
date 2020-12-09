@@ -185,9 +185,9 @@ export default {
       },
 
       listLoading: false,
-      materialBoxLoading: false, // 产品名称loading
+      materialBoxLoading: false, // 原料名称loading
       workingBoxLoading: false, // 工序搜索loading
-      materialFormVisible: false, // input产品名称弹窗
+      materialFormVisible: false, // input原料称弹窗
       workingFormVisible: false, // input工序名称弹窗
       editLoading: false, // 编辑loading
       total: 10,
@@ -197,9 +197,6 @@ export default {
       dialogType: 'new',
       materialData: [], // 原料数组
       workingData: [], // 工序数组
-      // materialCode: null, // 成品名称code值
-      // workingCode: null, // 工序的code值
-      // SubMaterialCode: null, // 替换物料code值
       rules: {
         WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'change' }],
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'change' }],

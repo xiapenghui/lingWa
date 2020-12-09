@@ -1,5 +1,5 @@
 <template>
-  <div>待删除菜单</div>
+  <div>想抢</div>
 </template>
 
 <script>

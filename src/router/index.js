@@ -153,69 +153,68 @@ export const asyncRoutes = [
           title: 'ProductionManagement'
         },
         redirect: '/BasicData/ProductionManagement/LineMaintenance',
-        children: [
-          {
-            path: 'LineMaintenance',
-            component: () => import('@/views/BasicData/ProductionManagement/LineMaintenance'),
-            name: 'LineMaintenance',
-            meta: {
-              title: 'LineMaintenance'
-            }
-          },
-
-          {
-            path: 'FactoryInfo',
-            component: () => import('@/views/BasicData/ProductionManagement/FactoryInfo'),
-            name: 'FactoryInfo',
-            meta: {
-              title: 'FactoryInfo'
-            }
-          },
-
-          {
-            path: 'WorkInfo',
-            component: () => import('@/views/BasicData/ProductionManagement/WorkInfo'),
-            name: 'WorkInfo',
-            meta: {
-              title: 'WorkInfo'
-            }
-          },
-
-          {
-            path: 'LineInfo',
-            component: () => import('@/views/BasicData/ProductionManagement/LineInfo'),
-            name: 'LineInfo',
-            meta: {
-              title: 'LineInfo'
-            }
-          },
-
-          {
-            path: 'CenterInfo',
-            component: () => import('@/views/BasicData/ProductionManagement/CenterInfo'),
-            name: 'CenterInfo',
-            meta: {
-              title: 'CenterInfo'
-            }
-          },
-
-          {
-            path: 'TerminalInfo',
-            component: () => import('@/views/BasicData/ProductionManagement/TerminalInfo'),
-            name: 'TerminalInfo',
-            meta: {
-              title: 'TerminalInfo'
-            }
-          },
-
-          {
-            path: 'ProcessMaintenance',
-            component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
-            name: 'ProcessMaintenance',
-            meta: {
-              title: 'ProcessMaintenance'
-            }
+        children: [{
+          path: 'LineMaintenance',
+          component: () => import('@/views/BasicData/ProductionManagement/LineMaintenance'),
+          name: 'LineMaintenance',
+          meta: {
+            title: 'LineMaintenance'
           }
+        },
+
+        {
+          path: 'FactoryInfo',
+          component: () => import('@/views/BasicData/ProductionManagement/FactoryInfo'),
+          name: 'FactoryInfo',
+          meta: {
+            title: 'FactoryInfo'
+          }
+        },
+
+        {
+          path: 'WorkInfo',
+          component: () => import('@/views/BasicData/ProductionManagement/WorkInfo'),
+          name: 'WorkInfo',
+          meta: {
+            title: 'WorkInfo'
+          }
+        },
+
+        {
+          path: 'LineInfo',
+          component: () => import('@/views/BasicData/ProductionManagement/LineInfo'),
+          name: 'LineInfo',
+          meta: {
+            title: 'LineInfo'
+          }
+        },
+
+        {
+          path: 'CenterInfo',
+          component: () => import('@/views/BasicData/ProductionManagement/CenterInfo'),
+          name: 'CenterInfo',
+          meta: {
+            title: 'CenterInfo'
+          }
+        },
+
+        {
+          path: 'TerminalInfo',
+          component: () => import('@/views/BasicData/ProductionManagement/TerminalInfo'),
+          name: 'TerminalInfo',
+          meta: {
+            title: 'TerminalInfo'
+          }
+        },
+
+        {
+          path: 'ProcessMaintenance',
+          component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
+          name: 'ProcessMaintenance',
+          meta: {
+            title: 'ProcessMaintenance'
+          }
+        }
         ]
       },
 
@@ -226,46 +225,44 @@ export const asyncRoutes = [
         name: 'ProductMmanagement',
         meta: {
           title: 'ProductMmanagement'
-
         },
         redirect: '/BasicData/ProductMmanagement/BomMangement',
-        children: [
-          {
-            path: 'BomMangement',
-            component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
-            name: 'BomMangement',
-            meta: {
-              title: 'BomMangement'
+        children: [{
+          path: 'BomMangement',
+          component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
+          name: 'BomMangement',
+          meta: {
+            title: 'BomMangement'
 
-            }
-          },
-          {
-            path: 'BomMangementDetaile',
-            component: () => import('@/views/BasicData/ProductMmanagement/BomMangementDetaile'),
-            name: 'BomMangementDetaile',
-            hidden: true,
-            meta: {
-              title: 'BomMangementDetaile'
-            }
-          },
-          {
-            path: 'RouteMaintenance',
-            component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
-            name: 'RouteMaintenance',
-            meta: {
-              title: 'RouteMaintenance'
-
-            }
-          },
-          {
-            path: 'RouteMaintenanceDetaile',
-            component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenanceDetaile'),
-            name: 'RouteMaintenanceDetaile',
-            hidden: true,
-            meta: {
-              title: 'RouteMaintenanceDetaile'
-            }
           }
+        },
+        {
+          path: 'BomMangementDetaile',
+          component: () => import('@/views/BasicData/ProductMmanagement/BomMangementDetaile'),
+          name: 'BomMangementDetaile',
+          hidden: true,
+          meta: {
+            title: 'BomMangementDetaile'
+          }
+        },
+        {
+          path: 'RouteMaintenance',
+          component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
+          name: 'RouteMaintenance',
+          meta: {
+            title: 'RouteMaintenance'
+
+          }
+        },
+        {
+          path: 'RouteMaintenanceDetaile',
+          component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenanceDetaile'),
+          name: 'RouteMaintenanceDetaile',
+          hidden: true,
+          meta: {
+            title: 'RouteMaintenanceDetaile'
+          }
+        }
         ]
       },
       // 物料信息管理模块
@@ -316,50 +313,84 @@ export const asyncRoutes = [
           meta: {
             title: 'CustomerInformation'
           }
-        }
-        ]
+        }]
       }
 
     ]
   },
 
   // 质量管理
-  // {
-  //   path: '/QualityData',
-  //   component: Layout,
-  //   redirect: '/QualityData/BasicData',
-  //   name: 'QualityData',
-  //   meta: {
-  //     title: 'QualityData',
-  //     icon: 'tab'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'BasicData',
-  //       component: () => import('@/views/QualityData/BasicData'),
-  //       name: 'BasicData',
-  //       meta: {
-  //         title: 'BasicData'
-  //       }
-  //     },
-  //     {
-  //       path: 'InspectionTask',
-  //       component: () => import('@/views/QualityData/InspectionTask'),
-  //       name: 'InspectionTask',
-  //       meta: {
-  //         title: 'InspectionTask'
-  //       }
-  //     },
-  //     {
-  //       path: 'MobileInspection',
-  //       component: () => import('@/views/QualityData/MobileInspection'),
-  //       name: 'MobileInspection',
-  //       meta: {
-  //         title: 'MobileInspection'
-  //       }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/QualityData',
+    component: Layout,
+    redirect: '/QualityData/BasicData',
+    name: 'QualityData',
+    meta: {
+      title: 'QualityData',
+      icon: 'tab'
+    },
+    children: [{
+      path: 'BasicData',
+      component: () => import('@/views/QualityData/BasicData/index'),
+      name: 'BasicData',
+      meta: {
+        title: 'BasicData'
+      },
+      redirect: '/QualityData/BasicData/MaterialDefects',
+      children: [{
+        path: 'MaterialDefects',
+        component: () => import('@/views/QualityData/BasicData/MaterialDefects'),
+        name: 'MaterialDefects',
+        meta: {
+          title: 'MaterialDefects'
+        }
+      },
+      {
+        path: 'IncomingInsp',
+        component: () => import('@/views/QualityData/BasicData/IncomingInsp'),
+        name: 'IncomingInsp',
+        meta: {
+          title: 'IncomingInsp'
+        }
+      },
+      {
+        path: 'MaterialInsp',
+        component: () => import('@/views/QualityData/BasicData/MaterialInsp'),
+        name: 'MaterialInsp',
+        meta: {
+          title: 'MaterialInsp'
+        }
+      },
+      {
+        path: 'MaterialInspDetail',
+        component: () => import('@/views/QualityData/BasicData/MaterialInspDetail'),
+        name: 'MaterialInspDetail',
+        meta: {
+          title: 'MaterialInspDetail'
+        }
+      }
+      ]
+    },
+    {
+      path: 'InspectionTask',
+      component: () => import('@/views/QualityData/InspectionTask'),
+      name: 'InspectionTask',
+      meta: {
+        title: 'InspectionTask'
+      },
+      redirect: '/QualityData/InspectionTasks'
+    },
+    {
+      path: 'MobileInspection',
+      component: () => import('@/views/QualityData/MobileInspection'),
+      name: 'MobileInspection',
+      meta: {
+        title: 'MobileInspection'
+      },
+      redirect: '/QualityData/MobileInspection'
+    }
+    ]
+  },
 
   // 参数信息
   {

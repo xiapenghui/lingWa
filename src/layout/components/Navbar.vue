@@ -1,7 +1,9 @@
 <template>
   <div class="navbar">
+
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
         <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
@@ -14,6 +16,14 @@
           <lang-select class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
+      <el-select v-model="value" placeholder="请选择" style="bottom: 7px; width: auto; ">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div v-rest-styleColor="theme" class="avatar-wrapper">
@@ -30,7 +40,9 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+
     </div>
+
   </div>
 </template>
 
@@ -51,6 +63,18 @@ export default {
     SizeSelect,
     LangSelect
     // Search
+  },
+  data() {
+    return {
+      value: '选项1',
+      options: [{
+        value: '选项1',
+        label: '上海灵娃科技有限公司'
+      }, {
+        value: '选项2',
+        label: '上海中智浩云科技有限公司'
+      }]
+    }
   },
   computed: {
     ...mapGetters(['sidebar', 'avatar', 'device', 'username']),

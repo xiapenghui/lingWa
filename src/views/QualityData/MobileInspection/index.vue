@@ -1,5 +1,5 @@
 <template>
-  <div>待删除菜单</div>
+  <div>测试2</div>
 </template>
 
 <script>

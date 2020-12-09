@@ -44,3 +44,46 @@ export function QuaIqcStatus(data) {
     data
   })
 }
+
+//  基础数据 ---原材料质量检验项--列表分页
+export function QuaIqcInList(data) {
+  return request({
+    url: newUrl + '/api/QuaIqcInspect/List',
+    method: 'post',
+    data
+  })
+}
+//  基础数据 ---原材料质量检验项--增加
+export function QuaIqcInAdd(data) {
+  return request({
+    url: newUrl + '/api/QuaIqcInspect/Add',
+    method: 'post',
+    data
+  })
+}
+//  基础数据 ---原材料质量检验项--删除
+export function QuaIqcInDelete(data) {
+  return request({
+    url: newUrl + '/api/QuaIqcInspect/Delete',
+    method: 'post',
+    data
+  })
+}
+
+//  基础数据 ---原材料质量检验项--编辑
+export function QuaIqcInModify(data) {
+  return request({
+    url: newUrl + '/api/QuaIqcInspect/Modify',
+    method: 'post',
+    data
+  })
+}
+
+//  基础数据 ---原材料质量检验项--状态
+// export function QuaIqcInStatus(data) {
+//   return request({
+//     url: newUrl + '/api/QuaIqcInspect/ModifyStatus',
+//     method: 'post',
+//     data
+//   })
+// }
