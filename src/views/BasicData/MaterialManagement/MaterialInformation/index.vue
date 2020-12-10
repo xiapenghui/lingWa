@@ -237,7 +237,6 @@ export default {
 
     // 单位下拉
     GetDictionary({ code: '0021' }).then(res => {
-      debugger
       if (res.IsPass === true) {
         this.UnitTextList = res.Obj
       }
@@ -261,7 +260,7 @@ export default {
     },
     // 禁用，启用权限
     handleBan(row) {
-      debugger
+      
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')
@@ -280,7 +279,7 @@ export default {
           MaterialCode: row.MaterialCode
         }
         MaterialStatus(params).then(res => {
-          debugger
+          
           if (res.IsPass === true) {
             this.$message({
               type: 'success',

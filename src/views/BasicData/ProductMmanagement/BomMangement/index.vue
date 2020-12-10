@@ -332,7 +332,7 @@ export default {
 
     // 查看BOM明细
     handleLook(row) {
-      debugger
+      
       this.$router.push({
         path: '/BasicData/ProductMmanagement/BomMangementDetaile',
         query: {

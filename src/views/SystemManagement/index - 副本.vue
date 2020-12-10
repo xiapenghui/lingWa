@@ -254,7 +254,7 @@ export default {
     },
     // 编辑角色
     handleEdit(row) {
-      debugger
+      
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
@@ -357,7 +357,7 @@ export default {
     handleLook(row) {
       this.logId = row
       ListUser(this.paginationLog, { RoleCode: row.RoleCode }).then(res => {
-        debugger
+        
         if (res.TotalRowCount > 0) {
           this.dialogTableVisible = true
           this.userData = res.Obj

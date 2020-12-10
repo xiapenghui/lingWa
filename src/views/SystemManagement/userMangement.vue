@@ -273,9 +273,9 @@ export default {
   mounted() {
     // 获取公司部门的信息
     companyList().then(res => {
-      debugger
+      
       if (res.IsPass === true) {
-        debugger
+        
         this.companyData = res.Obj.OrgList
         this.DepFullData = res.Obj.DeptList
         this.rouleOptions = res.Obj.RoleList

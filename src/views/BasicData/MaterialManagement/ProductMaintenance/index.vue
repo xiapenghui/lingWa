@@ -127,10 +127,12 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model="ruleForm.MaterialNum" placeholder="成品编号" clearable /></el-form-item>
-        <el-form-item label="原料名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="成品名称" clearable /></el-form-item>
-        <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="成品规格" clearable /></el-form-item>
-        <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
+        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model="ruleForm.MaterialNum" placeholder="成品编号" /></el-form-item>
+        <el-form-item label="原料名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="成品名称" /></el-form-item>
+        <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="成品规格" /></el-form-item>
+        <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" /></el-form-item>
+
+        <el-form-item label="单位编号"><el-input v-model="ruleForm.Unit" placeholder="单位编号" /></el-form-item>
 
         <el-form-item label="单位" prop="UnitText">
           <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" @change="changeUnit">
@@ -138,9 +140,9 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
+        <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" placeholder="工艺路线" @focus="lineBox" /></el-form-item>
 
-        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

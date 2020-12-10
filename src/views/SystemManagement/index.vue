@@ -517,7 +517,7 @@ export default {
 
     // 删除角色
     handleDelete(row) {
-      debugger
+      
       if (this.tableData.length > 0) {
         this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
           confirmButtonText: this.$t('permission.Confirm'),
@@ -526,7 +526,7 @@ export default {
         })
           .then(() => {
             deleteRole({ RoleCode: row.RoleCode }).then(res => {
-              debugger
+              
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',

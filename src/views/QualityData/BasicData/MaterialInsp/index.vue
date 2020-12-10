@@ -589,7 +589,7 @@ export default {
     },
     // 增加来料检验规则双击事件获取当前行的值
     incomingClick(row) {
-      debugger
+      
       this.ruleForm.IQCRuleNum = row.RuleNum
       this.ruleForm.IQCCode = row.IQCCode
       this.incomingFormVisible = false

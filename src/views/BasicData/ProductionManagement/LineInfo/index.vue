@@ -260,7 +260,7 @@ export default {
 
     // 公司下拉获取值
     FullNameVal(val) {
-      debugger
+      
     },
 
     // 查询
@@ -269,10 +269,10 @@ export default {
       this.getList()
     },
     getList() {
-      debugger
+      
       this.listLoading = true
       ProductLineList(this.pagination).then(res => {
-        debugger
+        
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false

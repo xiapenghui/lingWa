@@ -363,9 +363,9 @@ export default {
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
       if (isEdit) {
-        debugger
+        
       } else {
-        debugger
+        
       }
 
       // const { description, key, name } = this.role

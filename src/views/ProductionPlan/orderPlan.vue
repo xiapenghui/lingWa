@@ -665,7 +665,7 @@ export default {
 
     // 工单类型下拉
     GetDictionary({ code: '0008' }).then(res => {
-      debugger
+      
       if (res.IsPass === true) {
         this.PlanTypeNameData = res.Obj
         this.isGive = res.Obj
@@ -745,7 +745,7 @@ export default {
     getList() {
       this.listLoading = true
       orderList(this.pagination).then(res => {
-        debugger
+        
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false

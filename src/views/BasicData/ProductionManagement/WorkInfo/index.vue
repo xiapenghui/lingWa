@@ -120,8 +120,8 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="车间编号" prop="WorkshopNum"><el-input v-model="ruleForm.WorkshopNum" placeholder="车间编号" /></el-form-item>
         <el-form-item label="车间名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="车间名称" /></el-form-item>
-        <el-form-item label="公司名称" prop="FactoryNum">
-          <el-select v-model="pagination.WorkshopName" placeholder="公司名称" style="width: 100%" @change="changeName">
+        <el-form-item label="公司名称" prop="FactoryName">
+          <el-select v-model="pagination.FactoryName" placeholder="公司名称" style="width: 100%" @change="changeName">
             <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -224,7 +224,7 @@ export default {
     // 获取搜索公司下来
     GetAuthOrganizationRange().then(res => {
       if (res.IsPass === true) {
-        debugger
+        
         this.companyData = res.Obj
       }
     })

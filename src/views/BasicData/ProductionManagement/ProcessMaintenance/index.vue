@@ -220,7 +220,7 @@ export default {
     },
     // 禁用，启用权限
     handleBan(row) {
-      debugger
+      
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')

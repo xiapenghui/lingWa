@@ -143,7 +143,7 @@
         <el-form-item label="工作中心编号" prop="WorkCenterNum"><el-input v-model="ruleForm.WorkCenterNum" placeholder="工作中心编号" /></el-form-item>
         <el-form-item label="工作中心名称" prop="WorkCenterName"><el-input v-model="ruleForm.WorkCenterName" placeholder="工作中心名称" /></el-form-item>
 
-        <!--        <el-form-item label="公司编号" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="公司编号" :disabled="true" /></el-form-item>
+        <!--<el-form-item label="公司编号" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="公司编号" :disabled="true" /></el-form-item>
         <el-form-item label="公司名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="公司名称" :disabled="true" /></el-form-item> -->
 
         <el-form-item label="产线名称" prop="LineName">
@@ -280,7 +280,7 @@ export default {
 
     // 公司下拉获取值
     FullNameVal(val) {
-      debugger
+      
     },
 
     // 查询
@@ -314,14 +314,14 @@ export default {
       this.dialogFormVisible = true
       // 获取新增产线名称级联
       treeList({ MinUnitType: 5 }).then(res => {
-        debugger
+        
         this.allSubCatList = this.getTreeData(res.Obj[0].children)
       })
       this.ruleForm = {}
     },
 
     getTreeData(data) {
-      debugger
+      
       for (var i = 0; i < data.length; i++) {
         if (data[i].children.length < 1) {
           // children若为空数组，则将children设为undefined

@@ -355,7 +355,7 @@ export default {
             // params.SubMaterialCode = this.SubMaterialCode
             bomDetailModify(params).then(res => {
               if (res.IsPass === true) {
-                debugger
+                
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')

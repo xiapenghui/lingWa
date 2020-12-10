@@ -76,7 +76,7 @@ export default {
       }, 1000)
     },
     handleDownload() {
-      debugger
+      
       if (this.tableData.length) {
         import('@/vendor/Export2Excel').then(excel => {
           const tHeader = ['日期', '姓名', '地址']
