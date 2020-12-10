@@ -36,7 +36,7 @@
 
     <div class="rightBtn">
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addCompany') }}</el-button>
-      <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">{{ $t('permission.exportCompany') }}</el-button>
+      <el-button type="primary" icon="el-icon-document-remove" @click="handleExport">导出</el-button>
       <!-- <el-button type="primary" icon="el-icon-document-remove">{{ $t('permission.importcompany') }}</el-button> -->
       <!-- <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" /> -->
     </div>
@@ -52,12 +52,12 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" :label="$t('permission.companyNo')" width="150">
+      <el-table-column align="center" :label="$t('permission.companyNo')" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyName')" width="150">
+      <el-table-column align="center" :label="$t('permission.companyName')" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ShortName }}
         </template>
@@ -67,7 +67,7 @@
           {{ scope.row.FullName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyTel')" width="150">
+      <el-table-column align="center" :label="$t('permission.companyTel')" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Tel }}
         </template>
@@ -78,12 +78,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.companyDescription')" width="300">
+      <el-table-column align="center" :label="$t('permission.companyDescription')" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Remark }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.state')" width="150">
+      <el-table-column align="center" :label="$t('permission.state')" width="100">
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
@@ -170,7 +170,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { OrganList, OrganAdd, OrganStatus, OrganModify, OrganDelete } from '@/api/BasicData'
-const fixHeight = 270
+const fixHeight = 260
 export default {
   name: 'CompanyMaintenance',
   components: { Pagination },
@@ -253,7 +253,6 @@ export default {
     },
     // 禁用，启用权限
     handleBan(row) {
-      
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')

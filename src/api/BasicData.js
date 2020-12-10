@@ -596,7 +596,7 @@ export function factoryDelete(data) {
 // 生产组织管理--车间删除
 export function workShopDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/eWorkShopDelete',
+    url: newUrl + '/api/BaseProduceOrganization/WorkShopDelete',
     method: 'post',
     data
   })
@@ -709,4 +709,3 @@ export function stationStatus(data) {
     data
   })
 }
-

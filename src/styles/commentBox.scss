@@ -33,17 +33,19 @@
 .app-container {
   .search {
     border: 1px solid #dfe6ec;
-    padding: 20px 0px 20px  20px;
+    padding: 15px 0px 15px 0px;
     border-radius: 5px;
-
     label {
       font-weight: 500;
       font-size: 15px;
     }
-
+    .radio-label {
+      line-height: 30px;
+      padding: 0;
+    }
     .el-col-8,
     .el-col-12 {
-      text-align: right;
+      text-align: center;
       line-height: 30px;
       overflow: hidden;
       white-space: nowrap;
@@ -51,16 +53,12 @@
       padding-left: 0 !important;
       padding-right: 0 !important;
     }
+    .el-col-3,
     .el-col-4 {
       line-height: 30px;
       text-align: center;
       padding-left: 0 !important;
       padding-right: 0 !important;
-    }
-
-    .center {
-      text-align: center;
-      margin-top: 20px;
     }
     .btnSearchUP {
       padding: 5px;
@@ -130,10 +128,10 @@
 body {
   overflow: hidden;
 }
-body .popoverBackB{
-   background-color: #000000;
-   border: 1px solid #000000;
+body .popoverBackB {
+  background-color: #000000;
+  border: 1px solid #000000;
 }
-body .popoverBackB[x-placement^=top] .popper__arrow::after{
-  border-top-color: #000000
+body .popoverBackB[x-placement^='top'] .popper__arrow::after {
+  border-top-color: #000000;
 }

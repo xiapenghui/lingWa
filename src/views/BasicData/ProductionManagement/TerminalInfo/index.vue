@@ -2,12 +2,12 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="4">
+        <el-col :span="4" style="display: none;">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.OrgName" placeholder="公司名称" style="width: 100%" @change="changeName">
+            <el-select v-model="pagination.OrgCode" placeholder="公司名称" style="width: 100%" @change="changeName">
               <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
@@ -150,19 +150,19 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑公司' : '增加公司'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工位' : '增加工位'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="工位编号" prop="TerminalNum"><el-input v-model="ruleForm.TerminalNum" placeholder="工位编号" /></el-form-item>
         <el-form-item label="工位名称" prop="TerminalName"><el-input v-model="ruleForm.TerminalName" placeholder="工位名称" /></el-form-item>
 
-        <el-form-item label="公司名称" prop="OrgName">
+        <el-form-item label="公司名称" prop="OrgName" style="display: none;">
           <el-select v-model="ruleForm.OrgName" placeholder="公司名称" style="width: 100%" @change="changeName">
             <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="工作中心" prop="CascadeArray">
-          <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" />
+          <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间/产线/中心" />
         </el-form-item>
 
         <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="所属工序" @focus="workingBox" /></el-form-item>
@@ -205,13 +205,11 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {
-        OrgName: null
-      }, // 编辑弹窗
+      ruleForm: {}, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 50,
-        OrgName: null,
+        OrgCode: null,
         TerminalNum: undefined,
         TerminalName: undefined,
         ShowBanned: false
@@ -310,7 +308,7 @@ export default {
         this.companyData = res.Obj
         this.companyData.map((item, index) => {
           if (index === 0) {
-            this.pagination.OrgName = item.value
+            this.pagination.OrgCode = item.value
             this.companyVal = item.value
           }
         })
@@ -340,36 +338,6 @@ export default {
     // 公司下拉获取值
     changeName(val) {
       this.companyVal = val
-    },
-
-    // 新增获取级联的新数组
-    handleChange(value) {
-      this.CenterValue = value
-    },
-
-    // 查询
-    handleSearch() {
-      this.pagination.PageIndex = 1
-      this.getList()
-    },
-    getList() {
-      this.listLoading = true
-      stationList(this.pagination).then(res => {
-        this.tableData = res.Obj
-        this.total = res.TotalRowCount
-        this.listLoading = false
-      })
-    },
-
-    i18n(routes) {
-      const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`)
-        if (route.children) {
-          route.children = this.i18n(route.children)
-        }
-        return route
-      })
-      return app
     },
 
     // 禁用，启用权限
@@ -408,6 +376,31 @@ export default {
       })
     },
 
+    // 查询
+    handleSearch() {
+      this.pagination.PageIndex = 1
+      this.getList()
+    },
+    getList() {
+      this.listLoading = true
+      stationList(this.pagination).then(res => {
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
+    },
+
+    i18n(routes) {
+      const app = routes.map(route => {
+        route.title = i18n.t(`route.${route.title}`)
+        if (route.children) {
+          route.children = this.i18n(route.children)
+        }
+        return route
+      })
+      return app
+    },
+
     // 增加工位
     handleAdd() {
       this.dialogType = 'new'
@@ -417,7 +410,7 @@ export default {
       }
     },
 
-    // 获取新增产线名称级联
+    // 获取新增工作中心名称级联
     getTreeData(data) {
       for (var i = 0; i < data.length; i++) {
         if (data[i].children.length < 1) {
@@ -445,7 +438,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          stationDelete({ FactoryCode: row.FactoryCode }).then(res => {
+          stationDelete({ TerminalCode: row.TerminalCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -474,7 +467,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            stationModify(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.OrgCode = this.companyVal
+            stationModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -494,16 +489,16 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
+                this.dialogFormVisible = false
                 this.getList()
               } else {
                 this.$message({
                   type: 'error',
-                  message: res.MSG
+                  message: '工作中心格式不正确,请重新填写'
                 })
               }
             })
             this.editLoading = false
-            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false

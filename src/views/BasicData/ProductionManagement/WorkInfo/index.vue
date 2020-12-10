@@ -2,24 +2,24 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="4">
+        <el-col :span="6" style="display: none;">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.WorkshopName" placeholder="公司名称" style="width: 100%" @change="changeName">
+            <el-select v-model="pagination.OrgCode" placeholder="公司名称" style="width: 100%" @change="changeName">
               <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
         </el-col>
 
-        <el-col :span="4">
+        <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="车间编号" placement="top-start"><label class="radio-label">车间编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.WorkshopNum" placeholder="车间编号" /></el-col>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="车间名称" placement="top-start"><label class="radio-label">车间名称:</label></el-tooltip>
           </el-col>
@@ -60,19 +60,19 @@
       </el-table-column>
       <el-table-column align="center" label="车间名称">
         <template slot-scope="scope">
-          {{ scope.row.Name }}
+          {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="公司编号" width="150">
         <template slot-scope="scope">
-          {{ scope.row.FactoryNum }}
+          {{ scope.row.OrgCode }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="公司名称">
         <template slot-scope="scope">
-          {{ scope.row.FactoryName }}
+          {{ scope.row.OrgName }}
         </template>
       </el-table-column>
 
@@ -118,10 +118,10 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑车间' : '增加车间'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="车间编号" prop="WorkshopNum"><el-input v-model="ruleForm.WorkshopNum" placeholder="车间编号" /></el-form-item>
-        <el-form-item label="车间名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="车间名称" /></el-form-item>
-        <el-form-item label="公司名称" prop="FactoryName">
-          <el-select v-model="pagination.FactoryName" placeholder="公司名称" style="width: 100%" @change="changeName">
+        <el-form-item label="车间编码" prop="WorkshopNum"><el-input v-model="ruleForm.WorkshopNum" placeholder="车间名称" /></el-form-item>
+        <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model="ruleForm.WorkshopName" placeholder="车间名称" /></el-form-item>
+        <el-form-item label="公司名称" prop="OrgName" style="display: none;">
+          <el-select v-model="ruleForm.OrgName" placeholder="公司名称" style="width: 100%" @change="changeName">
             <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -142,7 +142,7 @@ import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { workShopList, workShopDelete, workShopAdd, workShopModify, workShopStatus, GetAuthOrganizationRange } from '@/api/BasicData'
-const fixHeight = 270
+const fixHeight = 260
 export default {
   name: 'CustomerInformation',
   components: { Pagination },
@@ -153,8 +153,9 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 50,
+        OrgCode: null,
         WorkshopNum: undefined,
-        Name: undefined,
+        WorkshopName: undefined,
         ShowBanned: false
       },
       listLoading: false,
@@ -165,14 +166,12 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
       companyVal: null, // 获取公司下拉值
-      companyNumVal: null, // 获取公司编号下拉值
       companyData: [], // 获取搜索框公司列表
-      companyNumDate: [], // 获取公司编号
       rules: {
-        FactoryNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
-        FactoryName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
         WorkshopNum: [{ required: true, message: '请输入车间编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
+        WorkshopName: [{ required: true, message: '请输入车间名称', trigger: 'blur' }],
+        OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }]
+
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -224,8 +223,13 @@ export default {
     // 获取搜索公司下来
     GetAuthOrganizationRange().then(res => {
       if (res.IsPass === true) {
-        
         this.companyData = res.Obj
+        this.companyData.map((item, index) => {
+          if (index === 0) {
+            this.pagination.OrgCode = item.value
+            this.companyVal = item.value
+          }
+        })
       }
     })
 
@@ -237,20 +241,14 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        FactoryNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
-        FactoryName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
         WorkshopNum: [{ required: true, message: '请输入车间编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
+        WorkshopName: [{ required: true, message: '请输入车间名称', trigger: 'blur' }],
+        OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }]
       }
     },
-
     // 公司下拉获取值
     changeName(val) {
       this.companyVal = val
-    },
-    // 公司下拉获编号取值
-    companyNum(val) {
-      this.companyNumVal = val
     },
     // 查询
     handleSearch() {
@@ -317,7 +315,9 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
-      this.ruleForm = {}
+      this.ruleForm = {
+        OrgName: this.companyVal
+      }
     },
     // 编辑车间
     handleEdit(row) {
@@ -334,7 +334,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          workShopDelete({ FactoryCode: row.FactoryCode }).then(res => {
+          workShopDelete({ WorkshopCode: row.WorkshopCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -363,7 +363,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            workShopModify(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.OrgCode = this.companyVal
+            workShopModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -375,7 +377,9 @@ export default {
               }
             })
           } else {
-            workShopAdd(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.OrgCode = this.companyVal
+            workShopAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',

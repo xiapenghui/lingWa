@@ -2,13 +2,13 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="4">
+        <el-col :span="4" style="display: none;">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.OrgCode" placeholder="公司名称" clearable style="width: 100%" @change="companyNameVal">
-              <el-option v-for="item in FullNameData" :key="item.OrgCode" :label="item.FullName" :value="item.OrgCode" />
+            <el-select v-model="pagination.OrgCode" placeholder="公司名称" style="width: 100%" @change="changeName">
+              <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
         </el-col>
@@ -67,23 +67,23 @@
 
       <el-table-column align="center" label="车间编号" width="150">
         <template slot-scope="scope">
-          {{ scope.row.ParentCode }}
+          {{ scope.row.WorkshopCode }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="车间名称">
         <template slot-scope="scope">
-          {{ scope.row.ParentName }}
+          {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="公司编号" width="150">
         <template slot-scope="scope">
-          {{ scope.row.WorkshopNum }}
+          {{ scope.row.OrgCode }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="公司名称">
         <template slot-scope="scope">
-          {{ scope.row.WorkshopName }}
+          {{ scope.row.OrgName }}
         </template>
       </el-table-column>
 
@@ -131,12 +131,19 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="产线编号" prop="LineNum"><el-input v-model="ruleForm.LineNum" placeholder="产线编号" /></el-form-item>
         <el-form-item label="产线名称" prop="LineName"><el-input v-model="ruleForm.LineName" placeholder="产线名称" /></el-form-item>
-        <el-form-item label="公司编号" prop="FactoryNum"><el-input v-model="ruleForm.FactoryNum" placeholder="公司编号" :disabled="true" /></el-form-item>
-        <el-form-item label="公司名称" prop="FactoryName"><el-input v-model="ruleForm.FactoryName" placeholder="公司名称" :disabled="true" /></el-form-item>
-        <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model="ruleForm.WorkshopName" placeholder="车间名称" :disabled="true" /></el-form-item>
 
-        <el-form-item label="产线类别" prop="WorkshopName">
-          <el-select v-model="pagination.LineType" placeholder="产线类别" clearable style="width: 100%">
+        <el-form-item label="公司名称" prop="OrgName" style="display: none;">
+          <el-select v-model="ruleForm.OrgName" placeholder="公司名称" style="width: 100%" @change="changeName">
+            <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="车间名称" prop="CascadeArray">
+          <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" />
+        </el-form-item>
+
+        <el-form-item label="产线类别">
+          <el-select v-model="ruleForm.LineType" placeholder="产线类别" style="width: 100%">
             <el-option v-for="item in LineNameData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -157,7 +164,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { ProductLineList, ProductLineDelete, ProductLineAdd, ProductLineModify, ProductLineStatus, GetDictionary } from '@/api/BasicData'
+import { ProductLineList, ProductLineDelete, ProductLineAdd, ProductLineModify, ProductLineStatus, GetAuthOrganizationRange, GetDictionary, treeList } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'LineInfo',
@@ -169,6 +176,7 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 50,
+        OrgCode: null,
         LineNum: undefined,
         LineName: undefined,
         ShowBanned: false
@@ -179,14 +187,20 @@ export default {
       dialogFormVisible: false, // 编辑弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
-      FullNameData: [], // 获取搜索框公司列表
-      workNameData: [], // 获取车间下拉值
+      companyVal: null, // 获取公司下拉值
+      companyData: [], // 获取搜索框公司列表
+      allSubCatList: [], // 获取工作中心级联数组
       LineNameData: [], // 获取产线类别下拉
+      optionProps: {
+        value: 'value',
+        label: 'label',
+        children: 'children'
+      }, // 格式化工单信息// 新增加产线级联
       rules: {
-        FactoryNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
-        FactoryName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-        WorkshopNum: [{ required: true, message: '请输入车间编号', trigger: 'blur' }],
-        WorkshopName: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
+        LineNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
+        LineName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
+        OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
+        CascadeArray: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -235,6 +249,24 @@ export default {
       })()
     }
 
+    // 获取搜索公司下来
+    GetAuthOrganizationRange().then(res => {
+      if (res.IsPass === true) {
+        this.companyData = res.Obj
+        this.companyData.map((item, index) => {
+          if (index === 0) {
+            this.pagination.OrgCode = item.value
+            this.companyVal = item.value
+          }
+        })
+      }
+    })
+
+    // 获取新增产线名称级联
+    treeList({ MinUnitType: 4 }).then(res => {
+      this.allSubCatList = this.getTreeData(res.Obj[0].children)
+    })
+
     // 新增获取产线类别下拉
     GetDictionary({ code: '0006' }).then(res => {
       if (res.IsPass === true) {
@@ -242,7 +274,6 @@ export default {
       }
     })
 
-    // 获取搜索公司下来
     this.getList()
     this.setFormRules()
   },
@@ -251,16 +282,17 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        FactoryNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
-        FactoryName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-        WorkshopNum: [{ required: true, message: '请输入车间编号', trigger: 'blur' }],
-        WorkshopName: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
+        LineNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
+        LineName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
+        OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
+        CascadeArray: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
+
       }
     },
 
     // 公司下拉获取值
-    FullNameVal(val) {
-      
+    changeName(val) {
+      this.companyVal = val
     },
 
     // 查询
@@ -269,10 +301,8 @@ export default {
       this.getList()
     },
     getList() {
-      
       this.listLoading = true
       ProductLineList(this.pagination).then(res => {
-        
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -330,8 +360,25 @@ export default {
     handleAddUser() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
-      this.ruleForm = {}
+      this.ruleForm = {
+        OrgName: this.companyVal
+      }
     },
+
+    // 获取新增车间名称级联
+    getTreeData(data) {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].children.length < 1) {
+          // children若为空数组，则将children设为undefined
+          data[i].children = undefined
+        } else {
+          // children若不为空数组，则继续 递归调用 本方法
+          this.getTreeData(data[i].children)
+        }
+      }
+      return data
+    },
+
     // 编辑角色
     handleEdit(row) {
       this.dialogType = 'edit'
@@ -347,7 +394,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          ProductLineDelete({ FactoryCode: row.FactoryCode }).then(res => {
+          ProductLineDelete({ LineCode: row.LineCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -376,7 +423,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            ProductLineModify(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.OrgCode = this.companyVal
+            ProductLineModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -388,12 +437,15 @@ export default {
               }
             })
           } else {
-            ProductLineAdd(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.OrgCode = this.companyVal
+            ProductLineAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
+                this.dialogFormVisible = false
                 this.getList()
               } else {
                 this.$message({
@@ -403,7 +455,6 @@ export default {
               }
             })
             this.editLoading = false
-            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false

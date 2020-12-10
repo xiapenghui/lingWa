@@ -163,15 +163,6 @@ export const asyncRoutes = [
         },
 
         {
-          path: 'FactoryInfo',
-          component: () => import('@/views/BasicData/ProductionManagement/FactoryInfo'),
-          name: 'FactoryInfo',
-          meta: {
-            title: 'FactoryInfo'
-          }
-        },
-
-        {
           path: 'WorkInfo',
           component: () => import('@/views/BasicData/ProductionManagement/WorkInfo'),
           name: 'WorkInfo',

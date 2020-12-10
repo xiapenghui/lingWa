@@ -124,7 +124,6 @@ export default {
           _this.$store
             .dispatch('user/login', _this.loginForm)
             .then((res) => {
-              
               console.log('res', res)
               if (res.IsPass === true) {
                 _this.$router.push({ path: '/' })
