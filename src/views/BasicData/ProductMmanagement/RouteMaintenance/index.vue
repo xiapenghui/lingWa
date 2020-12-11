@@ -23,7 +23,7 @@
       </el-row>
     </div>
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增工艺路线</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增</el-button>
     </div>
     <el-table
       v-loading="listLoading"
@@ -36,25 +36,30 @@
       fit
       highlight-current-row
     >
-      >
-      <el-table-column align="center" label="工艺路路线名称" width="200">
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工艺路路线名称" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="版本" width="200">
+      <el-table-column align="center" label="版本" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Version }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述">
+      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间">
+      <el-table-column align="center" label="生效时间" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
         </template>
@@ -66,13 +71,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="200">
+      <el-table-column align="center" label="维护者" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="维护时间" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -80,27 +85,27 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="工艺明细" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="明细" placement="top-start">
             <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="handleLook(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="编辑工艺" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="复制工艺" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="复制" placement="top-start">
             <el-button type="success" size="small" icon="el-icon-star-on" plain @click="handleCopy(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用工艺" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用工艺" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除工艺" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -116,8 +121,8 @@
         <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" /></el-form-item>
 
         <el-form-item label="生效时间">
-			<el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" />
-		</el-form-item>
+          <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" />
+        </el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
@@ -135,7 +140,7 @@ import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import { baseRouteList, baseRouteDelete, baseRouteAdd, baseRouteModify, baseRouteStatus, baseRouteCopy } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'BomMangement',

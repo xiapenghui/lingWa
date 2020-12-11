@@ -20,8 +20,8 @@
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态的成品" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的成品</el-checkbox>
+            <el-tooltip class="item" effect="dark" content="包含禁状态的客户" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的客户</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -29,7 +29,7 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-    
+
           </el-col>
         </el-col>
       </el-row>
@@ -50,13 +50,18 @@
       fit
       highlight-current-row
     >
-      >
-      <el-table-column align="center" label="客户编号" width="150">
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="客户编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CustomerNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="客户名称" width="150">
+      <el-table-column align="center" label="客户名称" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.FullName }}
         </template>
@@ -67,19 +72,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="电话" width="250">
+      <el-table-column align="center" label="电话" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Tel }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="邮箱" width="150">
+      <el-table-column align="center" label="邮箱" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Email }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="地址" width="300">
+      <el-table-column align="center" label="地址" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Address }}
         </template>
@@ -90,15 +95,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="250">
+      <el-table-column align="center" label="维护者" width="150">
         <template slot-scope="scope">
           {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="维护时间" width="150">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -240,7 +245,6 @@ export default {
     },
     // 禁用，启用权限
     handleBan(row) {
-      
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')

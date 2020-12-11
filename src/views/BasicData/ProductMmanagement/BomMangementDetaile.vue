@@ -37,29 +37,35 @@
       fit
       highlight-current-row
     >
-      >
-      <el-table-column align="center" label="工序编码" width="200">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工序编码" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkingProcedureNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称" width="200">
+      <el-table-column align="center" label="工序名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkingProcedureName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料编码">
+      <el-table-column align="center" label="原料编码" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料名称">
+      <el-table-column align="center" label="原料名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="原料规格">
+      <el-table-column align="center" label="原料规格" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialSpec }}
         </template>
@@ -71,19 +77,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="替代原料编号">
+      <el-table-column align="center" label="替代原料编号" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SubMaterialNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="替代原料名称">
+      <el-table-column align="center" label="替代原料名称" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SubMaterialName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="100">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="编辑BOM" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
@@ -145,7 +151,7 @@ import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, Material
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WorkingName from '@/components/WorkingName' // 工序名称
 import MaterialName from '@/components/MaterialName' // 物料名称
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'BomMangement',
@@ -355,7 +361,6 @@ export default {
             // params.SubMaterialCode = this.SubMaterialCode
             bomDetailModify(params).then(res => {
               if (res.IsPass === true) {
-                
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')

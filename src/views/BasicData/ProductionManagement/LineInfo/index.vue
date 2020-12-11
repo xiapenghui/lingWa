@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="4" style="display: none;">
+        <el-col :span="6" style="display: none;">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
@@ -13,13 +13,13 @@
           </el-col>
         </el-col>
 
-        <el-col :span="4">
+        <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="产线编号" placement="top-start"><label class="radio-label">产线编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.LineNum" placeholder="产线编号" /></el-col>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="产线名称" placement="top-start"><label class="radio-label">产线名称:</label></el-tooltip>
           </el-col>
@@ -53,41 +53,47 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="产线编号" width="150">
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="产线编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线名称">
+      <el-table-column align="center" label="产线名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间编号" width="150">
+      <el-table-column align="center" label="车间编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="车间名称">
+      <el-table-column align="center" label="车间名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="公司编号" width="150">
+      <el-table-column align="center" label="公司编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="公司名称">
+      <el-table-column align="center" label="公司名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线描述">
+      <el-table-column align="center" label="产线描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
@@ -99,9 +105,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="维护时间" width="150">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 

@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="4" style="display: none;">
+        <el-col :span="6" style="display: none;">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
@@ -13,13 +13,13 @@
           </el-col>
         </el-col>
 
-        <el-col :span="4">
+        <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工作中心编号" placement="top-start"><label class="radio-label">工作中心编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.WorkCenterNum" placeholder="工作中心编号" /></el-col>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工作中心名称" placement="top-start"><label class="radio-label">工作中心名称:</label></el-tooltip>
           </el-col>
@@ -53,52 +53,58 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="工作中心编号" width="150">
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工作中心编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkCenterNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工作中心名称" width="150">
+      <el-table-column align="center" label="工作中心名称" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkCenterName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线编号" width="150">
+      <el-table-column align="center" label="产线编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="产线名称">
+      <el-table-column align="center" label="产线名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间编号" width="150">
+      <el-table-column align="center" label="车间编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="车间名称">
+      <el-table-column align="center" label="车间名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="公司编号" width="150">
+      <el-table-column align="center" label="公司编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="公司名称" width="200">
+      <el-table-column align="center" label="公司名称" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工作中心描述" width="200">
+      <el-table-column align="center" label="工作中心描述" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
@@ -112,7 +118,7 @@
 
       <el-table-column align="center" label="维护时间" width="200">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -176,7 +182,7 @@ import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { WorkCenterList, WorkCenterDelete, WorkCenterAdd, WorkCenterModify, WorkCenterStatus, treeList, GetDictionary, GetAuthOrganizationRange } from '@/api/BasicData'
-const fixHeight = 270
+const fixHeight = 260
 export default {
   name: 'CenterInfo',
   components: { Pagination },

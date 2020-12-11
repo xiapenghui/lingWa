@@ -53,30 +53,37 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="车间编号" width="150">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="车间编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="车间名称">
+      <el-table-column align="center" label="车间名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="公司编号" width="150">
+      <el-table-column align="center" label="公司编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgCode }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="公司名称">
+      <el-table-column align="center" label="公司名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间描述">
+      <el-table-column align="center" label="车间描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
@@ -90,7 +97,7 @@
 
       <el-table-column align="center" label="维护时间" width="200">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 

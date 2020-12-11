@@ -44,18 +44,22 @@
       fit
       highlight-current-row
     >
-
-      <el-table-column align="center" label="原料编码" width="150">
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="原料编码" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料名称" width="150">
+      <el-table-column align="center" label="原料名称" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料规格" width="150">
+      <el-table-column align="center" label="原料规格" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Spec }}
         </template>
@@ -85,13 +89,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述">
+      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150">
+      <el-table-column align="center" label="维护者" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
         </template>
@@ -260,7 +264,6 @@ export default {
     },
     // 禁用，启用权限
     handleBan(row) {
-      
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')
@@ -279,7 +282,6 @@ export default {
           MaterialCode: row.MaterialCode
         }
         MaterialStatus(params).then(res => {
-          
           if (res.IsPass === true) {
             this.$message({
               type: 'success',

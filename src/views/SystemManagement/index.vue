@@ -29,50 +29,49 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" :label="$t('permission.name')" width="120">
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" :label="$t('permission.name')" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RoleName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="100" prop="status">
+      <el-table-column align="center" :label="$t('permission.state')" width="150">
         <template slot-scope="scope">
           <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status ===false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="120" prop="name">
+      <el-table-column align="center" :label="$t('permission.user')" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="200">
+      <el-table-column align="center" :label="$t('permission.time')" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="header-center" :label="$t('permission.description')">
+      <el-table-column align="header-center" :label="$t('permission.description')" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.operations')" width="250">
         <template slot-scope="scope">
-          <!-- <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('permission.editPermission') }}</el-button> -->
-          <!-- <el-button type="info" size="small" @click="handleCoply(scope.row)">{{ $t('permission.coplyPermission') }}</el-button> -->
-          <!-- <el-button type="warning" size="small" @click="handleLook(scope.row)">{{ $t('permission.lookPermission') }}</el-button> -->
-          <!-- <el-button v-if="scope.row.UseStatus == 1" v-show="scope.row.Keep == 0" type="danger" size="small" @click="handleBan(scope.row)">
-            {{ $t('permission.handleBan') }}
-          </el-button> -->
-          <!-- <el-button v-else v-show="scope.row.Keep == 0" type="success" size="small" @click="handleBan(scope.row)">{{ $t('permission.handleEnable') }}</el-button> -->
-          <!-- <el-button v-show="scope.row.Keep == 0" type="danger" size="small" @click="handleDelete(scope.row)">{{ $t('permission.delete') }}</el-button> -->
-          <el-tooltip class="item" effect="dark" content="编辑角色" placement="top-start">
+
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button v-show="scope.row.Keep == 0" type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row, 'edit', $t('permission.editRole'))" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="复制角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="复制" placement="top-start">
             <el-button type="success" size="small" icon="el-icon-star-on" plain @click="handleCoply(scope.row)" />
           </el-tooltip>
 
@@ -80,15 +79,15 @@
             <el-button type="warning" size="small" icon="el-icon-view" plain @click="handleLook(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" v-show="scope.row.Keep == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -155,7 +154,7 @@ import '../../styles/scrollbar.css'
 import { ListRole, addRole, updateRole, deleteRole, ListMenuFunAll, ListUser, UpdateStatus, ListRoleMenuFun } from '@/api/role'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-const fixHeight = 280
+const fixHeight = 260
 export default {
   name: 'RolePermission',
   components: { Pagination },
@@ -517,7 +516,6 @@ export default {
 
     // 删除角色
     handleDelete(row) {
-      
       if (this.tableData.length > 0) {
         this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
           confirmButtonText: this.$t('permission.Confirm'),
@@ -526,7 +524,6 @@ export default {
         })
           .then(() => {
             deleteRole({ RoleCode: row.RoleCode }).then(res => {
-              
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',

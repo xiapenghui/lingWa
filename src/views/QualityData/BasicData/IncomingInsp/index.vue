@@ -64,22 +64,29 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="检验规则编号" width="150">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="检验规则编号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RuleNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="描述">
+      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="批量范围从" width="150">
+      <el-table-column align="center" label="批量范围从" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.StartQty }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="批量范围至" width="150">
+      <el-table-column align="center" label="批量范围至" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EndQty }}
         </template>
@@ -102,15 +109,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="200">
+      <el-table-column align="center" :label="$t('permission.user')" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CreateUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="200">
+      <el-table-column align="center" :label="$t('permission.time')" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime }}
+          {{ scope.row.CreateTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -171,7 +178,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { QuaIqcList, QuaIqcAdd, QuaIqcDelete, QuaIqcModify, QuaIqcStatus } from '@/api/QualityData'
-const fixHeight = 270
+const fixHeight = 260
 export default {
   name: 'CompanyMaintenance',
   components: { Pagination },
@@ -298,7 +305,6 @@ export default {
     },
     // 禁用，启用权限
     handleBan(row) {
-      
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')

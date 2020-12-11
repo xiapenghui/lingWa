@@ -45,42 +45,47 @@
       fit
       highlight-current-row
     >
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
 
-      <el-table-column align="center" label="工序编号">
+      <el-table-column align="center" label="工序编号" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称">
+      <el-table-column align="center" label="工序名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序描述">
+      <el-table-column align="center" label="工序描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="倒扣账标识" width="250">
+      <el-table-column align="center" label="倒扣账标识" width="100">
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsBackFlush === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsBackFlush === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')">
+      <el-table-column align="center" :label="$t('permission.state')" width="100">
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="250">
+      <el-table-column align="center" label="维护者" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="维护时间" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -220,7 +225,6 @@ export default {
     },
     // 禁用，启用权限
     handleBan(row) {
-      
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')

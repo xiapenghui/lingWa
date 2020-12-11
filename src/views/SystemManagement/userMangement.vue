@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="6">
+        <el-col :span="4">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
               <label class="radio-label">{{ $t('permission.userName') }}:</label>
@@ -10,7 +10,7 @@
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.AccountName" :placeholder="$t('permission.userNameInfo')" clearable /></el-col>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
               <label class="radio-label">{{ $t('permission.fullName') }}:</label>
@@ -18,16 +18,7 @@
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable /></el-col>
         </el-col>
-        <el-col :span="6">
-          <el-col :span="12">
-            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">{{ $t('permission.containInfo') }}</el-checkbox>
-            </el-tooltip>
-          </el-col>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" style="margin-top: 20px;">
-        <el-col :span="6">
+        <el-col :span="4">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
               <label class="radio-label">{{ $t('permission.company') }}:</label>
@@ -39,7 +30,7 @@
             </el-select>
           </el-col>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
               <label class="radio-label">{{ $t('permission.department') }}:</label>
@@ -51,9 +42,17 @@
             </el-select>
           </el-col>
         </el-col>
+
+        <el-col :span="4">
+          <el-col :span="24">
+            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">{{ $t('permission.containInfo') }}</el-checkbox>
+            </el-tooltip>
+          </el-col>
+        </el-col>
+
         <el-col :span="4">
           <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-
         </el-col>
       </el-row>
     </div>
@@ -73,36 +72,42 @@
       fit
       highlight-current-row
     >
-      >
-      <el-table-column align="center" :label="$t('permission.userName')" width="150">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" :label="$t('permission.userName')" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.AccountName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.fullName')" width="150">
+      <el-table-column align="center" :label="$t('permission.fullName')" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.NameCN }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.title')" width="150">
+      <el-table-column align="center" :label="$t('permission.title')" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RoleName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.company')" width="250">
+      <el-table-column align="center" :label="$t('permission.company')" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgFullName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.department')" width="150">
+      <el-table-column align="center" :label="$t('permission.department')" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.DepFullName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.description')" width="300">
+      <el-table-column align="center" :label="$t('permission.description')" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
@@ -113,39 +118,39 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" prop="name" sortable width="250">
+      <el-table-column align="center" :label="$t('permission.user')" prop="name" sortable width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="200">
+      <el-table-column align="center" :label="$t('permission.time')" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除角色" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
-    <!-- <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" /> -->
+    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
@@ -183,12 +188,12 @@
 import '../../styles/commentBox.scss'
 import '../../styles/scrollbar.css'
 import i18n from '@/lang'
-// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { companyList, UserList, UserAdd, UserUpdate, RelerStatus, RelerDelete } from '@/api/role'
-const fixHeight = 300
+const fixHeight = 260
 export default {
   name: 'UserMangement',
-  // components: { Pagination },
+  components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -199,8 +204,8 @@ export default {
         AccountName: undefined,
         NameCN: undefined,
         ShowBanned: false,
-        OrgCode: '',
-        DeptCode: ''
+        OrgCode: null,
+        DeptCode: null
       },
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -273,9 +278,7 @@ export default {
   mounted() {
     // 获取公司部门的信息
     companyList().then(res => {
-      
       if (res.IsPass === true) {
-        
         this.companyData = res.Obj.OrgList
         this.DepFullData = res.Obj.DeptList
         this.rouleOptions = res.Obj.RoleList

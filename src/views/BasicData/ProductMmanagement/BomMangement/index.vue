@@ -30,7 +30,7 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addMaterial') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addMaterial') }}</el-button>
     </div>
 
     <el-table
@@ -44,18 +44,23 @@
       fit
       highlight-current-row
     >
-      >
-      <el-table-column align="center" label="成品编码" width="200">
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="成品编码" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="成品名称" width="200">
+      <el-table-column align="center" label="成品名称" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="BOM版本">
+      <el-table-column align="center" label="BOM版本" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Version }}
         </template>
@@ -67,25 +72,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="BOM描述">
+      <el-table-column align="center" label="BOM描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="200">
+      <el-table-column align="center" label="维护者" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CreateUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间">
+      <el-table-column align="center" label="生效时间" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="维护时间" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CreateTime | substringTime }}
         </template>
@@ -176,7 +181,7 @@ import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import FinshName from '@/components/FinshName' // 成品名称
 import LineName from '@/components/LineName' // 工艺路线名称
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'BomMangement',
@@ -332,7 +337,6 @@ export default {
 
     // 查看BOM明细
     handleLook(row) {
-      
       this.$router.push({
         path: '/BasicData/ProductMmanagement/BomMangementDetaile',
         query: {
@@ -368,20 +372,20 @@ export default {
       return app
     },
 
-    // 增加角色
-    handleAddUser() {
+    // 增加BOM
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {}
     },
-    // 编辑角色
+    // 编辑BOM
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 删除角色
+    // 删除BOM
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),

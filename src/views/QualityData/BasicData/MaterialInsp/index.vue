@@ -42,50 +42,55 @@
       fit
       highlight-current-row
     >
-      >
-      <el-table-column align="center" label="原料编码">
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="原料编码" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料名称">
+      <el-table-column align="center" label="原料名称" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="供应商">
+      <el-table-column align="center" label="供应商" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SupplierName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验类型">
+      <el-table-column align="center" label="检验类型" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.InspectTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验方式">
+      <el-table-column align="center" label="检验方式" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.InspectWayText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="来料检验规则编码">
+      <el-table-column align="center" label="来料检验规则编码" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.IQCRuleNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="版本号">
+      <el-table-column align="center" label="版本号" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Version }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间">
+      <el-table-column align="center" label="生效时间" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Version }}
+          {{ scope.row.EffectiveDate | substringTime }}
         </template>
       </el-table-column>
 
@@ -95,13 +100,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者">
+      <el-table-column align="center" label="维护者" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="创建时间">
+      <el-table-column align="center" label="创建时间" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -200,7 +205,7 @@ import { QuaIqcInList, QuaIqcInDelete, QuaIqcInAdd, QuaIqcInModify, QuaIqcList }
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import MaterialName from '@/components/MaterialName' // 原料名称
 import IncomingName from '@/components/IncomingName' // 来料检验规则
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'BomMangement',
@@ -589,7 +594,6 @@ export default {
     },
     // 增加来料检验规则双击事件获取当前行的值
     incomingClick(row) {
-      
       this.ruleForm.IQCRuleNum = row.RuleNum
       this.ruleForm.IQCCode = row.IQCCode
       this.incomingFormVisible = false

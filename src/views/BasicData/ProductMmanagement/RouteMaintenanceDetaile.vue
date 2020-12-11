@@ -15,7 +15,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增工序</el-button></div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增</el-button></div>
     <el-table
       v-loading="listLoading"
       :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
@@ -27,13 +27,19 @@
       fit
       highlight-current-row
     >
-      >
-      <el-table-column align="center" label="工序代码" width="200">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工序代码" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称" width="200">
+      <el-table-column align="center" label="工序名称" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessName }}
         </template>
@@ -69,25 +75,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注">
+      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="维护时间" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="100">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -154,7 +160,7 @@ import i18n from '@/lang'
 import { baseDetailList, baseDetailAdd, baseDetailDelete, baseDetailModify, GetDictionary, BaseProList } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WorkingName from '@/components/WorkingName' // 工序名称
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'BomMangement',

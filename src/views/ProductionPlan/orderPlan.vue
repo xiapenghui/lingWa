@@ -2,24 +2,73 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="4">
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="生产工单号" placement="top-start"><label class="radio-label">生产工单号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.OrderNum" /></el-col>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.ProductCode" /></el-col>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.ProductName" /></el-col>
         </el-col>
+
+        <el-col :span="5">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start"><label class="radio-label">客户名称:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16"><el-input v-model="pagination.CustomerName" /></el-col>
+        </el-col>
+
+        <el-col :span="3">
+          <el-col :span="24">
+            <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+          </el-col>
+        </el-col>
+        <el-col :span="1">
+          <el-button v-if="btnShow" class="btnSearchUP" type="primary" size="mini" icon="el-icon-d-arrow-left" circle @click="toggle('0')" />
+          <el-button v-else class="btnSearchDown" type="primary" size="mini" icon="el-icon-d-arrow-left" circle @click="toggle('1')" />
+        </el-col>
+      </el-row>
+
+      <el-row v-show="showSearch" :gutter="20" style="margin-top: 10px;">
+        <el-col :span="5">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" content="生产计划单号" placement="top-start"><label class="radio-label">生产计划单号:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16"><el-input v-model="pagination.PlanCode" /></el-col>
+        </el-col>
+
+        <el-col :span="5">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" content="工单类型" placement="top-start"><label class="radio-label">工单类型:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16">
+            <el-select v-model="pagination.OrderType" clearable style="width: 100%">
+              <el-option v-for="item in PlanTypeNameData" :key="item.value" :label="item.text" :value="item.value" />
+            </el-select>
+          </el-col>
+        </el-col>
+
+        <el-col :span="5">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" content="工单状态" placement="top-start"><label class="radio-label">工单状态:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16">
+            <el-select v-model="pagination.Status" clearable style="width: 100%">
+              <el-option v-for="item in StatusNameData" :key="item.value" :label="item.text" :value="item.value" />
+            </el-select>
+          </el-col>
+        </el-col>
+
         <el-col :span="8">
           <el-col :span="4">
             <el-tooltip class="item" effect="dark" content="创建日期" placement="top-start"><label class="radio-label">创建日期:</label></el-tooltip>
@@ -40,67 +89,12 @@
             />
           </el-col>
         </el-col>
-        <el-col :span="3">
-          <el-col :span="24">
-            <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-          </el-col>
-        </el-col>
-        <el-col :span="1">
-          <el-button v-if="btnShow" class="btnSearchUP" type="primary" size="mini" icon="el-icon-d-arrow-left" circle @click="toggle('0')" />
-          <el-button v-else class="btnSearchDown" type="primary" size="mini" icon="el-icon-d-arrow-left" circle @click="toggle('1')" />
-        </el-col>
-      </el-row>
-
-      <el-row v-show="showSearch" :gutter="20" style="margin-top: 20px;">
-        <el-col :span="4">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="生产计划单号" placement="top-start"><label class="radio-label">生产计划单号:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model="pagination.PlanCode" /></el-col>
-        </el-col>
-
-        <el-col :span="4">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start"><label class="radio-label">客户名称:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model="pagination.CustomerName" /></el-col>
-        </el-col>
-
-        <el-col :span="4">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工单类型" placement="top-start"><label class="radio-label">工单类型:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16">
-            <el-select v-model="pagination.OrderType" clearable style="width: 100%">
-              <el-option v-for="item in PlanTypeNameData" :key="item.value" :label="item.text" :value="item.value" />
-            </el-select>
-          </el-col>
-        </el-col>
-
-        <el-col :span="4">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工单状态" placement="top-start"><label class="radio-label">工单状态:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16">
-            <el-select v-model="pagination.Status" clearable style="width: 100%">
-              <el-option v-for="item in StatusNameData" :key="item.value" :label="item.text" :value="item.value" />
-            </el-select>
-          </el-col>
-        </el-col>
       </el-row>
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addOrder') }}</el-button>
-      <el-button type="primary" icon="el-icon-upload2" @click="handleExport">{{ $t('permission.exportPlan') }}</el-button>
-      <!-- <el-button type="success" icon="el-icon-circle-plus-outline" @click="orderSend">{{ $t('permission.orderSend') }}</el-button>
-      <el-button type="danger" icon="el-icon-circle-plus-outline" @click="cancelSend">{{ $t('permission.cancelSend') }}</el-button> -->
-      <!-- <el-button type="success" icon="el-icon-circle-check" @click="cancelFrozen">{{ $t('permission.cancelFrozen') }}</el-button>
-      <el-button type="danger" icon="el-icon-remove-outline" @click="planFrozen">{{ $t('permission.planFrozen') }}</el-button>
-      <el-button type="danger" icon="el-icon-remove-outline" @click="forceOver">{{ $t('permission.forceOver') }}</el-button> -->
-
-      <!-- <el-button type="primary" icon="el-icon-document-remove">{{ $t('permission.importcompany') }}</el-button> -->
-      <!-- <upload-excel-component class="handleImport" :on-success="handleSuccess" :before-upload="beforeUpload" :message="parentMsg" /> -->
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button>
+      <el-button type="primary" icon="el-icon-upload2" @click="handleExport">导出</el-button>
     </div>
 
     <el-table
@@ -512,7 +506,7 @@ import { GetDictionary, GetMaterialList, GetCustomerList, orderModify, GetLine, 
 import { orderList, orderDelete, orderStatus } from '@/api/ProductionPlan'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 
 export default {
@@ -665,7 +659,6 @@ export default {
 
     // 工单类型下拉
     GetDictionary({ code: '0008' }).then(res => {
-      
       if (res.IsPass === true) {
         this.PlanTypeNameData = res.Obj
         this.isGive = res.Obj
@@ -745,7 +738,6 @@ export default {
     getList() {
       this.listLoading = true
       orderList(this.pagination).then(res => {
-        
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -1114,5 +1106,11 @@ export default {
     line-height: 25px;
     text-align: right;
   }
+}
+
+.app-container .pagination-container {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
 }
 </style>
