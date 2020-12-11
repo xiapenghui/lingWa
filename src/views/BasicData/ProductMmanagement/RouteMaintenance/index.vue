@@ -11,7 +11,7 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" content="包含禁状态BOM" placement="top-start">
-              <el-checkbox v-model="pagination.Status">包含禁状态BOM</el-checkbox>
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态BOM</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -42,12 +42,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工艺路路线名称" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工艺路路线名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="版本" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="版本" width="200" prop="Version" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Version }}
         </template>
@@ -59,25 +59,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="生效时间" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="150">
+      <el-table-column align="center" label="状态" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护者" width="200" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护时间" width="200" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -114,7 +114,7 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工艺路线' : '新增工艺路线'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
 
         <el-form-item label="工艺路线名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工艺路线名称" /></el-form-item>

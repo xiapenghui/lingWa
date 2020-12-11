@@ -6,26 +6,26 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="生产工单号" placement="top-start"><label class="radio-label">生产工单号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.OrderNum" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.OrderNum" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductCode" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProductCode" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductName" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProductName" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start"><label class="radio-label">客户名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.CustomerName" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.CustomerName" clearable /></el-col>
         </el-col>
 
         <el-col :span="3">
@@ -71,7 +71,7 @@
 
         <el-col :span="8">
           <el-col :span="4">
-            <el-tooltip class="item" effect="dark" content="创建日期" placement="top-start"><label class="radio-label">创建日期:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="维护日期" placement="top-start"><label class="radio-label">创建日期:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-date-picker
@@ -108,129 +108,136 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="生产计划单号" width="150">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.row.PlanCode }}
+          {{ scope.$index+1 }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生产工单号" width="150">
+      <el-table-column align="center" label="生产计划单号" width="150" prop="PlanNum" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.PlanNum }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="生产工单号" width="150" prop="OrderNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrderNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品编码" width="150">
+      <!--  <el-table-column align="center" label="成品编码" width="150" prop="ProductCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductCode }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column align="center" label="成品名称" width="150">
+      <el-table-column align="center" label="成品名称" width="150" prop="ProductName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工单数量" width="150">
+      <el-table-column align="center" label="工单数量" width="150" prop="PlanQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Color }}
+          {{ scope.row.PlanQuantity }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工单类型" width="150">
+      <el-table-column align="center" label="工单类型" width="150" prop="OrderTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrderTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="客户名称" width="150">
+      <el-table-column align="center" label="客户名称" width="150" prop="CustomerName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CustomerName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="已投数量" width="150">
+      <el-table-column align="center" label="已投数量" width="150" prop="InputQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.InputQuantity }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="完工数量" width="150">
+      <el-table-column align="center" label="完工数量" width="150" prop="CompleteQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CompleteQuantity }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="未完工数" width="150">
+      <el-table-column align="center" label="未完工数" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="报废数量" width="150">
+      <el-table-column align="center" label="报废数量" width="150" prop="ScrapQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ScrapQuantity }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="销售单号" width="150">
+      <el-table-column align="center" label="销售单号" width="150" prop="SaleNum" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.SaleNum }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="销售单行号" width="150" prop="SaleLineNum" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.SaleLineNum }}
+        </template>
+      </el-table-column>
+
+      <!--    <el-table-column align="center" label="客户编号" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column align="center" label="销售单行号" width="150">
+      <el-table-column align="center" label="创建人" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="客户编号" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="创建人" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.CreateUserName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="工单状态" width="150">
+      <el-table-column align="center" label="工单状态" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.StatusText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计开始日期" width="150">
+      <el-table-column align="center" label="计开始日期" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanStartDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划完成日期" width="150">
+      <el-table-column align="center" label="计划完成日期" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanEndDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="实际开始日期" width="150">
+      <el-table-column align="center" label="实际开始日期" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RealStartDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="实际完成日期" width="150">
+      <el-table-column align="center" label="实际完成日期" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RealEndDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="创建日期" width="150">
+      <el-table-column align="center" label="维护日期" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime | substringTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -282,7 +289,7 @@
         <div class="bigUpBox">
           <div class="boxLeft">
             <el-form-item label="生产工单号" prop="OrderNum" :rules="[{ required: true, message: '请输入生产工单号', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" />
+              <el-input v-model="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" clearable />
             </el-form-item>
 
             <el-form-item label="工单类型" prop="OrderType" :rules="[{ required: true, message: '请选择生产计划类型', trigger: 'change' }]">
@@ -292,14 +299,14 @@
             </el-form-item>
 
             <el-form-item label="计划数量" prop="PlanQuantity" :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" />
+              <el-input v-model="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" clearable />
             </el-form-item>
 
             <el-form-item label="计划开始日期">
               <el-date-picker v-model="ruleForm.PlanStartDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
             <el-form-item label="计划投入线" prop="ProductLineCode">
-              <el-select v-model="ruleForm.ProductLineCode" placeholder="计划投入产线" style="width: 100%">
+              <el-select v-model="ruleForm.ProductLineCode" placeholder="计划投入产线" style="width: 100%" clearable>
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
@@ -307,20 +314,22 @@
 
           <div class="boxRight">
             <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" @focus="finshBox" />
+              <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" clearable @focus="finshBox" />
             </el-form-item>
 
-            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" @focus="userBox" /></el-form-item>
+            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" clearable @focus="userBox" /></el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
-              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%">
+              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable>
                 <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
 
-            <el-form-item label="计划结束日期"><el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" /></el-form-item>
+            <el-form-item label="计划结束日期">
+              <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" clearable />
+            </el-form-item>
 
-            <el-form-item label="备注"><el-input v-model="ruleForm.Description" type="textarea" /></el-form-item>
+            <el-form-item label="备注"><el-input v-model="ruleForm.Description" type="textarea" clearable /></el-form-item>
           </div>
         </div>
       </el-form>

@@ -68,7 +68,7 @@
       -webkit-transform: rotate(270deg); /* Safari 和 Chrome */
       -o-transform: rotate(270deg); /* Opera */
       background-color: #ffffff;
-      color:  #004184 ;
+      color: #1890ff;
     }
     .btnSearchDown {
       padding: 5px;
@@ -78,7 +78,13 @@
       -webkit-transform: rotate(90deg); /* Safari 和 Chrome */
       -o-transform: rotate(90deg); /* Opera */
       background-color: #ffffff;
-      color:  #004184 ;
+      color: #1890ff;
+    }
+  }
+  .el-dialog {
+    border-radius: 5px;
+    .el-dialog__header {
+      border-bottom: 1px solid #46a6ff;
     }
   }
 

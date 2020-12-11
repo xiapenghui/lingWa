@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="成品编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="成品编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="成品名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="成品名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -44,60 +44,66 @@
       fit
       highlight-current-row
     >
-      >
-      <el-table-column align="center" label="成品编码" width="150">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="成品编码" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="成品名称" width="150">
+      <el-table-column align="center" label="成品名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="成品规格" width="150">
+      <el-table-column align="center" label="成品规格" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Spec }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="颜色" width="100">
+      <el-table-column align="center" label="颜色" width="150" prop="Color" sortable>
         <template slot-scope="scope">
           {{ scope.row.Color }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="单位" width="100">
+      <el-table-column align="center" label="单位" width="150" prop="UnitText" sortable>
         <template slot-scope="scope">
           {{ scope.row.UnitText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工艺路线名称" width="100">
+      <el-table-column align="center" label="工艺路线名称" width="150" prop="RouteName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RouteName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="100">
+      <el-table-column align="center" label="状态" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述">
+      <el-table-column align="center" label="描述" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150">
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="150">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable>
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -105,19 +111,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑成品" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用成品" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用成品" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除成品" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -127,22 +133,22 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model="ruleForm.MaterialNum" placeholder="成品编号" /></el-form-item>
-        <el-form-item label="原料名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="成品名称" /></el-form-item>
-        <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="成品规格" /></el-form-item>
-        <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" /></el-form-item>
+        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model="ruleForm.MaterialNum" placeholder="成品编号" clearable /></el-form-item>
+        <el-form-item label="原料名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="成品名称" clearable /></el-form-item>
+        <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="成品规格" clearable /></el-form-item>
+        <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
-        <el-form-item label="单位编号"><el-input v-model="ruleForm.Unit" placeholder="单位编号" /></el-form-item>
+        <el-form-item label="单位编号"><el-input v-model="ruleForm.Unit" placeholder="单位编号" clearable /></el-form-item>
 
         <el-form-item label="单位" prop="UnitText">
-          <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" @change="changeUnit">
+          <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" clearable @change="changeUnit">
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" placeholder="工艺路线" @focus="lineBox" /></el-form-item>
+        <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
-        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

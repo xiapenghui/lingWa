@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.CustomerNum') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.OrgNum" placeholder="客户编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.OrgNum" placeholder="客户编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
@@ -16,7 +16,7 @@
               <label class="radio-label">{{ $t('permission.companyName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.FullName" placeholder="客户名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.FullName" placeholder="客户名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -41,7 +41,7 @@
 
     <el-table
       v-loading="listLoading"
-      :header-cell-style="{ background: '#004184 ', color: '#ffffff' }"
+      :header-cell-style="{ background: '#1890ff ', color: '#ffffff' }"
       :data="tableData"
       :height="tableHeight"
       style="width: 100%"
@@ -56,52 +56,52 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="客户编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="客户编号" width="150" prop="CustomerNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CustomerNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="客户名称" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="客户名称" width="150" prop="FullName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.FullName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="联系人" width="150">
+      <el-table-column align="center" label="联系人" width="150" prop="Contact" sortable>
         <template slot-scope="scope">
           {{ scope.row.Contact }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="电话" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="电话" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Tel }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="邮箱" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="邮箱" width="150" prop="Email" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Email }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="地址" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="地址" prop="Address" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Address }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.state')" width="150">
+      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Name" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150">
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUser" sortable>
         <template slot-scope="scope">
           {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="150">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable>
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -109,19 +109,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑客户" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用客户" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用客户" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除客户" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>

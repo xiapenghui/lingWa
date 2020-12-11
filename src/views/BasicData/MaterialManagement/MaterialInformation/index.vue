@@ -49,41 +49,42 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料编码" width="150" :show-overflow-tooltip="true">
+
+      <el-table-column align="center" label="原料编码" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料名称" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料规格" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料规格" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Spec }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="颜色" width="100">
+      <el-table-column align="center" label="颜色" width="100" prop="Color" sortable>
         <template slot-scope="scope">
           {{ scope.row.Color }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="单位" width="100">
+      <el-table-column align="center" label="单位" width="100" prop="UnitText" sortable>
         <template slot-scope="scope">
           {{ scope.row.UnitText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否免检" width="100">
+      <el-table-column align="center" label="是否免检" width="100" prop="IsInspection" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsInspection === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsInspection === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="100">
+      <el-table-column align="center" label="状态" width="100" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
@@ -95,13 +96,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="150">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable>
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -109,19 +110,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑原料" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用原料" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用原料" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除原料" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -137,7 +138,7 @@
         <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
         <el-form-item label="单位" prop="UnitText">
-          <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" @change="changeUnit">
+          <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" clearable @change="changeUnit">
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -146,7 +147,7 @@
           <el-radio v-model="ruleForm.IsInspection" :label="true">是</el-radio>
           <el-radio v-model="ruleForm.IsInspection" :label="false">否</el-radio>
         </el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -255,7 +256,7 @@ export default {
       this.rules = {
         MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
         Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
-        UnitText: [{ required: true, message: '请输入单位', trigger: 'blur' }]
+        UnitText: [{ required: true, message: '请输入单位', trigger: 'change' }]
       }
     },
     // 获取下拉选择单位的最新值

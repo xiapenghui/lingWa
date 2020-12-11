@@ -317,7 +317,7 @@ export default {
     qiyongSuccess: '启用成功',
     jingyongSuccess: '禁用成功',
     copyRole: '复制角色',
-    PlanNum: '生产计划单号',
+    PlanNum: '计划单号',
     ProductNum: '成品编号',
     ProductName: '成品名称',
     CustomerName: '客户名称',

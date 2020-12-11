@@ -50,23 +50,23 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品编码" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品编码" width="200" prop="ProductNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="成品名称" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品名称" width="200" prop="ProductName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="BOM版本" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="BOM版本" width="150" prop="Version" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Version }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="150">
+      <el-table-column align="center" label="状态" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
@@ -78,19 +78,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护者" width="150" prop="CreateUser" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CreateUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="生效时间" width="150" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护时间" width="150" prop="CreateTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CreateTime | substringTime }}
         </template>
@@ -98,27 +98,27 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="BOM明细" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="明细" placement="top-start">
             <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="handleLook(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="编辑BOM" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="复制BOM" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="复制" placement="top-start">
             <el-button type="success" size="small" icon="el-icon-star-on" plain @click="handleCopy(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用BOM" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用BOM" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除BOM" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -129,14 +129,14 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="成品编号" prop="ProductNum"><el-input v-model="ruleForm.ProductNum" placeholder="成品编号" @focus="finshBox" /></el-form-item>
+        <el-form-item label="成品编号" prop="ProductNum"><el-input v-model="ruleForm.ProductNum" placeholder="请选择" clearable @focus="finshBox" /></el-form-item>
         <el-form-item label="成品名称"><el-input v-model="ruleForm.ProductName" placeholder="成品名称" :disabled="true" /></el-form-item>
         <el-form-item label="BOM版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="BOM版本" clearable /></el-form-item>
 
         <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
         <el-form-item label="生效时间">
-          <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" />
+          <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>

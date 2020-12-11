@@ -59,35 +59,35 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="产线编号" width="150" prop="LineNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线名称" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="产线名称" prop="LineName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="车间编号" width="150" prop="WorkshopCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="车间名称" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="车间名称" prop="WorkshopName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="公司编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="公司编号" width="150" prop="OrgCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="公司名称" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="公司名称" prop="OrgName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgName }}
         </template>
@@ -99,13 +99,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150">
+      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="150">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable>
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -154,7 +154,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="产线描述"><el-input v-model="ruleForm.Description" placeholder="产线描述" type="textarea" /></el-form-item>
+        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">

@@ -5,10 +5,10 @@
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-              <label class="radio-label">{{ $t('permission.PlanNum') }}:</label>
+              <label class="radio-label">计划单号:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.PlanNum" :placeholder="$t('permission.PlanNum')" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.PlanNum" :placeholder="$t('permission.PlanNum')" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
@@ -16,7 +16,7 @@
               <label class="radio-label">{{ $t('permission.ProductNum') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductNum" :placeholder="$t('permission.ProductNum')" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProductNum" :placeholder="$t('permission.ProductNum')" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
@@ -24,7 +24,7 @@
               <label class="radio-label">{{ $t('permission.ProductName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductName" :placeholder="$t('permission.ProductName')" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProductName" :placeholder="$t('permission.ProductName')" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
@@ -33,7 +33,7 @@
               <label class="radio-label">{{ $t('permission.CustomerName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.CustomerFullName" :placeholder="$t('permission.CustomerName')" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.CustomerFullName" :placeholder="$t('permission.CustomerName')" clearable /></el-col>
         </el-col>
 
         <el-col :span="3">
@@ -116,119 +116,126 @@
       highlight-current-row
       @selection-change="handleSelectionChange"
     >
-      <el-table-column align="center" :label="$t('permission.PlanNum')" width="150" :show-overflow-tooltip="true">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" :label="$t('permission.PlanNum')" width="150" prop="PlanNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.ProductNum')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.ProductNum')" width="150" prop="ProductNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.ProductName')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.ProductName')" width="150" prop="ProductName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.PlanQuantity')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.PlanQuantity')" width="150" prop="PlanQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanQuantity }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.SchedulingQuantity')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.SchedulingQuantity')" width="150" prop="SchedulingQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SchedulingQuantity }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.CompleteQuantity')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.CompleteQuantity')" width="150" prop="CompleteQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CompleteQuantity }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.CustomerName')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.CustomerName')" width="150" prop="CustomerName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CustomerName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.SaleNum')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.SaleNum')" width="150" prop="SaleNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SaleNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.SaleLineNum')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.SaleLineNum')" width="150" prop="SaleLineNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SaleLineNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.CustomerNum')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.CustomerNum')" width="150" prop="CustomerNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CustomerNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.LastQuantity')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.LastQuantity')" width="150" prop="LastQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LastQuantity }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.CreateUser')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.CreateUser')" width="150" prop="CreateUser" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CreateUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.PlanTypeName')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.PlanTypeName')" width="150" prop="PlanTypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanTypeName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.StatusName')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.StatusName')" width="150" prop="StatusName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.StatusName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.PlanDeliveryDate')" width="120" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.PlanDeliveryDate')" width="120" prop="PlanDeliveryDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanDeliveryDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.PlanStartDate')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.PlanStartDate')" width="150" prop="PlanStartDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanStartDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.PlanEndDate')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.PlanEndDate')" width="150" prop="PlanEndDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanEndDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.RealStartDate')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.RealStartDate')" width="150" prop="RealStartDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RealStartDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.RealEndDate')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.RealEndDate')" width="150" prop="RealEndDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RealEndDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.CreateTime')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime | substringTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -302,10 +309,10 @@
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.splitNumOther')" prop="SplitQuantity">
-              <el-input v-model="ruleForm.SplitQuantity" :placeholder="$t('permission.splitNumOther')" :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]" />
+              <el-input v-model="ruleForm.SplitQuantity" :placeholder="$t('permission.splitNumOther')" :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]" clearable />
             </el-form-item>
 
-            <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" /></el-form-item>
+            <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable /></el-form-item>
 
             <el-form-item :label="$t('permission.PlanStartDate')" prop="PlanStartDate" :rules="[{ required: isAlarmItem, message: '请输入计划开始日期', trigger: 'blur' }]">
               <el-date-picker v-model="ruleForm.PlanStartDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
@@ -313,27 +320,27 @@
           </div>
           <div class="boxRight">
             <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'change' }]">
-              <el-input v-model="ruleForm.ProductName" :placeholder="$t('permission.ProductName')" :disabled="isDisabled" @focus="finshBox" />
+              <el-input v-model="ruleForm.ProductName" placeholder="请选择" :disabled="isDisabled" clearable @focus="finshBox" />
             </el-form-item>
 
             <el-form-item :label="$t('permission.CustomerName')" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" :disabled="isDisabled" @focus="userBox" />
+              <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" :disabled="isDisabled" clearable @focus="userBox" />
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
-              <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%">
+              <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%" clearable>
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
-              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%">
+              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable>
                 <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')">
-              <el-input v-model="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" />
+              <el-input v-model="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" clearable />
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">

@@ -27,8 +27,8 @@
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态的公司" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的公司</el-checkbox>
+            <el-tooltip class="item" effect="dark" content="包含禁状态的车间" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的车间</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -60,24 +60,24 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="车间编号" width="200" prop="WorkshopNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="车间名称" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="车间名称" width="200" prop="WorkshopName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="公司编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="公司编号" width="200" prop="OrgCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgCode }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="公司名称" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="公司名称" width="200" prop="OrgName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgName }}
         </template>
@@ -89,13 +89,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150">
+      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable>
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -123,7 +123,7 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑车间' : '增加车间'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '增加'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="车间编码" prop="WorkshopNum"><el-input v-model="ruleForm.WorkshopNum" placeholder="车间名称" /></el-form-item>
         <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model="ruleForm.WorkshopName" placeholder="车间名称" /></el-form-item>
@@ -132,7 +132,7 @@
             <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="车间描述"><el-input v-model="ruleForm.Description" placeholder="公司描述" type="textarea" /></el-form-item>
+        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">

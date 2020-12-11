@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :close-on-click-modal="false" :visible.sync="fishShow" :before-close="fishClose" title="成品名称" width="70%" height="50%">
+  <el-dialog :close-on-click-modal="false" :visible.sync="fishShow" :before-close="fishClose" title="列表" width="70%" height="50%">
     <div class="searchBox" style="margin-bottom: 20px;">
       <el-row :gutter="20">
         <el-col :span="8">
@@ -31,7 +31,7 @@
     <el-table
       v-loading="listBoxLoading"
       :height="tableBoxHeight"
-      :header-cell-style="{ background: '#004184 ', color: '#ffffff' }"
+      :header-cell-style="{ background: '#1890ff ', color: '#ffffff' }"
       :data="finshData"
       style="width: 100%"
       border

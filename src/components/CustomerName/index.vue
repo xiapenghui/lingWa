@@ -31,7 +31,7 @@
     <el-table
       v-loading="userBoxLoading"
       :height="tableBoxHeight"
-      :header-cell-style="{ background: '#004184 ', color: '#ffffff' }"
+      :header-cell-style="{ background: '#1890ff ', color: '#ffffff' }"
       :data="userData"
       style="width: 100%"
       border

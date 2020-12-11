@@ -6,7 +6,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工序名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProcessName" placeholder="工序名称" /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -34,42 +34,42 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工序代码" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序代码" width="200" prop="ProcessCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序名称" width="200" prop="ProcessName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否检验">
+      <el-table-column align="center" label="是否检验" prop="IsChecked" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsChecked === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsChecked === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验方式">
+      <el-table-column align="center" label="检验方式" prop="CheckedTypeText" sortable>
         <template slot-scope="scope">
           {{ scope.row.CheckedTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否必过">
+      <el-table-column align="center" label="是否必过" prop="IsMustPass" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsMustPass === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsMustPass === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否打印">
+      <el-table-column align="center" label="是否打印" prop="IsPrint" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsPrint === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsPrint === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="顺序">
+      <el-table-column align="center" label="顺序" prop="OrderNum" sortable>
         <template slot-scope="scope">
           {{ scope.row.OrderNum }}
         </template>
@@ -81,9 +81,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -102,9 +102,9 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工序' : '新增工序'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工序代码" prop="ProcessCode"><el-input v-model="ruleForm.ProcessCode" placeholder="工序代码" @focus="workingBox" /></el-form-item>
+        <el-form-item label="工序代码" prop="ProcessCode"><el-input v-model="ruleForm.ProcessCode" placeholder="请选择" @focus="workingBox" /></el-form-item>
 
         <el-form-item label="工序名称" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="工序名称" :disabled="true" /></el-form-item>
 
@@ -173,8 +173,7 @@ export default {
         PageIndex: 1,
         PageSize: 30,
         ProcessRouteCode: this.$route.query.ProcessRouteCode,
-        Name: undefined,
-        Status: false
+        ProcessName: undefined
       },
       // 工序搜索条件
       paginationSearchWorking: {

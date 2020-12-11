@@ -79,29 +79,29 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.userName')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.userName')" width="150" prop="AccountName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.AccountName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.fullName')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.fullName')" width="150" prop="NameCN" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.NameCN }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.title')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.title')" width="150" prop="RoleName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RoleName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.company')" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.company')" width="200" prop="OrgFullName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgFullName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.department')" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.department')" width="200" prop="DepFullName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.DepFullName }}
         </template>
@@ -112,7 +112,7 @@
           {{ scope.row.Description }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
+      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
@@ -124,7 +124,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.time')" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>

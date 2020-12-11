@@ -50,12 +50,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工序编号" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序编号" prop="ProcessNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序名称" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
@@ -66,25 +66,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="倒扣账标识" width="150">
+      <el-table-column align="center" label="倒扣账标识" width="150" prop="IsBackFlush" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsBackFlush === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsBackFlush === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150">
+      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUser" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -92,19 +92,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -112,7 +112,7 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工序' :'新增工序'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' :'新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="工序编号"><el-input v-model="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
         <el-form-item label="工序名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>
@@ -121,8 +121,8 @@
           <el-radio v-model="ruleForm.IsBackFlush" :label="false">否</el-radio>
         </el-form-item>
         <el-form-item label="倒扣账代码"><el-input v-model="ruleForm.BackFlushCode" placeholder="倒扣账代码" clearable /></el-form-item>
-        <el-form-item label="工序描述"><el-input v-model="ruleForm.Description" placeholder="工序描述" clearable /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
+        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" clearable type="textarea" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

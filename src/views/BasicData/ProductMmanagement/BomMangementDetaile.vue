@@ -22,9 +22,7 @@
       </el-row>
     </div>
 
-    <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addBomDelite') }}</el-button>
-    </div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
 
     <el-table
       v-loading="listLoading"
@@ -37,53 +35,52 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工序编码" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序编码" prop="WorkingProcedureNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkingProcedureNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序名称" prop="WorkingProcedureName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkingProcedureName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料编码" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料编码" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料名称" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料名称" prop="MaterialName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="原料规格" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料规格" prop="MaterialSpec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialSpec }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="用量">
+      <el-table-column align="center" label="用量" prop="Usage" sortable>
         <template slot-scope="scope">
           {{ scope.row.Usage }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="替代原料编号" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="替代原料编号" width="200" prop="SubMaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SubMaterialNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="替代原料名称" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="替代原料名称" width="200" prop="SubMaterialName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SubMaterialName }}
         </template>
@@ -91,11 +88,11 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="100">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑BOM" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除BOM" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -105,11 +102,15 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工序" prop="WorkingProcedureName"><el-input v-model="ruleForm.WorkingProcedureName" placeholder="请选择工序" @focus="workingBox" /></el-form-item>
-        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" @focus="materialBox(1)" /></el-form-item>
-        <el-form-item label="原料用量" prop="Usage"><el-input v-model="ruleForm.Usage" placeholder="原料用量" /></el-form-item>
-        <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请选择替代物料" @focus="materialBox(2)" /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
+        <el-form-item label="工序" prop="WorkingProcedureName">
+          <el-input v-model="ruleForm.WorkingProcedureName" placeholder="请选择工序" clearable @focus="workingBox" />
+        </el-form-item>
+        <el-form-item label="原料名称" prop="MaterialName">
+          <el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" clearable @focus="materialBox(1)" />
+        </el-form-item>
+        <el-form-item label="原料用量" prop="Usage"><el-input v-model="ruleForm.Usage" placeholder="原料用量" clearable /></el-form-item>
+        <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请选择替代物料" clearable @focus="materialBox(2)" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -204,8 +205,8 @@ export default {
       materialData: [], // 原料数组
       workingData: [], // 工序数组
       rules: {
-        WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'change' }],
-        MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'change' }],
+        WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'blur' }],
+        MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'blur' }],
         Usage: [{ required: true, message: '请输入用量', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
@@ -271,8 +272,8 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'change' }],
-        MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'change' }],
+        WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'blur' }],
+        MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'blur' }],
         Usage: [{ required: true, message: '请输入用量', trigger: 'blur' }]
       }
     },
@@ -303,20 +304,19 @@ export default {
       return app
     },
 
-    // 增加角色
-    handleAddUser() {
+    // 增加
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {}
     },
-    // 编辑角色
+    // 编辑
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
-
-    // 删除角色
+    // 删除
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -356,9 +356,6 @@ export default {
             const params = this.ruleForm
             params.BomCode = this.$route.query.BomCode
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-            // params.WorkingProcedureCode = this.workingCode
-            // params.MaterialCode = this.materialCode
-            // params.SubMaterialCode = this.SubMaterialCode
             bomDetailModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -381,9 +378,6 @@ export default {
             const params = this.ruleForm
             params.BomCode = this.$route.query.BomCode
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-            // params.WorkingProcedureCode = this.workingCode
-            // params.MaterialCode = this.materialCode
-            // params.SubMaterialCode = this.SubMaterialCode
             bomDetailAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({

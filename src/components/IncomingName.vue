@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :close-on-click-modal="false" :visible.sync="incomingShow" :before-close="incomingClose" title="原料编码" width="70%" height="50%">
+  <el-dialog :close-on-click-modal="false" :visible.sync="incomingShow" :before-close="incomingClose" title="列表" width="70%" height="50%">
     <div class="searchBox" style="margin-bottom: 20px;">
       <el-row :gutter="20">
         <el-col :span="8">
@@ -22,7 +22,7 @@
     <el-table
       v-loading="incomingBoxLoading"
       :height="tableBoxHeight"
-      :header-cell-style="{ background: '#004184 ', color: '#ffffff' }"
+      :header-cell-style="{ background: '#1890ff ', color: '#ffffff' }"
       :data="incomingData"
       style="width: 100%"
       border

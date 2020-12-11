@@ -58,58 +58,58 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工位编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工位编号" width="150" prop="TerminalNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.TerminalNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工位名称" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工位名称" width="150" prop="TerminalName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.TerminalName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工作中心编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工作中心编号" width="150" prop="WorkCenterCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkCenterCode }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工作中心名称" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工作中心名称" width="150" prop="WorkCenterName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkCenterName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="产线编号" width="150" prop="LineCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="产线名称" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="产线名称" width="150" prop="LineName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="车间编号" width="150" prop="WorkshopCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="车间名称" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="车间名称" width="150" prop="WorkshopName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="公司编号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="公司编号" width="150" prop="OrgCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="公司名称" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="公司名称" width="200" prop="OrgName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgName }}
         </template>
@@ -121,13 +121,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150">
+      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200">
+      <el-table-column align="center" label="维护时间" width="200" prop="ModifyTime" sortable>
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -155,7 +155,7 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑工位' : '增加工位'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '工位' : '工位'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="工位编号" prop="TerminalNum"><el-input v-model="ruleForm.TerminalNum" placeholder="工位编号" /></el-form-item>
         <el-form-item label="工位名称" prop="TerminalName"><el-input v-model="ruleForm.TerminalName" placeholder="工位名称" /></el-form-item>
@@ -172,7 +172,7 @@
 
         <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="所属工序" @focus="workingBox" /></el-form-item>
 
-        <el-form-item label="工作中心描述"><el-input v-model="ruleForm.Description" placeholder="工作中心描述" type="textarea" /></el-form-item>
+        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">

@@ -35,25 +35,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.name')" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.name')" width="200" prop="RoleName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RoleName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150">
+      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status ===false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUser" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.time')" width="200" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>

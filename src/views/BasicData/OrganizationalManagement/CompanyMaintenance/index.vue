@@ -52,27 +52,34 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" :label="$t('permission.companyNo')" width="150" :show-overflow-tooltip="true">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" :label="$t('permission.companyNo')" width="150" prop="OrgNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyName')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.companyName')" width="150" prop="ShortName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ShortName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyAllName')" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.companyAllName')" width="150" prop="FullName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.FullName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyTel')" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.companyTel')" width="150" prop="Tel" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Tel }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyAddress')" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.companyAddress')" width="150" prop="Address" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Address }}
         </template>
@@ -83,21 +90,21 @@
           {{ scope.row.Remark }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.state')" width="100">
+      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="100">
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="CreateUserName" sortable>
         <template slot-scope="scope">
           {{ scope.row.CreateUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="150">
+      <el-table-column align="center" :label="$t('permission.time')" width="150" prop="ModifyTime" sortable>
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -151,8 +158,8 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="公司描述">
-          <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="公司描述" />
+        <el-form-item label="描述">
+          <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="描述" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
