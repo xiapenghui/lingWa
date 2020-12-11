@@ -41,7 +41,7 @@
 
     <el-table
       v-loading="listLoading"
-      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :header-cell-style="{ background: '#004184 ', color: '#ffffff' }"
       :data="tableData"
       :height="tableHeight"
       style="width: 100%"

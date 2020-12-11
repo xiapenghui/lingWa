@@ -31,7 +31,7 @@
     <el-table
       v-loading="workingBoxLoading"
       :height="tableBoxHeight"
-      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
       :data="workingData"
       style="width: 100%"
       border

@@ -31,7 +31,7 @@
     <el-table
       v-loading="listBoxLoading"
       :height="tableBoxHeight"
-      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :header-cell-style="{ background: '#004184 ', color: '#ffffff' }"
       :data="finshData"
       style="width: 100%"
       border

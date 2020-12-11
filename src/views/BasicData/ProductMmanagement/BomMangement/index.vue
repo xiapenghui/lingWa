@@ -35,7 +35,7 @@
 
     <el-table
       v-loading="listLoading"
-      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
       :data="tableData"
       :height="tableHeight"
       style="width: 100%"

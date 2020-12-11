@@ -19,7 +19,7 @@
     <el-table
       v-loading="lineLoading"
       :height="tableBoxHeight"
-      :header-cell-style="{ background: '#46a6ff', color: '#ffffff' }"
+      :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
       :data="lineData"
       style="width: 100%"
       border

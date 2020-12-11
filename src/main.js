@@ -29,10 +29,10 @@ Vue.prototype.$moment = moment// 时间日期赋值使用
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
 
 Vue.directive('rest-styleBackground', function(dom, definition) { // 背景颜色
   dom.style.background = definition.value
