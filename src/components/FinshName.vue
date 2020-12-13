@@ -40,59 +40,49 @@
       highlight-current-row
       @row-dblclick="fishClick"
     >
-      <el-table-column align="center" label="成品编号" width="150">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="成品编号" width="200" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品名称" width="150">
+      <el-table-column align="center" label="成品名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品规格" width="150">
+      <el-table-column align="center" label="成品规格" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Spec }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述" width="150">
+      <el-table-column align="center" label="工艺路线" width="200" prop="RouteName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Describe }}
+          {{ scope.row.RouteName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="颜色" width="150">
+      <el-table-column align="center" label="颜色" width="150" prop="Color" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Color }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工艺路线" width="150">
+      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MaterialTypeText }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.MaterialType }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护者" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.user }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护时间" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
-        </template>
-      </el-table-column>
     </el-table>
   </el-dialog>
 </template>

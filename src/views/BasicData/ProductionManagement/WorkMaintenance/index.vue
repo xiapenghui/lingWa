@@ -81,7 +81,7 @@
 
       <el-table-column align="center" label="维护者" width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyUser }}
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
@@ -93,19 +93,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除工序" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>

@@ -40,43 +40,33 @@
       highlight-current-row
       @row-dblclick="workingClick"
     >
-      <el-table-column align="center" label="工序编号">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index + 1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工序编号" width="250" prop="ProcessNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称">
+      <el-table-column align="center" label="工序名称" width="250" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序描述">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
-        </template>
-      </el-table-column>
 
-      <el-table-column align="center" label="倒扣账标识" width="250">
+      <el-table-column align="center" label="倒扣账标识" width="150" prop="IsBackFlush" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsBackFlush === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsBackFlush === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')">
+      <el-table-column align="center" label="工序描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护者" width="250">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyUser }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护时间" width="200">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyTime | substringTime }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
 

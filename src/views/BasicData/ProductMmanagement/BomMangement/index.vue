@@ -135,7 +135,7 @@
 
         <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
-        <el-form-item label="生效时间">
+        <el-form-item label="生效时间" prop="EffectiveDate">
           <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
@@ -200,15 +200,17 @@ export default {
       // 搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 20,
+        PageSize: 50,
         MaterialType: 1,
         MaterialNum: undefined,
-        Name: undefined
+        Name: undefined,
+        ShowBanned: true
       },
       paginationSearchLine: {
         PageIndex: 1,
-        PageSize: 20,
-        Name: undefined
+        PageSize: 50,
+        Name: undefined,
+        ShowBanned: true
       },
       listLoading: false,
       listBoxLoading: false, // 产品名称loading
@@ -229,7 +231,8 @@ export default {
       rules: {
         ProductNum: [{ required: true, message: '请输入成品编码', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入BOM版本', trigger: 'blur' }],
-        ProcessRouteName: [{ required: true, message: '请选择工艺路线', trigger: 'change' }]
+        ProcessRouteName: [{ required: true, message: '请选择工艺路线', trigger: 'change' }],
+        EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -296,7 +299,8 @@ export default {
       this.rules = {
         ProductNum: [{ required: true, message: '请输入成品编码', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入BOM版本', trigger: 'blur' }],
-        ProcessRouteName: [{ required: true, message: '请选择工艺路线', trigger: 'change' }]
+        ProcessRouteName: [{ required: true, message: '请选择工艺路线', trigger: 'change' }],
+        EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blur' }]
       }
     },
     // 禁用，启用权限

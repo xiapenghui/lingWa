@@ -134,10 +134,10 @@
         <el-form-item label="客户编号" prop="CustomerNum"><el-input v-model="ruleForm.CustomerNum" placeholder="客户编号" clearable /></el-form-item>
         <el-form-item label="客户名称" prop="FullName"><el-input v-model="ruleForm.FullName" placeholder="客户名称" clearable /></el-form-item>
         <el-form-item label="联系人"><el-input v-model="ruleForm.Contact" placeholder="联系人" clearable /></el-form-item>
-        <el-form-item label="电话"><el-input v-model="ruleForm.Tel" placeholder="电话" clearable /></el-form-item>
+        <el-form-item label="公司电话"><el-input v-model="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
         <el-form-item label="邮箱"><el-input v-model="ruleForm.Email" placeholder="邮箱" clearable /></el-form-item>
         <el-form-item label="地址"><el-input v-model="ruleForm.Address" placeholder="地址" clearable /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

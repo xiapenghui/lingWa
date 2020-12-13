@@ -137,7 +137,7 @@
         <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="原料规格" clearable /></el-form-item>
         <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
-        <el-form-item label="单位" prop="UnitText">
+        <el-form-item label="单位">
           <el-select v-model="ruleForm.UnitText" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
@@ -190,8 +190,7 @@ export default {
       newUnit: null,
       rules: {
         MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
-        UnitText: [{ required: true, message: '请选择单位', trigger: 'change' }]
+        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -255,8 +254,7 @@ export default {
     setFormRules: function() {
       this.rules = {
         MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }],
-        UnitText: [{ required: true, message: '请输入单位', trigger: 'change' }]
+        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }]
       }
     },
     // 获取下拉选择单位的最新值

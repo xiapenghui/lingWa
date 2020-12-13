@@ -162,7 +162,7 @@
         </el-form-item>
         <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
-        <el-form-item label="生效时间">
+        <el-form-item label="生效时间" prop="EffectiveDate">
           <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
@@ -228,17 +228,19 @@ export default {
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
-        PageSize: 20,
+        PageSize: 50,
         MaterialType: 0,
         MaterialNum: undefined,
-        MaterialName: undefined
+        MaterialName: undefined,
+        ShowBanned: true
       },
 
       // 来料检验规则条件
       paginationSearchIncoming: {
         PageIndex: 1,
-        PageSize: 20,
-        RuleNum: undefined
+        PageSize: 50,
+        RuleNum: undefined,
+        ShowBanned: true
       },
 
       listLoading: false,
@@ -261,7 +263,8 @@ export default {
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'blue' }],
         InspectWayText: [{ required: true, message: '请选择检验方式', trigger: 'blue' }],
         IQCRuleNum: [{ required: true, message: '请选择来料检验规则', trigger: 'blue' }],
-        Version: [{ required: true, message: '请输入版本号', trigger: 'blue' }]
+        Version: [{ required: true, message: '请输入版本号', trigger: 'blue' }],
+		EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blue' }],
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -338,7 +341,8 @@ export default {
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'blue' }],
         InspectWayText: [{ required: true, message: '请选择检验方式', trigger: 'blue' }],
         IQCRuleNum: [{ required: true, message: '请选择来料检验规则', trigger: 'blue' }],
-        Version: [{ required: true, message: '请输入版本号', trigger: 'blue' }]
+        Version: [{ required: true, message: '请输入版本号', trigger: 'blue' }],
+		EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blue' }],
       }
     },
     // 禁用，启用权限

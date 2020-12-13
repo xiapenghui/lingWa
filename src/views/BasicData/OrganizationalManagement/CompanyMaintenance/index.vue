@@ -135,10 +135,10 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="公司编号"><el-input v-model="ruleForm.OrgNum" placeholder="公司编号" /></el-form-item>
 
-        <el-form-item label="公司简称" prop="ShortName"><el-input v-model="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
+        <el-form-item label="公司简称"><el-input v-model="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
 
         <el-form-item label="公司全称" prop="FullName">
-          <el-input v-model="ruleForm.FullName" placeholder="公司编号" clearable />
+          <el-input v-model="ruleForm.FullName" placeholder="公司全称" clearable />
         </el-form-item>
 
         <el-form-item label="公司电话"><el-input v-model="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
@@ -199,7 +199,7 @@ export default {
       dialogType: 'new',
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       rules: {
-        ShortName: [{ required: true, message: '请输入公司简称', trigger: 'blur' }]
+        FullName: [{ required: true, message: '请输入公司全称', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
       // content1: this.$t('permission.companyNo'),
@@ -255,7 +255,7 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        ShortName: [{ required: true, message: '请输入公司简称', trigger: 'blur' }]
+        FullName: [{ required: true, message: '请输入公司全称', trigger: 'blur' }]
       }
     },
     // 禁用，启用权限

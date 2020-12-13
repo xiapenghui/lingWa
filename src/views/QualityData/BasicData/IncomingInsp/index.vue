@@ -4,9 +4,9 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="来料检验规则编号" placement="top-start"><label class="radio-label">来料检验规则编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="来料检验规则编号" placement="top-start"><label class="radio-label">检验编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.RuleNum" placeholder="来料检验规则编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.RuleNum" placeholder="来料检验规则编号" clearable /></el-col>
         </el-col>
 
         <el-col :span="8">
@@ -145,20 +145,20 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
-      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="来料检验编号" prop="RuleNum"><el-input v-model="ruleForm.RuleNum" placeholder="来料检验编号" /></el-form-item>
+      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
+        <el-form-item label="来料检验编号" prop="RuleNum"><el-input v-model="ruleForm.RuleNum" placeholder="来料检验编号" clearable /></el-form-item>
 
         <el-form-item label="批量范围" prop="StartQty">
-          <el-input v-model="ruleForm.StartQty" style="width: 48%;" />
+          <el-input v-model="ruleForm.StartQty" style="width: 48%;" clearable />
           -----
-          <el-input v-model="ruleForm.EndQty" style="width: 48%;" />
+          <el-input v-model="ruleForm.EndQty" style="width: 48%;" clearable />
         </el-form-item>
 
-        <el-form-item label="采样数量" prop="SampleQty"><el-input v-model="ruleForm.SampleQty" placeholder="采样数量" /></el-form-item>
+        <el-form-item label="采样数量" prop="SampleQty"><el-input v-model="ruleForm.SampleQty" placeholder="采样数量" clearable /></el-form-item>
 
-        <el-form-item label="拒绝数量" prop="RejQty"><el-input v-model="ruleForm.RejQty" placeholder="拒绝数量" /></el-form-item>
+        <el-form-item label="拒绝数量" prop="RejQty"><el-input v-model="ruleForm.RejQty" placeholder="拒绝数量" clearable /></el-form-item>
 
-        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
+        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Remarks" placeholder="备注" type="textarea" /></el-form-item>
 

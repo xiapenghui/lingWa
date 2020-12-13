@@ -149,6 +149,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" :label="$t('permission.LastQuantity')" width="150" prop="LastQuantity" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.LastQuantity }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.CompleteQuantity')" width="150" prop="CompleteQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CompleteQuantity }}
@@ -173,19 +179,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.CustomerNum')" width="150" prop="CustomerNum" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.CustomerNum }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" :label="$t('permission.LastQuantity')" width="150" prop="LastQuantity" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.LastQuantity }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" :label="$t('permission.CreateUser')" width="150" prop="CreateUser" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护人" width="150" prop="CreateUser" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CreateUser }}
         </template>
@@ -239,31 +233,29 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="250">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="关联工单" placement="top-start">
-            <el-button type="primary" size="small" icon="el-icon-link" plain @click="handleRelation(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="BOM" placement="top-start">
-            <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="工艺路线" placement="top-start">
-            <el-button type="primary" size="small" icon="el-icon-s-operation" plain @click="handleLine(scope.row)" />
-          </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
-            <el-button type="danger" size="small" icon=" el-icon-delete" plain @click="handleDelete(scope.row)" />
+          <el-tooltip class="item" effect="dark" content="计划拆分" placement="top-start">
+            <el-button type="warning" size="small" icon="el-icon-scissors" plain @click="planOpen(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" content="关联工单" placement="top-start">
+            <el-button type="primary" size="small" icon="el-icon-link" plain @click="handleRelation(scope.row)" />
           </el-tooltip>
 
           <el-popover placement="top" trigger="hover" popper-class="popoverBackB">
-            <el-tooltip class="item" effect="dark" content="计划拆分" placement="top-start">
-              <el-button type="warning" size="small" icon="el-icon-scissors" plain @click="planOpen(scope.row)" />
+
+            <el-tooltip class="item" effect="dark" content="BOM" placement="top-start">
+              <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark" content="工艺路线" placement="top-start">
+              <el-button type="primary" size="small" icon="el-icon-s-operation" plain @click="handleLine(scope.row)" />
             </el-tooltip>
 
             <el-tooltip class="item" effect="dark" content="计划冻结" placement="top-start">
@@ -278,6 +270,9 @@
               <el-button type="danger" size="small" icon="el-icon-remove-outline" plain @click="forceOver(scope.row)" />
             </el-tooltip>
 
+            <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+              <el-button type="danger" size="small" icon=" el-icon-delete" plain @click="handleDelete(scope.row)" />
+            </el-tooltip>
             <el-button slot="reference" type="success" size="small" icon="el-icon-menu" plain style="margin-left: 10px;" />
           </el-popover>
         </template>
@@ -721,17 +716,19 @@ export default {
       // 成品聚焦搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 30,
+        PageSize: 50,
         MaterialType: 1,
         MaterialNum: undefined,
-        Name: undefined
+        Name: undefined,
+        ShowBanned: true
       },
       // 客户聚焦搜索条件
       paginationUser: {
         PageIndex: 1,
-        PageSize: 30,
+        PageSize: 50,
         CustomerNum: undefined,
-        FullName: undefined
+        FullName: undefined,
+        ShowBanned: true
       },
 
       listLoading: false, // 主列表
@@ -1243,6 +1240,7 @@ export default {
       this.finshFormVisible = true
       this.listBoxLoading = true
       GetMaterialList(this.paginationSearch).then(res => {
+        debugger
         if (res.IsPass === true) {
           this.finshData = res.Obj
           this.listBoxLoading = false

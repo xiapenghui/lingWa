@@ -174,10 +174,11 @@ export default {
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
-        PageSize: 20,
+        PageSize: 50,
         MaterialType: 0,
         MaterialNum: undefined,
-        MaterialName: undefined
+        MaterialName: undefined,
+        ShowBanned: true
       },
 
       // 工序搜索条件

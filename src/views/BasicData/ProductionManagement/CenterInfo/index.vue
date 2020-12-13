@@ -82,25 +82,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间编号" width="150" prop="WorkshopCode" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.WorkshopCode }}
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="车间名称" width="150" prop="WorkshopName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="公司编号" width="150" prop="OrgCode" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.OrgCode }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="公司名称" width="150" prop="OrgName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.OrgName }}
         </template>
       </el-table-column>
 
@@ -113,6 +97,12 @@
       <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable>
+        <template slot-scope="scope">
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
@@ -146,7 +136,7 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '增加'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工作中心编号" prop="WorkCenterNum"><el-input v-model="ruleForm.WorkCenterNum" placeholder="工作中心编号" clearable /></el-form-item>
+        <el-form-item label="工作中心编号"><el-input v-model="ruleForm.WorkCenterNum" placeholder="工作中心编号" clearable /></el-form-item>
         <el-form-item label="工作中心名称" prop="WorkCenterName"><el-input v-model="ruleForm.WorkCenterName" placeholder="工作中心名称" clearable /></el-form-item>
 
         <el-form-item label="公司名称" prop="OrgName" style="display: none;">
@@ -155,7 +145,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="产线名称" prop="CascadeArray">
+        <el-form-item label="所属产线" prop="CascadeArray">
           <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" clearable />
         </el-form-item>
 
@@ -214,11 +204,10 @@ export default {
         children: 'children'
       }, // 格式化工单信息// 新增加产线级联
       rules: {
-        WorkCenterNum: [{ required: true, message: '请输入工作中心编号', trigger: 'blur' }],
         WorkCenterName: [{ required: true, message: '请输入工作中心名称', trigger: 'blur' }],
         FactoryNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
         FactoryName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-        CascadeArray: [{ required: true, message: '请选择产线名称', trigger: 'change' }]
+        CascadeArray: [{ required: true, message: '请选择产线名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -300,7 +289,6 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        WorkCenterNum: [{ required: true, message: '请输入工作中心编号', trigger: 'blur' }],
         WorkCenterName: [{ required: true, message: '请输入工作中心名称', trigger: 'blur' }],
         FactoryNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
         FactoryName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],

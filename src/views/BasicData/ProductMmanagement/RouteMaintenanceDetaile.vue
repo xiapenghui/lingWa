@@ -27,10 +27,9 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -104,7 +103,7 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工序代码" prop="ProcessCode"><el-input v-model="ruleForm.ProcessCode" placeholder="请选择" clearable @focus="workingBox" /></el-form-item>
+        <el-form-item label="工序编号" prop="ProcessCode"><el-input v-model="ruleForm.ProcessCode" placeholder="请选择" clearable @focus="workingBox" /></el-form-item>
 
         <el-form-item label="工序名称" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="工序名称" :disabled="true" /></el-form-item>
 
@@ -180,7 +179,8 @@ export default {
         PageIndex: 1,
         PageSize: 20,
         ProcessNum: undefined,
-        Name: undefined
+        Name: undefined,
+        ShowBanned: true
       },
       listLoading: false,
       editLoading: false, // 编辑loading

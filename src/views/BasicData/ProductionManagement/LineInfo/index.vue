@@ -17,13 +17,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="产线编号" placement="top-start"><label class="radio-label">产线编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.LineNum" placeholder="产线编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.LineNum" placeholder="产线编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="产线名称" placement="top-start"><label class="radio-label">产线名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.LineName" placeholder="产线名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.LineName" placeholder="产线名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -71,25 +71,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间编号" width="150" prop="WorkshopCode" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.WorkshopCode }}
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="车间名称" prop="WorkshopName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="公司编号" width="150" prop="OrgCode" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.OrgCode }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="公司名称" prop="OrgName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.OrgName }}
         </template>
       </el-table-column>
 
@@ -102,6 +86,12 @@
       <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable>
+        <template slot-scope="scope">
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
@@ -133,23 +123,23 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑产线' : '增加产线'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '增加'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="产线编号" prop="LineNum"><el-input v-model="ruleForm.LineNum" placeholder="产线编号" /></el-form-item>
-        <el-form-item label="产线名称" prop="LineName"><el-input v-model="ruleForm.LineName" placeholder="产线名称" /></el-form-item>
+        <el-form-item label="产线编号"><el-input v-model="ruleForm.LineNum" placeholder="产线编号" clearable /></el-form-item>
+        <el-form-item label="产线名称" prop="LineName"><el-input v-model="ruleForm.LineName" placeholder="产线名称" clearable /></el-form-item>
 
         <el-form-item label="公司名称" prop="OrgName" style="display: none;">
-          <el-select v-model="ruleForm.OrgName" placeholder="公司名称" style="width: 100%" @change="changeName">
+          <el-select v-model="ruleForm.OrgName" placeholder="请选择" style="width: 100%" @change="changeName">
             <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="车间名称" prop="CascadeArray">
-          <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" />
+          <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" clearable />
         </el-form-item>
 
         <el-form-item label="产线类别">
-          <el-select v-model="ruleForm.LineType" placeholder="产线类别" style="width: 100%">
+          <el-select v-model="ruleForm.LineType" placeholder="请选择" style="width: 100%" clearable>
             <el-option v-for="item in LineNameData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -203,8 +193,7 @@ export default {
         children: 'children'
       }, // 格式化工单信息// 新增加产线级联
       rules: {
-        LineNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
-        LineName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
+        LineName: [{ required: true, message: '请输入产线名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
         CascadeArray: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
       }
@@ -288,8 +277,7 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        LineNum: [{ required: true, message: '请输入公司编号', trigger: 'blur' }],
-        LineName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
+        LineName: [{ required: true, message: '请输入产线名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
         CascadeArray: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
 

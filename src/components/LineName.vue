@@ -28,45 +28,33 @@
       highlight-current-row
       @row-dblclick="lineClick"
     >
-      <el-table-column align="center" label="工艺路线名称" width="200">
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index + 1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工艺路线名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="版本" width="200">
+      <el-table-column align="center" label="版本" width="200" prop="Version" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Version }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="生效时间" width="200">
+      <el-table-column align="center" label="生效时间" width="200" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="200">
+      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护者" width="200">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyUserName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护时间" width="200">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyTime | substringTime }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
     </el-table>
@@ -123,13 +111,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .el-dialog__body {
-    .searchBox{
-      .el-col-6{
-        height: 30px;
-        line-height: 25px;
-        text-align: right;
-      }
+.el-dialog__body {
+  .searchBox {
+    .el-col-6 {
+      height: 30px;
+      line-height: 25px;
+      text-align: right;
     }
   }
+}
 </style>

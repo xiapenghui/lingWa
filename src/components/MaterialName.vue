@@ -40,63 +40,53 @@
       highlight-current-row
       @row-dblclick="materialClick"
     >
-      <el-table-column align="center" label="原料编码" width="150">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index + 1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="原料编码" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料名称" width="150">
+      <el-table-column align="center" label="原料名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料规格" width="150">
+      <el-table-column align="center" label="原料规格" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Spec }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="颜色" width="100">
+      <el-table-column align="center" label="颜色" width="150" prop="Color" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Color }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="单位" width="100">
+      <el-table-column align="center" label="单位" width="150" prop="UnitText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.UnitText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否免检" width="100">
+      <el-table-column align="center" label="是否免检" width="150" prop="IsInspection" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsInspection === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsInspection === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="100">
-        <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="描述">
+      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyUserName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护时间" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyTime | substringTime }}
-        </template>
-      </el-table-column>
     </el-table></el-dialog>
 </template>
 

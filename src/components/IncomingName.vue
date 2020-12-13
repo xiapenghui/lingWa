@@ -5,7 +5,7 @@
         <el-col :span="8">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="来料检验规则编号" placement="top-start">
-              <label class="radio-label">来料检验规则编号:</label>
+              <label class="radio-label">检验编号:</label>
             </el-tooltip>
           </el-col>
           <el-col :span="14"><el-input v-model="paginationSearchIncoming.RuleNum" clearable /></el-col>
@@ -31,53 +31,56 @@
       highlight-current-row
       @row-dblclick="incomingClick"
     >
-      <el-table-column align="center" label="检验规则编号" width="150">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="检验规则编号" width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RuleNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="描述">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="批量范围从" width="150">
+
+      <el-table-column align="center" label="批量范围从" width="150" prop="StartQty" sortable>
         <template slot-scope="scope">
           {{ scope.row.StartQty }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="批量范围至" width="150">
+      <el-table-column align="center" label="批量范围至" width="150" prop="EndQty" sortable>
         <template slot-scope="scope">
           {{ scope.row.EndQty }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="采样数量" width="150">
+      <el-table-column align="center" label="采样数量" width="150" prop="SampleQty" sortable>
         <template slot-scope="scope">
           {{ scope.row.SampleQty }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="拒绝数量" width="150">
+      <el-table-column align="center" label="拒绝数量" width="150" prop="RejQty" sortable>
         <template slot-scope="scope">
           {{ scope.row.RejQty }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150">
-        <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" :label="$t('permission.user')" width="200">
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="CreateUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CreateUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="200">
+      <el-table-column align="center" :label="$t('permission.time')" width="150" prop="CreateTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime }}
+          {{ scope.row.CreateTime | substringTime }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="描述">
+        <template slot-scope="scope">
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
     </el-table>

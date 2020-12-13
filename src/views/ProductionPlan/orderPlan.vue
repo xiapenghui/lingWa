@@ -193,12 +193,6 @@
         </template>
       </el-table-column>
 
-      <!--    <el-table-column align="center" label="客户编号" width="150" prop="Name" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
-        </template>
-      </el-table-column> -->
-
       <el-table-column align="center" label="创建人" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
@@ -241,15 +235,8 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="350">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="BOM" placement="top-start">
-            <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" content="工艺路线" placement="top-start">
-            <el-button type="primary" size="small" icon="el-icon-s-operation" plain @click="handleLine(scope.row)" />
-          </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
@@ -263,21 +250,34 @@
             <el-button type="danger" size="small" icon="el-icon-circle-close" plain @click="cancelSend(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="计划冻结" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-warning" plain @click="planFrozen(scope.row)" />
-          </el-tooltip>
+          <el-popover placement="top" trigger="hover" popper-class="popoverBackB">
 
-          <el-tooltip class="item" effect="dark" content="取消冻结" placement="top-start">
-            <el-button type="success" size="small" icon="el-icon-remove-outline" plain @click="cancelFrozen(scope.row)" />
-          </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="BOM" placement="top-start">
+              <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
+            </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="强制完工" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-success" plain @click="forceOver(scope.row)" />
-          </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="工艺路线" placement="top-start">
+              <el-button type="primary" size="small" icon="el-icon-s-operation" plain @click="handleLine(scope.row)" />
+            </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
-          </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="计划冻结" placement="top-start">
+              <el-button type="danger" size="small" icon="el-icon-warning" plain @click="planFrozen(scope.row)" />
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark" content="取消冻结" placement="top-start">
+              <el-button type="success" size="small" icon="el-icon-remove-outline" plain @click="cancelFrozen(scope.row)" />
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark" content="强制完工" placement="top-start">
+              <el-button type="danger" size="small" icon="el-icon-success" plain @click="forceOver(scope.row)" />
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+              <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+            </el-tooltip>
+            <el-button slot="reference" type="success" size="small" icon="el-icon-menu" plain style="margin-left: 10px;" />
+          </el-popover>
+
         </template>
       </el-table-column>
     </el-table>
