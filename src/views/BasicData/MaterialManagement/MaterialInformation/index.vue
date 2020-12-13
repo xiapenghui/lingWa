@@ -138,7 +138,7 @@
         <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
         <el-form-item label="单位">
-          <el-select v-model="ruleForm.UnitText" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
+          <el-select v-model="ruleForm.Unit" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -335,6 +335,7 @@ export default {
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      row.Unit = row.Unit + ''
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -376,17 +377,21 @@ export default {
         if (valid) {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
-            params.Unit = this.newUnit
             MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           } else {
             const params = this.ruleForm
@@ -397,6 +402,7 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
+                this.dialogFormVisible = false
                 this.getList()
               } else {
                 this.$message({
@@ -404,9 +410,8 @@ export default {
                   message: res.MSG
                 })
               }
+              this.editLoading = false
             })
-            this.editLoading = false
-            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false

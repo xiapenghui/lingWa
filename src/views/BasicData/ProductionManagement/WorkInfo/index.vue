@@ -53,10 +53,9 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -165,7 +164,6 @@ export default {
       rules: {
         WorkshopName: [{ required: true, message: '请输入车间名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }]
-
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -364,10 +362,15 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           } else {
             const params = this.ruleForm
@@ -378,6 +381,7 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
+                this.dialogFormVisible = false
                 this.getList()
               } else {
                 this.$message({
@@ -385,9 +389,8 @@ export default {
                   message: res.MSG
                 })
               }
+              this.editLoading = false
             })
-            this.editLoading = false
-            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false

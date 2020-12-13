@@ -55,7 +55,7 @@
     >
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -280,7 +280,6 @@ export default {
         LineName: [{ required: true, message: '请输入产线名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
         CascadeArray: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
-
       }
     },
 
@@ -425,10 +424,15 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           } else {
             const params = this.ruleForm
@@ -447,8 +451,8 @@ export default {
                   message: res.MSG
                 })
               }
+              this.editLoading = false
             })
-            this.editLoading = false
           }
         } else {
           this.editLoading = false

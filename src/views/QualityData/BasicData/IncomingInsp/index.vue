@@ -64,10 +64,9 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -161,7 +160,6 @@
         <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Remarks" placeholder="备注" type="textarea" /></el-form-item>
-
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -409,10 +407,15 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           } else {
             QuaIqcAdd(this.ruleForm).then(res => {
@@ -421,10 +424,15 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           }
         } else {

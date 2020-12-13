@@ -22,9 +22,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button>
-    </div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
     <el-table
       v-loading="listLoading"
       :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
@@ -38,7 +36,7 @@
     >
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -116,7 +114,6 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-
         <el-form-item label="工艺路线名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工艺路线名称" clearable /></el-form-item>
         <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
@@ -131,8 +128,8 @@
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
-
-  </div></template>
+  </div>
+</template>
 
 <script>
 import '../../../../styles/commentBox.scss'
@@ -392,7 +389,6 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
               } else {
@@ -400,9 +396,8 @@ export default {
                   type: 'error',
                   message: res.MSG
                 })
-                this.editLoading = false
-                this.dialogFormVisible = false
               }
+              this.editLoading = false
             })
           } else {
             const params = this.ruleForm
@@ -412,6 +407,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
+                this.editLoading = false
+                this.dialogFormVisible = false
                 this.getList()
               } else {
                 this.$message({
@@ -419,9 +416,8 @@ export default {
                   message: res.MSG
                 })
               }
+              this.editLoading = false
             })
-            this.editLoading = false
-            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false

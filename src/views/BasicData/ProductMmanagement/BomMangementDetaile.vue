@@ -363,7 +363,6 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
               } else {
@@ -371,9 +370,8 @@ export default {
                   type: 'error',
                   message: res.MSG
                 })
-                this.editLoading = false
-                this.dialogFormVisible = false
               }
+              this.editLoading = false
             })
           } else {
             const params = this.ruleForm
@@ -385,6 +383,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
+                this.editLoading = false
+                this.dialogFormVisible = false
                 this.getList()
               } else {
                 this.$message({
@@ -394,7 +394,6 @@ export default {
               }
             })
             this.editLoading = false
-            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false

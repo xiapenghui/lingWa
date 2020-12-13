@@ -55,7 +55,7 @@
     >
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -383,14 +383,14 @@ export default {
       }
       return data
     },
-    // 编辑角色
+    // 编辑
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 删除角色
+    // 删除
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -435,10 +435,15 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           } else {
             const params = this.ruleForm
@@ -449,6 +454,7 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
+                this.dialogFormVisible = false
                 this.getList()
               } else {
                 this.$message({
@@ -456,9 +462,8 @@ export default {
                   message: res.MSG
                 })
               }
+              this.editLoading = false
             })
-            this.editLoading = false
-            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false

@@ -314,7 +314,7 @@
             </el-form-item>
           </div>
           <div class="boxRight">
-            <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'change' }]">
+            <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
               <el-input v-model="ruleForm.ProductName" placeholder="请选择" :disabled="isDisabled" clearable @focus="finshBox" />
             </el-form-item>
 

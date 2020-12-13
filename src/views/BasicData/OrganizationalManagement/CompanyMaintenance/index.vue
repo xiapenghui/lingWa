@@ -52,10 +52,9 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -115,7 +114,7 @@
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
-            <el-button v-if="scope.row.Status == true " type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
@@ -137,9 +136,7 @@
 
         <el-form-item label="公司简称"><el-input v-model="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
 
-        <el-form-item label="公司全称" prop="FullName">
-          <el-input v-model="ruleForm.FullName" placeholder="公司全称" clearable />
-        </el-form-item>
+        <el-form-item label="公司全称" prop="FullName"><el-input v-model="ruleForm.FullName" placeholder="公司全称" clearable /></el-form-item>
 
         <el-form-item label="公司电话"><el-input v-model="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
 
@@ -158,9 +155,7 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="描述">
-          <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="描述" />
-        </el-form-item>
+        <el-form-item label="描述"><el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="描述" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -364,10 +359,15 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           } else {
             OrganAdd(this.ruleForm).then(res => {
@@ -376,10 +376,15 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           }
         } else {

@@ -462,10 +462,15 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           } else {
             const params = this.ruleForm
@@ -484,8 +489,8 @@ export default {
                   message: '工作中心格式不正确,请重新填写'
                 })
               }
+              this.editLoading = false
             })
-            this.editLoading = false
           }
         } else {
           this.editLoading = false
