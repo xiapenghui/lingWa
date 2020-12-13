@@ -40,7 +40,7 @@
       </el-row>
     </div>
 
-    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增</el-button></div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
 
     <el-table
       v-loading="listLoading"
@@ -363,7 +363,7 @@ export default {
     },
 
     // 增加角色
-    handleAddUser() {
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {

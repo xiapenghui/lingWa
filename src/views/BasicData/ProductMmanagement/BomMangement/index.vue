@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductNum" placeholder="成品编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProductNum" placeholder="成品编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductName" placeholder="成品名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProductName" placeholder="成品名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">

@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工序编号" placement="top-start"><label class="radio-label">工序编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProcessNum" placeholder="工序编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProcessNum" placeholder="工序编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工序名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工序名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">

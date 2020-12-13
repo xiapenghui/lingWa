@@ -30,7 +30,7 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addMaterial') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addMaterial') }}</el-button>
     </div>
 
     <el-table
@@ -141,12 +141,12 @@
         <el-form-item label="单位编号"><el-input v-model="ruleForm.Unit" placeholder="单位编号" clearable /></el-form-item>
 
         <el-form-item label="单位" prop="UnitText">
-          <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" clearable @change="changeUnit">
+          <el-select v-model="ruleForm.UnitText" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
+        <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" placeholder="请选择" clearable @focus="lineBox" /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
@@ -363,7 +363,7 @@ export default {
     },
 
     // 增加角色
-    handleAddUser() {
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {

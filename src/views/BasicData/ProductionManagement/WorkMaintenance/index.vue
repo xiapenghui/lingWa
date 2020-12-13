@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工序编号" placement="top-start"><label class="radio-label">工序编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProcessNum" placeholder="工序编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProcessNum" placeholder="工序编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工序名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工序名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -31,7 +31,7 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addCustomer') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addCustomer') }}</el-button>
     </div>
 
     <el-table
@@ -285,7 +285,7 @@ export default {
     },
 
     // 增加角色
-    handleAddUser() {
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {}

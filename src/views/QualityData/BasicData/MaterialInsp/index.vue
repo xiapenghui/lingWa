@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialCode" placeholder="原料编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.MaterialCode" placeholder="原料编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialName" placeholder="原料名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.MaterialName" placeholder="原料名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -48,65 +48,65 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="原料编码" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料编码" width="150" prop="MaterialCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialCode }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料名称" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料名称" width="150" prop="MaterialName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="供应商" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="供应商" width="200" prop="SupplierName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SupplierName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验类型" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验类型" width="150" prop="InspectTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.InspectTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验方式" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验方式" width="150" prop="InspectWayText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.InspectWayText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="来料检验规则编码" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="来料检验规则编码" width="150" prop="IQCRuleNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.IQCRuleNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="版本号" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="版本号" width="150" prop="Version" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Version }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="生效时间" width="150" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="150">
+      <el-table-column align="center" label="状态" width="150" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="创建时间" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="创建时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -145,24 +145,28 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '新增' : '编辑'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="原料名称" @focus="materialBox" /></el-form-item>
-        <el-form-item label="供应商名称"><el-input v-model="ruleForm.SupplierName" placeholder="供应商名称" /></el-form-item>
-        <el-form-item label="检验类型" prop="InspectTypeText"><el-input v-model="ruleForm.InspectTypeText" placeholder="来料检验" :disabled="true" /></el-form-item>
+        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @focus="materialBox" /></el-form-item>
+        <el-form-item label="供应商名称"><el-input v-model="ruleForm.SupplierName" placeholder="供应商名称" clearable /></el-form-item>
+        <el-form-item label="检验类型" prop="InspectTypeText">
+          <el-input v-model="ruleForm.InspectTypeText" placeholder="来料检验" :disabled="true" />
+        </el-form-item>
 
         <el-form-item label="检验方式" prop="InspectWayText">
-          <el-select v-model="ruleForm.InspectWayText" placeholder="请选择" @change="changeAway">
+          <el-select v-model="ruleForm.InspectWayText" placeholder="请选择" clearable @change="changeAway">
             <el-option v-for="item in InspectWayOptions" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="来料检验规则" prop="IQCRuleNum"><el-input v-model="ruleForm.IQCRuleNum" placeholder="来料检验规则" @focus="incomingBox" /></el-form-item>
-        <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" /></el-form-item>
+        <el-form-item label="来料检验规则" prop="IQCRuleNum">
+          <el-input v-model="ruleForm.IQCRuleNum" placeholder="请选择" clearable @focus="incomingBox" />
+        </el-form-item>
+        <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
         <el-form-item label="生效时间">
-          <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" />
+          <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

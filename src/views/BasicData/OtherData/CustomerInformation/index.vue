@@ -36,7 +36,7 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addCustomer') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addCustomer') }}</el-button>
     </div>
 
     <el-table
@@ -305,7 +305,7 @@ export default {
     },
 
     // 增加角色
-    handleAddUser() {
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.isPassword = true

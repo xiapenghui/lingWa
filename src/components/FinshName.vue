@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.ProductNum') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationSearch.MaterialNum" /></el-col>
+          <el-col :span="16"><el-input v-model="paginationSearch.MaterialNum" clearable /></el-col>
         </el-col>
 
         <el-col :span="8">

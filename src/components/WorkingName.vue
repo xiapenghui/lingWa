@@ -8,7 +8,7 @@
               <label class="radio-label">工序编号:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationSearchWorking.ProcessNum" /></el-col>
+          <el-col :span="16"><el-input v-model="paginationSearchWorking.ProcessNum" clearable /></el-col>
         </el-col>
 
         <el-col :span="8">
@@ -17,7 +17,7 @@
               <label class="radio-label">工序名称:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationSearchWorking.Name" /></el-col>
+          <el-col :span="16"><el-input v-model="paginationSearchWorking.Name" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">

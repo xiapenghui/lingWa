@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.title') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.RoleName" :placeholder="$t('permission.titleInfo')" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.RoleName" :placeholder="$t('permission.titleInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
@@ -16,7 +16,7 @@
       </el-row>
     </div>
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addRole') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addRole') }}</el-button>
     </div>
     <el-table
       v-loading="listLoading"
@@ -100,12 +100,13 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
-          <el-form-item :label="$t('permission.title')" prop="RoleName"><el-input v-model="ruleForm.RoleName" :placeholder="$t('permission.title')" /></el-form-item>
+          <el-form-item :label="$t('permission.title')" prop="RoleName">
+            <el-input v-model="ruleForm.RoleName" :placeholder="$t('permission.title')" clearable /></el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
           <el-form-item :label="$t('permission.DescriptionInfo')" prop="Description">
-            <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.DescriptionInfo')" />
+            <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" clearable :placeholder="$t('permission.DescriptionInfo')" />
           </el-form-item>
         </el-tooltip>
 
@@ -303,7 +304,7 @@ export default {
     },
 
     // 增加角色
-    handleAddUser() {
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogTypeTitle = this.$t('permission.addRole')
       this.dialogFormVisible = true

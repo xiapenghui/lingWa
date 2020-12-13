@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="原料编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="原料编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="原料名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="原料名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -30,7 +30,7 @@
     </div>
 
     <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">{{ $t('permission.addMaterial') }}</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addMaterial') }}</el-button>
     </div>
 
     <el-table
@@ -138,7 +138,7 @@
         <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
         <el-form-item label="单位" prop="UnitText">
-          <el-select v-model="ruleForm.UnitText" placeholder="单位" style="width: 100%" clearable @change="changeUnit">
+          <el-select v-model="ruleForm.UnitText" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -326,7 +326,7 @@ export default {
     },
 
     // 增加角色
-    handleAddUser() {
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {

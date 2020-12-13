@@ -6,7 +6,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProcessName" placeholder="工序名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.ProcessName" placeholder="工序名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -15,7 +15,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAddUser">新增</el-button></div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
     <el-table
       v-loading="listLoading"
       :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
@@ -104,7 +104,7 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工序代码" prop="ProcessCode"><el-input v-model="ruleForm.ProcessCode" placeholder="请选择" @focus="workingBox" /></el-form-item>
+        <el-form-item label="工序代码" prop="ProcessCode"><el-input v-model="ruleForm.ProcessCode" placeholder="请选择" clearable @focus="workingBox" /></el-form-item>
 
         <el-form-item label="工序名称" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="工序名称" :disabled="true" /></el-form-item>
 
@@ -129,7 +129,7 @@
           <el-radio v-model="ruleForm.IsPrint" :label="false">否</el-radio>
         </el-form-item>
 
-        <el-form-item label="顺序"><el-input v-model="ruleForm.OrderNum" placeholder="顺序" /></el-form-item>
+        <el-form-item label="顺序"><el-input v-model="ruleForm.OrderNum" placeholder="顺序" clearable /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
@@ -305,7 +305,7 @@ export default {
     },
 
     // 增加工艺路线
-    handleAddUser() {
+    handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.ruleForm = {}

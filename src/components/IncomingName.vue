@@ -8,7 +8,7 @@
               <label class="radio-label">来料检验规则编号:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="14"><el-input v-model="paginationSearchIncoming.RuleNum" /></el-col>
+          <el-col :span="14"><el-input v-model="paginationSearchIncoming.RuleNum" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">

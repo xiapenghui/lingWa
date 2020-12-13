@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="原料编号" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="原料编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialName" placeholder="原料名称" /></el-col>
+          <el-col :span="16"><el-input v-model="pagination.MaterialName" placeholder="原料名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -103,7 +103,7 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="工序" prop="WorkingProcedureName">
-          <el-input v-model="ruleForm.WorkingProcedureName" placeholder="请选择工序" clearable @focus="workingBox" />
+          <el-input v-model="ruleForm.WorkingProcedureName" placeholder="请选择" clearable @focus="workingBox" />
         </el-form-item>
         <el-form-item label="原料名称" prop="MaterialName">
           <el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" clearable @focus="materialBox(1)" />
