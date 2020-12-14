@@ -8,7 +8,7 @@
               <label class="radio-label">计划单号:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.PlanNum" :placeholder="$t('permission.PlanNum')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.PlanNum" :placeholder="$t('permission.PlanNum')" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
@@ -16,7 +16,7 @@
               <label class="radio-label">{{ $t('permission.ProductNum') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductNum" :placeholder="$t('permission.ProductNum')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" :placeholder="$t('permission.ProductNum')" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
@@ -24,7 +24,7 @@
               <label class="radio-label">{{ $t('permission.ProductName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductName" :placeholder="$t('permission.ProductName')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductName" :placeholder="$t('permission.ProductName')" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
@@ -33,7 +33,7 @@
               <label class="radio-label">{{ $t('permission.CustomerName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.CustomerFullName" :placeholder="$t('permission.CustomerName')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.CustomerFullName" :placeholder="$t('permission.CustomerName')" clearable /></el-col>
         </el-col>
 
         <el-col :span="3">
@@ -286,7 +286,7 @@
         <div class="bigUpBox">
           <div class="boxLeft">
             <el-form-item :label="$t('permission.PlanNum')" prop="PlanNum" :rules="[{ required: isAlarmItem, message: '请输入生产计划单号', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.PlanNum" :placeholder="$t('permission.PlanNum')" :disabled="isDisabled" />
+              <el-input v-model.trim="ruleForm.PlanNum" :placeholder="$t('permission.PlanNum')" :disabled="isDisabled" />
             </el-form-item>
 
             <el-form-item :label="$t('permission.PlanTypeName')" prop="PlanType" :rules="[{ required: isAlarmItem, message: '请选择生产计划类型', trigger: 'change' }]">
@@ -296,7 +296,7 @@
             </el-form-item>
 
             <el-form-item :label="$t('permission.PlanQuantity')" prop="PlanQuantity" :rules="[{ required: isAlarmItem, message: '请输入计划数量', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" :disabled="isDisabled" />
+              <el-input v-model.trim="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" :disabled="isDisabled" />
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.SchedulingQuantityOther')" prop="SchedulingQuantityOther">
@@ -304,7 +304,7 @@
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.splitNumOther')" prop="SplitQuantity">
-              <el-input v-model="ruleForm.SplitQuantity" :placeholder="$t('permission.splitNumOther')" :rules="[{ required: true, message: '请输入拆分数量', trigger: 'blur' }]" clearable />
+              <el-input v-model.trim="ruleForm.SplitQuantity" :placeholder="$t('permission.splitNumOther')" :rules="[{ required: true, message: '请输入拆分数量', trigger: 'blur' }]" clearable />
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable /></el-form-item>
@@ -335,7 +335,7 @@
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')">
-              <el-input v-model="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" clearable />
+              <el-input v-model.trim="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" clearable />
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">

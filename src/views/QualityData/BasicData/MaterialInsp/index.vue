@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialCode" placeholder="原料编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.MaterialCode" placeholder="原料编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialName" placeholder="原料名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.MaterialName" placeholder="原料名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -148,7 +148,7 @@
         <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @focus="materialBox" /></el-form-item>
         <el-form-item label="供应商名称"><el-input v-model="ruleForm.SupplierName" placeholder="供应商名称" clearable /></el-form-item>
         <el-form-item label="检验类型" prop="InspectTypeText">
-          <el-input v-model="ruleForm.InspectTypeText" placeholder="来料检验" :disabled="true" />
+          <el-input v-model.trim="ruleForm.InspectTypeText" placeholder="来料检验" :disabled="true" />
         </el-form-item>
 
         <el-form-item label="检验方式" prop="InspectWayText">
@@ -160,13 +160,13 @@
         <el-form-item label="来料检验规则" prop="IQCRuleNum">
           <el-input v-model="ruleForm.IQCRuleNum" placeholder="请选择" clearable @focus="incomingBox" />
         </el-form-item>
-        <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
+        <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
         <el-form-item label="生效时间" prop="EffectiveDate">
           <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

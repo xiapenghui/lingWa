@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="原料编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.MaterialNum" placeholder="原料编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="原料名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="原料名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -132,10 +132,10 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model="ruleForm.MaterialNum" placeholder="原料编号" clearable /></el-form-item>
-        <el-form-item label="原料名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="原料名称" clearable /></el-form-item>
-        <el-form-item label="原料规格"><el-input v-model="ruleForm.Spec" placeholder="原料规格" clearable /></el-form-item>
-        <el-form-item label="颜色"><el-input v-model="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
+        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="原料编号" clearable /></el-form-item>
+        <el-form-item label="原料名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="原料名称" clearable /></el-form-item>
+        <el-form-item label="原料规格"><el-input v-model.trim="ruleForm.Spec" placeholder="原料规格" clearable /></el-form-item>
+        <el-form-item label="颜色"><el-input v-model.trim="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
         <el-form-item label="单位">
           <el-select v-model="ruleForm.Unit" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
@@ -147,7 +147,7 @@
           <el-radio v-model="ruleForm.IsInspection" :label="true">是</el-radio>
           <el-radio v-model="ruleForm.IsInspection" :label="false">否</el-radio>
         </el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Description" placeholder="备注" type="textarea" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Description" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

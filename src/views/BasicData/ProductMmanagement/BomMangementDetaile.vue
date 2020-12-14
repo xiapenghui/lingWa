@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialNum" placeholder="原料编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.MaterialNum" placeholder="原料编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.MaterialName" placeholder="原料名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.MaterialName" placeholder="原料名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -108,9 +108,9 @@
         <el-form-item label="原料名称" prop="MaterialName">
           <el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" clearable @focus="materialBox(1)" />
         </el-form-item>
-        <el-form-item label="原料用量" prop="Usage"><el-input v-model="ruleForm.Usage" placeholder="原料用量" clearable /></el-form-item>
+        <el-form-item label="原料用量" prop="Usage"><el-input v-model.trim="ruleForm.Usage" placeholder="原料用量" clearable /></el-form-item>
         <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请选择替代物料" clearable @focus="materialBox(2)" /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

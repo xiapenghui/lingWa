@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.userName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.AccountName" :placeholder="$t('permission.userNameInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.AccountName" :placeholder="$t('permission.userNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="8">
@@ -16,7 +16,7 @@
               <label class="radio-label">{{ $t('permission.fullName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="8">
@@ -37,7 +37,7 @@
             </el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.DeptCode" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
+            <el-select v-model.trim="pagination.DeptCode" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
               <el-option v-for="item in DepFilterData" :key="item.DeptCode" :label="item.FullName" :value="item.DeptCode" />
             </el-select>
           </el-col>
@@ -155,20 +155,22 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item :label="$t('permission.userName')" prop="AccountName">
-          <el-input v-model="ruleForm.AccountName" :placeholder="$t('permission.userNameInfo')" clearable />
+          <el-input v-model.trim="ruleForm.AccountName" :placeholder="$t('permission.userNameInfo')" clearable />
         </el-form-item>
 
         <el-form-item :label="$t('permission.password')" prop="AccountPwd">
-          <el-input v-model="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable />
+          <el-input v-model.trim="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable />
         </el-form-item>
 
         <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
           <el-form-item :label="$t('permission.passwords')" prop="passwords">
-            <el-input v-model="ruleForm.passwords" type="password" :placeholder="$t('permission.passwords')" clearable />
+            <el-input v-model.trim="ruleForm.passwords" type="password" :placeholder="$t('permission.passwords')" clearable />
           </el-form-item>
         </el-tooltip>
 
-        <el-form-item :label="$t('permission.fullName')" prop="NameCN"><el-input v-model="ruleForm.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable /></el-form-item>
+        <el-form-item :label="$t('permission.fullName')" prop="NameCN">
+          <el-input v-model.trim="ruleForm.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable />
+        </el-form-item>
 
         <el-form-item :label="$t('permission.rouleInfo')" prop="RoleCode">
           <el-select v-model="ruleForm.RoleCode" :placeholder="$t('permission.rouleInfo')" clearable style="width: 100%">

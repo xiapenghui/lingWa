@@ -6,26 +6,26 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="生产工单号" placement="top-start"><label class="radio-label">生产工单号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.OrderNum" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.OrderNum" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductCode" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductCode" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductName" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductName" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start"><label class="radio-label">客户名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.CustomerName" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.CustomerName" clearable /></el-col>
         </el-col>
 
         <el-col :span="3">
@@ -44,7 +44,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="生产计划单号" placement="top-start"><label class="radio-label">生产计划单号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.PlanCode" /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.PlanCode" /></el-col>
         </el-col>
 
         <el-col :span="5">
@@ -290,7 +290,7 @@
           <div class="boxLeft">
 
             <el-form-item label="生产工单号" prop="OrderNum" :rules="[{ required: true, message: '请输入生产工单号', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" clearable />
+              <el-input v-model.trim="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" clearable />
             </el-form-item>
 
             <el-form-item label="工单类型" prop="OrderType" :rules="[{ required: true, message: '请选择生产计划类型', trigger: 'change' }]">
@@ -300,7 +300,7 @@
             </el-form-item>
 
             <el-form-item label="计划数量" prop="PlanQuantity" :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" clearable />
+              <el-input v-model.trim="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" clearable />
             </el-form-item>
 
             <el-form-item label="计划开始日期">
@@ -332,7 +332,7 @@
               <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" clearable />
             </el-form-item>
 
-            <el-form-item label="备注"><el-input v-model="ruleForm.Description" type="textarea" clearable /></el-form-item>
+            <el-form-item label="备注"><el-input v-model.trim="ruleForm.Description" type="textarea" clearable /></el-form-item>
           </div>
         </div>
       </el-form>

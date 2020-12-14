@@ -26,14 +26,14 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="产线编号" placement="top-start"><label class="radio-label">产线编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.LineNum" placeholder="产线编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.LineNum" placeholder="产线编号" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="产线名称" placement="top-start"><label class="radio-label">产线名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.LineName" placeholder="产线名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.LineName" placeholder="产线名称" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -136,8 +136,8 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '增加'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="产线编号"><el-input v-model="ruleForm.LineNum" placeholder="产线编号" clearable /></el-form-item>
-        <el-form-item label="产线名称" prop="LineName"><el-input v-model="ruleForm.LineName" placeholder="产线名称" clearable /></el-form-item>
+        <el-form-item label="产线编号"><el-input v-model.trim="ruleForm.LineNum" placeholder="产线编号" clearable /></el-form-item>
+        <el-form-item label="产线名称" prop="LineName"><el-input v-model.trim="ruleForm.LineName" placeholder="产线名称" clearable /></el-form-item>
 
         <el-form-item label="公司名称" prop="OrgName" style="display: none;">
           <el-select v-model="ruleForm.OrgName" placeholder="请选择" style="width: 100%" @change="changeName">
@@ -155,8 +155,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
+        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

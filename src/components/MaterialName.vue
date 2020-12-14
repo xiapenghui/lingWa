@@ -8,7 +8,7 @@
               <label class="radio-label">原料编码:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationSearchMaterial.MaterialNum" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="paginationSearchMaterial.MaterialNum" clearable /></el-col>
         </el-col>
 
         <el-col :span="8">
@@ -17,7 +17,7 @@
               <label class="radio-label">原料名称:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationSearchMaterial.Name" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="paginationSearchMaterial.Name" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">

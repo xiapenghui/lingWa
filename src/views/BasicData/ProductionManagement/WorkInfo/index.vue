@@ -17,13 +17,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="车间编号" placement="top-start"><label class="radio-label">车间编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.WorkshopNum" placeholder="车间编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.WorkshopNum" placeholder="车间编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="车间名称" placement="top-start"><label class="radio-label">车间名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="车间名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="车间名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -112,15 +112,15 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '增加'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="车间编码"><el-input v-model="ruleForm.WorkshopNum" placeholder="车间名称" clearable /></el-form-item>
-        <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model="ruleForm.WorkshopName" placeholder="车间名称" clearable /></el-form-item>
+        <el-form-item label="车间编码"><el-input v-model.trim="ruleForm.WorkshopNum" placeholder="车间名称" clearable /></el-form-item>
+        <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model.trim="ruleForm.WorkshopName" placeholder="车间名称" clearable /></el-form-item>
         <el-form-item label="公司名称" prop="OrgName" style="display: none;">
           <el-select v-model="ruleForm.OrgName" placeholder="公司名称" style="width: 100%" @change="changeName">
             <el-option v-for="item in companyData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
+        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工序编号" placement="top-start"><label class="radio-label">工序编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProcessNum" placeholder="工序编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProcessNum" placeholder="工序编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工序名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="工序名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -114,15 +114,15 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' :'新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工序编号"><el-input v-model="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
-        <el-form-item label="工序名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>
+        <el-form-item label="工序编号"><el-input v-model.trim="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
+        <el-form-item label="工序名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>
         <el-form-item label="倒扣账标识" prop="IsBackFlush">
           <el-radio v-model="ruleForm.IsBackFlush" :label="true">是</el-radio>
           <el-radio v-model="ruleForm.IsBackFlush" :label="false">否</el-radio>
         </el-form-item>
-        <el-form-item label="倒扣账代码"><el-input v-model="ruleForm.BackFlushCode" placeholder="倒扣账代码" clearable /></el-form-item>
-        <el-form-item label="描述"><el-input v-model="ruleForm.Description" placeholder="描述" clearable type="textarea" /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable type="textarea" /></el-form-item>
+        <el-form-item label="倒扣账代码"><el-input v-model.trim="ruleForm.BackFlushCode" placeholder="倒扣账代码" clearable /></el-form-item>
+        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" clearable type="textarea" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" clearable type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

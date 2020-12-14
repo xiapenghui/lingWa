@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.companyNo') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.OrgNum" placeholder="公司编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.OrgNum" placeholder="公司编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
@@ -16,7 +16,7 @@
               <label class="radio-label">{{ $t('permission.companyName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.FullName" placeholder="公司简称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.FullName" placeholder="公司简称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -132,15 +132,15 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="公司编号"><el-input v-model="ruleForm.OrgNum" placeholder="公司编号" /></el-form-item>
+        <el-form-item label="公司编号"><el-input v-model.trim="ruleForm.OrgNum" placeholder="公司编号" /></el-form-item>
 
-        <el-form-item label="公司简称"><el-input v-model="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
+        <el-form-item label="公司简称"><el-input v-model.trim="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
 
-        <el-form-item label="公司全称" prop="FullName"><el-input v-model="ruleForm.FullName" placeholder="公司全称" clearable /></el-form-item>
+        <el-form-item label="公司全称" prop="FullName"><el-input v-model.trim="ruleForm.FullName" placeholder="公司全称" clearable /></el-form-item>
 
-        <el-form-item label="公司电话"><el-input v-model="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
+        <el-form-item label="公司电话"><el-input v-model.trim="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
 
-        <el-form-item label="公司地址"><el-input v-model="ruleForm.Address" placeholder="公司地址" clearable /></el-form-item>
+        <el-form-item label="公司地址"><el-input v-model.trim="ruleForm.Address" placeholder="公司地址" clearable /></el-form-item>
 
         <el-form-item label="公司LOGO">
           <el-upload
@@ -155,7 +155,7 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="描述"><el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="描述" /></el-form-item>
+        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="描述" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

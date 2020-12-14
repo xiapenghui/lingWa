@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.title') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.RoleName" :placeholder="$t('permission.titleInfo')" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.RoleName" :placeholder="$t('permission.titleInfo')" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
@@ -101,12 +101,12 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.title')" prop="RoleName">
-            <el-input v-model="ruleForm.RoleName" :placeholder="$t('permission.title')" clearable /></el-form-item>
+            <el-input v-model.trim="ruleForm.RoleName" :placeholder="$t('permission.title')" clearable /></el-form-item>
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
           <el-form-item :label="$t('permission.DescriptionInfo')" prop="Description">
-            <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" clearable :placeholder="$t('permission.DescriptionInfo')" />
+            <el-input v-model.trim="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" clearable :placeholder="$t('permission.DescriptionInfo')" />
           </el-form-item>
         </el-tooltip>
 

@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.ProductNum') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationSearch.MaterialNum" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="paginationSearch.MaterialNum" clearable /></el-col>
         </el-col>
 
         <el-col :span="8">
@@ -17,7 +17,7 @@
               <label class="radio-label">{{ $t('permission.ProductNane') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationSearch.Name" /></el-col>
+          <el-col :span="16"><el-input v-model.trim="paginationSearch.Name" /></el-col>
         </el-col>
 
         <el-col :span="4">

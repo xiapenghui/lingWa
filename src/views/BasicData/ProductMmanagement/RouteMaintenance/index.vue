@@ -6,7 +6,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工艺路线名称" placement="top-start"><label class="radio-label">工艺路线名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.Name" placeholder="工艺路线名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-modeltrim="pagination.Name" placeholder="工艺路线名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -114,14 +114,14 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工艺路线名称" prop="Name"><el-input v-model="ruleForm.Name" placeholder="工艺路线名称" clearable /></el-form-item>
-        <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
+        <el-form-item label="工艺路线名称" prop="Name"><el-input v-modeltrim="ruleForm.Name" placeholder="工艺路线名称" clearable /></el-form-item>
+        <el-form-item label="版本" prop="Version"><el-input v-modeltrim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
         <el-form-item label="生效时间">
           <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
+        <el-form-item label="备注"><el-input v-modeltrim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

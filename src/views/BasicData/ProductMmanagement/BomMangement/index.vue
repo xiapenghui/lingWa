@@ -6,13 +6,13 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductNum" placeholder="成品编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" placeholder="成品编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="pagination.ProductName" placeholder="成品名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductName" placeholder="成品名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -129,9 +129,9 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="成品编号" prop="ProductNum"><el-input v-model="ruleForm.ProductNum" placeholder="请选择" clearable @focus="finshBox" /></el-form-item>
-        <el-form-item label="成品名称"><el-input v-model="ruleForm.ProductName" placeholder="成品名称" :disabled="true" /></el-form-item>
-        <el-form-item label="BOM版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="BOM版本" clearable /></el-form-item>
+        <el-form-item label="成品编号" prop="ProductNum"><el-input v-model.trim="ruleForm.ProductNum" placeholder="请选择" clearable @focus="finshBox" /></el-form-item>
+        <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.ProductName" placeholder="成品名称" :disabled="true" /></el-form-item>
+        <el-form-item label="BOM版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="BOM版本" clearable /></el-form-item>
 
         <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
@@ -139,7 +139,7 @@
           <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
-        <el-form-item label="备注"><el-input v-model="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
