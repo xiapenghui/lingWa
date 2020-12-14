@@ -1,5 +1,11 @@
 #app {
   .el-dialog__body {
+    .searchBox{
+       .radio-label{
+         padding: 0;
+         line-height: 30px;
+       }
+    }
     padding: 20px;
     .el-upload__tip {
       margin-top: 10px;

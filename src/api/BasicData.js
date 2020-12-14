@@ -94,7 +94,7 @@ export function OrganModify(data) {
 // 修改公司信息状态
 export function OrganStatus(data) {
   return request({
-    url: newUrl + '/api/BaseOrganizationCorp',
+    url: newUrl + '/api/BaseOrganizationCorp/ModifyStatus',
     method: 'post',
     data
   })

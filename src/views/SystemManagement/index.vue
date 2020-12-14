@@ -43,7 +43,7 @@
 
       <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
-          <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status ===false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+          <el-tag :style="{ color: scope.row.Status ===false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 

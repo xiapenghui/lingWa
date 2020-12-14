@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="6" style="display: none;">
+        <el-col :span="5" style="display: none;">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
@@ -13,13 +13,22 @@
           </el-col>
         </el-col>
 
-        <el-col :span="6">
+        <el-col :span="5">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" content="所属产线" placement="top-start"><label class="radio-label">所属产线:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16">
+            <el-cascader v-model="pagination.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间/产线" clearable />
+          </el-col>
+        </el-col>
+
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工作中心编号" placement="top-start"><label class="radio-label">工作中心编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.WorkCenterNum" placeholder="工作中心编号" clearable /></el-col>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工作中心名称" placement="top-start"><label class="radio-label">工作中心名称:</label></el-tooltip>
           </el-col>
@@ -146,7 +155,7 @@
         </el-form-item>
 
         <el-form-item label="所属产线" prop="CascadeArray">
-          <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" clearable />
+          <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间/产线" clearable />
         </el-form-item>
 
         <el-form-item label="工作中心类别">
@@ -184,6 +193,7 @@ export default {
         PageIndex: 1,
         PageSize: 50,
         OrgCode: null,
+        CascadeArray: [],
         WorkCenterNum: undefined,
         WorkCenterName: undefined,
         ShowBanned: false

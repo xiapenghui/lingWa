@@ -19,7 +19,7 @@
     <el-table
       v-loading="lineLoading"
       :height="tableBoxHeight"
-      :header-cell-style="{ background: '#004184 ', color: '#ffffff' }"
+      :header-cell-style="{ background: '#1890ff ', color: '#ffffff' }"
       :data="lineData"
       style="width: 100%"
       border
@@ -113,7 +113,7 @@ export default {
 <style lang="scss" scoped>
 .el-dialog__body {
   .searchBox {
-    .el-col-6 {
+    .el-col-7 {
       height: 30px;
       line-height: 25px;
       text-align: right;

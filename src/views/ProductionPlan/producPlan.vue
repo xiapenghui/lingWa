@@ -304,7 +304,7 @@
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.splitNumOther')" prop="SplitQuantity">
-              <el-input v-model="ruleForm.SplitQuantity" :placeholder="$t('permission.splitNumOther')" :rules="[{ required: true, message: '请输入计划数量', trigger: 'blur' }]" clearable />
+              <el-input v-model="ruleForm.SplitQuantity" :placeholder="$t('permission.splitNumOther')" :rules="[{ required: true, message: '请输入拆分数量', trigger: 'blur' }]" clearable />
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable /></el-form-item>
@@ -954,10 +954,6 @@ export default {
         })
       })
     },
-    // 继续新增
-    submitAdd() {
-      this.handleAdd()
-    },
 
     // 编辑
     handleEdit(row) {
@@ -970,6 +966,51 @@ export default {
       this.addShow = false
       this.isAlarmItem = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
+    },
+
+    // 封装拆分
+    commonSplit() {
+      productionSplit(this.ruleForm).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: this.$t('table.SplitSuc')
+          })
+          SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
+            if (res.IsPass === true) {
+              this.ruleForm = res.Obj
+            }
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.MSG
+          })
+          this.editLoading = false
+        }
+      })
+    },
+
+    // 封装新增
+    commonAdd() {
+      const params = this.ruleForm
+      params.PlanType = this.typeCode
+      productionAdd(params).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: this.$t('table.addSuc')
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.MSG
+          })
+          this.editLoading = false
+        }
+      })
     },
 
     // 编辑成功
@@ -985,7 +1026,6 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
               } else {
@@ -993,52 +1033,15 @@ export default {
                   type: 'error',
                   message: res.MSG
                 })
-                this.editLoading = false
-                this.dialogFormVisible = false
               }
+              this.editLoading = false
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
-            const params = this.ruleForm
-            params.PlanType = this.typeCode
-            productionAdd(params).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.addSuc')
-                })
-                this.editLoading = false
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-                this.editLoading = false
-              }
-            })
+            this.commonAdd()
+            this.dialogFormVisible = false
           } else {
-            productionSplit(this.ruleForm).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.SplitSuc')
-                })
-                SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
-                  if (res.IsPass === true) {
-                    this.ruleForm = res.Obj
-                  }
-                })
-                this.editLoading = false
-                this.dialogFormVisible = false
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-                this.editLoading = false
-              }
-            })
+            this.commonSplit()
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -1049,6 +1052,17 @@ export default {
           return false
         }
       })
+    },
+
+    // 继续新增
+    submitAdd() {
+      this.commonAdd()
+      this.handleAdd()
+    },
+
+    // 继续拆分
+    submitSplit() {
+      this.commonSplit()
     },
     // 关联工单
     handleRelation(row) {
@@ -1116,31 +1130,7 @@ export default {
         }
       })
     },
-    // 继续拆分
-    submitSplit() {
-      this.editLoading = true
-      productionSplit(this.ruleForm).then(res => {
-        if (res.IsPass === true) {
-          this.$message({
-            type: 'success',
-            message: this.$t('table.SplitSuc')
-          })
-          SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
-            if (res.IsPass === true) {
-              this.ruleForm = res.Obj
-            }
-          })
-          this.editLoading = false
-          this.getList()
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.MSG
-          })
-          this.editLoading = false
-        }
-      })
-    },
+
     // 计划冻结
     planFrozen(row) {
       this.$confirm(this.$t('permission.dongjInfo'), this.$t('permission.errorTitle'), {

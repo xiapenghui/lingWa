@@ -335,7 +335,6 @@ export default {
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
-      row.Unit = row.Unit + ''
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 

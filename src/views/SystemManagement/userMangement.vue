@@ -114,7 +114,7 @@
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
         <template slot-scope="scope">
-          <el-tag :type="scope.row.Status" :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -158,12 +158,12 @@
           <el-input v-model="ruleForm.AccountName" :placeholder="$t('permission.userNameInfo')" clearable />
         </el-form-item>
 
-        <el-form-item v-if="isPassword" :label="$t('permission.password')" prop="AccountPwd">
+        <el-form-item :label="$t('permission.password')" prop="AccountPwd">
           <el-input v-model="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable />
         </el-form-item>
 
         <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
-          <el-form-item v-if="isPassword" :label="$t('permission.passwords')" prop="passwords">
+          <el-form-item :label="$t('permission.passwords')" prop="passwords">
             <el-input v-model="ruleForm.passwords" type="password" :placeholder="$t('permission.passwords')" clearable />
           </el-form-item>
         </el-tooltip>
@@ -195,6 +195,25 @@ export default {
   name: 'UserMangement',
   components: { Pagination },
   data() {
+    // var validatePass = (rule, value, callback) => {
+    //   if (value === '') {
+    //     callback(new Error('请输入密码'))
+    //   } else {
+    //     if (this.ruleForm.checkPass !== '') {
+    //       this.$refs.ruleForm.validateField('checkPass')
+    //     }
+    //     callback()
+    //   }
+    // }
+    // var validatePass2 = (rule, value, callback) => {
+    //   if (value === '') {
+    //     callback(new Error('请再次输入密码'))
+    //   } else if (value !== this.ruleForm.pass) {
+    //     callback(new Error('两次输入密码不一致!'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       tableData: [],
       ruleForm: {}, // 编辑弹窗
@@ -214,7 +233,6 @@ export default {
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
-      isPassword: false, // 密码是否可见
       companyData: [], // 获取搜索框公司列表
       DepFullData: [], // 获取搜索框部门列表
       DepFilterData: [],
@@ -222,6 +240,7 @@ export default {
       rules: {
         NameCN: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         AccountPwd: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        passwords: [{ required: true, message: '请再次输入密码', trigger: 'blur' }],
         AccountName: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
         RoleCode: [{ required: true, message: '请选择角色', trigger: 'change' }]
       },
@@ -300,7 +319,7 @@ export default {
         passwords: [
           {
             required: true,
-            message: this.$t('permission.passwordsInfo'),
+            message: '请再次输入密码',
             trigger: 'blur'
           }
         ],
@@ -390,14 +409,12 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
-      this.isPassword = true
       this.ruleForm = {}
     },
     // 编辑角色
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
-      this.isPassword = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -424,8 +441,8 @@ export default {
                   message: res.MSG
                 })
               }
+              this.getList()
             })
-            this.getList()
           })
           .catch(() => {
             this.$message({

@@ -21,7 +21,7 @@
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" content="包含禁用状态的公司" placement="top-start">
-              <el-checkbox v-model="pagination.Status">包含禁用状态的公司</el-checkbox>
+              <el-checkbox v-model="pagination.ShowBanned">包含禁用状态的公司</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -182,10 +182,10 @@ export default {
       ruleForm: {}, // 编辑弹窗
       pagination: {
         PageIndex: 1,
-        PageSize: 10,
+        PageSize: 50,
         OrgNum: undefined,
         FullName: undefined,
-        Status: false
+        ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading

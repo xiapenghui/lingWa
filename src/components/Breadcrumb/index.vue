@@ -5,7 +5,8 @@
         <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">
           {{ generateTitle(item.meta.title) }}
         </span>
-        <span v-else @click.prevent="handleLink(item)">{{ generateTitle(item.meta.title) }}</span>
+        <!-- <span v-else @click.prevent="handleLink(item)">{{ generateTitle(item.meta.title) }}</span> -->
+        <span v-else>{{ generateTitle(item.meta.title) }}</span>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>

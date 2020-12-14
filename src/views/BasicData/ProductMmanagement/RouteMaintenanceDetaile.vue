@@ -82,7 +82,7 @@
 
       <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime | substringTime }}
+          {{ scope.row.ModifyTime }}
         </template>
       </el-table-column>
 
@@ -134,6 +134,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -348,6 +349,28 @@ export default {
         })
     },
 
+    // 新增封装
+    commonAdd() {
+      const params = this.ruleForm
+      params.ProcessRouteCode = this.$route.query.ProcessRouteCode
+      params.CheckedType = this.checkVal
+      baseDetailAdd(params).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: this.$t('table.addSuc')
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.MSG
+          })
+        }
+        this.editLoading = false
+      })
+    },
+
     // 编辑成功
     submitForm(formName) {
       this.editLoading = true
@@ -375,25 +398,8 @@ export default {
               this.editLoading = false
             })
           } else {
-            const params = this.ruleForm
-            params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-            params.CheckedType = this.checkVal
-            baseDetailAdd(params).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.addSuc')
-                })
-                this.dialogFormVisible = false
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-              this.editLoading = false
-            })
+            this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -404,6 +410,12 @@ export default {
           return false
         }
       })
+    },
+
+    // 继续新增
+    submitAdd() {
+      this.commonAdd()
+      this.handleAdd()
     },
 
     // 工序聚焦事件原料弹窗

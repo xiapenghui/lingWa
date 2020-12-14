@@ -288,6 +288,7 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="100px" label-position="left" class="demo-ruleForm">
         <div class="bigUpBox">
           <div class="boxLeft">
+
             <el-form-item label="生产工单号" prop="OrderNum" :rules="[{ required: true, message: '请输入生产工单号', trigger: 'blur' }]">
               <el-input v-model="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" clearable />
             </el-form-item>
@@ -317,7 +318,9 @@
               <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" clearable @focus="finshBox" />
             </el-form-item>
 
-            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" clearable @focus="userBox" /></el-form-item>
+            <el-form-item label="客户名称" prop="CustomerName">
+              <el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" clearable @focus="userBox" />
+            </el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
               <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable>
@@ -365,7 +368,7 @@
     />
 
     <!-- BOM弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="bomFormVisible" title=" BOM弹窗" width="70%" height="50%">
+    <el-dialog :close-on-click-modal="false" :visible.sync="bomFormVisible" title="列表" width="70%" height="50%">
       <el-table
         v-loading="bomBoxLoading"
         :height="tableBoxHeight"
@@ -434,7 +437,7 @@
     </el-dialog>
 
     <!-- 工艺线路弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线" width="70%" height="50%">
+    <el-dialog :close-on-click-modal="false" :visible.sync="lineFormVisible" title="列表" width="70%" height="50%">
       <el-table
         v-loading="lineBoxLoading"
         :height="tableBoxHeight"
@@ -770,16 +773,33 @@ export default {
       this.dialogFormVisible = true
       this.ruleForm = {}
     },
-    // 继续新增
-    submitAdd() {
-      this.handleAdd()
-    },
 
     // 编辑
     handleEdit(row) {
       this.dialogTypeTitle = this.$t('permission.EditOrder')
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
+    },
+
+    // 新增封装
+    commonAdd() {
+      const params = this.ruleForm
+      params.PlanType = this.typeCode
+      orderAdd(params).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: this.$t('table.addSuc')
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.MSG
+          })
+        }
+        this.editLoading = false
+      })
     },
 
     // 编辑成功
@@ -795,7 +815,6 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
               } else {
@@ -803,29 +822,12 @@ export default {
                   type: 'error',
                   message: res.MSG
                 })
-                this.editLoading = false
-                this.dialogFormVisible = false
               }
+              this.editLoading = false
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addOrder')) {
-            const params = this.ruleForm
-            params.PlanType = this.typeCode
-            orderAdd(params).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.addSuc')
-                })
-                this.editLoading = false
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-                this.editLoading = false
-              }
-            })
+            this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -836,6 +838,12 @@ export default {
           return false
         }
       })
+    },
+
+    // 继续新增
+    submitAdd() {
+      this.commonAdd()
+      this.handleAdd()
     },
 
     // BOM

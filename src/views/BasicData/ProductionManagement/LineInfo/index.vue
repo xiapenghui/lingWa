@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="6" style="display: none;">
+        <el-col :span="5" style="display: none;">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
@@ -13,18 +13,29 @@
           </el-col>
         </el-col>
 
-        <el-col :span="6">
+        <el-col :span="5">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" content="所属车间" placement="top-start"><label class="radio-label">所属车间:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16">
+            <el-cascader v-model="pagination.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间" clearable />
+          </el-col>
+        </el-col>
+
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="产线编号" placement="top-start"><label class="radio-label">产线编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.LineNum" placeholder="产线编号" clearable /></el-col>
         </el-col>
-        <el-col :span="6">
+
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="产线名称" placement="top-start"><label class="radio-label">产线名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.LineName" placeholder="产线名称" clearable /></el-col>
         </el-col>
+
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" content="包含禁状态的产线" placement="top-start">
@@ -135,7 +146,7 @@
         </el-form-item>
 
         <el-form-item label="车间名称" prop="CascadeArray">
-          <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" clearable />
+          <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间" clearable />
         </el-form-item>
 
         <el-form-item label="产线类别">
@@ -173,6 +184,7 @@ export default {
         PageIndex: 1,
         PageSize: 50,
         OrgCode: null,
+        CascadeArray: [],
         LineNum: undefined,
         LineName: undefined,
         ShowBanned: false

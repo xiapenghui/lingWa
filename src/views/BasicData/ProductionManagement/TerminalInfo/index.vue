@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="4" style="display: none;">
+        <el-col :span="6" style="display: none;">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
@@ -12,13 +12,23 @@
             </el-select>
           </el-col>
         </el-col>
-        <el-col :span="6">
+
+        <el-col :span="5">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" content="工作中心" placement="top-start"><label class="radio-label">工作中心:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16">
+            <el-cascader v-model="pagination.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间/产线/中心" clearable />
+          </el-col>
+        </el-col>
+
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工位编号" placement="top-start"><label class="radio-label">工位编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model="pagination.TerminalNum" placeholder="工位编号" clearable /></el-col>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工位名称" placement="top-start"><label class="radio-label">工位名称:</label></el-tooltip>
           </el-col>
@@ -199,6 +209,7 @@ export default {
         PageIndex: 1,
         PageSize: 50,
         OrgCode: null,
+        CascadeArray: [],
         TerminalNum: undefined,
         TerminalName: undefined,
         ShowBanned: false
