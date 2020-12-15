@@ -33,9 +33,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工序编码" width="200" prop="ProcessCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序编码" width="200" prop="ProcessNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ProcessCode }}
+          {{ scope.row.ProcessNum }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="工序名称" width="200" prop="ProcessName" sortable :show-overflow-tooltip="true">
@@ -103,7 +103,7 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工序编号" prop="ProcessCode"><el-input v-model="ruleForm.ProcessCode" placeholder="请选择" clearable @focus="workingBox" /></el-form-item>
+        <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model="ruleForm.ProcessNum" placeholder="请选择" clearable @focus="workingBox" /></el-form-item>
 
         <el-form-item label="工序名称" prop="ProcessName"><el-input v-model.trim="ruleForm.ProcessName" placeholder="工序名称" :disabled="true" /></el-form-item>
 
@@ -197,7 +197,7 @@ export default {
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
       rules: {
-        ProcessCode: [{ required: true, message: '请输入工艺路线', trigger: 'change' }],
+        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }],
         ProcessName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
@@ -269,7 +269,7 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        ProcessCode: [{ required: true, message: '请输入工艺路线', trigger: 'change' }],
+        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }],
         ProcessName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
       }
     },
@@ -436,9 +436,9 @@ export default {
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
-      this.ruleForm.ProcessCode = row.ProcessCode
+      this.ruleForm.ProcessNum = row.ProcessNum
       this.ruleForm.ProcessName = row.Name
-      this.ruleForm.WorkingProcedureCode = row.ProcessCode
+      this.ruleForm.ProcessCode = row.ProcessCode
       this.workingFormVisible = false
     },
     // 关闭工序名称查询弹窗

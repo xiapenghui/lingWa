@@ -8,7 +8,7 @@
               <label class="radio-label">{{ $t('permission.CustomerNum') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationUser.CustomerNum" /></el-col>
+          <el-col :span="16"><el-input v-model.trim="paginationUser.CustomerNum" /></el-col>
         </el-col>
 
         <el-col :span="8">
@@ -17,7 +17,7 @@
               <label class="radio-label">{{ $t('permission.FullName') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model="paginationUser.FullName" /></el-col>
+          <el-col :span="16"><el-input v-model.trim="paginationUser.FullName" /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -40,59 +40,47 @@
       highlight-current-row
       @row-dblclick="userClick"
     >
-      <el-table-column align="center" label="客户编号" width="150">
+
+      <el-table-column align="center" label="序号" width="50" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="客户编号" width="150" prop="CustomerNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CustomerNum }}
         </template>
       </el-table-column>
-
-      <el-table-column align="center" label="客户名称" width="150">
+      <el-table-column align="center" label="客户名称" width="150" prop="FullName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.FullName }}
         </template>
       </el-table-column>
-
-      <el-table-column align="center" label="联系人" width="150">
+      <el-table-column align="center" label="联系人" width="150" prop="Contact" sortable>
         <template slot-scope="scope">
-          {{ scope.row.ShortName }}
+          {{ scope.row.Contact }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="电话" width="150">
+      <el-table-column align="center" label="电话" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Describe }}
+          {{ scope.row.Tel }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="邮箱" width="150">
+      <el-table-column align="center" label="邮箱" width="150" prop="Email" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Color }}
+          {{ scope.row.Email }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="地址" width="150">
+      <el-table-column align="center" label="地址" prop="Address" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MaterialTypeText }}
+          {{ scope.row.Address }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.MaterialType }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护者" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.user }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护时间" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
-        </template>
-      </el-table-column>
     </el-table>
   </el-dialog>
 </template>

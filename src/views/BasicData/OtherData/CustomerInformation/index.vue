@@ -8,12 +8,12 @@
               <label class="radio-label">{{ $t('permission.CustomerNum') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.OrgNum" placeholder="客户编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.CustomerNum" placeholder="客户编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start">
-              <label class="radio-label">{{ $t('permission.companyName') }}:</label>
+              <label class="radio-label">客户名称:</label>
             </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.FullName" placeholder="客户名称" clearable /></el-col>
@@ -267,7 +267,6 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -275,6 +274,7 @@ export default {
             })
           }
         })
+        this.getList()
       })
     },
 

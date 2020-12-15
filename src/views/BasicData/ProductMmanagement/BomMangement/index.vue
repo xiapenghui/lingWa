@@ -72,9 +72,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="BOM描述" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 
@@ -139,7 +145,8 @@
           <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
-        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" clearable /></el-form-item>
+        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -305,6 +312,7 @@ export default {
     },
     // 禁用，启用权限
     handleBan(row) {
+      debugger
       let status, statusTitle
       if (row.Status === true) {
         status = this.$t('permission.jingyongTitle')

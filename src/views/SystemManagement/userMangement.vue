@@ -37,7 +37,7 @@
             </el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model.trim="pagination.DeptCode" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
+            <el-select v-model="pagination.DeptCode" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
               <el-option v-for="item in DepFilterData" :key="item.DeptCode" :label="item.FullName" :value="item.DeptCode" />
             </el-select>
           </el-col>
@@ -152,21 +152,15 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editUsers') : $t('permission.addUser')">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item :label="$t('permission.userName')" prop="AccountName">
           <el-input v-model.trim="ruleForm.AccountName" :placeholder="$t('permission.userNameInfo')" clearable />
         </el-form-item>
 
-        <el-form-item :label="$t('permission.password')" prop="AccountPwd">
-          <el-input v-model.trim="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable />
+        <el-form-item v-if="isPassword" :label="$t('permission.password')" prop="AccountPwd">
+          <el-input v-model.trim="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable :show-password="true" />
         </el-form-item>
-
-        <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
-          <el-form-item :label="$t('permission.passwords')" prop="passwords">
-            <el-input v-model.trim="ruleForm.passwords" type="password" :placeholder="$t('permission.passwords')" clearable />
-          </el-form-item>
-        </el-tooltip>
 
         <el-form-item :label="$t('permission.fullName')" prop="NameCN">
           <el-input v-model.trim="ruleForm.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable />
@@ -197,25 +191,6 @@ export default {
   name: 'UserMangement',
   components: { Pagination },
   data() {
-    // var validatePass = (rule, value, callback) => {
-    //   if (value === '') {
-    //     callback(new Error('请输入密码'))
-    //   } else {
-    //     if (this.ruleForm.checkPass !== '') {
-    //       this.$refs.ruleForm.validateField('checkPass')
-    //     }
-    //     callback()
-    //   }
-    // }
-    // var validatePass2 = (rule, value, callback) => {
-    //   if (value === '') {
-    //     callback(new Error('请再次输入密码'))
-    //   } else if (value !== this.ruleForm.pass) {
-    //     callback(new Error('两次输入密码不一致!'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
     return {
       tableData: [],
       ruleForm: {}, // 编辑弹窗
@@ -231,6 +206,7 @@ export default {
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
+      isPassword: true, // 密码是否可见
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
@@ -370,7 +346,6 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -378,6 +353,7 @@ export default {
             })
           }
         })
+        this.getList()
       })
     },
 
@@ -410,12 +386,14 @@ export default {
     // 增加角色
     handleAdd() {
       this.dialogType = 'new'
+      this.isPassword = true
       this.dialogFormVisible = true
       this.ruleForm = {}
     },
     // 编辑角色
     handleEdit(row) {
       this.dialogType = 'edit'
+      this.isPassword = false
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },

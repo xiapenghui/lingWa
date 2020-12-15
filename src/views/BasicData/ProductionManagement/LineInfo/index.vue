@@ -88,6 +88,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="产线类别" prop="LineType" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.LineTypeText }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="产线描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
@@ -350,7 +356,6 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -358,6 +363,7 @@ export default {
             })
           }
         })
+        this.getList()
       })
     },
 

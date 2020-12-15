@@ -6,12 +6,12 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="工艺路线名称" placement="top-start"><label class="radio-label">工艺路线名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-modeltrim="pagination.Name" placeholder="工艺路线名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="工艺路线名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态BOM" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态BOM</el-checkbox>
+            <el-tooltip class="item" effect="dark" content="包含禁状态工艺路线" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">包含禁状态工艺路线</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -57,6 +57,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="生效时间" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
@@ -96,11 +102,11 @@
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
-            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status === true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
-            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+            <el-button v-if="scope.row.Status === false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
@@ -114,14 +120,16 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工艺路线名称" prop="Name"><el-input v-modeltrim="ruleForm.Name" placeholder="工艺路线名称" clearable /></el-form-item>
-        <el-form-item label="版本" prop="Version"><el-input v-modeltrim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
+        <el-form-item label="工艺路线名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="工艺路线名称" clearable /></el-form-item>
+        <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
         <el-form-item label="生效时间">
           <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
-        <el-form-item label="备注"><el-input v-modeltrim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
+        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
+
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

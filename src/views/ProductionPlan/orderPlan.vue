@@ -169,9 +169,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="未完工数" width="150" prop="Name" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="未完工数" width="150" prop="UnfinishedQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.UnfinishedQuantity }}
         </template>
       </el-table-column>
 
@@ -728,19 +728,19 @@ export default {
     handleExport() {},
     // 导出用户
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
+      // return jsonData.map(v => filterVal.map(j => v[j]))
     },
     // 导入
     beforeUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
-      if (isLt1M) {
-        return true
-      }
-      this.$message({
-        message: 'Please do not upload files larger than 1m in size.',
-        type: 'warning'
-      })
-      return false
+      // const isLt1M = file.size / 1024 / 1024 < 1
+      // if (isLt1M) {
+      //   return true
+      // }
+      // this.$message({
+      //   message: 'Please do not upload files larger than 1m in size.',
+      //   type: 'warning'
+      // })
+      // return false
     },
     // handleSuccess({ results, header }) {
     //   this.tableData = results

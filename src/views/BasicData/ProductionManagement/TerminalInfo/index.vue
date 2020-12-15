@@ -363,7 +363,6 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -371,6 +370,7 @@ export default {
             })
           }
         })
+        this.getList()
       })
     },
 

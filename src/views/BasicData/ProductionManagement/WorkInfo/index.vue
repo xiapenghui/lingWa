@@ -23,7 +23,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" content="车间名称" placement="top-start"><label class="radio-label">车间名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="车间名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.WorkshopName" placeholder="车间名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -291,7 +291,6 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -299,6 +298,7 @@ export default {
             })
           }
         })
+        this.getList()
       })
     },
 

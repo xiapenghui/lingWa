@@ -896,7 +896,7 @@ export default {
     handleExport() {},
     // 导出用户
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
+      // return jsonData.map(v => filterVal.map(j => v[j]))
     },
     // 导入
     beforeUpload(file) {
@@ -1257,6 +1257,7 @@ export default {
       this.userFormVisible = true
       this.usBoxLoading = true
       GetCustomerList(this.paginationUser).then(res => {
+        debugger
         if (res.IsPass === true) {
           this.userData = res.Obj
           this.usBoxLoading = false

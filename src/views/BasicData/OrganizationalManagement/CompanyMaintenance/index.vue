@@ -86,7 +86,7 @@
 
       <el-table-column align="center" :label="$t('permission.companyDescription')" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Remark }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
@@ -270,7 +270,7 @@ export default {
       }).then(() => {
         const params = {
           Status: (row.Status = row.Status !== true),
-          CustomerCode: row.CustomerCode
+          OrgCode: row.OrgCode
         }
         OrganStatus(params).then(res => {
           if (res.IsPass === true) {
@@ -278,7 +278,6 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -286,6 +285,7 @@ export default {
             })
           }
         })
+        this.getList()
       })
     },
 

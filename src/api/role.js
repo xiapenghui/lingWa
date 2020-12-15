@@ -66,7 +66,7 @@ export function UpdateStatus(data) {
   })
 }
 
-// 启用，禁用状态
+// 编辑，复制
 export function ListRoleMenuFun(data) {
   return request({
     url: newUrl + '/api/Role/ListRoleMenuFun',

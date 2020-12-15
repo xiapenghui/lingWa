@@ -122,7 +122,7 @@
     </el-dialog>
 
     <!-- 查看用户 -->
-    <el-dialog title="用户信息" :visible.sync="dialogTableVisible">
+    <el-dialog title="列表" :visible.sync="dialogTableVisible">
       <el-table border style="width: 100%" height="50vh" :data="userData">
         <el-table-column align="center" :label="$t('permission.fullName')" width="250">
           <template slot-scope="scope">
@@ -268,7 +268,6 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -276,6 +275,7 @@ export default {
             })
           }
         })
+        this.getList()
       })
     },
     // 查询
@@ -330,10 +330,6 @@ export default {
     handleEdit(row, type, typeTitle) {
       this.dialogType = type
       this.dialogTypeTitle = typeTitle
-      if (type === 'copy') {
-        row.RoleName = ''
-        row.Description = ''
-      }
       this.dialogFormVisible = true
       this.ruleForm = JSON.parse(JSON.stringify(row))
       ListRoleMenuFun({ RoleCode: row.RoleCode }).then(res => {

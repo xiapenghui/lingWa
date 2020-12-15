@@ -60,9 +60,16 @@
           {{ scope.row.Name }}
         </template>
       </el-table-column>
+
       <el-table-column align="center" label="工序描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 
@@ -78,9 +85,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150" prop="ModifyUser" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyUser }}
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
@@ -247,7 +254,6 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -255,6 +261,7 @@ export default {
             })
           }
         })
+        this.getList()
       })
     },
 
