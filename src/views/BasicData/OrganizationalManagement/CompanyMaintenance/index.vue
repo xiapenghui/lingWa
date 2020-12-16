@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="公司编号" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="公司编号" placement="top-start">
               <label class="radio-label">{{ $t('permission.companyNo') }}:</label>
             </el-tooltip>
           </el-col>
@@ -12,7 +12,7 @@
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="公司简称" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="公司简称" placement="top-start">
               <label class="radio-label">{{ $t('permission.companyName') }}:</label>
             </el-tooltip>
           </el-col>
@@ -20,7 +20,7 @@
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁用状态的公司" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁用状态的公司" placement="top-start">
               <el-checkbox v-model="pagination.ShowBanned">包含禁用状态的公司</el-checkbox>
             </el-tooltip>
           </el-col>
@@ -89,7 +89,7 @@
           {{ scope.row.Description }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
+      <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
@@ -109,19 +109,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -133,15 +133,10 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="公司编号"><el-input v-model.trim="ruleForm.OrgNum" placeholder="公司编号" /></el-form-item>
-
-        <el-form-item label="公司简称"><el-input v-model.trim="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
-
         <el-form-item label="公司全称" prop="FullName"><el-input v-model.trim="ruleForm.FullName" placeholder="公司全称" clearable /></el-form-item>
-
+        <el-form-item label="公司简称"><el-input v-model.trim="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
         <el-form-item label="公司电话"><el-input v-model.trim="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
-
         <el-form-item label="公司地址"><el-input v-model.trim="ruleForm.Address" placeholder="公司地址" clearable /></el-form-item>
-
         <el-form-item label="公司LOGO">
           <el-upload
             class="avatar-uploader"

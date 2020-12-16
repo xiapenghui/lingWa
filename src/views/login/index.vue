@@ -8,7 +8,7 @@
 
       <el-form-item prop="username">
         <span class="svg-container"><svg-icon icon-class="user" /></span>
-        <el-input ref="username" v-model="loginForm.username" :placeholder="$t('login.username')" name="username" type="text" tabindex="1" autocomplete="on" clearable />
+        <el-input ref="username" v-model="loginForm.username" v-focus :placeholder="$t('login.username')" name="username" type="text" tabindex="1" autocomplete="on" clearable />
       </el-form-item>
 
       <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
@@ -31,7 +31,7 @@
           <span class="show-pwd" @click="showPwd"><svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" /></span>
         </el-form-item>
       </el-tooltip>
-      <el-button :loading="loading" type="primary" @click.native.prevent="handleLogin()">{{ $t('login.logIn') }}</el-button>
+      <el-button :loading="loading" type="primary" @click.native.prevent="handleLogin()" @keyup.enter="handleLogin()">{{ $t('login.logIn') }}</el-button>
     </el-form>
   </div>
 </template>
@@ -60,8 +60,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'xph',
-        password: '123456'
+        username: '',
+        password: ''
       },
       loginRules: {
         // username: [{ required: true, trigger: 'blur', validator: validateUsername }],

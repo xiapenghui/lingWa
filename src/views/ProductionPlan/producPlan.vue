@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
               <label class="radio-label">计划单号:</label>
             </el-tooltip>
           </el-col>
@@ -12,7 +12,7 @@
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content2" placement="top-start">
               <label class="radio-label">{{ $t('permission.ProductNum') }}:</label>
             </el-tooltip>
           </el-col>
@@ -20,7 +20,7 @@
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content3" placement="top-start">
               <label class="radio-label">{{ $t('permission.ProductName') }}:</label>
             </el-tooltip>
           </el-col>
@@ -29,7 +29,7 @@
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content5" placement="top-start">
               <label class="radio-label">{{ $t('permission.CustomerName') }}:</label>
             </el-tooltip>
           </el-col>
@@ -50,7 +50,7 @@
       <el-row v-show="showSearch" :gutter="20" style="margin-top: 10px;">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content6" placement="top-start">
               <label class="radio-label">{{ $t('permission.PlanTypeName') }}:</label>
             </el-tooltip>
           </el-col>
@@ -62,7 +62,7 @@
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content7" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content7" placement="top-start">
               <label class="radio-label">{{ $t('permission.StatusName') }}:</label>
             </el-tooltip>
           </el-col>
@@ -72,15 +72,16 @@
             </el-select>
           </el-col>
         </el-col>
-        <el-col :span="8">
-          <el-col :span="4">
-            <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
+        <el-col :span="5">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content4" placement="top-start">
               <label class="radio-label">{{ $t('permission.CreateTime') }}:</label>
             </el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-date-picker
               v-model="pagination.importDate"
+              style="width: 250px;"
               type="daterange"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
@@ -179,12 +180,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护人" width="150" prop="CreateUser" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.CreateUser }}
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" :label="$t('permission.PlanTypeName')" width="150" prop="PlanTypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanTypeName }}
@@ -227,6 +222,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.ModifyUserName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
@@ -236,41 +237,41 @@
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
 
-          <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="修改" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="计划拆分" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="计划拆分" placement="top-start">
             <el-button type="warning" size="small" icon="el-icon-scissors" plain @click="planOpen(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="关联工单" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="关联工单" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-link" plain @click="handleRelation(scope.row)" />
           </el-tooltip>
 
           <el-popover placement="top" trigger="hover" popper-class="popoverBackB">
 
-            <el-tooltip class="item" effect="dark" content="BOM" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="BOM" placement="top-start">
               <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="工艺路线" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="工艺路线" placement="top-start">
               <el-button type="primary" size="small" icon="el-icon-s-operation" plain @click="handleLine(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="计划冻结" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="计划冻结" placement="top-start">
               <el-button type="danger" size="small" icon="el-icon-remove-outline" plain @click="planFrozen(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="取消冻结" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="取消冻结" placement="top-start">
               <el-button type="success" size="small" icon="el-icon-circle-check" plain @click="cancelFrozen(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="强制完工" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="强制完工" placement="top-start">
               <el-button type="danger" size="small" icon="el-icon-remove-outline" plain @click="forceOver(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
               <el-button type="danger" size="small" icon=" el-icon-delete" plain @click="handleDelete(scope.row)" />
             </el-tooltip>
             <el-button slot="reference" type="success" size="small" icon="el-icon-menu" plain style="margin-left: 10px;" />

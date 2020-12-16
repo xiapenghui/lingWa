@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark" content="成名编码" placement="top-start">
+            <el-tooltip class="item" effect="dark"   :enterable="false" content="成名编码" placement="top-start">
               <label class="radio-label">{{ $t('permission.ProductNum') }}:</label>
             </el-tooltip>
           </el-col>
@@ -13,7 +13,7 @@
 
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start">
+            <el-tooltip class="item" effect="dark"   :enterable="false" content="成品名称" placement="top-start">
               <label class="radio-label">{{ $t('permission.ProductNane') }}:</label>
             </el-tooltip>
           </el-col>

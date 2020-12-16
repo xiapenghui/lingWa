@@ -4,19 +4,19 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.MaterialCode" placeholder="原料编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.MaterialName" placeholder="原料名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态的原料" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁状态的原料" placement="top-start">
               <el-checkbox v-model="pagination.ShowBanned">包含禁状态的原料</el-checkbox>
             </el-tooltip>
           </el-col>
@@ -88,7 +88,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间" width="150" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="生效时间" width="100" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
         </template>
@@ -114,27 +114,27 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="检验项明细" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="检验项明细" placement="top-start">
             <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="handleLook(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="复制" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="复制" placement="top-start">
             <el-button type="success" size="small" icon="el-icon-star-on" plain @click="handleCopy(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>

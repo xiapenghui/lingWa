@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark" content="原料编码" placement="top-start">
+            <el-tooltip class="item" effect="dark"   :enterable="false" content="原料编码" placement="top-start">
               <label class="radio-label">原料编码:</label>
             </el-tooltip>
           </el-col>
@@ -13,7 +13,7 @@
 
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark" content="原料名称" placement="top-start">
+            <el-tooltip class="item" effect="dark"   :enterable="false" content="原料名称" placement="top-start">
               <label class="radio-label">原料名称:</label>
             </el-tooltip>
           </el-col>

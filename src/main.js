@@ -19,8 +19,8 @@ import './icons' // icon
 import './permission' // permission control
 
 import * as filters from './filters' // global filters
-import moment from 'moment'// 导入文件
-Vue.prototype.$moment = moment// 时间日期赋值使用
+import moment from 'moment' // 导入文件
+Vue.prototype.$moment = moment // 时间日期赋值使用
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -55,6 +55,13 @@ Vue.filter('substringTime', function(value) {
   if (value === null) return ''
   value = value.substring(0, 10)
   return value
+})
+
+// 自动聚焦
+Vue.directive('focus', {
+  inserted: function(el) {
+    el.focus()
+  }
 })
 
 // register global utility filters

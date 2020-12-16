@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
               <label class="radio-label">{{ $t('permission.finishedNo') }}:</label>
             </el-tooltip>
           </el-col>
@@ -12,7 +12,7 @@
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
               <label class="radio-label">{{ $t('permission.finishedName') }}:</label>
             </el-tooltip>
           </el-col>
@@ -20,7 +20,7 @@
         </el-col>
         <el-col :span="6">
           <el-col :span="12">
-            <el-tooltip class="item" effect="dark" :content="content3" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content3" placement="top-start">
               <el-checkbox v-model="form.showReviewer" @change="tableKey">{{ $t('permission.inclusionFinished') }}</el-checkbox>
             </el-tooltip>
           </el-col>
@@ -66,9 +66,9 @@
           {{ scope.row.description }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="status">
+      <el-table-column align="center" :label="$t('permission.state')" width="150" sortable prop="Status">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status" :style="{ color: scope.row.status === '禁用' ? '#FF5757' : '#13ce66' }">{{ scope.row.status }}</el-tag>
+          <el-tag :style="{ color: scope.row.Status === '禁用' ? '#FF5757' : '#13ce66' }">{{ scope.row.Status }}</el-tag>
         </template>
       </el-table-column>
 
@@ -97,30 +97,31 @@
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditFinished') : $t('permission.addFinished')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
-        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+        <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.finishedNo')" prop="finishedNo">
             <el-input v-model.trim="role.finishedNo" :placeholder="$t('permission.finishedNo')" clearable />
           </el-form-item>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+        <el-tooltip class="item" effect="dark" :enterable="false" :content="content2" placement="top-start">
           <el-form-item :label="$t('permission.finishedName')" prop="finishedName">
             <el-input v-model.trim="role.finishedName" :placeholder="$t('permission.finishedName')" clearable />
           </el-form-item>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="content4" placement="top-start">
+        <el-tooltip class="item" effect="dark" :enterable="false" :content="content4" placement="top-start">
           <el-form-item :label="$t('permission.finishedSpecifications')">
             <el-input v-model.trim="role.finishedSpecifications" :placeholder="$t('permission.finishedSpecifications')" clearable />
           </el-form-item>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="content5" placement="top-start">
+        <el-tooltip class="item" effect="dark" :enterable="false" :content="content5" placement="top-start">
           <el-form-item :label="$t('permission.finishedColor')">
-            <el-input v-model.trim="role.finishedColor" :placeholder="$t('permission.finishedColor')" clearable /></el-form-item>
+            <el-input v-model.trim="role.finishedColor" :placeholder="$t('permission.finishedColor')" clearable />
+          </el-form-item>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="content6" placement="top-start">
+        <el-tooltip class="item" effect="dark" :enterable="false" :content="content6" placement="top-start">
           <el-form-item :label="$t('permission.description')">
             <el-input v-model.trim="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
           </el-form-item>

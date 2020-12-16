@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark" content="工序编号" placement="top-start">
+            <el-tooltip class="item" effect="dark"   :enterable="false" content="工序编号" placement="top-start">
               <label class="radio-label">工序编号:</label>
             </el-tooltip>
           </el-col>
@@ -13,7 +13,7 @@
 
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start">
+            <el-tooltip class="item" effect="dark"   :enterable="false" content="工序名称" placement="top-start">
               <label class="radio-label">工序名称:</label>
             </el-tooltip>
           </el-col>

@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+            <el-tooltip class="item" effect="dark"   :enterable="false" :content="content1" placement="top-start">
               <label class="radio-label">{{ $t('permission.title') }}:</label>
             </el-tooltip>
           </el-col>
@@ -75,11 +75,11 @@
     <!-- 添加编辑菜单 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editRole') : $t('permission.addRole')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+        <el-tooltip class="item" effect="dark"   :enterable="false" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.title')" prop="RoleName"><el-input v-model="ruleForm.RoleName" :placeholder="$t('permission.title')" /></el-form-item>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+        <el-tooltip class="item" effect="dark"   :enterable="false" :content="content2" placement="top-start">
           <el-form-item :label="$t('permission.description')">
             <el-input v-model="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" :placeholder="$t('permission.description')" />
           </el-form-item>

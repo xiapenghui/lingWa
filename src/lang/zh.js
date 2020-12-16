@@ -365,9 +365,9 @@ export default {
     editCustomer: '编辑客户',
     editMaterial: '编辑原料',
     addOrder: '新增工单',
-    EditOrder: '编辑工单',
-    editBasePro: '编辑工序',
-    addBasePro: '增加工序',
+    EditOrder: '编辑',
+    editBasePro: '编辑',
+    addBasePro: '增加',
     addBomDelite: '新增BOM',
 
     // 截止

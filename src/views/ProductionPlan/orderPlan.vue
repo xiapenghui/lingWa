@@ -4,26 +4,26 @@
       <el-row :gutter="20">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="生产工单号" placement="top-start"><label class="radio-label">生产工单号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="生产工单号" placement="top-start"><label class="radio-label">生产工单号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.OrderNum" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.ProductCode" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.ProductName" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="客户名称" placement="top-start"><label class="radio-label">客户名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="客户名称" placement="top-start"><label class="radio-label">客户名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.CustomerName" clearable /></el-col>
         </el-col>
@@ -42,14 +42,14 @@
       <el-row v-show="showSearch" :gutter="20" style="margin-top: 10px;">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="生产计划单号" placement="top-start"><label class="radio-label">生产计划单号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="生产计划单号" placement="top-start"><label class="radio-label">生产计划单号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.PlanCode" /></el-col>
         </el-col>
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工单类型" placement="top-start"><label class="radio-label">工单类型:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="工单类型" placement="top-start"><label class="radio-label">工单类型:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-select v-model="pagination.OrderType" clearable style="width: 100%">
@@ -60,7 +60,7 @@
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工单状态" placement="top-start"><label class="radio-label">工单状态:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="工单状态" placement="top-start"><label class="radio-label">工单状态:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-select v-model="pagination.Status" clearable style="width: 100%">
@@ -69,13 +69,14 @@
           </el-col>
         </el-col>
 
-        <el-col :span="8">
-          <el-col :span="4">
-            <el-tooltip class="item" effect="dark" content="维护日期" placement="top-start"><label class="radio-label">创建日期:</label></el-tooltip>
+        <el-col :span="5">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="维护日期" placement="top-start"><label class="radio-label">创建日期:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-date-picker
               v-model="pagination.importDate"
+              style="width: 250px;"
               type="daterange"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
@@ -193,12 +194,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="创建人" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyUserName }}
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" label="工单状态" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.StatusText }}
@@ -229,6 +224,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.ModifyUserName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="维护日期" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
@@ -238,41 +239,41 @@
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
 
-          <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="修改" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="工单发布" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="工单发布" placement="top-start">
             <el-button type="success" size="small" icon="el-icon-s-promotion" plain @click="orderSend(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="取消发布" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="取消发布" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-circle-close" plain @click="cancelSend(scope.row)" />
           </el-tooltip>
 
           <el-popover placement="top" trigger="hover" popper-class="popoverBackB">
 
-            <el-tooltip class="item" effect="dark" content="BOM" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="BOM" placement="top-start">
               <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="工艺路线" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="工艺路线" placement="top-start">
               <el-button type="primary" size="small" icon="el-icon-s-operation" plain @click="handleLine(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="计划冻结" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="计划冻结" placement="top-start">
               <el-button type="danger" size="small" icon="el-icon-warning" plain @click="planFrozen(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="取消冻结" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="取消冻结" placement="top-start">
               <el-button type="success" size="small" icon="el-icon-remove-outline" plain @click="cancelFrozen(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="强制完工" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="强制完工" placement="top-start">
               <el-button type="danger" size="small" icon="el-icon-success" plain @click="forceOver(scope.row)" />
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
               <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
             </el-tooltip>
             <el-button slot="reference" type="success" size="small" icon="el-icon-menu" plain style="margin-left: 10px;" />

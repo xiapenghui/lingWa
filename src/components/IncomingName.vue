@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="来料检验规则编号" placement="top-start">
+            <el-tooltip class="item" effect="dark"   :enterable="false" content="来料检验规则编号" placement="top-start">
               <label class="radio-label">检验编号:</label>
             </el-tooltip>
           </el-col>

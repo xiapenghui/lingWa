@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="5" style="display: none;">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="公司名称" placement="top-start"><label class="radio-label">公司名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-select v-model="pagination.OrgCode" placeholder="公司名称" style="width: 100%" @change="changeName">
@@ -15,7 +15,7 @@
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="所属车间" placement="top-start"><label class="radio-label">所属车间:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="所属车间" placement="top-start"><label class="radio-label">所属车间:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-cascader v-model="pagination.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间" clearable />
@@ -24,21 +24,21 @@
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="产线编号" placement="top-start"><label class="radio-label">产线编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="产线编号" placement="top-start"><label class="radio-label">产线编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.LineNum" placeholder="产线编号" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="产线名称" placement="top-start"><label class="radio-label">产线名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="产线名称" placement="top-start"><label class="radio-label">产线名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.LineName" placeholder="产线名称" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态的产线" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁状态的产线" placement="top-start">
               <el-checkbox v-model="pagination.ShowBanned">包含禁状态的产线</el-checkbox>
             </el-tooltip>
           </el-col>
@@ -100,7 +100,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
+      <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
@@ -120,19 +120,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>

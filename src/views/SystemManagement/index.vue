@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
               <label class="radio-label">{{ $t('permission.title') }}:</label>
             </el-tooltip>
           </el-col>
@@ -41,7 +41,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
+      <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status ===false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
@@ -67,27 +67,27 @@
       <el-table-column align="center" :label="$t('permission.operations')" width="250">
         <template slot-scope="scope">
 
-          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button v-show="scope.row.Keep == 0" type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row, 'edit', $t('permission.editRole'))" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="复制" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="复制" placement="top-start">
             <el-button type="success" size="small" icon="el-icon-star-on" plain @click="handleCoply(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="查看用户" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="查看用户" placement="top-start">
             <el-button type="warning" size="small" icon="el-icon-view" plain @click="handleLook(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" v-show="scope.row.Keep == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -99,12 +99,12 @@
     <!-- 添加编辑菜单 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-tooltip class="item" effect="dark" :content="content1" placement="top-start">
+        <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.title')" prop="RoleName">
             <el-input v-model.trim="ruleForm.RoleName" :placeholder="$t('permission.title')" clearable /></el-form-item>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="content2" placement="top-start">
+        <el-tooltip class="item" effect="dark" :enterable="false" :content="content2" placement="top-start">
           <el-form-item :label="$t('permission.DescriptionInfo')" prop="Description">
             <el-input v-model.trim="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" clearable :placeholder="$t('permission.DescriptionInfo')" />
           </el-form-item>
@@ -122,24 +122,43 @@
     </el-dialog>
 
     <!-- 查看用户 -->
-    <el-dialog title="列表" :visible.sync="dialogTableVisible">
-      <el-table border style="width: 100%" height="50vh" :data="userData">
-        <el-table-column align="center" :label="$t('permission.fullName')" width="250">
+    <el-dialog
+      title="列表"
+      :visible.sync="dialogTableVisible"
+    >
+      <el-table
+        :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
+        :data="userData"
+        :height="tableHeight"
+        style="width: 100%"
+        border
+        element-loading-text="拼命加载中"
+        fit
+        highlight-current-row
+      >
+
+        <el-table-column align="center" label="序号" width="50" fixed>
+          <template slot-scope="scope">
+            {{ scope.$index+1 }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" :label="$t('permission.fullName')" width="250" prop="NameCN" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.NameCN }}
           </template>
         </el-table-column>
-        <el-table-column align="center" :label="$t('permission.loginUser')" width="250">
+        <el-table-column align="center" :label="$t('permission.loginUser')" width="250" prop="AccountName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.AccountName }}
           </template>
         </el-table-column>
-        <el-table-column align="center" :label="$t('permission.company')">
+        <el-table-column align="center" :label="$t('permission.company')" prop="OrgFullName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.OrgFullName }}
           </template>
         </el-table-column>
-        <el-table-column align="center" :label="$t('permission.department')">
+        <el-table-column align="center" :label="$t('permission.department')" prop="DepFullName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.DepFullName }}
           </template>
@@ -168,7 +187,6 @@ export default {
         children: 'children',
         label: 'MenuTitle'
       },
-
       defaultShowNodes: [], // 这里存放要默认展开的节点 id
       ruleForm: {}, // 编辑弹窗
       logId: {}, // 查看用户行数据
@@ -452,10 +470,15 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
               }
+              this.editLoading = false
             })
           } else {
             addRole(this.ruleForm).then(res => {
@@ -464,7 +487,7 @@ export default {
                   type: 'success',
                   message: res.MSG
                 })
-                this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
@@ -473,7 +496,7 @@ export default {
               }
             })
             this.editLoading = false
-            this.dialogFormVisible = false
+            this.getList()
           }
         } else {
           this.editLoading = false

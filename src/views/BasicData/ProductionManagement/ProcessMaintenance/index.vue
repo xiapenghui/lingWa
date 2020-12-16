@@ -4,19 +4,19 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工序编号" placement="top-start"><label class="radio-label">工序编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="工序编号" placement="top-start"><label class="radio-label">工序编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.ProcessNum" placeholder="工序编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="工序名称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" content="包含禁状态的工序" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁状态的工序" placement="top-start">
               <el-checkbox v-model="pagination.Status">包含禁状态的工序</el-checkbox>
             </el-tooltip>
           </el-col>
@@ -79,7 +79,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="150" prop="Status" sortable>
+      <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
@@ -99,19 +99,19 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="禁用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
             <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="启用" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
