@@ -109,10 +109,9 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -200,6 +199,18 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="优先级" width="150" prop="Priority" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Priority }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="计划投入产线" width="150" prop="ProductLineCode" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.ProductLineCode }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="计开始日期" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanStartDate | substringTime }}
@@ -238,7 +249,6 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
-
           <el-tooltip class="item" effect="dark" :enterable="false" content="修改" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
@@ -252,7 +262,6 @@
           </el-tooltip>
 
           <el-popover placement="top" trigger="hover" popper-class="popoverBackB">
-
             <el-tooltip class="item" effect="dark" :enterable="false" content="BOM" placement="top-start">
               <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
             </el-tooltip>
@@ -278,7 +287,6 @@
             </el-tooltip>
             <el-button slot="reference" type="success" size="small" icon="el-icon-menu" plain style="margin-left: 10px;" />
           </el-popover>
-
         </template>
       </el-table-column>
     </el-table>
@@ -289,7 +297,6 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="100px" label-position="left" class="demo-ruleForm">
         <div class="bigUpBox">
           <div class="boxLeft">
-
             <el-form-item label="生产工单号" prop="OrderNum" :rules="[{ required: true, message: '请输入生产工单号', trigger: 'blur' }]">
               <el-input v-model.trim="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" clearable />
             </el-form-item>
@@ -307,24 +314,23 @@
             <el-form-item label="计划开始日期">
               <el-date-picker v-model="ruleForm.PlanStartDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
+
             <el-form-item label="计划投入线" prop="ProductLineCode">
-              <el-select v-model="ruleForm.ProductLineCode" placeholder="计划投入产线" style="width: 100%" clearable>
+              <el-select v-model="ruleForm.ProductLineCode" placeholder="计划投入产线" style="width: 100%" clearable @change="changeLine">
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
           </div>
 
           <div class="boxRight">
-            <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'blur' }]">
+            <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'change' }]">
               <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" clearable @focus="finshBox" />
             </el-form-item>
 
-            <el-form-item label="客户名称" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" clearable @focus="userBox" />
-            </el-form-item>
+            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" clearable @focus="userBox" /></el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
-              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable>
+              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable @change="changePriority">
                 <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
@@ -581,6 +587,8 @@ export default {
       bomFormVisible: false, // BOM弹窗
       lineFormVisible: false, // 工艺路线弹窗
       dialogTypeTitle: null,
+      newLine: null, // 获取计划下拉产线
+      newPriority: null, // 获取下拉优先级
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 表格高度
       pickerOptions: {
@@ -725,6 +733,20 @@ export default {
       this.getList()
     },
 
+    // 获取计划下拉产线
+    changeLine(val) {
+      this.newLine = val
+    },
+
+    // 获取下拉优先级
+    changePriority(val) {
+      this.newPriority = val
+    },
+
+    // 新增获取单选value的值
+    changeRadio(val) {
+      this.typeCode = val
+    },
     // 导出用户
     handleExport() {},
     // 导出用户
@@ -751,6 +773,7 @@ export default {
     getList() {
       this.listLoading = true
       orderList(this.pagination).then(res => {
+        debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -772,7 +795,9 @@ export default {
     handleAdd() {
       this.dialogTypeTitle = this.$t('permission.addOrder')
       this.dialogFormVisible = true
-      this.ruleForm = {}
+      this.ruleForm = {
+        PlanCode: ''
+      }
     },
 
     // 编辑
@@ -786,6 +811,8 @@ export default {
     commonAdd() {
       const params = this.ruleForm
       params.PlanType = this.typeCode
+      params.ProductLineCode = this.newLine
+      params.Priority = this.newPriority
       orderAdd(params).then(res => {
         if (res.IsPass === true) {
           this.$message({
@@ -793,6 +820,7 @@ export default {
             message: this.$t('table.addSuc')
           })
           this.getList()
+          this.dialogFormVisible = false
         } else {
           this.$message({
             type: 'error',
@@ -828,7 +856,6 @@ export default {
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addOrder')) {
             this.commonAdd()
-            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -1058,10 +1085,7 @@ export default {
           })
         })
     },
-    // 新增获取单选value的值
-    changeRadio(val) {
-      this.typeCode = val
-    },
+
     // 聚焦事件产成品弹窗
     finshBox() {
       this.finshFormVisible = true

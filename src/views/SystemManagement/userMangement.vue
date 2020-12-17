@@ -72,10 +72,9 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -158,8 +157,14 @@
           <el-input v-model.trim="ruleForm.AccountName" :placeholder="$t('permission.userNameInfo')" clearable />
         </el-form-item>
 
-        <el-form-item v-if="isPassword" :label="$t('permission.password')" prop="AccountPwd">
+        <el-form-item v-if="isPassword" :label="$t('permission.password')" prop="AccountPwd" class="AccountPwd">
+          <b class="AccountB">*</b>
           <el-input v-model.trim="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable :show-password="true" />
+        </el-form-item>
+
+        <el-form-item v-if="isPassword" label="重复密码" prop="passwords" class="passwords">
+          <b class="passwordB">*</b>
+          <el-input v-model.trim="ruleForm.passwords" type="password" placeholder="重复密码" clearable :show-password="true" />
         </el-form-item>
 
         <el-form-item :label="$t('permission.fullName')" prop="NameCN">
@@ -191,9 +196,31 @@ export default {
   name: 'UserMangement',
   components: { Pagination },
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.ruleForm.passwords !== '') {
+          this.$refs.ruleForm.validateField('passwords')
+        }
+        callback()
+      }
+    }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.AccountPwd) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        AccountPwd: '',
+        passwords: ''
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 50,
@@ -216,11 +243,11 @@ export default {
       DepFilterData: [],
       rouleOptions: [], // 获取新增框角色列表
       rules: {
-        NameCN: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-        AccountPwd: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        passwords: [{ required: true, message: '请再次输入密码', trigger: 'blur' }],
-        AccountName: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
-        RoleCode: [{ required: true, message: '请选择角色', trigger: 'change' }]
+        NameCN: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        AccountPwd: [{ validator: validatePass, trigger: 'blur' }],
+        passwords: [{ validator: validatePass2, trigger: 'blur' }],
+        AccountName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        RoleCode: [{ required: true, message: '请选择角色', trigger: 'blur' }]
       },
       content1: this.$t('permission.userName'),
       content2: this.$t('permission.fullName'),
@@ -287,20 +314,8 @@ export default {
     setFormRules: function() {
       this.rules = {
         NameCN: [{ required: true, message: this.$t('permission.userNameInfo'), trigger: 'blur' }],
-        AccountPwd: [
-          {
-            required: true,
-            message: this.$t('permission.passwordInfo'),
-            trigger: 'blur'
-          }
-        ],
-        passwords: [
-          {
-            required: true,
-            message: '请再次输入密码',
-            trigger: 'blur'
-          }
-        ],
+        AccountPwd: [{ validator: validatePass, trigger: 'blur' }],
+        passwords: [{ validator: validatePass2, trigger: 'blur' }],
         AccountName: [
           {
             required: true,
@@ -308,7 +323,7 @@ export default {
             trigger: 'blur'
           }
         ],
-        RoleCode: [{ required: true, message: '请选择角色', trigger: 'change' }]
+        RoleCode: [{ required: true, message: '请选择角色', trigger: 'blur' }]
       }
     },
     // 公司部门联动
@@ -352,8 +367,8 @@ export default {
               message: res.MSG
             })
           }
+          this.getList()
         })
-        this.getList()
       })
     },
 
@@ -482,4 +497,22 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.AccountPwd,
+.passwords {
+  position: relative;
+}
+
+.AccountPwd .AccountB {
+  color: red;
+  position: absolute;
+  left: -50px;
+  z-index: 9;
+}
+.passwords .passwordB {
+  color: red;
+  position: absolute;
+  left: -80px;
+  z-index: 9;
+}
+</style>

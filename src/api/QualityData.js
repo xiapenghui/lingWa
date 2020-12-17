@@ -79,11 +79,11 @@ export function QuaIqcInModify(data) {
   })
 }
 
-//  基础数据 ---原材料质量检验项--状态
-// export function QuaIqcInStatus(data) {
-//   return request({
-//     url: newUrl + '/api/QuaIqcInspect/ModifyStatus',
-//     method: 'post',
-//     data
-//   })
-// }
+// 基础数据-- - 原材料质量检验项--状态
+export function QuaIqcInStatus(data) {
+  return request({
+    url: newUrl + '/api/QuaIqcInspect/ModifyStatus',
+    method: 'post',
+    data
+  })
+}

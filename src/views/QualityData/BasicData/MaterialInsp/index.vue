@@ -88,13 +88,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间" width="100" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="生效时间" width="150" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="150" prop="Status" sortable>
+      <el-table-column align="center" label="描述" width="150" prop="Description" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Description }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注" width="150" prop="Remark" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="状态" width="100" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
@@ -143,16 +155,20 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '新增' : '编辑'">
+    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @focus="materialBox" /></el-form-item>
+
         <el-form-item label="供应商名称"><el-input v-model="ruleForm.SupplierName" placeholder="供应商名称" clearable /></el-form-item>
-        <el-form-item label="检验类型" prop="InspectTypeText">
-          <el-input v-model.trim="ruleForm.InspectTypeText" placeholder="来料检验" :disabled="true" />
+
+        <el-form-item label="检验类型" prop="InspectType">
+          <el-select v-model="ruleForm.InspectType" placeholder="请选择" clearable @change="changeText">
+            <el-option v-for="item in InspectTypeOptions" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
         </el-form-item>
 
-        <el-form-item label="检验方式" prop="InspectWayText">
-          <el-select v-model="ruleForm.InspectWayText" placeholder="请选择" clearable @change="changeAway">
+        <el-form-item label="检验方式" prop="InspectWay">
+          <el-select v-model="ruleForm.InspectWay" placeholder="请选择" clearable @change="changeAway">
             <el-option v-for="item in InspectWayOptions" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -166,6 +182,7 @@
           <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
         </el-form-item>
 
+        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -204,8 +221,8 @@
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { bomModifyStatus, MaterialList, bomCopy, GetDictionary } from '@/api/BasicData'
-import { QuaIqcInList, QuaIqcInDelete, QuaIqcInAdd, QuaIqcInModify, QuaIqcList } from '@/api/QualityData'
+import { MaterialList, bomCopy, GetDictionary } from '@/api/BasicData'
+import { QuaIqcInList, QuaIqcInDelete, QuaIqcInAdd, QuaIqcInModify, QuaIqcInStatus, QuaIqcList } from '@/api/QualityData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import MaterialName from '@/components/MaterialName' // 原料名称
 import IncomingName from '@/components/IncomingName' // 来料检验规则
@@ -256,12 +273,15 @@ export default {
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
       newAway: null, // 下拉获取检验方式
+      newText: null, // 下拉获取检验类型
       materialData: [], // 成品编号
       incomingData: [], // 来料检验规则
       InspectWayOptions: [], // 检验方式
+      InspectTypeOptions: [], // 来料检验规则
       rules: {
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'blue' }],
-        InspectWayText: [{ required: true, message: '请选择检验方式', trigger: 'blue' }],
+        InspectType: [{ required: true, message: '请选择检验类型', trigger: 'blue' }],
+        InspectWay: [{ required: true, message: '请选择检验方式', trigger: 'blue' }],
         IQCRuleNum: [{ required: true, message: '请选择来料检验规则', trigger: 'blue' }],
         Version: [{ required: true, message: '请输入版本号', trigger: 'blue' }],
         EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blue' }]
@@ -331,6 +351,13 @@ export default {
       }
     })
 
+    // 新增检验类型下拉
+    GetDictionary({ code: '0024' }).then(res => {
+      if (res.IsPass === true) {
+        this.InspectTypeOptions = res.Obj
+      }
+    })
+
     this.getList()
     this.setFormRules()
   },
@@ -339,7 +366,8 @@ export default {
     setFormRules: function() {
       this.rules = {
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'blue' }],
-        InspectWayText: [{ required: true, message: '请选择检验方式', trigger: 'blue' }],
+        InspectType: [{ required: true, message: '请选择检验类型', trigger: 'blue' }],
+        InspectWay: [{ required: true, message: '请选择检验方式', trigger: 'blue' }],
         IQCRuleNum: [{ required: true, message: '请选择来料检验规则', trigger: 'blue' }],
         Version: [{ required: true, message: '请输入版本号', trigger: 'blue' }],
         EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blue' }]
@@ -364,7 +392,7 @@ export default {
           Status: (row.Status = row.Status !== true),
           ItemCode: row.ItemCode
         }
-        bomModifyStatus(params).then(res => {
+        QuaIqcInStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
@@ -376,14 +404,19 @@ export default {
               message: res.MSG
             })
           }
+          this.getList()
         })
-        this.getList()
       })
     },
 
     // 下拉获取最新的检验方式
     changeAway(val) {
       this.newAway = val
+    },
+
+    // 下拉获取最新的检验类型
+    changeText(val) {
+      this.newText = val
     },
 
     // 查看检验项明细
@@ -427,9 +460,7 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
-      this.ruleForm = {
-        InspectTypeText: '来料检验'
-      }
+      this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
@@ -507,7 +538,7 @@ export default {
         if (valid) {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
-            params.InspectWay = this.newAway
+            params.SupplierCode = '111'
             QuaIqcInModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -527,6 +558,8 @@ export default {
           } else {
             const params = this.ruleForm
             params.InspectWay = this.newAway
+            params.InspectType = this.newText
+            params.SupplierCode = '111'
             QuaIqcInAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({

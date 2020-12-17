@@ -254,8 +254,8 @@ export default {
               message: res.MSG
             })
           }
+          this.getList()
         })
-        this.getList()
       })
     },
 

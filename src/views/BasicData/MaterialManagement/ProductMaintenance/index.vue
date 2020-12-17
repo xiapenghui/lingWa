@@ -138,10 +138,8 @@
         <el-form-item label="原料规格"><el-input v-model.trim="ruleForm.Spec" placeholder="成品规格" clearable /></el-form-item>
         <el-form-item label="颜色"><el-input v-model.trim="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
-        <el-form-item label="单位编号"><el-input v-model.trim="ruleForm.Unit" placeholder="单位编号" clearable /></el-form-item>
-
         <el-form-item label="单位">
-          <el-select v-model="ruleForm.UnitText" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
+          <el-select v-model="ruleForm.Unit" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -414,7 +412,7 @@ export default {
         if (valid) {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
-            params.Unit = this.newUnit
+            // params.Unit = this.newUnit
             // params.RouteCode = this.lineCode
             MaterialModify(params).then(res => {
               if (res.IsPass === true) {
@@ -435,7 +433,7 @@ export default {
           } else {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            // params.RouteCode = this.lineCode
+            params.RouteCode = this.lineCode
             MaterialAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({

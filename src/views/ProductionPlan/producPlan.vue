@@ -324,13 +324,13 @@
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
-              <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%" clearable>
+              <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%" clearable @change="changeLine">
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
-              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable>
+              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable @change="changePriority">
                 <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
@@ -747,6 +747,8 @@ export default {
       bomFormVisible: false, // BOM弹窗
       lineFormVisible: false, // 工艺路线弹窗
       dialogTypeTitle: null,
+      newLine: null, // 获取计划下拉产线
+      newPriority: null, // 获取下拉优先级
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
@@ -893,6 +895,22 @@ export default {
     handleSelectionChange(val) {
       this.selectedData = val
     },
+
+    // 获取计划下拉产线
+    changeLine(val) {
+      this.newLine = val
+    },
+
+    // 获取下拉优先级
+    changePriority(val) {
+      this.newPriority = val
+    },
+
+    // 新增获取单选value的值
+    changeRadio(val) {
+      this.typeCode = val
+    },
+
     // 导出用户
     handleExport() {},
     // 导出用户
@@ -997,6 +1015,8 @@ export default {
     commonAdd() {
       const params = this.ruleForm
       params.PlanType = this.typeCode
+      params.ProductLineCode = this.newLine
+      params.Priority = this.newPriority
       productionAdd(params).then(res => {
         if (res.IsPass === true) {
           this.$message({
@@ -1004,13 +1024,14 @@ export default {
             message: this.$t('table.addSuc')
           })
           this.getList()
+          this.dialogFormVisible = false
         } else {
           this.$message({
             type: 'error',
             message: res.MSG
           })
-          this.editLoading = false
         }
+        this.editLoading = false
       })
     },
 
@@ -1039,7 +1060,6 @@ export default {
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
             this.commonAdd()
-            this.dialogFormVisible = false
           } else {
             this.commonSplit()
             this.dialogFormVisible = false
@@ -1222,16 +1242,12 @@ export default {
           })
         })
     },
-    // 新增获取单选value的值
-    changeRadio(val) {
-      this.typeCode = val
-    },
+
     // 聚焦事件产成品弹窗
     finshBox() {
       this.finshFormVisible = true
       this.listBoxLoading = true
       GetMaterialList(this.paginationSearch).then(res => {
-        debugger
         if (res.IsPass === true) {
           this.finshData = res.Obj
           this.listBoxLoading = false
@@ -1258,7 +1274,6 @@ export default {
       this.userFormVisible = true
       this.usBoxLoading = true
       GetCustomerList(this.paginationUser).then(res => {
-        debugger
         if (res.IsPass === true) {
           this.userData = res.Obj
           this.usBoxLoading = false
