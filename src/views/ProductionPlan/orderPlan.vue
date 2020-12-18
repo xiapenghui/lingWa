@@ -550,7 +550,7 @@ export default {
       typeCode: null, // 计划类型code值
       pagination: {
         PageIndex: 1,
-        PageSize: 10,
+        PageSize: 30,
         importDate: [],
         OrderNum: undefined,
         ProductCode: undefined,
@@ -562,7 +562,7 @@ export default {
       // 成品聚焦搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 10,
+        PageSize: 30,
         MaterialType: 1,
         MaterialNum: undefined,
         Name: undefined
@@ -570,7 +570,7 @@ export default {
       // 客户聚焦搜索条件
       paginationUser: {
         PageIndex: 1,
-        PageSize: 10,
+        PageSize: 30,
         CustomerNum: undefined,
         FullName: undefined
       },
@@ -773,7 +773,6 @@ export default {
     getList() {
       this.listLoading = true
       orderList(this.pagination).then(res => {
-        debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false

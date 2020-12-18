@@ -155,7 +155,7 @@ export default {
       ruleForm: {}, // 编辑弹窗
       pagination: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         ProcessNum: undefined,
         Name: undefined,
         Status: false

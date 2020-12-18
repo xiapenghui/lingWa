@@ -146,7 +146,7 @@ export default {
       ruleForm: {}, // 编辑弹窗
       pagination: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         OrgCode: null,
         WorkshopNum: undefined,
         WorkshopName: undefined,

@@ -72,14 +72,10 @@
 
       <el-table-column align="center" label="检验规则编号" width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RuleNum }}RuleNum
+          {{ scope.row.RuleNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
-        </template>
-      </el-table-column>
+
       <el-table-column align="center" label="批量范围从" width="150" prop="StartQty" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.StartQty }}
@@ -105,6 +101,12 @@
       <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
 
@@ -148,18 +150,18 @@
         <el-form-item label="来料检验编号" prop="RuleNum"><el-input v-model.trim="ruleForm.RuleNum" placeholder="来料检验编号" clearable /></el-form-item>
 
         <el-form-item label="批量范围" prop="StartQty">
-          <el-input v-model.trim="ruleForm.StartQty" style="width: 48%;" clearable />
+          <el-input-number v-model="ruleForm.StartQty" :min="0" style="width: 48%" />
           -----
-          <el-input v-model.trim="ruleForm.EndQty" style="width: 48%;" clearable />
+          <el-input-number v-model="ruleForm.EndQty" :min="0" style="width: 48%" />
         </el-form-item>
 
-        <el-form-item label="采样数量" prop="SampleQty"><el-input v-model.trim="ruleForm.SampleQty" placeholder="采样数量" clearable /></el-form-item>
+        <el-form-item label="采样数量" prop="SampleQty"><el-input-number v-model="ruleForm.SampleQty" placeholder="采样数量" :min="0" style="width: 100%" /></el-form-item>
 
-        <el-form-item label="拒绝数量" prop="RejQty"><el-input v-model.trim="ruleForm.RejQty" placeholder="拒绝数量" clearable /></el-form-item>
+        <el-form-item label="拒绝数量" prop="RejQty"><el-input-number v-model="ruleForm.RejQty" placeholder="拒绝数量" :min="0" style="width: 100%" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 
-        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remarks" placeholder="备注" type="textarea" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

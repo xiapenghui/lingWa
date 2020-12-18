@@ -336,7 +336,7 @@ export default {
     RealEndDate: '实际完成日期',
     CreateTime: '创建日期',
     PlanDeliveryDate: '计划发货日期',
-    EditProduction: '编辑生产计划',
+    EditProduction: '编辑',
     addProductiony: '新增',
     SaleNum: '销售单号',
     SaleLineNum: '销售单行号',

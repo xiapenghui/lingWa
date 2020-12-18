@@ -4,9 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
-              <label class="radio-label">计划单号:</label>
-            </el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start"><label class="radio-label">计划单号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.PlanNum" :placeholder="$t('permission.PlanNum')" clearable /></el-col>
         </el-col>
@@ -117,10 +115,9 @@
       highlight-current-row
       @selection-change="handleSelectionChange"
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -236,7 +233,6 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
-
           <el-tooltip class="item" effect="dark" :enterable="false" content="修改" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
@@ -250,7 +246,6 @@
           </el-tooltip>
 
           <el-popover placement="top" trigger="hover" popper-class="popoverBackB">
-
             <el-tooltip class="item" effect="dark" :enterable="false" content="BOM" placement="top-start">
               <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
             </el-tooltip>
@@ -286,8 +281,8 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="120px" label-position="left" class="demo-ruleForm">
         <div class="bigUpBox">
           <div class="boxLeft">
-            <el-form-item :label="$t('permission.PlanNum')" prop="PlanNum" :rules="[{ required: isAlarmItem, message: '请输入生产计划单号', trigger: 'blur' }]">
-              <el-input v-model.trim="ruleForm.PlanNum" :placeholder="$t('permission.PlanNum')" :disabled="isDisabled" />
+            <el-form-item label="生产计划单号" prop="PlanNum" :rules="[{ required: isAlarmItem, message: '请输入生产计划单号', trigger: 'blur' }]">
+              <el-input v-model.trim="ruleForm.PlanNum" placeholder="生产计划单号" :disabled="isDisabled" />
             </el-form-item>
 
             <el-form-item :label="$t('permission.PlanTypeName')" prop="PlanType" :rules="[{ required: isAlarmItem, message: '请选择生产计划类型', trigger: 'change' }]">
@@ -305,7 +300,13 @@
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.splitNumOther')" prop="SplitQuantity">
-              <el-input v-model.trim="ruleForm.SplitQuantity" :placeholder="$t('permission.splitNumOther')" :rules="[{ required: true, message: '请输入拆分数量', trigger: 'blur' }]" clearable />
+              <el-input
+                v-model.trim="ruleForm.SplitQuantity"
+                :placeholder="$t('permission.splitNumOther')"
+                type="number"
+                :rules="[{ required: isAlarmItem, message: '请输入拆分数量', trigger: 'blur' }]"
+                clearable
+              />
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable /></el-form-item>
@@ -651,14 +652,14 @@
 </template>
 
 <script>
-import '../../styles/scrollbar.css'
-import '../../styles/commentBox.scss'
-import i18n from '@/lang'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import '../../styles/scrollbar.css';
+import '../../styles/commentBox.scss';
+import i18n from '@/lang';
+import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import FinshName from '@/components/FinshName' // 成品名称弹窗
-import CustomerName from '@/components/CustomerName' // 客户名称弹窗
-import { GetDictionary, GetMaterialList, GetCustomerList, GetLine } from '@/api/BasicData'
+import FinshName from '@/components/FinshName'; // 成品名称弹窗
+import CustomerName from '@/components/CustomerName'; // 客户名称弹窗
+import { GetDictionary, GetMaterialList, GetCustomerList, GetLine } from '@/api/BasicData';
 import {
   productionList,
   productionFreeze,
@@ -671,9 +672,9 @@ import {
   SplitQuery,
   productionSplit,
   orderList
-} from '@/api/ProductionPlan'
-const fixHeight = 270
-const fixHeightBox = 350
+} from '@/api/ProductionPlan';
+const fixHeight = 270;
+const fixHeightBox = 350;
 
 export default {
   name: 'CompanyMaintenance',
@@ -717,7 +718,7 @@ export default {
       // 成品聚焦搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         MaterialType: 1,
         MaterialNum: undefined,
         Name: undefined,
@@ -726,7 +727,7 @@ export default {
       // 客户聚焦搜索条件
       paginationUser: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         CustomerNum: undefined,
         FullName: undefined,
         ShowBanned: true
@@ -756,28 +757,28 @@ export default {
           {
             text: '最近一周',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
             }
           },
           {
             text: '最近一个月',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
             }
           },
           {
             text: '最近三个月',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
             }
           }
         ]
@@ -790,125 +791,125 @@ export default {
       content5: this.$t('permission.CustomerName'),
       content6: this.$t('permission.PlanTypeName'),
       content7: this.$t('permission.StatusName')
-    }
+    };
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val
-        this.timer = true
-        const that = this
+        this.tableHeight = val;
+        this.timer = true;
+        const that = this;
         setTimeout(function() {
-          that.timer = false
-        }, 400)
+          that.timer = false;
+        }, 400);
       }
     },
     tableBoxHeight(val) {
       if (!this.timer) {
-        this.tableBoxHeight = val
-        this.timer = true
-        const that = this
+        this.tableBoxHeight = val;
+        this.timer = true;
+        const that = this;
         setTimeout(function() {
-          that.timer = false
-        }, 400)
+          that.timer = false;
+        }, 400);
       }
     },
 
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
-      this.parentMsg = this.$t('permission.importCompany')
-      this.content1 = this.$t('permission.PlanNum')
-      this.content2 = this.$t('permission.ProductNum')
-      this.content3 = this.$t('permission.ProductName')
-      this.content4 = this.$t('permission.CreateTime')
-      this.content5 = this.$t('permission.CustomerName')
-      this.content6 = this.$t('permission.PlanTypeName')
-      this.content7 = this.$t('permission.StatusName')
+      this.parentMsg = this.$t('permission.importCompany');
+      this.content1 = this.$t('permission.PlanNum');
+      this.content2 = this.$t('permission.ProductNum');
+      this.content3 = this.$t('permission.ProductName');
+      this.content4 = this.$t('permission.CreateTime');
+      this.content5 = this.$t('permission.CustomerName');
+      this.content6 = this.$t('permission.PlanTypeName');
+      this.content7 = this.$t('permission.StatusName');
     }
   },
   created() {
     // 监听表格高度
-    const that = this
+    const that = this;
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight
-        that.tableBoxHeight = window.innerHeight - fixHeightBox
-      })()
-    }
+        that.tableHeight = window.innerHeight - fixHeight;
+        that.tableBoxHeight = window.innerHeight - fixHeightBox;
+      })();
+    };
 
     // 计划类型下拉
     GetDictionary({ code: '0008' }).then(res => {
       if (res.IsPass === true) {
-        this.PlanTypeNameData = res.Obj
-        this.isGive = res.Obj
+        this.PlanTypeNameData = res.Obj;
+        this.isGive = res.Obj;
       }
-    })
+    });
     // 计划状态下拉
     GetDictionary({ code: '0016' }).then(res => {
       if (res.IsPass === true) {
-        this.StatusNameData = res.Obj
+        this.StatusNameData = res.Obj;
       }
-    })
+    });
     // 优先级下拉
     GetDictionary({ code: '0017' }).then(res => {
       if (res.IsPass === true) {
-        this.PriorityList = res.Obj
+        this.PriorityList = res.Obj;
       }
-    })
+    });
     // 拆分生产计划产线下拉
     GetLine().then(res => {
       if (res.IsPass === true) {
-        this.ProductList = res.Obj
+        this.ProductList = res.Obj;
       }
-    })
+    });
     // Mock: get all routes and roles list from server
-    this.getList()
+    this.getList();
   },
   methods: {
     // 改变搜索框开始结束时间触发
     importChange(val) {
-      this.pagination.importDate[0] = val[0]
-      this.pagination.importDate[1] = val[1]
-      this.pagination.CreateStartDate = this.pagination.importDate[0]
-      this.pagination.CreateEndDate = this.pagination.importDate[1]
+      this.pagination.importDate[0] = val[0];
+      this.pagination.importDate[1] = val[1];
+      this.pagination.CreateStartDate = this.pagination.importDate[0];
+      this.pagination.CreateEndDate = this.pagination.importDate[1];
     },
 
     // 折叠按钮互斥
     toggle(status) {
       if (status === '0') {
-        this.tableHeight = '67vh'
+        this.tableHeight = '67vh';
       } else {
-        this.tableHeight = '72vh'
+        this.tableHeight = '72vh';
       }
-      this.btnShow = !this.btnShow
-      this.showSearch = !this.showSearch
+      this.btnShow = !this.btnShow;
+      this.showSearch = !this.showSearch;
     },
 
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1
-      this.getList()
+      this.pagination.PageIndex = 1;
+      this.getList();
     },
     // 多选
     handleSelectionChange(val) {
-      this.selectedData = val
+      this.selectedData = val;
     },
 
     // 获取计划下拉产线
     changeLine(val) {
-      this.newLine = val
+      this.newLine = val;
     },
 
     // 获取下拉优先级
     changePriority(val) {
-      this.newPriority = val
+      this.newPriority = val;
     },
 
     // 新增获取单选value的值
     changeRadio(val) {
-      this.typeCode = val
+      this.typeCode = val;
     },
 
     // 导出用户
@@ -919,15 +920,15 @@ export default {
     },
     // 导入
     beforeUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
+      const isLt1M = file.size / 1024 / 1024 < 1;
       if (isLt1M) {
-        return true
+        return true;
       }
       this.$message({
         message: 'Please do not upload files larger than 1m in size.',
         type: 'warning'
-      })
-      return false
+      });
+      return false;
     },
     // handleSuccess({ results, header }) {
     //   this.tableData = results
@@ -935,56 +936,56 @@ export default {
     // },
     // 获取列表
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       productionList(this.pagination).then(res => {
-        this.tableData = res.Obj
-        this.total = res.TotalRowCount
-        this.listLoading = false
-      })
+        this.tableData = res.Obj;
+        this.total = res.TotalRowCount;
+        this.listLoading = false;
+      });
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`)
+        route.title = i18n.t(`route.${route.title}`);
         if (route.children) {
-          route.children = this.i18n(route.children)
+          route.children = this.i18n(route.children);
         }
-        return route
-      })
-      return app
+        return route;
+      });
+      return app;
     },
 
     // 增加
     handleAdd() {
-      this.dialogTypeTitle = this.$t('permission.addProductiony')
-      this.dialogFormVisible = true
-      this.planAdd = true
-      this.planShow = false
-      this.isDisabled = false
-      this.addShow = true
-      this.splitShow = false
-      this.isAlarmItem = true
+      this.dialogTypeTitle = this.$t('permission.addProductiony');
+      this.dialogFormVisible = true;
+      this.planAdd = true;
+      this.planShow = false;
+      this.isDisabled = false;
+      this.addShow = true;
+      this.splitShow = false;
+      this.isAlarmItem = true;
       this.ruleForm = {
         PlanNum: ''
-      }
+      };
       productionPlanNum().then(res => {
         this.$nextTick(function() {
-          this.ruleForm.PlanNum = res.Obj
-        })
-      })
+          this.ruleForm.PlanNum = res.Obj;
+        });
+      });
     },
 
     // 编辑
     handleEdit(row) {
-      this.dialogTypeTitle = this.$t('permission.EditProduction')
-      this.dialogFormVisible = true
-      this.planAdd = true
-      this.planShow = false
-      this.isDisabled = false
-      this.splitShow = false
-      this.addShow = false
-      this.isAlarmItem = true
-      this.ruleForm = JSON.parse(JSON.stringify(row))
+      this.dialogTypeTitle = this.$t('permission.EditProduction');
+      this.dialogFormVisible = true;
+      this.planAdd = true;
+      this.planShow = false;
+      this.isDisabled = false;
+      this.splitShow = false;
+      this.addShow = false;
+      this.isAlarmItem = true;
+      this.ruleForm = JSON.parse(JSON.stringify(row));
     },
 
     // 封装拆分
@@ -994,115 +995,115 @@ export default {
           this.$message({
             type: 'success',
             message: this.$t('table.SplitSuc')
-          })
+          });
           SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
             if (res.IsPass === true) {
-              this.ruleForm = res.Obj
+              this.ruleForm = res.Obj;
             }
-          })
-          this.getList()
+          });
+          this.getList();
         } else {
           this.$message({
             type: 'error',
             message: res.MSG
-          })
-          this.editLoading = false
+          });
         }
-      })
+        this.editLoading = false;
+      });
     },
 
     // 封装新增
     commonAdd() {
-      const params = this.ruleForm
-      params.PlanType = this.typeCode
-      params.ProductLineCode = this.newLine
-      params.Priority = this.newPriority
+      const params = this.ruleForm;
+      params.PlanType = this.typeCode;
+      params.ProductLineCode = this.newLine;
+      params.Priority = this.newPriority;
       productionAdd(params).then(res => {
         if (res.IsPass === true) {
           this.$message({
             type: 'success',
             message: this.$t('table.addSuc')
-          })
-          this.getList()
-          this.dialogFormVisible = false
+          });
+          this.getList();
+          this.dialogFormVisible = false;
         } else {
           this.$message({
             type: 'error',
             message: res.MSG
-          })
+          });
         }
-        this.editLoading = false
-      })
+        this.editLoading = false;
+      });
     },
 
     // 编辑成功
     submitForm(formName) {
-      this.editLoading = true
+      this.editLoading = true;
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditProduction')) {
-            const params = this.ruleForm
+            const params = this.ruleForm;
             productionUpdate(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                })
-                this.dialogFormVisible = false
-                this.getList()
+                });
+                this.dialogFormVisible = false;
+                this.getList();
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                })
+                });
               }
-              this.editLoading = false
-            })
+              this.editLoading = false;
+            });
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
-            this.commonAdd()
+            this.commonAdd();
           } else {
-            this.commonSplit()
-            this.dialogFormVisible = false
+            this.commonSplit();
+            this.dialogFormVisible = false;
           }
         } else {
-          this.editLoading = false
+          this.editLoading = false;
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          })
-          return false
+          });
+          return false;
         }
-      })
+      });
     },
 
     // 继续新增
     submitAdd() {
-      this.commonAdd()
-      this.handleAdd()
+      this.commonAdd();
+      this.handleAdd();
     },
 
     // 继续拆分
     submitSplit() {
-      this.commonSplit()
+      this.commonSplit();
     },
     // 关联工单
     handleRelation(row) {
-      this.orderFormVisible = true
-      this.orderBoxLoading = true
+      this.orderFormVisible = true;
+      this.orderBoxLoading = true;
       orderList({ PlanCode: row.PlanCode }).then(res => {
         if (res.IsPass === true) {
-          this.orderData = res.Obj
+          this.orderData = res.Obj;
         }
-        this.orderBoxLoading = false
-      })
+        this.orderBoxLoading = false;
+      });
     },
     // BOM
     handleBOM(row) {
-      this.bomFormVisible = true
+      this.bomFormVisible = true;
     },
     // 查看工艺路线
     handleLine(row) {
-      this.lineFormVisible = true
+      this.lineFormVisible = true;
     },
 
     // 删除按钮
@@ -1118,38 +1119,38 @@ export default {
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
-              })
-              this.getList()
+              });
+              this.getList();
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              })
+              });
             }
-          })
+          });
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: this.$t('table.deleteError')
-          })
-        })
+          });
+        });
     },
     // 计划拆分
     planOpen(row) {
-      this.dialogTypeTitle = this.$t('permission.splitProductiony')
-      this.dialogFormVisible = true
-      this.planAdd = false
-      this.planShow = true
-      this.isDisabled = true
-      this.addShow = false
-      this.splitShow = true
-      this.isAlarmItem = false
+      this.dialogTypeTitle = this.$t('permission.splitProductiony');
+      this.dialogFormVisible = true;
+      this.planAdd = false;
+      this.planShow = true;
+      this.isDisabled = true;
+      this.addShow = false;
+      this.splitShow = true;
+      // this.isAlarmItem = falses
       SplitQuery({ PlanCode: row.PlanCode }).then(res => {
         if (res.IsPass === true) {
-          this.ruleForm = res.Obj
+          this.ruleForm = res.Obj;
         }
-      })
+      });
     },
 
     // 计划冻结
@@ -1165,22 +1166,22 @@ export default {
               this.$message({
                 type: 'success',
                 message: res.MSG
-              })
-              this.getList()
+              });
+              this.getList();
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              })
+              });
             }
-          })
+          });
         })
         .catch(() => {
           this.$message({
             type: 'error',
             message: this.$t('table.operationError')
-          })
-        })
+          });
+        });
     },
     // 取消冻结
     cancelFrozen(row) {
@@ -1195,22 +1196,22 @@ export default {
               this.$message({
                 type: 'success',
                 message: res.MSG
-              })
-              this.getList()
+              });
+              this.getList();
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              })
+              });
             }
-          })
+          });
         })
         .catch(() => {
           this.$message({
             type: 'error',
             message: this.$t('table.operationError')
-          })
-        })
+          });
+        });
     },
     // 强制完工
     forceOver(row) {
@@ -1225,77 +1226,77 @@ export default {
               this.$message({
                 type: 'success',
                 message: res.MSG
-              })
-              this.getList()
+              });
+              this.getList();
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              })
+              });
             }
-          })
+          });
         })
         .catch(() => {
           this.$message({
             type: 'error',
             message: this.$t('table.operationError')
-          })
-        })
+          });
+        });
     },
 
     // 聚焦事件产成品弹窗
     finshBox() {
-      this.finshFormVisible = true
-      this.listBoxLoading = true
+      this.finshFormVisible = true;
+      this.listBoxLoading = true;
       GetMaterialList(this.paginationSearch).then(res => {
         if (res.IsPass === true) {
-          this.finshData = res.Obj
-          this.listBoxLoading = false
+          this.finshData = res.Obj;
+          this.listBoxLoading = false;
         }
-      })
+      });
     },
     // 产成品弹窗搜索
     handleSearchBox() {
-      this.paginationSearch.PageIndex = 1
-      this.finshBox()
+      this.paginationSearch.PageIndex = 1;
+      this.finshBox();
     },
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
-      this.ruleForm.ProductName = row.Name
-      this.ruleForm.ProductCode = row.MaterialCode
-      this.finshFormVisible = false
+      this.ruleForm.ProductName = row.Name;
+      this.ruleForm.ProductCode = row.MaterialCode;
+      this.finshFormVisible = false;
     },
     // 关闭成品名称查询弹窗
     fishClose() {
-      this.finshFormVisible = false
+      this.finshFormVisible = false;
     },
     // 聚焦事件客户弹窗
     userBox() {
-      this.userFormVisible = true
-      this.usBoxLoading = true
+      this.userFormVisible = true;
+      this.usBoxLoading = true;
       GetCustomerList(this.paginationUser).then(res => {
         if (res.IsPass === true) {
-          this.userData = res.Obj
-          this.usBoxLoading = false
+          this.userData = res.Obj;
+          this.usBoxLoading = false;
         }
-      })
+      });
     },
     handleUserBox() {
-      this.paginationUser.PageIndex = 1
-      this.userBox()
+      this.paginationUser.PageIndex = 1;
+      this.userBox();
     },
     // 增加客户名称双击事件获取当前行的值
     userClick(row) {
-      this.ruleForm.CustomerName = row.FullName
-      this.ruleForm.CustomerCode = row.CustomerCode
-      this.userFormVisible = false
+      this.ruleForm.CustomerName = row.FullName;
+      this.ruleForm.CustomerCode = row.CustomerCode;
+      this.userFormVisible = false;
     },
     // 关闭客户名称查询弹窗
     userClose() {
-      this.userFormVisible = false
+      this.userFormVisible = false;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

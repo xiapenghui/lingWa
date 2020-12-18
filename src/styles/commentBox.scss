@@ -6,6 +6,10 @@
          line-height: 30px;
        }
     }
+    .el-input .el-input__inner{
+       width: 100%;
+       text-align: left;
+    }
     padding: 20px;
     .el-upload__tip {
       margin-top: 10px;

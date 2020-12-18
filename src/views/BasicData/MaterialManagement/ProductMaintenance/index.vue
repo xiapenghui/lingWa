@@ -186,7 +186,7 @@ export default {
       ruleForm: {}, // 编辑弹窗
       pagination: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         MaterialNum: undefined,
         Name: undefined,
         ShowBanned: false,
@@ -196,7 +196,7 @@ export default {
       paginationSearchLine: {
         Name: undefined,
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         ShowBanned: true
       },
       lineData: [], // 工艺路线弹窗

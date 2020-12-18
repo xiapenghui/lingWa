@@ -223,7 +223,7 @@ export default {
       }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         AccountName: undefined,
         NameCN: undefined,
         ShowBanned: false,

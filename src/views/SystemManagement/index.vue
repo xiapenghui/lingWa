@@ -192,7 +192,7 @@ export default {
       logId: {}, // 查看用户行数据
       pagination: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         RoleName: undefined
       },
       listLoading: false,

@@ -174,7 +174,7 @@ export default {
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         MaterialType: 0,
         MaterialNum: undefined,
         MaterialName: undefined,

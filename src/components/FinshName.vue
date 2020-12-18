@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="成名编码" placement="top-start">
+            <el-tooltip class="item" effect="dark" content="成名编码" placement="top-start">
               <label class="radio-label">{{ $t('permission.ProductNum') }}:</label>
             </el-tooltip>
           </el-col>
@@ -13,11 +13,11 @@
 
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="成品名称" placement="top-start">
+            <el-tooltip class="item" effect="dark" content="成品名称" placement="top-start">
               <label class="radio-label">{{ $t('permission.ProductNane') }}:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="paginationSearch.Name" /></el-col>
+          <el-col :span="16"><el-input v-model.trim="paginationSearch.Name" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -40,10 +40,9 @@
       highlight-current-row
       @row-dblclick="fishClick"
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -82,7 +81,6 @@
           {{ scope.row.Description }}
         </template>
       </el-table-column>
-
     </el-table>
   </el-dialog>
 </template>
@@ -133,19 +131,18 @@ export default {
     handleSearchBox() {
       this.$emit('handleSearchBox')
     }
-
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .el-dialog__body {
-    .searchBox{
-      .el-col-6{
-        height: 30px;
-        line-height: 25px;
-        text-align: right;
-      }
+.el-dialog__body {
+  .searchBox {
+    .el-col-6 {
+      height: 30px;
+      line-height: 25px;
+      text-align: right;
     }
   }
+}
 </style>

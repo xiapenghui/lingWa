@@ -245,7 +245,7 @@ export default {
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         MaterialType: 0,
         MaterialNum: undefined,
         MaterialName: undefined,
@@ -255,7 +255,7 @@ export default {
       // 来料检验规则条件
       paginationSearchIncoming: {
         PageIndex: 1,
-        PageSize: 50,
+        PageSize: 30,
         RuleNum: undefined,
         ShowBanned: true
       },
@@ -422,11 +422,9 @@ export default {
     // 查看检验项明细
     handleLook(row) {
       this.$router.push({
-        path: '/BasicData/ProductMmanagement/BomMangementDetaile',
+        path: '/QualityData/BasicData/MaterialInspDetail',
         query: {
-          ItemCode: row.ItemCode,
-          ProcessRouteCode: row.ProcessRouteCode,
-          ProductCode: row.ProductCode
+          ItemCode: row.ItemCode
         }
       })
     },

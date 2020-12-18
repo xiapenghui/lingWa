@@ -87,3 +87,129 @@ export function QuaIqcInStatus(data) {
     data
   })
 }
+
+// 基础数据-- - 原材料质量检验项明细--列表分页
+export function QuaIqDetList(data) {
+  return request({
+    url: newUrl + '/api/QuaIqcInspectDetail/List',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 原材料质量检验项明细--列表增加
+export function QuaIqDetAdd(data) {
+  return request({
+    url: newUrl + '/api/QuaIqcInspectDetail/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 原材料质量检验项明细--列表删除
+export function QuaIqDetDelete(data) {
+  return request({
+    url: newUrl + '/api/QuaIqcInspectDetail/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 原材料质量检验项明细--列表修改
+export function QuaIqDetModify(data) {
+  return request({
+    url: newUrl + '/api/QuaIqcInspectDetail/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷类型--列表分页
+export function QuaDefList(data) {
+  return request({
+    url: newUrl + '/api/QuaDefectType/List',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷类型--列表增加
+export function QuaDefAdd(data) {
+  return request({
+    url: newUrl + '/api/QuaDefectType/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷类型--列表删除
+export function QuaDefDelete(data) {
+  return request({
+    url: newUrl + '/api/QuaDefectType/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷类型--列表修改
+export function QuaDefModify(data) {
+  return request({
+    url: newUrl + '/api/QuaDefectType/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷类型--列表状态
+export function QuaDefStatus(data) {
+  return request({
+    url: newUrl + '/api/QuaDefectType/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷--列表分页
+export function QuaProduList(data) {
+  return request({
+    url: newUrl + '/api/QuaProductDefect/List',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷--列表增加
+export function QuaProduAdd(data) {
+  return request({
+    url: newUrl + '/api/QuaProductDefect/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷--列表删除
+export function QuaProduDelete(data) {
+  return request({
+    url: newUrl + '/api/QuaProductDefect/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷--列表修改
+export function QuaProduModify(data) {
+  return request({
+    url: newUrl + '/api/QuaProductDefect/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据-- - 产品缺陷--列表状态
+export function QuaProduStatus(data) {
+  return request({
+    url: newUrl + '/api/QuaProductDefect/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
