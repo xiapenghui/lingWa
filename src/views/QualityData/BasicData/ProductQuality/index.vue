@@ -2,21 +2,21 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="6">
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="成品编码" placement="top-start"><label class="radio-label">成品编码:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.InspectItemName" placeholder="成品编码" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" placeholder="成品编码" clearable /></el-col>
         </el-col>
 
-        <el-col :span="6">
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="成品名称" placement="top-start"><label class="radio-label">成品名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.InspectItemName" placeholder="成品名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductName" placeholder="成品名称" clearable /></el-col>
         </el-col>
 
-        <el-col :span="6">
+        <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="检验类型" placement="top-start"><label class="radio-label">检验类型:</label></el-tooltip>
           </el-col>
@@ -24,6 +24,14 @@
             <el-select v-model="pagination.InspectType" clearable style="width: 100%">
               <el-option v-for="item in InspectTypeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
+          </el-col>
+        </el-col>
+
+        <el-col :span="4">
+          <el-col :span="24">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁用状态的成品" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">包含禁用状态的成品</el-checkbox>
+            </el-tooltip>
           </el-col>
         </el-col>
 
@@ -52,39 +60,39 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品编码" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品编码" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.InspectItemName }}
+          {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品名称" width="150" prop="JudgmentWayText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品名称" width="150" prop="MaterialName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.JudgmentWayText }}
+          {{ scope.row.MaterialName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="规格" width="150" prop="JudgmentWayText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="规格" width="180" prop="MaterialSpec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.JudgmentWayText }}
+          {{ scope.row.MaterialSpec }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验类型" width="150" prop="JudgmentWayText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验类型" width="180" prop="InspectText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.JudgmentWayText }}
+          {{ scope.row.InspectText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="版本号" width="150" prop="JudgmentWayText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="版本号" width="180" prop="Version" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.JudgmentWayText }}
+          {{ scope.row.Version }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间" width="150" prop="JudgmentWayText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="生效时间" width="150" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.JudgmentWayText }}
+          {{ scope.row.EffectiveDate | substringTime }}
         </template>
       </el-table-column>
 
@@ -94,21 +102,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUser" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Description }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.Remark }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.ModifyUserName }}
+          {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
@@ -151,47 +147,48 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="检验项名称" prop="InspectItemName"><el-input v-model="ruleForm.InspectItemName" placeholder="检验项名称" clearable /></el-form-item>
+        <el-form-item label="成品名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @focus="finshBox" /></el-form-item>
 
-        <el-form-item label="判断方式" prop="JudgmentWay">
-          <el-select v-model="ruleForm.JudgmentWay" placeholder="请选择" clearable @change="changeAway">
+        <el-form-item label="规格" prop="MaterialSpec"><el-input v-model="ruleForm.MaterialSpec" placeholder="规格" :disabled="true" /></el-form-item>
+
+        <el-form-item label="检验类型" prop="InspectType">
+          <el-select v-model="ruleForm.InspectType" placeholder="请选择" clearable @change="changeType">
             <el-option v-for="item in InspectTypeData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="上限值" prop="UpperLimit">
-          <el-input-number v-model="ruleForm.UpperLimit" placeholder="上限值" :min="0" clearable style="width: 100%"></el-input-number>
+        <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
+
+        <el-form-item label="生效时间">
+          <el-date-picker
+            v-model="ruleForm.EffectiveDate"
+            :picker-options="expireTimeOption"
+            value-format="yyyy-MM-dd"
+            type="date"
+            placeholder="选择日期"
+            style="width: 100%;"
+            clearable
+          />
         </el-form-item>
-        <el-form-item label="下限值" prop="LowerLimit">
-          <el-input-number v-model="ruleForm.LowerLimit" placeholder="下限值" :min="0" clearable style="width: 100%"></el-input-number>
-        </el-form-item>
-
-        <el-form-item label="标准值" prop="StandardValue"><el-input v-model="ruleForm.StandardValue" placeholder="标准值" clearable /></el-form-item>
-
-        <el-form-item label="单位">
-          <el-select v-model="ruleForm.Unit" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
-            <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="是否必填">
-          <el-radio v-model="ruleForm.IsRequired" :label="true">是</el-radio>
-          <el-radio v-model="ruleForm.IsRequired" :label="false">否</el-radio>
-        </el-form-item>
-
-        <el-form-item label="参考文档" prop="RefDocument"><el-input v-model="ruleForm.RefDocument" placeholder="检验项名称" clearable /></el-form-item>
-        <el-form-item label="检验工具" prop="InspectTools"><el-input v-model="ruleForm.InspectTools" placeholder="检验工具" clearable /></el-form-item>
-
-        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
-
-        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
+        <el-button type="primary" v-if="addShow" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
+
+    <!-- 成品名称对应弹窗 -->
+    <FinshName
+      :fish-show="finshFormVisible"
+      :list-box-loading="listBoxLoading"
+      :table-box-height="tableBoxHeight"
+      :finsh-data="finshData"
+      :pagination-search="paginationSearch"
+      @fishClose="fishClose"
+      @fishClick="fishClick"
+      @handleSearchBox="handleSearchBox"
+    />
   </div>
 </template>
 
@@ -199,14 +196,15 @@
 import '../../../../styles/commentBox.scss';
 import '../../../../styles/scrollbar.css';
 import i18n from '@/lang';
-import { GetDictionary } from '@/api/BasicData';
-import { QuaIpqcList, QuaIpqcAdd, QuaIpqcModify, QuaIpqcModifyStatus, QuaIpqcDelete, QuaIpqcStatus } from '@/api/QualityData';
+import { GetDictionary, GetMaterialList } from '@/api/BasicData';
+import { QuaIpqcList, QuaIpqcAdd, QuaIpqcModify, QuaIpqcModifyStatus, QuaIpqcDelete, QuaIpqcCopy } from '@/api/QualityData';
 import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
+import FinshName from '@/components/FinshName'; // 成品名称弹窗
 const fixHeight = 260;
-
+const fixHeightBox = 350;
 export default {
   name: 'BomMangement',
-  components: { Pagination },
+  components: { Pagination, FinshName },
   data() {
     return {
       tableData: [],
@@ -214,29 +212,43 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        ItemCode: this.$route.query.ItemCode,
-        InspectItemName: undefined,
-        JudgmentWay: undefined
+        ProductNum: undefined,
+        ProductName: undefined,
+        InspectType: undefined,
+        ShowBanned: false
       },
-
+      // 成品聚焦搜索条件
+      paginationSearch: {
+        PageIndex: 1,
+        PageSize: 30,
+        MaterialType: 1,
+        MaterialNum: undefined,
+        Name: undefined,
+        ShowBanned: true
+      },
       listLoading: false,
       editLoading: false, // 编辑loading
+      addShow: true, //继续新增
       total: 10,
-      JudgmentWayVal: null, // 下拉判断方式
-      newUnit: null, // 单位
-      newJudgmentWay: null, // 判断方式
-      checkData: [], // 新增编辑弹窗检验方式radio
-      InspectTypeData: [], // 判断下拉方式数组
-      UnitTextList: [], // 获取新增页面单位下拉
+      finshData: [], // 成品弹窗数组
+      newInspectVal: null, //判断下拉检验类型
+      InspectTypeData: [], // 判断下拉检验类型数组
       dialogFormVisible: false, // 编辑弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
+      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
+      listBoxLoading: false, // 成品名称搜索loading
+      finshFormVisible: false, // input产品名称弹窗
       dialogType: 'new',
+      expireTimeOption: {
+        disabledDate(date) {
+          return date.getTime() <= Date.now() - 8.64e7;
+        }
+      },
       rules: {
-        InspectItemName: [{ required: true, message: '请输入检验项名称', trigger: 'blur' }],
-        JudgmentWay: [{ required: true, message: '请选择判断方式', trigger: 'blur' }],
-        UpperLimit: [{ required: true, message: '请输入上限值', trigger: 'blur' }],
-        LowerLimit: [{ required: true, message: '请输入下限值', trigger: 'blur' }],
-        StandardValue: [{ required: true, message: '请输入标准值', trigger: 'blur' }]
+        MaterialName: [{ required: true, message: '请输入成品名称', trigger: 'blur' }],
+        MaterialSpec: [{ required: true, message: '请输入规格', trigger: 'blur' }],
+        InspectType: [{ required: true, message: '请选择检验类型', trigger: 'blur' }],
+        Version: [{ required: true, message: '请输入版本', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -255,6 +267,17 @@ export default {
     tableHeight(val) {
       if (!this.timer) {
         this.tableHeight = val;
+        this.timer = true;
+        const that = this;
+        setTimeout(function() {
+          that.timer = false;
+        }, 400);
+      }
+    },
+
+    tableBoxHeight(val) {
+      if (!this.timer) {
+        this.tableBoxHeight = val;
         this.timer = true;
         const that = this;
         setTimeout(function() {
@@ -283,6 +306,7 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight;
+        that.tableBoxHeight = window.innerHeight - fixHeightBox;
       })();
     };
 
@@ -293,20 +317,6 @@ export default {
       }
     });
 
-    // 新增检验方式radio
-    GetDictionary({ code: '0019' }).then(res => {
-      if (res.IsPass === true) {
-        this.checkData = res.Obj;
-      }
-    });
-
-    // 单位下拉
-    GetDictionary({ code: '0021' }).then(res => {
-      if (res.IsPass === true) {
-        this.UnitTextList = res.Obj;
-      }
-    });
-
     this.getList();
     this.setFormRules();
   },
@@ -314,22 +324,52 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        InspectItemName: [{ required: true, message: '请输入检验项名称', trigger: 'blur' }],
-        JudgmentWay: [{ required: true, message: '请选择判断方式', trigger: 'blur' }],
-        UpperLimit: [{ required: true, message: '请输入上限值', trigger: 'blur' }],
-        LowerLimit: [{ required: true, message: '请输入下限值', trigger: 'blur' }],
-        StandardValue: [{ required: true, message: '请输入标准值', trigger: 'blur' }]
+        MaterialName: [{ required: true, message: '请输入成品名称', trigger: 'blur' }],
+        MaterialSpec: [{ required: true, message: '请输入规格', trigger: 'blur' }],
+        InspectType: [{ required: true, message: '请选择检验类型', trigger: 'blur' }],
+        Version: [{ required: true, message: '请输入版本', trigger: 'blur' }]
       };
     },
 
-    // 获取下拉选择单位的最新值
-    changeUnit(val) {
-      this.newUnit = val;
+    // 禁用，启用权限
+    handleBan(row) {
+      let status, statusTitle;
+      if (row.Status === true) {
+        status = this.$t('permission.jingyongTitle');
+        statusTitle = this.$t('permission.jingyongInfo');
+      } else {
+        status = this.$t('permission.qiyongTitle');
+        statusTitle = this.$t('permission.qiyongInfo');
+      }
+      this.$confirm(statusTitle, status, {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          Status: (row.Status = row.Status !== true),
+          ItemCode: row.ItemCode
+        };
+        QuaIpqcModifyStatus(params).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              type: 'success',
+              message: res.MSG
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.MSG
+            });
+          }
+          this.getList();
+        });
+      });
     },
 
-    // 下拉获取最新的判断方式
-    changeAway(val) {
-      this.newJudgmentWay = val;
+    //新增下拉检验类型
+    changeType(val) {
+      this.newInspectVal = val;
     },
 
     // 查询
@@ -362,12 +402,14 @@ export default {
     handleAdd() {
       this.dialogType = 'new';
       this.dialogFormVisible = true;
+      this.addShow = true;
       this.ruleForm = {};
     },
     // 编辑
     handleEdit(row) {
       this.dialogType = 'edit';
       this.dialogFormVisible = true;
+      this.addShow = false;
       this.ruleForm = JSON.parse(JSON.stringify(row));
     },
 
@@ -379,7 +421,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          QuaIpqcDelete({ InspectItemCode: row.InspectItemCode }).then(res => {
+          QuaIpqcDelete({ ItemCode: row.ItemCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -402,12 +444,40 @@ export default {
         });
     },
 
+    // 复制
+    handleCopy(row) {
+      this.$confirm('您确定要复制此条数据么？', '复制', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'success'
+      })
+        .then(() => {
+          QuaIpqcCopy({ ItemCode: row.ItemCode }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: res.MSG
+              });
+              this.getList();
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
+    },
+
     // 新增封装
     commonAdd() {
       const params = this.ruleForm;
-      params.ItemCode = this.$route.query.ItemCode;
-      params.JudgmentWay = this.newJudgmentWay;
-      params.Unit = this.newUnit;
       QuaIpqcAdd(params).then(res => {
         if (res.IsPass === true) {
           this.$message({
@@ -431,8 +501,8 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            const params = this.ruleForm;
-            params.ItemCode = this.$route.query.ItemCode;
+            const params = this.ruleForm
+            params.ItemCode=this.ruleForm.ItemCode
             QuaIpqcModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -469,6 +539,34 @@ export default {
     submitAdd() {
       this.commonAdd();
       this.handleAdd();
+    },
+
+    // 聚焦事件产成品弹窗
+    finshBox() {
+      this.finshFormVisible = true;
+      this.listBoxLoading = true;
+      GetMaterialList(this.paginationSearch).then(res => {
+        if (res.IsPass === true) {
+          this.finshData = res.Obj;
+          this.listBoxLoading = false;
+        }
+      });
+    },
+    // 产成品弹窗搜索
+    handleSearchBox() {
+      this.paginationSearch.PageIndex = 1;
+      this.finshBox();
+    },
+    // 增加成品名称双击事件获取当前行的值
+    fishClick(row) {
+      this.ruleForm.MaterialName = row.Name;
+      this.ruleForm.MaterialSpec = row.Spec;
+      this.ruleForm.MaterialCode = row.MaterialCode;
+      this.finshFormVisible = false;
+    },
+    // 关闭成品名称查询弹窗
+    fishClose() {
+      this.finshFormVisible = false;
     }
   }
 };

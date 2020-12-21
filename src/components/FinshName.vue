@@ -46,13 +46,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品编号" width="200" prop="MaterialNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
@@ -64,7 +64,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工艺路线" width="200" prop="RouteName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工艺路线" width="150" prop="RouteName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RouteName }}
         </template>
@@ -73,6 +73,12 @@
       <el-table-column align="center" label="颜色" width="150" prop="Color" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Color }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="规格" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Spec }}
         </template>
       </el-table-column>
 

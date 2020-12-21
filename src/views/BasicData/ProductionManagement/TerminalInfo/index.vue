@@ -80,30 +80,24 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工作中心编号" width="150" prop="WorkCenterCode" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.WorkCenterCode }}
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" label="工作中心名称" width="150" prop="WorkCenterName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkCenterName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线名称" width="150" prop="LineName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="所属产线" width="150" prop="LineName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间名称" width="150" prop="WorkshopName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="所属车间" width="150" prop="WorkshopName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工作中心描述" width="150" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工作中心描述"  :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>

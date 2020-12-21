@@ -276,7 +276,7 @@ export function QuaIpqcList(data) {
  
  
  //  质量管理 - 基础数据 - 产品质量检验项--列表复制
- export function QuaIpqcStatus(data) {
+ export function QuaIpqcCopy(data) {
    return request({
      url: newUrl + '/api/QuaIpqcI/Copy',
      method: 'post',

@@ -1244,7 +1244,7 @@ export default {
         });
     },
 
-    // 聚焦事件产成品弹窗
+    // 聚焦事件成品弹窗
     finshBox() {
       this.finshFormVisible = true;
       this.listBoxLoading = true;

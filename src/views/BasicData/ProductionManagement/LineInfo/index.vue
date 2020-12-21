@@ -82,7 +82,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车间名称" prop="WorkshopName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="所属车间" prop="WorkshopName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
@@ -151,7 +151,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="车间名称" prop="CascadeArray">
+        <el-form-item label="所属车间" prop="CascadeArray">
           <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间" clearable />
         </el-form-item>
 
@@ -213,7 +213,7 @@ export default {
       rules: {
         LineName: [{ required: true, message: '请输入产线名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-        CascadeArray: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
+        CascadeArray: [{ required: true, message: '请选择所属车间', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -297,7 +297,7 @@ export default {
       this.rules = {
         LineName: [{ required: true, message: '请输入产线名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-        CascadeArray: [{ required: true, message: '请输入车间名称', trigger: 'blur' }]
+         CascadeArray: [{ required: true, message: '请选择所属车间', trigger: 'blur' }]
       }
     },
 
