@@ -174,8 +174,9 @@
         </el-form-item>
 
         <el-form-item label="来料检验规则" prop="IQCRuleNum">
-          <el-input v-model="ruleForm.IQCRuleNum" placeholder="请选择" clearable @focus="incomingBox" />
+          <el-input v-model="ruleForm.IQCRuleNum" placeholder="请选择"  @focus="incomingBox" clearable/>
         </el-form-item>
+
         <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
         <el-form-item label="生效时间" prop="EffectiveDate">
@@ -221,8 +222,8 @@
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { MaterialList, bomCopy, GetDictionary } from '@/api/BasicData'
-import { QuaIqcInList, QuaIqcInDelete, QuaIqcInAdd, QuaIqcInModify, QuaIqcInStatus, QuaIqcList } from '@/api/QualityData'
+import { MaterialList, GetDictionary } from '@/api/BasicData'
+import { QuaIqcInList, QuaIqcInDelete, QuaIqcInAdd, QuaIqcInModify, QuaIqcInStatus, QuaIqcInCopy ,QuaIqcList } from '@/api/QualityData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import MaterialName from '@/components/MaterialName' // 原料名称
 import IncomingName from '@/components/IncomingName' // 来料检验规则
@@ -506,7 +507,7 @@ export default {
         type: 'success'
       })
         .then(() => {
-          bomCopy({ BomCode: row.BomCode }).then(res => {
+          QuaIqcInCopy({ ItemCode: row.ItemCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',

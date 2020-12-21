@@ -38,6 +38,17 @@ export function GetByRouteList(data) {
   })
 }
 
+
+// 通用产品缺陷
+export function GetQuaDefectType(data) {
+  return request({
+    url: newUrl + '/api/Common/GetQuaDefectTypeTextValuePair',
+    method: 'post',
+    data
+  })
+}
+
+
 // 通用获取当前公司
 export function GetAuthOrganizationRange(data) {
   return request({
