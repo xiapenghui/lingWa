@@ -1,7 +1,6 @@
 // const newUrl = 'http://192.168.1.151:20000' // 本地地址
 const newUrl = 'http://121.196.123.158/WebAPI' // 服务器地址
 import request from '@/utils/request'
-
 // 获取管理角色列表
 export function ListRole(data) {
   return request({

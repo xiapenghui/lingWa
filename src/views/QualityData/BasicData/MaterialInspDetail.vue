@@ -130,10 +130,10 @@
         </el-form-item>
 
         <el-form-item label="上限值" prop="UpperLimit">
-          <el-input-number v-model="ruleForm.UpperLimit"   placeholder="上限值" :min="0" clearable style="width: 100%"></el-input-number>
+          <el-input-number v-model="ruleForm.UpperLimit" placeholder="上限值" :min="0" clearable style="width: 100%" />
         </el-form-item>
         <el-form-item label="下限值" prop="LowerLimit">
-          <el-input-number v-model="ruleForm.LowerLimit"  placeholder="下限值" :min="0" clearable style="width: 100%"></el-input-number>
+          <el-input-number v-model="ruleForm.LowerLimit" placeholder="下限值" :min="0" clearable style="width: 100%" />
         </el-form-item>
 
         <el-form-item label="标准值" prop="StandardValue"><el-input v-model="ruleForm.StandardValue" placeholder="标准值" clearable /></el-form-item>
@@ -166,13 +166,13 @@
 </template>
 
 <script>
-import '../../../styles/commentBox.scss';
-import '../../../styles/scrollbar.css';
-import i18n from '@/lang';
-import { GetDictionary } from '@/api/BasicData';
-import { QuaIqDetList, QuaIqDetAdd, QuaIqDetDelete, QuaIqDetModify } from '@/api/QualityData';
-import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
-const fixHeight = 260;
+import '../../../styles/commentBox.scss'
+import '../../../styles/scrollbar.css'
+import i18n from '@/lang'
+import { GetDictionary } from '@/api/BasicData'
+import { QuaIqDetList, QuaIqDetAdd, QuaIqDetDelete, QuaIqDetModify } from '@/api/QualityData'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+const fixHeight = 260
 
 export default {
   name: 'BomMangement',
@@ -217,19 +217,19 @@ export default {
       // content7: this.$t('permission.passwords'),
       // content8: this.$t('permission.roleUser'),
       // content9: this.$t('permission.description')
-    };
+    }
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
 
@@ -244,41 +244,41 @@ export default {
       // this.content7 = this.$t('permission.passwords')
       // this.content8 = this.$t('permission.roleUser')
       // this.content9 = this.$t('permission.description')
-      this.setFormRules();
+      this.setFormRules()
     }
   },
   created() {
     // 监听表格高度
-    const that = this;
+    const that = this
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight;
-      })();
-    };
+        that.tableHeight = window.innerHeight - fixHeight
+      })()
+    }
 
     // 判断方式下拉
     GetDictionary({ code: '0027' }).then(res => {
       if (res.IsPass === true) {
-        this.JudgmentWayData = res.Obj;
+        this.JudgmentWayData = res.Obj
       }
-    });
+    })
 
     // 新增检验方式radio
     GetDictionary({ code: '0019' }).then(res => {
       if (res.IsPass === true) {
-        this.checkData = res.Obj;
+        this.checkData = res.Obj
       }
-    });
+    })
 
     // 单位下拉
     GetDictionary({ code: '0021' }).then(res => {
       if (res.IsPass === true) {
-        this.UnitTextList = res.Obj;
+        this.UnitTextList = res.Obj
       }
-    });
+    })
 
-    this.getList();
-    this.setFormRules();
+    this.getList()
+    this.setFormRules()
   },
   methods: {
     // 表单验证切换中英文
@@ -289,56 +289,56 @@ export default {
         UpperLimit: [{ required: true, message: '请输入上限值', trigger: 'blur' }],
         LowerLimit: [{ required: true, message: '请输入下限值', trigger: 'blur' }],
         StandardValue: [{ required: true, message: '请输入标准值', trigger: 'blur' }]
-      };
+      }
     },
 
     // 获取下拉选择单位的最新值
     changeUnit(val) {
-      this.newUnit = val;
+      this.newUnit = val
     },
 
     // 下拉获取最新的判断方式
     changeAway(val) {
-      this.newJudgmentWay = val;
+      this.newJudgmentWay = val
     },
 
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1;
-      this.getList();
+      this.pagination.PageIndex = 1
+      this.getList()
     },
 
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       QuaIqDetList(this.pagination).then(res => {
-        this.tableData = res.Obj;
-        this.total = res.TotalRowCount;
-        this.listLoading = false;
-      });
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`);
+        route.title = i18n.t(`route.${route.title}`)
         if (route.children) {
-          route.children = this.i18n(route.children);
+          route.children = this.i18n(route.children)
         }
-        return route;
-      });
-      return app;
+        return route
+      })
+      return app
     },
 
     // 增加
     handleAdd() {
-      this.dialogType = 'new';
-      this.dialogFormVisible = true;
-      this.ruleForm = {};
+      this.dialogType = 'new'
+      this.dialogFormVisible = true
+      this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
-      this.dialogType = 'edit';
-      this.dialogFormVisible = true;
-      this.ruleForm = JSON.parse(JSON.stringify(row));
+      this.dialogType = 'edit'
+      this.dialogFormVisible = true
+      this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
     // 删除
@@ -354,92 +354,92 @@ export default {
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
-              });
-              this.getList();
+              })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              });
+              })
             }
-          });
+          })
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: this.$t('table.deleteError')
-          });
-        });
+          })
+        })
     },
 
     // 新增封装
     commonAdd() {
-      const params = this.ruleForm;
-      params.ItemCode = this.$route.query.ItemCode;
-      params.JudgmentWay = this.newJudgmentWay;
-      params.Unit = this.newUnit;
+      const params = this.ruleForm
+      params.ItemCode = this.$route.query.ItemCode
+      params.JudgmentWay = this.newJudgmentWay
+      params.Unit = this.newUnit
       QuaIqDetAdd(params).then(res => {
         if (res.IsPass === true) {
           this.$message({
             type: 'success',
             message: this.$t('table.addSuc')
-          });
-          this.getList();
+          })
+          this.getList()
         } else {
           this.$message({
             type: 'error',
             message: res.MSG
-          });
+          })
         }
-        this.editLoading = false;
-      });
+        this.editLoading = false
+      })
     },
 
     // 编辑成功
     submitForm(formName) {
-      this.editLoading = true;
+      this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            const params = this.ruleForm;
-            params.ItemCode = this.$route.query.ItemCode;
+            const params = this.ruleForm
+            params.ItemCode = this.$route.query.ItemCode
             QuaIqDetModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                });
-                this.editLoading = false;
-                this.dialogFormVisible = false;
-                this.getList();
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                });
+                })
               }
-              this.editLoading = false;
-            });
+              this.editLoading = false
+            })
           } else {
-            this.commonAdd();
-            this.dialogFormVisible = false;
+            this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
-          this.editLoading = false;
+          this.editLoading = false
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          });
-          return false;
+          })
+          return false
         }
-      });
+      })
     },
 
     // 继续新增
     submitAdd() {
-      this.commonAdd();
-      this.handleAdd();
+      this.commonAdd()
+      // this.handleAdd();
     }
   }
-};
+}
 </script>

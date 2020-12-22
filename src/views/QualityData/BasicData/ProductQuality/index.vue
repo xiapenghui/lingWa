@@ -159,7 +159,7 @@
 
         <el-form-item label="版本" prop="Version"><el-input v-model="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
-        <el-form-item label="生效时间">
+        <el-form-item label="生效时间" prop="EffectiveDate">
           <el-date-picker
             v-model="ruleForm.EffectiveDate"
             :picker-options="expireTimeOption"
@@ -173,7 +173,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" v-if="addShow" @click="submitAdd('ruleForm')">继续新增</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -193,15 +193,15 @@
 </template>
 
 <script>
-import '../../../../styles/commentBox.scss';
-import '../../../../styles/scrollbar.css';
-import i18n from '@/lang';
-import { GetDictionary, GetMaterialList } from '@/api/BasicData';
-import { QuaIpqcList, QuaIpqcAdd, QuaIpqcModify, QuaIpqcModifyStatus, QuaIpqcDelete, QuaIpqcCopy } from '@/api/QualityData';
-import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
-import FinshName from '@/components/FinshName'; // 成品名称弹窗
-const fixHeight = 260;
-const fixHeightBox = 350;
+import '../../../../styles/commentBox.scss'
+import '../../../../styles/scrollbar.css'
+import i18n from '@/lang'
+import { GetDictionary, GetMaterialList } from '@/api/BasicData'
+import { QuaIpqcList, QuaIpqcAdd, QuaIpqcModify, QuaIpqcModifyStatus, QuaIpqcDelete, QuaIpqcCopy } from '@/api/QualityData'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import FinshName from '@/components/FinshName' // 成品名称弹窗
+const fixHeight = 260
+const fixHeightBox = 350
 export default {
   name: 'BomMangement',
   components: { Pagination, FinshName },
@@ -220,18 +220,18 @@ export default {
       // 成品聚焦搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 30,
+        PageSize: 100,
         MaterialType: 1,
         MaterialNum: undefined,
         Name: undefined,
-        ShowBanned: true
+        ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
-      addShow: true, //继续新增
+      addShow: true, // 继续新增
       total: 10,
       finshData: [], // 成品弹窗数组
-      newInspectVal: null, //判断下拉检验类型
+      newInspectVal: null, // 判断下拉检验类型
       InspectTypeData: [], // 判断下拉检验类型数组
       dialogFormVisible: false, // 编辑弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
@@ -241,14 +241,15 @@ export default {
       dialogType: 'new',
       expireTimeOption: {
         disabledDate(date) {
-          return date.getTime() <= Date.now() - 8.64e7;
+          return date.getTime() <= Date.now() - 8.64e7
         }
       },
       rules: {
         MaterialName: [{ required: true, message: '请输入成品名称', trigger: 'blur' }],
         MaterialSpec: [{ required: true, message: '请输入规格', trigger: 'blur' }],
         InspectType: [{ required: true, message: '请选择检验类型', trigger: 'blur' }],
-        Version: [{ required: true, message: '请输入版本', trigger: 'blur' }]
+        Version: [{ required: true, message: '请输入版本', trigger: 'blur' }],
+        EffectiveDate: [{ required: true, message: '请输入生效日期', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -259,30 +260,30 @@ export default {
       // content7: this.$t('permission.passwords'),
       // content8: this.$t('permission.roleUser'),
       // content9: this.$t('permission.description')
-    };
+    }
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
 
     tableBoxHeight(val) {
       if (!this.timer) {
-        this.tableBoxHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableBoxHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
 
@@ -297,28 +298,28 @@ export default {
       // this.content7 = this.$t('permission.passwords')
       // this.content8 = this.$t('permission.roleUser')
       // this.content9 = this.$t('permission.description')
-      this.setFormRules();
+      this.setFormRules()
     }
   },
   created() {
     // 监听表格高度
-    const that = this;
+    const that = this
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight;
-        that.tableBoxHeight = window.innerHeight - fixHeightBox;
-      })();
-    };
+        that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
+      })()
+    }
 
     // 检验类型下拉
     GetDictionary({ code: '0024', code2: '1' }).then(res => {
       if (res.IsPass === true) {
-        this.InspectTypeData = res.Obj;
+        this.InspectTypeData = res.Obj
       }
-    });
+    })
 
-    this.getList();
-    this.setFormRules();
+    this.getList()
+    this.setFormRules()
   },
   methods: {
     // 表单验证切换中英文
@@ -327,19 +328,20 @@ export default {
         MaterialName: [{ required: true, message: '请输入成品名称', trigger: 'blur' }],
         MaterialSpec: [{ required: true, message: '请输入规格', trigger: 'blur' }],
         InspectType: [{ required: true, message: '请选择检验类型', trigger: 'blur' }],
-        Version: [{ required: true, message: '请输入版本', trigger: 'blur' }]
-      };
+        Version: [{ required: true, message: '请输入版本', trigger: 'blur' }],
+        EffectiveDate: [{ required: true, message: '请输入生效日期', trigger: 'blur' }]
+      }
     },
 
     // 禁用，启用权限
     handleBan(row) {
-      let status, statusTitle;
+      let status, statusTitle
       if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle');
-        statusTitle = this.$t('permission.jingyongInfo');
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
       } else {
-        status = this.$t('permission.qiyongTitle');
-        statusTitle = this.$t('permission.qiyongInfo');
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
       }
       this.$confirm(statusTitle, status, {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -349,68 +351,78 @@ export default {
         const params = {
           Status: (row.Status = row.Status !== true),
           ItemCode: row.ItemCode
-        };
+        }
         QuaIpqcModifyStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
               message: res.MSG
-            });
+            })
           } else {
             this.$message({
               type: 'error',
               message: res.MSG
-            });
+            })
           }
-          this.getList();
-        });
-      });
+          this.getList()
+        })
+      })
     },
 
-    //新增下拉检验类型
+    // 新增下拉检验类型
     changeType(val) {
-      this.newInspectVal = val;
+      this.newInspectVal = val
     },
 
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1;
-      this.getList();
+      this.pagination.PageIndex = 1
+      this.getList()
     },
 
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       QuaIpqcList(this.pagination).then(res => {
-        this.tableData = res.Obj;
-        this.total = res.TotalRowCount;
-        this.listLoading = false;
-      });
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`);
+        route.title = i18n.t(`route.${route.title}`)
         if (route.children) {
-          route.children = this.i18n(route.children);
+          route.children = this.i18n(route.children)
         }
-        return route;
-      });
-      return app;
+        return route
+      })
+      return app
+    },
+
+    // 查看检验项明细
+    handleLook(row) {
+      this.$router.push({
+        path: '/QualityData/BasicData/ProductQualityDetail',
+        query: {
+          ItemCode: row.ItemCode
+        }
+      })
     },
 
     // 增加
     handleAdd() {
-      this.dialogType = 'new';
-      this.dialogFormVisible = true;
-      this.addShow = true;
-      this.ruleForm = {};
+      this.dialogType = 'new'
+      this.dialogFormVisible = true
+      this.addShow = true
+      this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
-      this.dialogType = 'edit';
-      this.dialogFormVisible = true;
-      this.addShow = false;
-      this.ruleForm = JSON.parse(JSON.stringify(row));
+      this.dialogType = 'edit'
+      this.dialogFormVisible = true
+      this.addShow = false
+      this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
     // 删除
@@ -426,22 +438,22 @@ export default {
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
-              });
-              this.getList();
+              })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              });
+              })
             }
-          });
+          })
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: this.$t('table.deleteError')
-          });
-        });
+          })
+        })
     },
 
     // 复制
@@ -457,117 +469,117 @@ export default {
               this.$message({
                 type: 'success',
                 message: res.MSG
-              });
-              this.getList();
+              })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              });
+              })
             }
-          });
+          })
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: '已取消'
-          });
-        });
+          })
+        })
     },
 
     // 新增封装
     commonAdd() {
-      const params = this.ruleForm;
+      const params = this.ruleForm
       QuaIpqcAdd(params).then(res => {
         if (res.IsPass === true) {
           this.$message({
             type: 'success',
             message: this.$t('table.addSuc')
-          });
-          this.getList();
+          })
+          this.getList()
         } else {
           this.$message({
             type: 'error',
             message: res.MSG
-          });
+          })
         }
-        this.editLoading = false;
-      });
+        this.editLoading = false
+      })
     },
 
     // 编辑成功
     submitForm(formName) {
-      this.editLoading = true;
+      this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
-            params.ItemCode=this.ruleForm.ItemCode
+            params.ItemCode = this.ruleForm.ItemCode
             QuaIpqcModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                });
-                this.editLoading = false;
-                this.dialogFormVisible = false;
-                this.getList();
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                });
+                })
               }
-              this.editLoading = false;
-            });
+              this.editLoading = false
+            })
           } else {
-            this.commonAdd();
-            this.dialogFormVisible = false;
+            this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
-          this.editLoading = false;
+          this.editLoading = false
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          });
-          return false;
+          })
+          return false
         }
-      });
+      })
     },
 
     // 继续新增
     submitAdd() {
-      this.commonAdd();
-      this.handleAdd();
+      this.commonAdd()
+      // this.handleAdd()
     },
 
     // 聚焦事件产成品弹窗
     finshBox() {
-      this.finshFormVisible = true;
-      this.listBoxLoading = true;
+      this.finshFormVisible = true
+      this.listBoxLoading = true
       GetMaterialList(this.paginationSearch).then(res => {
         if (res.IsPass === true) {
-          this.finshData = res.Obj;
-          this.listBoxLoading = false;
+          this.finshData = res.Obj
+          this.listBoxLoading = false
         }
-      });
+      })
     },
     // 产成品弹窗搜索
     handleSearchBox() {
-      this.paginationSearch.PageIndex = 1;
-      this.finshBox();
+      this.paginationSearch.PageIndex = 1
+      this.finshBox()
     },
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
-      this.ruleForm.MaterialName = row.Name;
-      this.ruleForm.MaterialSpec = row.Spec;
-      this.ruleForm.MaterialCode = row.MaterialCode;
-      this.finshFormVisible = false;
+      this.ruleForm.MaterialName = row.Name
+      this.ruleForm.MaterialSpec = row.Spec
+      this.ruleForm.MaterialCode = row.MaterialCode
+      this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗
     fishClose() {
-      this.finshFormVisible = false;
+      this.finshFormVisible = false
     }
   }
-};
+}
 </script>

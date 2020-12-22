@@ -12,11 +12,11 @@
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="公司简称" placement="top-start">
-              <label class="radio-label">{{ $t('permission.companyName') }}:</label>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="公司全称" placement="top-start">
+              <label class="radio-label">公司全称:</label>
             </el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.FullName" placeholder="公司简称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.FullName" placeholder="公司全称" clearable /></el-col>
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
@@ -167,6 +167,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { OrganList, OrganAdd, OrganStatus, OrganModify, OrganDelete } from '@/api/BasicData'
+import { getToken } from '@/utils/auth'
 const fixHeight = 260
 export default {
   name: 'CompanyMaintenance',
@@ -180,6 +181,7 @@ export default {
         PageSize: 30,
         OrgNum: undefined,
         FullName: undefined,
+        Token: getToken(),
         ShowBanned: false
       },
       listLoading: false,

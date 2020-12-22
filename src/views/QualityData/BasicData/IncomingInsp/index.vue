@@ -188,7 +188,7 @@ export default {
       ruleForm: {}, // 编辑弹窗
       pagination: {
         PageIndex: 1,
-        PageSize: 10,
+        PageSize: 30,
         importDate: [],
         RuleNum: undefined,
         ShowBanned: false

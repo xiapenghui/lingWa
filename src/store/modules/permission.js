@@ -8,7 +8,12 @@ import Layout from '@/layout'
 import {
   Message
 } from 'element-ui'
-import { getUseName, setUseName } from '@/utils/auth'
+import {
+  getUseName,
+  setUseName,
+  getToken
+} from '@/utils/auth'
+
 // import { getMenu, setMenu } from '@/utils/auth'
 /**
  * 后台查询的菜单数据拼装成路由格式的数据
@@ -98,7 +103,9 @@ const actions = {
     return new Promise(resolve => {
       const loadMenuData = []
       // 先查询后台并返回左侧菜单数据并把数据添加到路由
-      ListMenu().then(response => {
+      ListMenu({
+        Token: getToken()
+      }).then(response => {
         if (response.IsPass !== true) {
           Message({
             message: '菜单数据加载异常',
@@ -135,7 +142,11 @@ const actions = {
       })
     })
   },
-  logout({ commit, state, dispatch }) {
+  logout({
+    commit,
+    state,
+    dispatch
+  }) {
     return new Promise((resolve, reject) => {
       console.log('12314567')
 

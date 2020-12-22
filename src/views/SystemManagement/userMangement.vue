@@ -226,9 +226,9 @@ export default {
         PageSize: 30,
         AccountName: undefined,
         NameCN: undefined,
-        ShowBanned: false,
         OrgCode: null,
-        DeptCode: null
+        DeptCode: null,
+        ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading

@@ -173,7 +173,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="来料检验规则" prop="IQCRuleNum"><el-input v-model="ruleForm.IQCRuleNum" placeholder="请选择" @focus="incomingBox" clearable /></el-form-item>
+        <el-form-item label="来料检验规则" prop="IQCRuleNum"><el-input v-model="ruleForm.IQCRuleNum" placeholder="请选择" clearable @focus="incomingBox" /></el-form-item>
 
         <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
@@ -225,16 +225,16 @@
 </template>
 
 <script>
-import '../../../../styles/commentBox.scss';
-import '../../../../styles/scrollbar.css';
-import i18n from '@/lang';
-import { MaterialList, GetDictionary } from '@/api/BasicData';
-import { QuaIqcInList, QuaIqcInDelete, QuaIqcInAdd, QuaIqcInModify, QuaIqcInStatus, QuaIqcInCopy, QuaIqcList } from '@/api/QualityData';
-import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
-import MaterialName from '@/components/MaterialName'; // 原料名称
-import IncomingName from '@/components/IncomingName'; // 来料检验规则
-const fixHeight = 260;
-const fixHeightBox = 350;
+import '../../../../styles/commentBox.scss'
+import '../../../../styles/scrollbar.css'
+import i18n from '@/lang'
+import { MaterialList, GetDictionary } from '@/api/BasicData'
+import { QuaIqcInList, QuaIqcInDelete, QuaIqcInAdd, QuaIqcInModify, QuaIqcInStatus, QuaIqcInCopy, QuaIqcList } from '@/api/QualityData'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import MaterialName from '@/components/MaterialName' // 原料名称
+import IncomingName from '@/components/IncomingName' // 来料检验规则
+const fixHeight = 260
+const fixHeightBox = 350
 export default {
   name: 'BomMangement',
   components: { Pagination, MaterialName, IncomingName },
@@ -252,19 +252,19 @@ export default {
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
-        PageSize: 30,
+        PageSize: 100,
         MaterialType: 0,
         MaterialNum: undefined,
         MaterialName: undefined,
-        ShowBanned: true
+        ShowBanned: false
       },
 
       // 来料检验规则条件
       paginationSearchIncoming: {
         PageIndex: 1,
-        PageSize: 30,
+        PageSize: 100,
         RuleNum: undefined,
-        ShowBanned: true
+        ShowBanned: false
       },
 
       listLoading: false,
@@ -287,7 +287,7 @@ export default {
       InspectTypeOptions: [], // 来料检验规则
       expireTimeOption: {
         disabledDate(date) {
-          return date.getTime() <= Date.now()-8.64e7;
+          return date.getTime() <= Date.now() - 8.64e7
         }
       },
       rules: {
@@ -307,29 +307,29 @@ export default {
       // content7: this.$t('permission.passwords'),
       // content8: this.$t('permission.roleUser'),
       // content9: this.$t('permission.description')
-    };
+    }
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
     tableBoxHeight(val) {
       if (!this.timer) {
-        this.tableBoxHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableBoxHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
     // 监听data属性中英文切换问题
@@ -343,35 +343,35 @@ export default {
       // this.content7 = this.$t('permission.passwords')
       // this.content8 = this.$t('permission.roleUser')
       // this.content9 = this.$t('permission.description')
-      this.setFormRules();
+      this.setFormRules()
     }
   },
   created() {
     // 监听表格高度
-    const that = this;
+    const that = this
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight;
-        that.tableBoxHeight = window.innerHeight - fixHeightBox;
-      })();
-    };
+        that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
+      })()
+    }
 
     // 新增检验方式下拉
     GetDictionary({ code: '0025' }).then(res => {
       if (res.IsPass === true) {
-        this.InspectWayOptions = res.Obj;
+        this.InspectWayOptions = res.Obj
       }
-    });
+    })
 
     // 新增检验类型下拉
     GetDictionary({ code: '0024', code2: '1' }).then(res => {
       if (res.IsPass === true) {
-        this.InspectTypeOptions = res.Obj;
+        this.InspectTypeOptions = res.Obj
       }
-    });
+    })
 
-    this.getList();
-    this.setFormRules();
+    this.getList()
+    this.setFormRules()
   },
   methods: {
     // 表单验证切换中英文
@@ -383,17 +383,17 @@ export default {
         IQCRuleNum: [{ required: true, message: '请选择来料检验规则', trigger: 'blue' }],
         Version: [{ required: true, message: '请输入版本号', trigger: 'blue' }],
         EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blue' }]
-      };
+      }
     },
     // 禁用，启用权限
     handleBan(row) {
-      let status, statusTitle;
+      let status, statusTitle
       if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle');
-        statusTitle = this.$t('permission.jingyongInfo');
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
       } else {
-        status = this.$t('permission.qiyongTitle');
-        statusTitle = this.$t('permission.qiyongInfo');
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
       }
       this.$confirm(statusTitle, status, {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -403,32 +403,32 @@ export default {
         const params = {
           Status: (row.Status = row.Status !== true),
           ItemCode: row.ItemCode
-        };
+        }
         QuaIqcInStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
               message: res.MSG
-            });
+            })
           } else {
             this.$message({
               type: 'error',
               message: res.MSG
-            });
+            })
           }
-          this.getList();
-        });
-      });
+          this.getList()
+        })
+      })
     },
 
     // 下拉获取最新的检验方式
     changeAway(val) {
-      this.newAway = val;
+      this.newAway = val
     },
 
     // 下拉获取最新的检验类型
     changeText(val) {
-      this.newText = val;
+      this.newText = val
     },
 
     // 查看检验项明细
@@ -438,45 +438,45 @@ export default {
         query: {
           ItemCode: row.ItemCode
         }
-      });
+      })
     },
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1;
-      this.getList();
+      this.pagination.PageIndex = 1
+      this.getList()
     },
 
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       QuaIqcInList(this.pagination).then(res => {
-        this.tableData = res.Obj;
-        this.total = res.TotalRowCount;
-        this.listLoading = false;
-      });
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`);
+        route.title = i18n.t(`route.${route.title}`)
         if (route.children) {
-          route.children = this.i18n(route.children);
+          route.children = this.i18n(route.children)
         }
-        return route;
-      });
-      return app;
+        return route
+      })
+      return app
     },
 
     // 增加
     handleAdd() {
-      this.dialogType = 'new';
-      this.dialogFormVisible = true;
-      this.ruleForm = {};
+      this.dialogType = 'new'
+      this.dialogFormVisible = true
+      this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
-      this.dialogType = 'edit';
-      this.dialogFormVisible = true;
-      this.ruleForm = JSON.parse(JSON.stringify(row));
+      this.dialogType = 'edit'
+      this.dialogFormVisible = true
+      this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
     // 删除
@@ -492,22 +492,22 @@ export default {
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
-              });
-              this.getList();
+              })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              });
+              })
             }
-          });
+          })
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: this.$t('table.deleteError')
-          });
-        });
+          })
+        })
     },
 
     // 复制BOM
@@ -523,134 +523,134 @@ export default {
               this.$message({
                 type: 'success',
                 message: res.MSG
-              });
-              this.getList();
+              })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              });
+              })
             }
-          });
+          })
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: '已取消'
-          });
-        });
+          })
+        })
     },
 
     // 编辑成功
     submitForm(formName) {
-      this.editLoading = true;
+      this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            const params = this.ruleForm;
-            params.SupplierCode = '111';
+            const params = this.ruleForm
+            params.SupplierCode = '111'
             QuaIqcInModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                });
-                this.dialogFormVisible = false;
-                this.getList();
+                })
+                this.dialogFormVisible = false
+                this.getList()
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                });
+                })
               }
-              this.editLoading = false;
-            });
+              this.editLoading = false
+            })
           } else {
-            const params = this.ruleForm;
-            params.InspectWay = this.newAway;
-            params.InspectType = this.newText;
-            params.SupplierCode = '111';
+            const params = this.ruleForm
+            params.InspectWay = this.newAway
+            params.InspectType = this.newText
+            params.SupplierCode = '111'
             QuaIqcInAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
-                });
-                this.dialogFormVisible = false;
-                this.getList();
+                })
+                this.dialogFormVisible = false
+                this.getList()
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                });
+                })
               }
-              this.editLoading = false;
-            });
+              this.editLoading = false
+            })
           }
         } else {
-          this.editLoading = false;
+          this.editLoading = false
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          });
-          return false;
+          })
+          return false
         }
-      });
+      })
     },
 
     // 原料聚焦事件原料弹窗
     materialBox() {
-      this.materialFormVisible = true;
-      this.materialBoxLoading = true;
+      this.materialFormVisible = true
+      this.materialBoxLoading = true
       MaterialList(this.paginationSearchMaterial).then(res => {
         if (res.IsPass === true) {
-          this.materialData = res.Obj;
-          this.materialBoxLoading = false;
+          this.materialData = res.Obj
+          this.materialBoxLoading = false
         }
-      });
+      })
     },
     // 原料弹窗搜索
     handleSearchMaterial() {
-      this.paginationSearchMaterial.PageIndex = 1;
-      this.materialBox();
+      this.paginationSearchMaterial.PageIndex = 1
+      this.materialBox()
     },
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
-      this.ruleForm.MaterialName = row.Name;
-      this.ruleForm.MaterialCode = row.MaterialCode;
-      this.materialFormVisible = false;
+      this.ruleForm.MaterialName = row.Name
+      this.ruleForm.MaterialCode = row.MaterialCode
+      this.materialFormVisible = false
     },
     // 关闭原料名称查询弹窗
     materialClose() {
-      this.materialFormVisible = false;
+      this.materialFormVisible = false
     },
 
     // 来料检验规则聚焦事件原料弹窗
     incomingBox() {
-      this.incomingFormVisible = true;
-      this.incomingBoxLoading = true;
+      this.incomingFormVisible = true
+      this.incomingBoxLoading = true
       QuaIqcList(this.paginationSearchIncoming).then(res => {
         if (res.IsPass === true) {
-          this.incomingData = res.Obj;
-          this.incomingBoxLoading = false;
+          this.incomingData = res.Obj
+          this.incomingBoxLoading = false
         }
-      });
+      })
     },
     // 来料检验规则弹窗搜索
     handleSearchIncoming() {
-      this.paginationSearchIncoming.PageIndex = 1;
-      this.incomingBox();
+      this.paginationSearchIncoming.PageIndex = 1
+      this.incomingBox()
     },
     // 增加来料检验规则双击事件获取当前行的值
     incomingClick(row) {
-      this.ruleForm.IQCRuleNum = row.RuleNum;
-      this.ruleForm.IQCCode = row.IQCCode;
-      this.incomingFormVisible = false;
+      this.ruleForm.IQCRuleNum = row.RuleNum
+      this.ruleForm.IQCCode = row.IQCCode
+      this.incomingFormVisible = false
     },
     // 关闭来料检验规则查询弹窗
     incomingClose() {
-      this.incomingFormVisible = false;
+      this.incomingFormVisible = false
     }
   }
-};
+}
 </script>

@@ -128,13 +128,16 @@
           <el-radio v-model="ruleForm.IsPrint" :label="false">否</el-radio>
         </el-form-item>
 
-        <el-form-item label="顺序"><el-input v-model.trim="ruleForm.OrderNum" placeholder="顺序" clearable /></el-form-item>
+        <el-form-item label="顺序">
+          <el-input-number v-model.trim="ruleForm.OrderNum" placeholder="顺序" :min="0" clearable style="width: 100%" />
+        </el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
+
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" v-if="addShow" @click="submitAdd('ruleForm')">继续新增</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -154,14 +157,14 @@
 </template>
 
 <script>
-import '../../../styles/commentBox.scss';
-import '../../../styles/scrollbar.css';
-import i18n from '@/lang';
-import { baseDetailList, baseDetailAdd, baseDetailDelete, baseDetailModify, GetDictionary, BaseProList } from '@/api/BasicData';
-import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
-import WorkingName from '@/components/WorkingName'; // 工序名称
-const fixHeight = 260;
-const fixHeightBox = 350;
+import '../../../styles/commentBox.scss'
+import '../../../styles/scrollbar.css'
+import i18n from '@/lang'
+import { baseDetailList, baseDetailAdd, baseDetailDelete, baseDetailModify, GetDictionary, BaseProList } from '@/api/BasicData'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import WorkingName from '@/components/WorkingName' // 工序名称
+const fixHeight = 260
+const fixHeightBox = 350
 export default {
   name: 'BomMangement',
   components: { Pagination, WorkingName },
@@ -178,15 +181,15 @@ export default {
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
-        PageSize: 20,
+        PageSize: 100,
         ProcessNum: undefined,
         Name: undefined,
-        ShowBanned: true
+        ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
-      addShow: true, //继续新增
+      addShow: true, // 继续新增
       checkVal: null, // 选择检验方式
       checkData: [], // 新增编辑弹窗检验方式radio
       workingData: [], // 工序数组
@@ -210,29 +213,29 @@ export default {
       // content7: this.$t('permission.passwords'),
       // content8: this.$t('permission.roleUser'),
       // content9: this.$t('permission.description')
-    };
+    }
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
     tableBoxHeight(val) {
       if (!this.timer) {
-        this.tableBoxHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableBoxHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
     // 监听data属性中英文切换问题
@@ -246,25 +249,25 @@ export default {
       // this.content7 = this.$t('permission.passwords')
       // this.content8 = this.$t('permission.roleUser')
       // this.content9 = this.$t('permission.description')
-      this.setFormRules();
+      this.setFormRules()
     }
   },
   created() {
     // 监听表格高度
-    const that = this;
+    const that = this
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight;
-      })();
-    };
+        that.tableHeight = window.innerHeight - fixHeight
+      })()
+    }
     // 新增检验方式radio
     GetDictionary({ code: '0019' }).then(res => {
       if (res.IsPass === true) {
-        this.checkData = res.Obj;
+        this.checkData = res.Obj
       }
-    });
-    this.getList();
-    this.setFormRules();
+    })
+    this.getList()
+    this.setFormRules()
   },
   methods: {
     // 表单验证切换中英文
@@ -272,53 +275,53 @@ export default {
       this.rules = {
         ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }],
         ProcessName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
-      };
+      }
     },
 
     // 选择检验方式
     changeRadio(val) {
-      this.checkVal = val;
+      this.checkVal = val
     },
 
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1;
-      this.getList();
+      this.pagination.PageIndex = 1
+      this.getList()
     },
 
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       baseDetailList(this.pagination).then(res => {
-        this.tableData = res.Obj;
-        this.total = res.TotalRowCount;
-        this.listLoading = false;
-      });
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`);
+        route.title = i18n.t(`route.${route.title}`)
         if (route.children) {
-          route.children = this.i18n(route.children);
+          route.children = this.i18n(route.children)
         }
-        return route;
-      });
-      return app;
+        return route
+      })
+      return app
     },
 
     // 增加工艺路线
     handleAdd() {
-      this.dialogType = 'new';
-      this.dialogFormVisible = true;
-      this.addShow = true;
-      this.ruleForm = {};
+      this.dialogType = 'new'
+      this.dialogFormVisible = true
+      this.addShow = true
+      this.ruleForm = {}
     },
     // 编辑工艺路线
     handleEdit(row) {
-      this.dialogType = 'edit';
-      this.dialogFormVisible = true;
-      this.addShow = false;
-      this.ruleForm = JSON.parse(JSON.stringify(row));
+      this.dialogType = 'edit'
+      this.dialogFormVisible = true
+      this.addShow = false
+      this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
     // 删除工艺路线
@@ -334,120 +337,120 @@ export default {
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
-              });
-              this.getList();
+              })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              });
+              })
             }
-          });
+          })
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: this.$t('table.deleteError')
-          });
-        });
+          })
+        })
     },
 
     // 新增封装
     commonAdd() {
-      const params = this.ruleForm;
-      params.ProcessRouteCode = this.$route.query.ProcessRouteCode;
-      params.CheckedType = this.checkVal;
+      const params = this.ruleForm
+      params.ProcessRouteCode = this.$route.query.ProcessRouteCode
+      params.CheckedType = this.checkVal
       baseDetailAdd(params).then(res => {
         if (res.IsPass === true) {
           this.$message({
             type: 'success',
             message: this.$t('table.addSuc')
-          });
-          this.getList();
+          })
+          this.getList()
         } else {
           this.$message({
             type: 'error',
             message: res.MSG
-          });
+          })
         }
-        this.editLoading = false;
-      });
+        this.editLoading = false
+      })
     },
 
     // 编辑成功
     submitForm(formName) {
-      this.editLoading = true;
+      this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            const params = this.ruleForm;
-            params.ProcessRouteCode = this.$route.query.ProcessRouteCode;
+            const params = this.ruleForm
+            params.ProcessRouteCode = this.$route.query.ProcessRouteCode
             // params.CheckedType = this.checkVal
             baseDetailModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                });
-                this.editLoading = false;
-                this.dialogFormVisible = false;
-                this.getList();
+                })
+                this.editLoading = false
+                this.dialogFormVisible = false
+                this.getList()
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                });
+                })
               }
-              this.editLoading = false;
-            });
+              this.editLoading = false
+            })
           } else {
-            this.commonAdd();
-            this.dialogFormVisible = false;
+            this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
-          this.editLoading = false;
+          this.editLoading = false
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          });
-          return false;
+          })
+          return false
         }
-      });
+      })
     },
 
     // 继续新增
     submitAdd() {
-      this.commonAdd();
-      this.handleAdd();
+      this.commonAdd()
+      // this.handleAdd()
     },
 
     // 工序聚焦事件原料弹窗
     workingBox() {
-      this.workingFormVisible = true;
-      this.workingBoxLoading = true;
+      this.workingFormVisible = true
+      this.workingBoxLoading = true
       BaseProList(this.paginationSearchWorking).then(res => {
         if (res.IsPass === true) {
-          this.workingData = res.Obj;
-          this.workingBoxLoading = false;
+          this.workingData = res.Obj
+          this.workingBoxLoading = false
         }
-      });
+      })
     },
     // 工序弹窗搜索
     handleSearchWorking() {
-      this.paginationSearchWorking.PageIndex = 1;
-      this.workingBox();
+      this.paginationSearchWorking.PageIndex = 1
+      this.workingBox()
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
-      this.ruleForm.ProcessNum = row.ProcessNum;
-      this.ruleForm.ProcessName = row.Name;
-      this.ruleForm.ProcessCode = row.ProcessCode;
-      this.workingFormVisible = false;
+      this.ruleForm.ProcessNum = row.ProcessNum
+      this.ruleForm.ProcessName = row.Name
+      this.ruleForm.ProcessCode = row.ProcessCode
+      this.workingFormVisible = false
     },
     // 关闭工序名称查询弹窗
     workingClose() {
-      this.workingFormVisible = false;
+      this.workingFormVisible = false
     }
   }
-};
+}
 </script>

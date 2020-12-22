@@ -88,7 +88,6 @@ export function QuaIqcInStatus(data) {
   })
 }
 
-
 // 基础数据-- - 原材料质量检验项--复制
 export function QuaIqcInCopy(data) {
   return request({
@@ -97,9 +96,6 @@ export function QuaIqcInCopy(data) {
     data
   })
 }
-
-
-
 
 // 基础数据-- - 原材料质量检验项明细--列表分页
 export function QuaIqDetList(data) {
@@ -190,7 +186,7 @@ export function QuaProduList(data) {
     data
   })
 }
- 
+
 // 基础数据-- - 产品缺陷--列表增加
 export function QuaProduAdd(data) {
   return request({
@@ -227,7 +223,6 @@ export function QuaProduStatus(data) {
   })
 }
 
-
 //  质量管理 - 基础数据 - 产品质量检验项--列表分页
 export function QuaIpqcList(data) {
   return request({
@@ -237,50 +232,83 @@ export function QuaIpqcList(data) {
   })
 }
 
- //  质量管理 - 基础数据 - 产品质量检验项--列表新增
- export function QuaIpqcAdd(data) {
-   return request({
-     url: newUrl + '/api/QuaIpqcI/Add',
-     method: 'post',
-     data
-   })
- }
- 
- 
- //  质量管理 - 基础数据 - 产品质量检验项--列表修改
- export function QuaIpqcModify(data) {
-   return request({
-     url: newUrl + '/api/QuaIpqcI/Modify',
-     method: 'post',
-     data
-   })
- }
- 
- //  质量管理 - 基础数据 - 产品质量检验项--列表状态
- export function QuaIpqcModifyStatus(data) {
-   return request({
-     url: newUrl + '/api/QuaIpqcI/ModifyStatus',
-     method: 'post',
-     data
-   })
- }
- 
- //  质量管理 - 基础数据 - 产品质量检验项--列表删除
- export function QuaIpqcDelete(data) {
-   return request({
-     url: newUrl + '/api/QuaIpqcI/Delete',
-     method: 'post',
-     data
-   })
- }
- 
- 
- //  质量管理 - 基础数据 - 产品质量检验项--列表复制
- export function QuaIpqcCopy(data) {
-   return request({
-     url: newUrl + '/api/QuaIpqcI/Copy',
-     method: 'post',
-     data
-   })
- }
- 
+//  质量管理 - 基础数据 - 产品质量检验项--列表新增
+export function QuaIpqcAdd(data) {
+  return request({
+    url: newUrl + '/api/QuaIpqcI/Add',
+    method: 'post',
+    data
+  })
+}
+
+//  质量管理 - 基础数据 - 产品质量检验项--列表修改
+export function QuaIpqcModify(data) {
+  return request({
+    url: newUrl + '/api/QuaIpqcI/Modify',
+    method: 'post',
+    data
+  })
+}
+
+//  质量管理 - 基础数据 - 产品质量检验项--列表状态
+export function QuaIpqcModifyStatus(data) {
+  return request({
+    url: newUrl + '/api/QuaIpqcI/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+//  质量管理 - 基础数据 - 产品质量检验项--列表删除
+export function QuaIpqcDelete(data) {
+  return request({
+    url: newUrl + '/api/QuaIpqcI/Delete',
+    method: 'post',
+    data
+  })
+}
+
+//  质量管理 - 基础数据 - 产品质量检验项--列表复制
+export function QuaIpqcCopy(data) {
+  return request({
+    url: newUrl + '/api/QuaIpqcI/Copy',
+    method: 'post',
+    data
+  })
+}
+
+//  质量管理 - 基础数据 - 产品质量检验项明细--列表分页
+export function QuaIpqcIDeList(data) {
+  return request({
+    url: newUrl + '/api/QuaIpqcIDetail/List',
+    method: 'post',
+    data
+  })
+}
+
+//  质量管理 - 基础数据 - 产品质量检验项明细--列表新增
+export function QuaIpqcIDeAdd(data) {
+  return request({
+    url: newUrl + '/api/QuaIpqcIDetail/Add',
+    method: 'post',
+    data
+  })
+}
+
+//  质量管理 - 基础数据 - 产品质量检验项明细--列表修改
+export function QuaIpqcIDeModify(data) {
+  return request({
+    url: newUrl + '/api/QuaIpqcIDetail/Modify',
+    method: 'post',
+    data
+  })
+}
+
+//  质量管理 - 基础数据 - 产品质量检验项明细--列表删除
+export function QuaIpqcIDeDelete(data) {
+  return request({
+    url: newUrl + '/api/QuaIpqcIDetail/Delete',
+    method: 'post',
+    data
+  })
+}

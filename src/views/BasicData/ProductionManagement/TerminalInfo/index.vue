@@ -97,7 +97,7 @@
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工作中心描述"  :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工作中心描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
@@ -211,9 +211,10 @@ export default {
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
-        PageSize: 20,
+        PageSize: 100,
         ProcessNum: undefined,
-        Name: undefined
+        Name: undefined,
+        ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading

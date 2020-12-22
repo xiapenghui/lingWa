@@ -137,13 +137,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述" width="200"  :show-overflow-tooltip="true">
+      <el-table-column align="center" label="描述" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" width="200"  :show-overflow-tooltip="true">
+      <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
@@ -210,6 +210,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -246,7 +247,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, BaseProList, GetMaterialList ,GetQuaDefectType} from '@/api/BasicData'
+import { GetDictionary, BaseProList, GetMaterialList, GetQuaDefectType } from '@/api/BasicData'
 import { QuaProduList, QuaProduAdd, QuaProduDelete, QuaProduModify, QuaProduStatus } from '@/api/QualityData'
 import WorkingName from '@/components/WorkingName' // 工序名称
 import FinshName from '@/components/FinshName' // 成品名称弹窗
@@ -271,22 +272,25 @@ export default {
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
-        PageSize: 20,
+        PageSize: 100,
         ProcessNum: undefined,
-        Name: undefined
+        Name: undefined,
+        ShowBanned: false
       },
       // 成品聚焦搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 30,
+        PageSize: 100,
         MaterialType: 1,
         MaterialNum: undefined,
-        Name: undefined
+        Name: undefined,
+        ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
       showSearch: false, // 隐藏搜索条件
       btnShow: true, // 互斥按钮
+      addShow: true, // 继续新增
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
       workingData: [], // 工序数组
@@ -386,7 +390,7 @@ export default {
       })()
     }
 
-  // 新增缺陷类型下拉
+    // 新增缺陷类型下拉
     GetQuaDefectType().then(res => {
       if (res.IsPass === true) {
         this.DefectData = res.Obj
@@ -528,13 +532,35 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.addShow = true
       this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.addShow = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
+    },
+
+    // 新增封装
+    commonAdd() {
+      const params = this.ruleForm
+      QuaProduAdd(params).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: this.$t('table.addSuc')
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.MSG
+          })
+        }
+        this.editLoading = false
+      })
     },
 
     // 编辑成功
@@ -560,22 +586,8 @@ export default {
               this.editLoading = false
             })
           } else {
-            QuaProduAdd(this.ruleForm).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.addSuc')
-                })
-                this.dialogFormVisible = false
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-              this.editLoading = false
-            })
+            this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -586,6 +598,12 @@ export default {
           return false
         }
       })
+    },
+
+    // 继续新增
+    submitAdd() {
+      this.commonAdd()
+      // this.handleAdd()
     },
 
     // 删除角色

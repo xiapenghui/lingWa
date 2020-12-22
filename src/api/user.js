@@ -11,10 +11,11 @@ export function login(query) {
 }
 
 // 获取左侧菜单列表
-export function ListMenu() {
+export function ListMenu(data) {
   return request({
     url: newUrl + '/api/User/ListMenu',
-    method: 'post'
+    method: 'post',
+    data
   })
 }
 

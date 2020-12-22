@@ -142,7 +142,15 @@
         <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="工艺路线" clearable @focus="lineBox" /></el-form-item>
 
         <el-form-item label="生效时间" prop="EffectiveDate">
-          <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
+          <el-date-picker
+            v-model="ruleForm.EffectiveDate"
+            :picker-options="expireTimeOption"
+            value-format="yyyy-MM-dd"
+            type="date"
+            placeholder="选择日期"
+            style="width: 100%;"
+            clearable
+          />
         </el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
@@ -207,17 +215,17 @@ export default {
       // 搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 30,
+        PageSize: 100,
         MaterialType: 1,
         MaterialNum: undefined,
         Name: undefined,
-        ShowBanned: true
+        ShowBanned: false
       },
       paginationSearchLine: {
         PageIndex: 1,
-        PageSize: 30,
+        PageSize: 100,
         Name: undefined,
-        ShowBanned: true
+        ShowBanned: false
       },
       listLoading: false,
       listBoxLoading: false, // 产品名称loading
@@ -233,6 +241,11 @@ export default {
       dialogType: 'new',
       lineData: [], // 工艺路线数组
       finshData: [], // 成品编号
+      expireTimeOption: {
+        disabledDate(date) {
+          return date.getTime() <= Date.now() - 8.64e7
+        }
+      },
       // finshCode: null, // 成品名称code值
       // lineCode: null, // 工艺路线的code值
       rules: {

@@ -1,5 +1,5 @@
 <template>
-  <div>测试菜单</div>
+  <div>123</div>
 </template>
 
 <script>
