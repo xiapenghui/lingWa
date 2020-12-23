@@ -324,10 +324,10 @@
 
           <div class="boxRight">
             <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'change' }]">
-              <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" clearable @focus="finshBox" />
+              <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" clearable @input="finshBox" />
             </el-form-item>
 
-            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" clearable @focus="userBox" /></el-form-item>
+            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" clearable @input="userBox" /></el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
               <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable @change="changePriority">

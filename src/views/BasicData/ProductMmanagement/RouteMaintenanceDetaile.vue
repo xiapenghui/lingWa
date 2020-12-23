@@ -103,7 +103,7 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model="ruleForm.ProcessNum" placeholder="请选择" clearable @focus="workingBox" /></el-form-item>
+        <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model="ruleForm.ProcessNum" placeholder="请输入并选择" @input="workingBox" /></el-form-item>
 
         <el-form-item label="工序名称" prop="ProcessName"><el-input v-model.trim="ruleForm.ProcessName" placeholder="工序名称" :disabled="true" /></el-form-item>
 
@@ -359,7 +359,7 @@ export default {
     commonAdd() {
       const params = this.ruleForm
       params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-      params.CheckedType = this.checkVal
+      // params.CheckedType = this.checkVal
       baseDetailAdd(params).then(res => {
         if (res.IsPass === true) {
           this.$message({

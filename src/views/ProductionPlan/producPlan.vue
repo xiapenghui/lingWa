@@ -309,11 +309,13 @@
           </div>
           <div class="boxRight">
             <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.ProductName" placeholder="请选择" :disabled="isDisabled" clearable @focus="finshBox" />
+              <el-input v-model="ruleForm.ProductName" placeholder="请选择" :disabled="isDisabled" clearable @input="finshBox" />
             </el-form-item>
 
+            <el-form-item v-if="planAdd" label="BOM版本"><el-input v-model="ruleForm.BomVersion" placeholder="BOM版本" :disabled="true" /></el-form-item>
+
             <el-form-item :label="$t('permission.CustomerName')" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" :disabled="isDisabled" clearable @focus="userBox" />
+              <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" :disabled="isDisabled" clearable @input="userBox" />
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
@@ -342,9 +344,9 @@
             <el-form-item :label="$t('permission.PlanEndDate')" prop="PlanEndDate" :rules="[{ required: isAlarmItemOther, message: '请输入计划完成日期', trigger: 'blur' }]">
               <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
-
           </div>
-        </div></el-form>
+        </div>
+      </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
         <el-button v-if="addShow" type="primary" @click="submitAdd">{{ $t('permission.continueAdd') }}</el-button>
@@ -654,7 +656,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
-import { GetDictionary, GetMaterialList, GetCustomerList, GetLine } from '@/api/BasicData'
+import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, GetBomVersion } from '@/api/BasicData'
 import {
   productionList,
   productionFreeze,
@@ -700,6 +702,7 @@ export default {
       PriorityList: [], // 优先级下拉列表
       ProductList: [], // 计划投入产线
       typeCode: null, // 计划类型code值
+      MaterialCode: null, // Bom版本值
       pagination: {
         PageIndex: 1,
         PageSize: 10,
@@ -746,6 +749,7 @@ export default {
       dialogTypeTitle: null,
       newLine: null, // 获取计划下拉产线
       newPriority: null, // 获取下拉优先级
+      newBOMCode: null, // ...
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
@@ -963,7 +967,8 @@ export default {
       this.isAlarmItem = true
       this.isAlarmItemOther = true
       this.ruleForm = {
-        PlanNum: ''
+        PlanNum: '',
+        BomVersion: ''
       }
       productionPlanNum().then(res => {
         this.$nextTick(function() {
@@ -1016,14 +1021,15 @@ export default {
       params.PlanType = this.typeCode
       params.ProductLineCode = this.newLine
       params.Priority = this.newPriority
+      params.BomCode = this.newBOMCode
       productionAdd(params).then(res => {
         if (res.IsPass === true) {
           this.$message({
             type: 'success',
             message: this.$t('table.addSuc')
           })
-          this.getList()
           this.dialogFormVisible = false
+          this.getList()
         } else {
           this.$message({
             type: 'error',
@@ -1263,6 +1269,14 @@ export default {
     fishClick(row) {
       this.ruleForm.ProductName = row.Name
       this.ruleForm.ProductCode = row.MaterialCode
+      GetBomVersion({ MaterialCode: row.MaterialCode, MaterialType: '1' }).then(res => {
+        if (res.IsPass === true) {
+          this.$nextTick(function() {
+            this.newBOMCode = res.Obj.Code
+            this.ruleForm.BomVersion = res.Obj.Version
+          })
+        }
+      })
       this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗

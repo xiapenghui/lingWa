@@ -124,7 +124,15 @@
         <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
         <el-form-item label="生效时间" prop="EffectiveDate">
-          <el-date-picker v-model="ruleForm.EffectiveDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%;" clearable />
+          <el-date-picker
+            v-model="ruleForm.EffectiveDate"
+            :picker-options="expireTimeOption"
+            value-format="yyyy-MM-dd"
+            type="date"
+            placeholder="选择日期"
+            style="width: 100%"
+            clearable
+          />
         </el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
@@ -167,6 +175,11 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
+      expireTimeOption: {
+        disabledDate(date) {
+          return date.getTime() <= Date.now() - 8.64e7
+        }
+      },
       rules: {
         Name: [{ required: true, message: '请输入工艺路线', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入版本', trigger: 'blur' }],

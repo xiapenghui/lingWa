@@ -147,7 +147,7 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="成品名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @focus="finshBox" /></el-form-item>
+        <el-form-item label="成品名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @input="finshBox" /></el-form-item>
 
         <el-form-item label="规格" prop="MaterialSpec"><el-input v-model="ruleForm.MaterialSpec" placeholder="规格" :disabled="true" /></el-form-item>
 

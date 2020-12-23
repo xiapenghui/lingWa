@@ -158,7 +158,7 @@
           <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间/产线/中心" clearable />
         </el-form-item>
 
-        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请选择" clearable @focus="workingBox" /></el-form-item>
+        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择" clearable @input="workingBox" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
@@ -492,7 +492,7 @@ export default {
               } else {
                 this.$message({
                   type: 'error',
-                  message: '工作中心格式不正确,请重新填写'
+                  message: res.MSG
                 })
               }
               this.editLoading = false

@@ -157,7 +157,7 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @focus="materialBox" /></el-form-item>
+        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @input="materialBox" /></el-form-item>
 
         <el-form-item label="供应商名称"><el-input v-model="ruleForm.SupplierName" placeholder="供应商名称" clearable /></el-form-item>
 
@@ -173,7 +173,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="来料检验规则" prop="IQCRuleNum"><el-input v-model="ruleForm.IQCRuleNum" placeholder="请选择" clearable @focus="incomingBox" /></el-form-item>
+        <el-form-item label="来料检验规则" prop="IQCRuleNum"><el-input v-model="ruleForm.IQCRuleNum" placeholder="请选择" clearable @input="incomingBox" /></el-form-item>
 
         <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 

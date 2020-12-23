@@ -144,7 +144,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工艺路线"><el-input v-model.trim="ruleForm.RouteName" placeholder="请选择" clearable @focus="lineBox" /></el-form-item>
+        <el-form-item label="工艺路线"><el-input v-model.trim="ruleForm.RouteName" placeholder="请输入并选择" clearable @input="lineBox" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
       </el-form>

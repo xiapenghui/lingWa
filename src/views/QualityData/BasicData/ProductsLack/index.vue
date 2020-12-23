@@ -201,8 +201,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工序名称"><el-input v-model.trim="ruleForm.ProcessName" placeholder="请选择" clearable @focus="workingBox" /></el-form-item>
-        <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.MaterialName" placeholder="请选择" clearable @focus="finshBox" /></el-form-item>
+        <el-form-item label="工序名称"><el-input v-model.trim="ruleForm.ProcessName" placeholder="请选择" clearable @input="workingBox" /></el-form-item>
+        <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.MaterialName" placeholder="请选择" clearable @input="finshBox" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 

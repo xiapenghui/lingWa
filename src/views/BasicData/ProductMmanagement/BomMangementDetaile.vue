@@ -4,13 +4,13 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.MaterialNum" placeholder="原料编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.MaterialName" placeholder="原料名称" clearable /></el-col>
         </el-col>
@@ -88,11 +88,11 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="100">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark"   :enterable="false" content="编辑" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark"   :enterable="false" content="删除" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -103,13 +103,15 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="工序" prop="WorkingProcedureName">
-          <el-input v-model="ruleForm.WorkingProcedureName" placeholder="请选择" clearable @focus="workingBox" />
+          <el-input v-model="ruleForm.WorkingProcedureName" placeholder="请输入选择" clearable @input="workingBox" />
         </el-form-item>
         <el-form-item label="原料名称" prop="MaterialName">
-          <el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" clearable @focus="materialBox(1)" />
+          <el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" clearable @input="materialBox(1)" />
         </el-form-item>
-        <el-form-item label="原料用量" prop="Usage"><el-input v-model.trim="ruleForm.Usage" placeholder="原料用量" clearable /></el-form-item>
-        <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请选择替代物料" clearable @focus="materialBox(2)" /></el-form-item>
+        <el-form-item label="原料用量" prop="Usage">
+          <el-input-number v-model.trim="ruleForm.Usage" placeholder="原料用量" :min="0" clearable style="width: 100%" />
+        </el-form-item>
+        <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请选择替代物料" clearable @input="materialBox(2)" /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -174,22 +176,23 @@ export default {
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
-        PageSize: 30,
+        PageSize: 100,
         MaterialType: 0,
         MaterialNum: undefined,
         MaterialName: undefined,
-        ShowBanned: true
+        ShowBanned: false
       },
 
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
-        PageSize: 20,
+        PageSize: 100,
         ProcessRouteCode: this.$route.query.ProcessRouteCode,
         RouteCode: this.$route.query.ProcessRouteCode,
         Status: true,
         ProcessNum: undefined,
-        Name: undefined
+        Name: undefined,
+        ShowBanned: false
       },
 
       listLoading: false,

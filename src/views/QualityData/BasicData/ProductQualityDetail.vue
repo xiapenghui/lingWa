@@ -131,7 +131,7 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="检验项名称" prop="InspectItemName"><el-input v-model="ruleForm.InspectItemName" placeholder="检验项名称" clearable /></el-form-item>
 
-        <el-form-item label="工序名称" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="工序名称" clearable @focus="workingBox" /></el-form-item>
+        <el-form-item label="工序名称" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="工序名称" clearable @input="workingBox" /></el-form-item>
 
         <el-form-item label="判断方式" prop="JudgmentWay">
           <el-select v-model="ruleForm.JudgmentWay" placeholder="请选择" clearable @change="changeAway">
