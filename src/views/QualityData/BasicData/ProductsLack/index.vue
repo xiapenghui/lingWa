@@ -145,19 +145,19 @@
 
       <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Description }}
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="CreateUserName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CreateUserName }}
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="150" prop="CreateTime" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.time')" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime | substringTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
