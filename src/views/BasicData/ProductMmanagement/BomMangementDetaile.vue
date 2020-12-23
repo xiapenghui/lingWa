@@ -103,15 +103,15 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="工序" prop="WorkingProcedureName">
-          <el-input v-model="ruleForm.WorkingProcedureName" placeholder="请输入选择" clearable @input="workingBox" />
+          <el-input v-model="ruleForm.WorkingProcedureName" placeholder="请输入并选择" clearable @input="workingBox" />
         </el-form-item>
         <el-form-item label="原料名称" prop="MaterialName">
-          <el-input v-model="ruleForm.MaterialName" placeholder="请选择原料名称" clearable @input="materialBox(1)" />
+          <el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择原料名称" clearable @input="materialBox(1)" />
         </el-form-item>
         <el-form-item label="原料用量" prop="Usage">
           <el-input-number v-model.trim="ruleForm.Usage" placeholder="原料用量" :min="0" clearable style="width: 100%" />
         </el-form-item>
-        <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请选择替代物料" clearable @input="materialBox(2)" /></el-form-item>
+        <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请输入并选择替代物料" clearable @input="materialBox(2)" /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">

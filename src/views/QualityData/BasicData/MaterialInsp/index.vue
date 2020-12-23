@@ -6,7 +6,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.MaterialCode" placeholder="原料编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.MaterialNum" placeholder="原料编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
@@ -48,9 +48,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="原料编码" width="150" prop="MaterialCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料编码" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MaterialCode }}
+          {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="原料名称" width="150" prop="MaterialName" sortable :show-overflow-tooltip="true">
@@ -157,9 +157,9 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @input="materialBox" /></el-form-item>
+        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="materialBox" /></el-form-item>
 
-        <el-form-item label="供应商名称"><el-input v-model="ruleForm.SupplierName" placeholder="供应商名称" clearable /></el-form-item>
+        <el-form-item label="供应商名称"><el-input v-model="ruleForm.SupplierName" placeholder="供应商名称" :disabled="true" /></el-form-item>
 
         <el-form-item label="检验类型" prop="InspectType">
           <el-select v-model="ruleForm.InspectType" placeholder="请选择" clearable @change="changeText">
@@ -173,7 +173,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="来料检验规则" prop="IQCRuleNum"><el-input v-model="ruleForm.IQCRuleNum" placeholder="请选择" clearable @input="incomingBox" /></el-form-item>
+        <el-form-item label="来料检验规则" prop="IQCRuleNum"><el-input v-model="ruleForm.IQCRuleNum" placeholder="请输入并选择" clearable @input="incomingBox" /></el-form-item>
 
         <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
@@ -194,6 +194,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -245,7 +246,7 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        MaterialCode: undefined,
+        MaterialNum: undefined,
         MaterialName: undefined,
         ShowBanned: false
       },
@@ -279,6 +280,7 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
+      addShow: true, // 继续新增
       newAway: null, // 下拉获取检验方式
       newText: null, // 下拉获取检验类型
       materialData: [], // 成品编号
@@ -470,12 +472,14 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.addShow = true
       this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.addShow = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -541,6 +545,29 @@ export default {
         })
     },
 
+    // 新增封装
+    commonAdd() {
+      const params = this.ruleForm
+      params.InspectWay = this.newAway
+      params.InspectType = this.newText
+      params.SupplierCode = '111'
+      QuaIqcInAdd(params).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: this.$t('table.addSuc')
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.MSG
+          })
+        }
+        this.editLoading = false
+      })
+    },
+
     // 编辑成功
     submitForm(formName) {
       this.editLoading = true
@@ -566,26 +593,8 @@ export default {
               this.editLoading = false
             })
           } else {
-            const params = this.ruleForm
-            params.InspectWay = this.newAway
-            params.InspectType = this.newText
-            params.SupplierCode = '111'
-            QuaIqcInAdd(params).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.addSuc')
-                })
-                this.dialogFormVisible = false
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-              this.editLoading = false
-            })
+            this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -596,6 +605,12 @@ export default {
           return false
         }
       })
+    },
+
+    // 继续新增
+    submitAdd() {
+      this.commonAdd()
+      this.handleAdd()
     },
 
     // 原料聚焦事件原料弹窗

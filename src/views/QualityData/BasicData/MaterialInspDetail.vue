@@ -80,6 +80,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="标准值" width="100" prop="StandardValue" sortable>
+        <template slot-scope="scope">
+          {{ scope.row.StandardValue }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
@@ -129,14 +135,13 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="上限值" prop="UpperLimit">
-          <el-input-number v-model="ruleForm.UpperLimit" placeholder="上限值" :min="0" clearable style="width: 100%" />
-        </el-form-item>
-        <el-form-item label="下限值" prop="LowerLimit">
-          <el-input-number v-model="ruleForm.LowerLimit" placeholder="下限值" :min="0" clearable style="width: 100%" />
-        </el-form-item>
+        <el-form-item label="下限值" prop="LowerLimit"><el-input-number v-model="ruleForm.LowerLimit" placeholder="下限值" :min="0" clearable style="width: 100%" /></el-form-item>
+        <el-form-item label="上限值" prop="UpperLimit"><el-input-number v-model="ruleForm.UpperLimit" placeholder="上限值" :min="0" clearable style="width: 100%" /></el-form-item>
 
-        <el-form-item label="标准值" prop="StandardValue"><el-input v-model="ruleForm.StandardValue" placeholder="标准值" clearable /></el-form-item>
+        <el-form-item label="标准值" prop="StandardValue">
+          <el-input-number v-model="ruleForm.StandardValue" placeholder="标准值" :min="0" clearable style="width: 100%" />
+          <!-- <el-input v-model="ruleForm.StandardValue" placeholder="标准值" clearable /> -->
+        </el-form-item>
 
         <el-form-item label="单位">
           <el-select v-model="ruleForm.Unit" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
@@ -158,7 +163,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -192,6 +197,7 @@ export default {
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
+      addShow: true, // 继续新增
       JudgmentWayVal: null, // 下拉判断方式
       newUnit: null, // 单位
       newJudgmentWay: null, // 判断方式
@@ -332,12 +338,14 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.addShow = true
       this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.addShow = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -438,7 +446,7 @@ export default {
     // 继续新增
     submitAdd() {
       this.commonAdd()
-      // this.handleAdd();
+      this.handleAdd()
     }
   }
 }

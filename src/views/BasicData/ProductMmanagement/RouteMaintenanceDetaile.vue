@@ -105,7 +105,7 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model="ruleForm.ProcessNum" placeholder="请输入并选择" @input="workingBox" /></el-form-item>
 
-        <el-form-item label="工序名称" prop="ProcessName"><el-input v-model.trim="ruleForm.ProcessName" placeholder="工序名称" :disabled="true" /></el-form-item>
+        <el-form-item label="工序名称" :required="true"><el-input v-model.trim="ruleForm.ProcessName" placeholder="工序名称" :disabled="true" /></el-form-item>
 
         <el-form-item label="是否检验">
           <el-radio v-model="ruleForm.IsChecked" :label="true">是</el-radio>
@@ -128,12 +128,9 @@
           <el-radio v-model="ruleForm.IsPrint" :label="false">否</el-radio>
         </el-form-item>
 
-        <el-form-item label="顺序">
-          <el-input-number v-model.trim="ruleForm.OrderNum" placeholder="顺序" :min="0" clearable style="width: 100%" />
-        </el-form-item>
+        <el-form-item label="顺序"><el-input-number v-model.trim="ruleForm.OrderNum" placeholder="顺序" :min="0" clearable style="width: 100%" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
-
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -201,8 +198,7 @@ export default {
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
       rules: {
-        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }],
-        ProcessName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
+        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -273,8 +269,7 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }],
-        ProcessName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }]
+        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }]
       }
     },
 
@@ -392,7 +387,6 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
               } else {
@@ -421,7 +415,7 @@ export default {
     // 继续新增
     submitAdd() {
       this.commonAdd()
-      // this.handleAdd()
+      this.handleAdd()
     },
 
     // 工序聚焦事件原料弹窗

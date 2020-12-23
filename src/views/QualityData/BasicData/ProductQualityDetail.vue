@@ -131,7 +131,7 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="检验项名称" prop="InspectItemName"><el-input v-model="ruleForm.InspectItemName" placeholder="检验项名称" clearable /></el-form-item>
 
-        <el-form-item label="工序名称" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="工序名称" clearable @input="workingBox" /></el-form-item>
+        <el-form-item label="工序名称" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="清输入并工序名称" clearable @input="workingBox" /></el-form-item>
 
         <el-form-item label="判断方式" prop="JudgmentWay">
           <el-select v-model="ruleForm.JudgmentWay" placeholder="请选择" clearable @change="changeAway">
@@ -139,10 +139,12 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="上限值" prop="UpperLimit"><el-input-number v-model="ruleForm.UpperLimit" placeholder="上限值" :min="0" clearable style="width: 100%" /></el-form-item>
         <el-form-item label="下限值" prop="LowerLimit"><el-input-number v-model="ruleForm.LowerLimit" placeholder="下限值" :min="0" clearable style="width: 100%" /></el-form-item>
+        <el-form-item label="上限值" prop="UpperLimit"><el-input-number v-model="ruleForm.UpperLimit" placeholder="上限值" :min="0" clearable style="width: 100%" /></el-form-item>
 
-        <el-form-item label="标准值" prop="StandardValue"><el-input v-model="ruleForm.StandardValue" placeholder="标准值" clearable /></el-form-item>
+        <el-form-item label="标准值" prop="StandardValue">
+          <el-input-number v-model="ruleForm.StandardValue" placeholder="标准值" :min="0" clearable style="width: 100%" />
+        </el-form-item>
 
         <el-form-item label="单位">
           <el-select v-model="ruleForm.Unit" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
@@ -471,7 +473,7 @@ export default {
     // 继续新增
     submitAdd() {
       this.commonAdd()
-      // this.handleAdd()
+      this.handleAdd()
     },
 
     // 工序聚焦事件原料弹窗

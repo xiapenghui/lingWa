@@ -58,7 +58,7 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-              :clearable="false"
+              :clearable="true"
               :picker-options="pickerOptions"
               @change="importChange"
             />
@@ -201,8 +201,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工序名称"><el-input v-model.trim="ruleForm.ProcessName" placeholder="请选择" clearable @input="workingBox" /></el-form-item>
-        <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.MaterialName" placeholder="请选择" clearable @input="finshBox" /></el-form-item>
+        <el-form-item label="工序名称"><el-input v-model.trim="ruleForm.ProcessName" placeholder="请输入并选择" clearable @input="workingBox" /></el-form-item>
+        <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 
@@ -603,7 +603,7 @@ export default {
     // 继续新增
     submitAdd() {
       this.commonAdd()
-      // this.handleAdd()
+      this.handleAdd()
     },
 
     // 删除角色

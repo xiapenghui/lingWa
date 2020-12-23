@@ -87,7 +87,7 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-              :clearable="false"
+              :clearable="true"
               :picker-options="pickerOptions"
               @change="importChange"
             />
@@ -309,13 +309,13 @@
           </div>
           <div class="boxRight">
             <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.ProductName" placeholder="请选择" :disabled="isDisabled" clearable @input="finshBox" />
+              <el-input v-model="ruleForm.ProductName" placeholder="请输入并选择" :disabled="isDisabled" clearable @input="finshBox" />
             </el-form-item>
 
             <el-form-item v-if="planAdd" label="BOM版本"><el-input v-model="ruleForm.BomVersion" placeholder="BOM版本" :disabled="true" /></el-form-item>
 
             <el-form-item :label="$t('permission.CustomerName')" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" :placeholder="$t('permission.CustomerName')" :disabled="isDisabled" clearable @input="userBox" />
+              <el-input v-model="ruleForm.CustomerName" placeholder="请输入并选择" :disabled="isDisabled" clearable @input="userBox" />
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
@@ -1028,7 +1028,6 @@ export default {
             type: 'success',
             message: this.$t('table.addSuc')
           })
-          this.dialogFormVisible = false
           this.getList()
         } else {
           this.$message({
@@ -1065,6 +1064,7 @@ export default {
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
             this.commonAdd()
+            this.dialogFormVisible = false
           } else {
             this.commonSplit()
             this.dialogFormVisible = false
@@ -1083,7 +1083,7 @@ export default {
     // 继续新增
     submitAdd() {
       this.commonAdd()
-      // this.handleAdd()
+      this.handleAdd()
     },
 
     // 继续拆分

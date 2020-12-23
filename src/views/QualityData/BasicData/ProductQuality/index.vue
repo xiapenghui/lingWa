@@ -147,9 +147,9 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="成品名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请选择" clearable @input="finshBox" /></el-form-item>
+        <el-form-item label="成品名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item>
 
-        <el-form-item label="规格" prop="MaterialSpec"><el-input v-model="ruleForm.MaterialSpec" placeholder="规格" :disabled="true" /></el-form-item>
+        <el-form-item label="规格"><el-input v-model="ruleForm.MaterialSpec" placeholder="规格" :disabled="true" /></el-form-item>
 
         <el-form-item label="检验类型" prop="InspectType">
           <el-select v-model="ruleForm.InspectType" placeholder="请选择" clearable @change="changeType">
@@ -246,7 +246,6 @@ export default {
       },
       rules: {
         MaterialName: [{ required: true, message: '请输入成品名称', trigger: 'blur' }],
-        MaterialSpec: [{ required: true, message: '请输入规格', trigger: 'blur' }],
         InspectType: [{ required: true, message: '请选择检验类型', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入版本', trigger: 'blur' }],
         EffectiveDate: [{ required: true, message: '请输入生效日期', trigger: 'blur' }]
@@ -326,7 +325,6 @@ export default {
     setFormRules: function() {
       this.rules = {
         MaterialName: [{ required: true, message: '请输入成品名称', trigger: 'blur' }],
-        MaterialSpec: [{ required: true, message: '请输入规格', trigger: 'blur' }],
         InspectType: [{ required: true, message: '请选择检验类型', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入版本', trigger: 'blur' }],
         EffectiveDate: [{ required: true, message: '请输入生效日期', trigger: 'blur' }]
@@ -521,7 +519,6 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
               } else {
@@ -550,7 +547,7 @@ export default {
     // 继续新增
     submitAdd() {
       this.commonAdd()
-      // this.handleAdd()
+      this.handleAdd()
     },
 
     // 聚焦事件产成品弹窗

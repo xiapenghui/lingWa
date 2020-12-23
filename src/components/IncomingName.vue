@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="来料检验规则编号" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="来料检验规则编号" placement="top-start">
               <label class="radio-label">检验编号:</label>
             </el-tooltip>
           </el-col>
@@ -63,18 +63,6 @@
       <el-table-column align="center" label="拒绝数量" width="150" prop="RejQty" sortable>
         <template slot-scope="scope">
           {{ scope.row.RejQty }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="CreateUserName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.CreateUserName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" :label="$t('permission.time')" width="150" prop="CreateTime" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.CreateTime | substringTime }}
         </template>
       </el-table-column>
 

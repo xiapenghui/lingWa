@@ -84,7 +84,7 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-              :clearable="false"
+              :clearable="true"
               :picker-options="pickerOptions"
               @change="importChange"
             />
@@ -324,10 +324,10 @@
 
           <div class="boxRight">
             <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'change' }]">
-              <el-input v-model="ruleForm.ProductName" placeholder="请选择成品名称" clearable @input="finshBox" />
+              <el-input v-model="ruleForm.ProductName" placeholder="请输入并选择成品名称" clearable @input="finshBox" />
             </el-form-item>
 
-            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请选择客户名称" clearable @input="userBox" /></el-form-item>
+            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请输入并选择客户名称" clearable @input="userBox" /></el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
               <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable @change="changePriority">
@@ -822,7 +822,6 @@ export default {
             message: this.$t('table.addSuc')
           })
           this.getList()
-          this.dialogFormVisible = false
         } else {
           this.$message({
             type: 'error',
@@ -858,6 +857,7 @@ export default {
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addOrder')) {
             this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -873,7 +873,7 @@ export default {
     // 继续新增
     submitAdd() {
       this.commonAdd()
-      // this.handleAdd()
+      this.handleAdd()
     },
 
     // BOM

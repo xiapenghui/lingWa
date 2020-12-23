@@ -86,9 +86,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUser" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyUser }}
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
@@ -133,6 +133,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -166,6 +167,7 @@ export default {
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
+      addShow: true, // 继续新增
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       pickerOptions: {
         shortcuts: [
@@ -352,13 +354,34 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.addShow = true
       this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.addShow = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
+    },
+
+    // 新增封装
+    commonAdd() {
+      QuaDefAdd(this.ruleForm).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: this.$t('table.addSuc')
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.MSG
+          })
+        }
+        this.editLoading = false
+      })
     },
 
     // 编辑成功
@@ -384,22 +407,8 @@ export default {
               this.editLoading = false
             })
           } else {
-            QuaDefAdd(this.ruleForm).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.addSuc')
-                })
-                this.dialogFormVisible = false
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-              this.editLoading = false
-            })
+            this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -410,6 +419,12 @@ export default {
           return false
         }
       })
+    },
+
+    // 继续新增
+    submitAdd() {
+      this.commonAdd()
+      this.handleAdd()
     },
 
     // 删除角色

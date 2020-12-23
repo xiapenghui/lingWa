@@ -23,7 +23,7 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-              :clearable="false"
+              :clearable="true"
               :picker-options="pickerOptions"
               @change="importChange"
             />
@@ -110,15 +110,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="CreateUserName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CreateUserName }}
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="150" prop="CreateTime" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.time')" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CreateTime | substringTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -150,9 +150,9 @@
         <el-form-item label="来料检验编号" prop="RuleNum"><el-input v-model.trim="ruleForm.RuleNum" placeholder="来料检验编号" clearable /></el-form-item>
 
         <el-form-item label="批量范围" prop="StartQty">
-          <el-input-number v-model="ruleForm.StartQty" :min="0" style="width: 48%" />
+          <el-input-number v-model="ruleForm.StartQty" :min="0" placeholder="批量范围从" style="width: 48%" />
           -----
-          <el-input-number v-model="ruleForm.EndQty" :min="0" style="width: 48%" />
+          <el-input-number v-model="ruleForm.EndQty" :min="0" placeholder="批量范围至" style="width: 48%" />
         </el-form-item>
 
         <el-form-item label="采样数量" prop="SampleQty"><el-input-number v-model="ruleForm.SampleQty" placeholder="采样数量" :min="0" style="width: 100%" /></el-form-item>
@@ -165,6 +165,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -198,6 +199,7 @@ export default {
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
+      addShow: true, // 继续新增
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       pickerOptions: {
         shortcuts: [
@@ -388,13 +390,34 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.addShow = true
       this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.addShow = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
+    },
+
+    // 新增封装
+    commonAdd() {
+      QuaIqcAdd(this.ruleForm).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: this.$t('table.addSuc')
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.MSG
+          })
+        }
+        this.editLoading = false
+      })
     },
 
     // 编辑成功
@@ -420,22 +443,8 @@ export default {
               this.editLoading = false
             })
           } else {
-            QuaIqcAdd(this.ruleForm).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.addSuc')
-                })
-                this.dialogFormVisible = false
-                this.getList()
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-              this.editLoading = false
-            })
+            this.commonAdd()
+            this.dialogFormVisible = false
           }
         } else {
           this.editLoading = false
@@ -446,6 +455,12 @@ export default {
           return false
         }
       })
+    },
+
+    // 继续新增
+    submitAdd() {
+      this.commonAdd()
+      this.handleAdd()
     },
 
     // 删除角色

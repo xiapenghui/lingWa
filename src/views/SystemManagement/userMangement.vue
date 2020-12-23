@@ -157,13 +157,11 @@
           <el-input v-model.trim="ruleForm.AccountName" :placeholder="$t('permission.userNameInfo')" clearable />
         </el-form-item>
 
-        <el-form-item v-if="isPassword" :label="$t('permission.password')" prop="AccountPwd" class="AccountPwd">
-          <b class="AccountB">*</b>
+        <el-form-item v-if="isPassword" :label="$t('permission.password')" prop="AccountPwd" :required="true">
           <el-input v-model.trim="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable :show-password="true" />
         </el-form-item>
 
-        <el-form-item v-if="isPassword" label="重复密码" prop="passwords" class="passwords">
-          <b class="passwordB">*</b>
+        <el-form-item v-if="isPassword" label="重复密码" prop="passwords" :required="true">
           <el-input v-model.trim="ruleForm.passwords" type="password" placeholder="重复密码" clearable :show-password="true" />
         </el-form-item>
 
@@ -498,21 +496,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.AccountPwd,
-.passwords {
-  position: relative;
-}
 
-.AccountPwd .AccountB {
-  color: red;
-  position: absolute;
-  left: -50px;
-  z-index: 9;
-}
-.passwords .passwordB {
-  color: red;
-  position: absolute;
-  left: -80px;
-  z-index: 9;
-}
 </style>
