@@ -157,8 +157,8 @@
         <el-form-item label="所属工作中心" prop="CascadeArray">
           <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间/产线/中心" clearable />
         </el-form-item>
-
-        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择" clearable @input="workingBox" /></el-form-item>
+        <!-- <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择" clearable @input="workingBox" /></el-form-item> -->
+        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择"   @click.native="workingBox" class="disActive"/></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
@@ -198,7 +198,9 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        ProcessName:''
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -527,8 +529,10 @@ export default {
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
+      console.log("row",row)
       this.ruleForm.ProcessCode = row.ProcessCode
-      this.ruleForm.ProcessName = row.Name
+      this.$set(this.ruleForm, 'ProcessName', row.Name);
+      // this.ruleForm.ProcessName = row.Name
       this.workingFormVisible = false
     },
     // 关闭工序名称查询弹窗

@@ -10,6 +10,12 @@
        width: 100%;
        text-align: left;
     }
+    .disActive{
+      .el-input__inner{
+         background: transparent;
+         cursor :pointer 
+      }
+    }
     padding: 20px;
     .el-upload__tip {
       margin-top: 10px;
