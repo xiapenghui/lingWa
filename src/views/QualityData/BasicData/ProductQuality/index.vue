@@ -147,7 +147,10 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="成品名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item>
+        <el-form-item label="成品名称" prop="MaterialName">
+          <!-- <el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="finshBox" /> -->
+          <el-input v-model="ruleForm.MaterialName" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
+        </el-form-item>
 
         <el-form-item label="规格"><el-input v-model="ruleForm.MaterialSpec" placeholder="规格" :disabled="true" /></el-form-item>
 
@@ -208,7 +211,9 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        MaterialName: ''
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -545,8 +550,12 @@ export default {
     },
 
     // 继续新增
-    submitAdd() {
-      this.commonAdd()
+    submitAdd(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.commonAdd()
+        }
+      })
       this.handleAdd()
     },
 
@@ -568,7 +577,8 @@ export default {
     },
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
-      this.ruleForm.MaterialName = row.Name
+      // this.ruleForm.MaterialName = row.Name
+      this.$set(this.ruleForm, 'MaterialName', row.Name)
       this.ruleForm.MaterialSpec = row.Spec
       this.ruleForm.MaterialCode = row.MaterialCode
       this.finshFormVisible = false

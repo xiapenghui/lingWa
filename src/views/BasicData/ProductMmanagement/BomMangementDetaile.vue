@@ -102,16 +102,23 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
+
         <el-form-item label="工序" prop="WorkingProcedureName">
-          <el-input v-model="ruleForm.WorkingProcedureName" placeholder="请输入并选择" clearable @input="workingBox" />
+          <el-input v-model="ruleForm.WorkingProcedureName" disabled placeholder="请选择" class="disActive" @click.native="workingBox" />
         </el-form-item>
+
         <el-form-item label="原料名称" prop="MaterialName">
-          <el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择原料名称" clearable @input="materialBox(1)" />
+          <!-- <el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择原料名称" clearable @input="materialBox(1)" /> -->
+          <el-input v-model="ruleForm.MaterialName" disabled placeholder="请选择" class="disActive" @click.native="materialBox(1)" />
         </el-form-item>
+
         <el-form-item label="原料用量" prop="Usage">
           <el-input-number v-model.trim="ruleForm.Usage" placeholder="原料用量" :min="0" clearable style="width: 100%" />
         </el-form-item>
-        <el-form-item label="替代物料"><el-input v-model="ruleForm.SubMaterialName" placeholder="请输入并选择替代物料" clearable @input="materialBox(2)" /></el-form-item>
+        <el-form-item label="替代物料">
+          <!-- <el-input v-model="ruleForm.SubMaterialName" placeholder="请输入并选择替代物料" clearable @input="materialBox(2)" /> -->
+          <el-input v-model="ruleForm.SubMaterialName" disabled placeholder="请选择" class="disActive" @click.native="materialBox(2)" />
+        </el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -163,7 +170,11 @@ export default {
     return {
       materialActiveIndex: 1,
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        WorkingProcedureName: '',
+        MaterialName: '',
+        SubMaterialName: ''
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -429,10 +440,12 @@ export default {
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
       if (this.materialActiveIndex === 1) {
-        this.ruleForm.MaterialName = row.Name
+        // this.ruleForm.MaterialName = row.Name
+        this.$set(this.ruleForm, 'MaterialName', row.Name)
         this.ruleForm.materialCode = row.MaterialCode
       } else {
-        this.ruleForm.SubMaterialName = row.Name
+        // this.ruleForm.SubMaterialName = row.Name
+        this.$set(this.ruleForm, 'SubMaterialName', row.Name)
         this.ruleForm.SubMaterialCode = row.MaterialCode
       }
       this.materialFormVisible = false
@@ -472,7 +485,8 @@ export default {
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
-      this.ruleForm.WorkingProcedureName = row.Name
+      // this.ruleForm.WorkingProcedureName = row.Name
+      this.$set(this.ruleForm, 'WorkingProcedureName', row.Name)
       this.ruleForm.WorkingProcedureCode = row.ProcessCode
       this.workingFormVisible = false
     },

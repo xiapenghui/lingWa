@@ -324,10 +324,14 @@
 
           <div class="boxRight">
             <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'change' }]">
-              <el-input v-model="ruleForm.ProductName" placeholder="请输入并选择成品名称" clearable @input="finshBox" />
+              <!-- <el-input v-model="ruleForm.ProductName" placeholder="请输入并选择成品名称" clearable @input="finshBox" /> -->
+              <el-input v-model="ruleForm.ProductName" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
             </el-form-item>
 
-            <el-form-item label="客户名称" prop="CustomerName"><el-input v-model="ruleForm.CustomerName" placeholder="请输入并选择客户名称" clearable @input="userBox" /></el-form-item>
+            <el-form-item label="客户名称" prop="CustomerName">
+              <!-- <el-input v-model="ruleForm.CustomerName" placeholder="请输入并选择客户名称" clearable @input="userBox" /> -->
+              <el-input v-model="ruleForm.CustomerName" disabled placeholder="请选择" class="disActive" @click.native="userBox" />
+            </el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
               <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable @change="changePriority">
@@ -345,7 +349,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button v-if="addShow" type="primary" @click="submitAdd">{{ $t('permission.continueAdd') }}</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">{{ $t('permission.continueAdd') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -534,7 +538,10 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        ProductName: '',
+        CustomerName: ''
+      }, // 编辑弹窗
       CreateTime: null,
       btnShow: true, // 互斥按钮
       showSearch: false, // 隐藏搜素条件
@@ -871,8 +878,12 @@ export default {
     },
 
     // 继续新增
-    submitAdd() {
-      this.commonAdd()
+    submitAdd(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.commonAdd()
+        }
+      })
       this.handleAdd()
     },
 
@@ -1106,7 +1117,8 @@ export default {
     },
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
-      this.ruleForm.ProductName = row.Name
+      // this.ruleForm.ProductName = row.Name
+      this.$set(this.ruleForm, 'ProductName', row.Name)
       this.ruleForm.ProductCode = row.MaterialCode
       this.finshFormVisible = false
     },
@@ -1131,7 +1143,8 @@ export default {
     },
     // 增加客户名称双击事件获取当前行的值
     userClick(row) {
-      this.ruleForm.CustomerName = row.FullName
+      // this.ruleForm.CustomerName = row.FullName
+      this.$set(this.ruleForm, 'CustomerName', row.FullName)
       this.ruleForm.CustomerCode = row.CustomerCode
       this.userFormVisible = false
     },

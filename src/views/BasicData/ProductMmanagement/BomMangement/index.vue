@@ -135,11 +135,14 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="成品编号" prop="ProductNum"><el-input v-model.trim="ruleForm.ProductNum" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item>
+        <!-- <el-form-item label="成品编号" prop="ProductNum"><el-input v-model.trim="ruleForm.ProductNum" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item> -->
+        <el-form-item label="成品编号" prop="ProductNum"><el-input v-model.trim="ruleForm.ProductNum" disabled placeholder="请选择" class="disActive" @click.native="finshBox" /></el-form-item>
+
         <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.ProductName" placeholder="成品名称" :disabled="true" /></el-form-item>
         <el-form-item label="BOM版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="BOM版本" clearable /></el-form-item>
 
-        <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="请输入并选择" clearable @input="lineBox" /></el-form-item>
+        <!-- <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="请输入并选择" clearable @input="lineBox" /></el-form-item> -->
+        <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" disabled placeholder="请选择" class="disActive" @click.native="lineBox" /></el-form-item>
 
         <el-form-item label="生效时间" prop="EffectiveDate">
           <el-date-picker
@@ -204,7 +207,10 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        finshBox: '',
+        ProcessRouteName: ''
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -548,7 +554,8 @@ export default {
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
       this.ruleForm.ProductNum = row.MaterialNum
-      this.ruleForm.ProductName = row.Name
+      this.$set(this.ruleForm, 'ProductName', row.Name)
+      // this.ruleForm.ProductName = row.Name
       this.ruleForm.ProductCode = row.MaterialCode
       this.finshFormVisible = false
     },
@@ -575,7 +582,8 @@ export default {
     },
     // 增加工艺路线双击事件获取当前行的值
     lineClick(row) {
-      this.ruleForm.ProcessRouteName = row.Name
+      this.$set(this.ruleForm, 'ProcessRouteName', row.Name)
+      // this.ruleForm.ProcessRouteName = row.Name
       this.ruleForm.ProcessRouteCode = row.ProcessRouteCode
       this.lineFormVisible = false
     },

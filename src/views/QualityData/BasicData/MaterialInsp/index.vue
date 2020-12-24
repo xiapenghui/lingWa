@@ -157,7 +157,10 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="原料名称" prop="MaterialName"><el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="materialBox" /></el-form-item>
+        <el-form-item label="原料名称" prop="MaterialName">
+          <!-- <el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="materialBox" /> -->
+          <el-input v-model="ruleForm.MaterialName" disabled placeholder="请选择" class="disActive" @click.native="materialBox" />
+        </el-form-item>
 
         <el-form-item label="供应商名称"><el-input v-model="ruleForm.SupplierName" placeholder="供应商名称" :disabled="true" /></el-form-item>
 
@@ -173,7 +176,10 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="来料检验规则" prop="IQCRuleNum"><el-input v-model="ruleForm.IQCRuleNum" placeholder="请输入并选择" clearable @input="incomingBox" /></el-form-item>
+        <el-form-item label="来料检验规则" prop="IQCRuleNum">
+          <!-- <el-input v-model="ruleForm.IQCRuleNum" placeholder="请输入并选择" clearable @input="incomingBox" /> -->
+          <el-input v-model="ruleForm.IQCRuleNum" disabled placeholder="请选择" class="disActive" @click.native="incomingBox" />
+        </el-form-item>
 
         <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
 
@@ -242,7 +248,10 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        MaterialName: '',
+        IQCRuleNum: ''
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -608,8 +617,12 @@ export default {
     },
 
     // 继续新增
-    submitAdd() {
-      this.commonAdd()
+    submitAdd(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.commonAdd()
+        }
+      })
       this.handleAdd()
     },
 
@@ -631,7 +644,8 @@ export default {
     },
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
-      this.ruleForm.MaterialName = row.Name
+      // this.ruleForm.MaterialName = row.Name
+      this.$set(this.ruleForm, 'MaterialName', row.Name)
       this.ruleForm.MaterialCode = row.MaterialCode
       this.materialFormVisible = false
     },
@@ -658,7 +672,8 @@ export default {
     },
     // 增加来料检验规则双击事件获取当前行的值
     incomingClick(row) {
-      this.ruleForm.IQCRuleNum = row.RuleNum
+      // this.ruleForm.IQCRuleNum = row.RuleNum
+      this.$set(this.ruleForm, 'IQCRuleNum', row.RuleNum)
       this.ruleForm.IQCCode = row.IQCCode
       this.incomingFormVisible = false
     },

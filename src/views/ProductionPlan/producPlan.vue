@@ -309,13 +309,13 @@
           </div>
           <div class="boxRight">
             <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.ProductName" placeholder="请输入并选择" :disabled="isDisabled" clearable @input="finshBox" />
+              <el-input v-model="ruleForm.ProductName" :disabled="isDisabled" placeholder="请选择" @click.native="finshBox" /></el-input>
             </el-form-item>
 
             <el-form-item v-if="planAdd" label="BOM版本"><el-input v-model="ruleForm.BomVersion" placeholder="BOM版本" :disabled="true" /></el-form-item>
 
             <el-form-item :label="$t('permission.CustomerName')" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" placeholder="请输入并选择" :disabled="isDisabled" clearable @input="userBox" />
+              <el-input v-model="ruleForm.CustomerName" :disabled="isDisabled" placeholder="请选择" @click.native="userBox" /></el-input>
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
@@ -679,7 +679,10 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        ProductName: '',
+        CustomerName: ''
+      }, // 编辑弹窗
       selectedData: [], // 批量选择新数组
       CreateTime: null,
       btnShow: true, // 互斥按钮
@@ -749,7 +752,8 @@ export default {
       dialogTypeTitle: null,
       newLine: null, // 获取计划下拉产线
       newPriority: null, // 获取下拉优先级
-      newBOMCode: null, // ...
+      newBOMCode: null, // BOM版本
+      isActive: false, // 客户成品名称样式区分
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
@@ -966,6 +970,7 @@ export default {
       this.splitShow = false
       this.isAlarmItem = true
       this.isAlarmItemOther = true
+      this.isActive = false
       this.ruleForm = {
         PlanNum: '',
         BomVersion: ''
@@ -988,6 +993,7 @@ export default {
       this.addShow = false
       this.isAlarmItem = true
       this.isAlarmItemOther = true
+      this.isActive = false
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -1267,7 +1273,8 @@ export default {
     },
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
-      this.ruleForm.ProductName = row.Name
+      // this.ruleForm.ProductName = row.Name
+      this.$set(this.ruleForm, 'ProductName', row.Name)
       this.ruleForm.ProductCode = row.MaterialCode
       GetBomVersion({ MaterialCode: row.MaterialCode, MaterialType: '1' }).then(res => {
         if (res.IsPass === true) {
@@ -1300,7 +1307,8 @@ export default {
     },
     // 增加客户名称双击事件获取当前行的值
     userClick(row) {
-      this.ruleForm.CustomerName = row.FullName
+      // this.ruleForm.CustomerName = row.FullName
+      this.$set(this.ruleForm, 'CustomerName', row.FullName)
       this.ruleForm.CustomerCode = row.CustomerCode
       this.userFormVisible = false
     },
@@ -1317,5 +1325,11 @@ export default {
   position: fixed;
   bottom: 10px;
   right: 10px;
+}
+.active {
+  .el-input__inner {
+    background: transparent;
+    cursor: pointer;
+  }
 }
 </style>

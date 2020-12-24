@@ -417,7 +417,6 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.editLoading = false
                 this.dialogFormVisible = false
                 this.getList()
               } else {
@@ -444,8 +443,12 @@ export default {
     },
 
     // 继续新增
-    submitAdd() {
-      this.commonAdd()
+    submitAdd(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.commonAdd()
+        }
+      })
       this.handleAdd()
     }
   }

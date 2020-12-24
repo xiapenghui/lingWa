@@ -458,8 +458,12 @@ export default {
     },
 
     // 继续新增
-    submitAdd() {
-      this.commonAdd()
+    submitAdd(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.commonAdd()
+        }
+      })
       this.handleAdd()
     },
 

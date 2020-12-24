@@ -44,10 +44,9 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -134,6 +133,7 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="成品编号" prop="MaterialNum"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="成品编号" clearable /></el-form-item>
+
         <el-form-item label="成品名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="成品名称" clearable /></el-form-item>
         <el-form-item label="成品规格"><el-input v-model.trim="ruleForm.Spec" placeholder="成品规格" clearable /></el-form-item>
         <el-form-item label="颜色"><el-input v-model.trim="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
@@ -144,7 +144,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工艺路线"><el-input v-model.trim="ruleForm.RouteName" placeholder="请输入并选择" clearable @input="lineBox" /></el-form-item>
+        <el-form-item label="工艺路线"><el-input v-model.trim="ruleForm.RouteName" disabled placeholder="请选择" class="disActive" @click.native="lineBox" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
       </el-form>
@@ -183,7 +183,9 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        RouteName: ''
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -480,7 +482,8 @@ export default {
     },
     // 增加工艺路线双击事件获取当前行的值
     lineClick(row) {
-      this.ruleForm.RouteName = row.Name
+      // this.ruleForm.RouteName = row.Names
+      this.$set(this.ruleForm, 'RouteName', row.Name)
       this.ruleForm.RouteCode = row.ProcessRouteCode
       this.lineFormVisible = false
     },

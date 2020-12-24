@@ -131,7 +131,10 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="检验项名称" prop="InspectItemName"><el-input v-model="ruleForm.InspectItemName" placeholder="检验项名称" clearable /></el-form-item>
 
-        <el-form-item label="工序名称" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="清输入并工序名称" clearable @input="workingBox" /></el-form-item>
+        <el-form-item label="工序名称" prop="ProcessName">
+          <!-- <el-input v-model="ruleForm.ProcessName" placeholder="清输入并工序名称" clearable @input="workingBox" /> -->
+          <el-input v-model="ruleForm.ProcessName" disabled placeholder="请选择" class="disActive" @click.native="workingBox" />
+        </el-form-item>
 
         <el-form-item label="判断方式" prop="JudgmentWay">
           <el-select v-model="ruleForm.JudgmentWay" placeholder="请选择" clearable @change="changeAway">
@@ -201,7 +204,9 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        ProcessName: ''
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -471,8 +476,12 @@ export default {
     },
 
     // 继续新增
-    submitAdd() {
-      this.commonAdd()
+    submitAdd(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.commonAdd()
+        }
+      })
       this.handleAdd()
     },
 
@@ -495,7 +504,8 @@ export default {
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
       this.ruleForm.ProcessCode = row.ProcessCode
-      this.ruleForm.ProcessName = row.Name
+      // this.ruleForm.ProcessName = row.Name
+      this.$set(this.ruleForm, 'ProcessName', row.Name)
       this.workingFormVisible = false
     },
     // 关闭工序名称查询弹窗

@@ -20,7 +20,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ProcessNum" placeholder="工序名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProcessName" placeholder="工序名称" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -201,8 +201,14 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工序名称"><el-input v-model.trim="ruleForm.ProcessName" placeholder="请输入并选择" clearable @input="workingBox" /></el-form-item>
-        <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item>
+        <el-form-item label="工序名称">
+          <!-- <el-input v-model.trim="ruleForm.ProcessName" placeholder="请输入并选择" clearable @input="workingBox" /> -->
+          <el-input v-model.trim="ruleForm.ProcessName" disabled placeholder="请选择" class="disActive" @click.native="workingBox" />
+        </el-form-item>
+        <el-form-item label="成品名称">
+          <!-- <el-input v-model.trim="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="finshBox" /> -->
+          <el-input v-model.trim="ruleForm.MaterialName" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
+        </el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 
@@ -259,14 +265,17 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        ProcessName: '',
+        MaterialName: ''
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
         importDate: [],
         DefectNum: undefined,
         DefectName: undefined,
-        ProcessNum: undefined,
+        ProcessName: undefined,
         ShowBanned: false
       },
       // 工序搜索条件
@@ -601,8 +610,12 @@ export default {
     },
 
     // 继续新增
-    submitAdd() {
-      this.commonAdd()
+    submitAdd(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.commonAdd()
+        }
+      })
       this.handleAdd()
     },
 
@@ -657,7 +670,8 @@ export default {
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
       this.ruleForm.ProcessCode = row.ProcessCode
-      this.ruleForm.ProcessName = row.Name
+      // this.ruleForm.ProcessName = row.Name
+      this.$set(this.ruleForm, 'ProcessName', row.Name)
       this.workingFormVisible = false
     },
     // 关闭工序名称查询弹窗
@@ -683,7 +697,8 @@ export default {
     },
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
-      this.ruleForm.MaterialName = row.Name
+      // this.ruleForm.MaterialName = row.Name
+      this.$set(this.ruleForm, 'MaterialName', row.Name)
       this.ruleForm.MaterialCode = row.MaterialCode
       this.finshFormVisible = false
     },
