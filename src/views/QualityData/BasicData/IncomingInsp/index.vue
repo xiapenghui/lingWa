@@ -401,25 +401,6 @@ export default {
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 新增封装
-    commonAdd() {
-      QuaIqcAdd(this.ruleForm).then(res => {
-        if (res.IsPass === true) {
-          this.$message({
-            type: 'success',
-            message: this.$t('table.addSuc')
-          })
-          this.getList()
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.MSG
-          })
-        }
-        this.editLoading = false
-      })
-    },
-
     // 编辑成功
     submitForm(formName) {
       this.editLoading = true
@@ -443,8 +424,22 @@ export default {
               this.editLoading = false
             })
           } else {
-            this.commonAdd()
-            this.dialogFormVisible = false
+            QuaIqcAdd(this.ruleForm).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.addSuc')
+                })
+                this.dialogFormVisible = false
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+              this.editLoading = false
+            })
           }
         } else {
           this.editLoading = false
@@ -461,7 +456,21 @@ export default {
     submitAdd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.commonAdd()
+          QuaIqcAdd(this.ruleForm).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: this.$t('table.addSuc')
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+            this.editLoading = false
+          })
         }
       })
       this.handleAdd()

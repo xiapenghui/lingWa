@@ -4,15 +4,15 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="库区编号" placement="top-start"><label class="radio-label">库区编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="仓库编号" placement="top-start"><label class="radio-label">仓库编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.RegionNum" placeholder="库区编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.WarehouseNum" placeholder="仓库编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="库区名称" placement="top-start"><label class="radio-label">库区名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="仓库名称" placement="top-start"><label class="radio-label">仓库名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.RegionName" placeholder="库区名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.WarehouseName" placeholder="仓库名称" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -47,18 +47,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="库区编号" width="150" prop="RegionNum" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.RegionNum }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="库区名称" width="150" prop="RegionName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.RegionName }}
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" label="仓库编号" width="150" prop="WarehouseNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WarehouseNum }}
@@ -68,6 +56,22 @@
       <el-table-column align="center" label="仓库名称" width="150" prop="WarehouseName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WarehouseName }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="仓库类型" width="150" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.WarehouseType }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="是否FIFO" width="150" prop="IsFIFO" sortable>
+        <template slot-scope="scope">
+          <el-tag :style="{ color: scope.row.IsFIFO === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsFIFO === false ? '否' : '是' }}</el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="是否上架管理" width="150" prop="IsShelfManage" sortable>
+        <template slot-scope="scope">
+          <el-tag :style="{ color: scope.row.IsShelfManage === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsShelfManage === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -112,14 +116,25 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="库区编号" prop="RegionNum"><el-input v-model.trim="ruleForm.RegionNum" placeholder="仓库编号" clearable /></el-form-item>
-        <el-form-item label="库区名称" prop="RegionName"><el-input v-model.trim="ruleForm.RegionName" placeholder="仓库名称" clearable /></el-form-item>
 
-        <el-form-item label="仓库编号" prop="WarehouseNum">
-          <el-input v-model.trim="ruleForm.WarehouseNum" disabled placeholder="请选择" class="disActive" @click.native="WarehouseBox" />
+        <el-form-item label="仓库编号" prop="WarehouseNum"><el-input v-model.trim="ruleForm.WarehouseNum" placeholder="仓库编号" clearable /></el-form-item>
+        <el-form-item label="仓库名称" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="仓库名称" clearable /></el-form-item>
+
+        <el-form-item label="仓库类型">
+          <el-select v-model="ruleForm.WarehouseType" placeholder="请选择" style="width: 100%" clearable @change="changeWarehouse">
+            <el-option v-for="item in WarehouseList" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
         </el-form-item>
 
-        <el-form-item label="仓库名称" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="仓库名称" disabled /></el-form-item>
+        <el-form-item label="是否FIFO" prop="IsFIFO">
+          <el-radio v-model="ruleForm.IsFIFO" :label="true">是</el-radio>
+          <el-radio v-model="ruleForm.IsFIFO" :label="false">否</el-radio>
+        </el-form-item>
+
+        <el-form-item label="是否上架管理" prop="IsShelfManage">
+          <el-radio v-model="ruleForm.IsShelfManage" :label="true">是</el-radio>
+          <el-radio v-model="ruleForm.IsShelfManage" :label="false">否</el-radio>
+        </el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 
@@ -131,19 +146,6 @@
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
-
-    <!-- 封装仓库编号 -->
-    <WarehouseName
-      :ware-show="wareFormVisible"
-      :ware-box-loading="wareBoxLoading"
-      :table-box-height="tableBoxHeight"
-      :ware-data="wareData"
-      :pagination-search="paginationSearchWare"
-      @wareClose="wareClose"
-      @wareClick="wareClick"
-      @handleSearchWare="handleSearchWare"
-    />
-
   </div>
 </template>
 
@@ -152,14 +154,13 @@ import '../../../styles/scrollbar.css'
 import '../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import WarehouseName from '@/components/WarehouseName' // 成品名称弹窗
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { StoWareList, WareHouseList, WareHouseAdd, WareHouseDelete, WareHouseModify } from '@/api/WarehouseData'
+import { GetDictionary } from '@/api/BasicData'
+import { StoWareList, StoWareAdd, StoWareDelete, StoWareModify } from '@/api/WarehouseData'
 const fixHeight = 260
-const fixHeightBox = 350
 export default {
   name: 'CompanyMaintenance',
-  components: { Pagination, WarehouseName },
+  components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -167,13 +168,6 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        RegionNum: undefined,
-        RegionName: undefined
-      },
-      // 成品聚焦搜索条件
-      paginationSearchWare: {
-        PageIndex: 1,
-        PageSize: 100,
         WarehouseNum: undefined,
         WarehouseName: undefined
       },
@@ -182,16 +176,15 @@ export default {
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
-      wareData: [], // 仓库编号数组
-      wareBoxLoading: false, // 仓库编号loading
-      wareFormVisible: false, // 仓库编号弹窗
       addShow: true, // 继续新增
       tableHeight: window.innerHeight - fixHeight, // 表格高度
-      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
+      newWarehouse: null, // 仓库新值
+      WarehouseList: [], // 仓库数组
       rules: {
-        RegionNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
-        RegionName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
-        WarehouseNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }]
+        WarehouseNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
+        WarehouseName: [{ required: true, message: '请输入仓库类型', trigger: 'blur' }],
+        IsFIFO: [{ required: true, message: '请选择FIFO', trigger: 'change' }],
+        IsShelfManage: [{ required: true, message: '请选择是否上架', trigger: 'change' }]
       },
       parentMsg: this.$t('permission.importCompany')
       // content1: this.$t('permission.companyNo'),
@@ -210,16 +203,6 @@ export default {
     tableHeight(val) {
       if (!this.timer) {
         this.tableHeight = val
-        this.timer = true
-        const that = this
-        setTimeout(function() {
-          that.timer = false
-        }, 400)
-      }
-    },
-    tableBoxHeight(val) {
-      if (!this.timer) {
-        this.tableBoxHeight = val
         this.timer = true
         const that = this
         setTimeout(function() {
@@ -247,9 +230,14 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
-        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
+    // 获取新增仓库类型
+    GetDictionary({ code: '0028' }).then(res => {
+      if (res.IsPass === true) {
+        this.WarehouseList = res.Obj
+      }
+    })
     this.getList()
     this.setFormRules()
   },
@@ -257,9 +245,10 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        RegionNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
-        RegionName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
-        WarehouseNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }]
+        WarehouseNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
+        WarehouseName: [{ required: true, message: '请输入仓库类型', trigger: 'blur' }],
+        IsFIFO: [{ required: true, message: '请选择FIFO', trigger: 'change' }],
+        IsShelfManage: [{ required: true, message: '请选择是否上架', trigger: 'change' }]
       }
     },
 
@@ -267,6 +256,10 @@ export default {
     handleSearch() {
       this.pagination.PageIndex = 1
       this.getList()
+    },
+    // 选择仓库
+    changeWarehouse(val) {
+      this.newWarehouse = val
     },
 
     // 导出用户
@@ -291,7 +284,7 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      WareHouseList(this.pagination).then(res => {
+      StoWareList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -330,7 +323,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            WareHouseModify(this.ruleForm).then(res => {
+            StoWareModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -347,7 +340,7 @@ export default {
               this.editLoading = false
             })
           } else {
-            WareHouseAdd(this.ruleForm).then(res => {
+            StoWareAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -379,7 +372,7 @@ export default {
     submitAdd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          WareHouseAdd(this.ruleForm).then(res => {
+          StoWareAdd(this.ruleForm).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -407,7 +400,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          WareHouseDelete({ RegionCode: row.RegionCode }).then(res => {
+          StoWareDelete({ WarehouseCode: row.WarehouseCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -429,36 +422,6 @@ export default {
             message: this.$t('table.deleteError')
           })
         })
-    },
-
-    // 仓库编号聚焦弹窗
-    WarehouseBox() {
-      this.wareFormVisible = true
-      this.wareBoxLoading = true
-      StoWareList(this.paginationSearchWare).then(res => {
-        if (res.IsPass === true) {
-          this.wareData = res.Obj
-          this.wareBoxLoading = false
-        }
-      })
-    },
-    // 仓库编号弹窗搜索
-    handleSearchWare() {
-      this.paginationSearchWare.PageIndex = 1
-      this.WarehouseBox()
-    },
-    // 增加仓库编号双击事件获取当前行的值
-    wareClick(row) {
-      debugger
-      this.$set(this.ruleForm, 'WarehouseNum', row.WarehouseNum)
-      // this.ruleForm.ProcessNum = row.ProcessNum
-      this.ruleForm.WarehouseName = row.WarehouseName
-      this.ruleForm.WarehouseCode = row.WarehouseCode
-      this.wareFormVisible = false
-    },
-    // 关闭仓库编号查询弹窗
-    wareClose() {
-      this.wareFormVisible = false
     }
   }
 }

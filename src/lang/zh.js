@@ -22,7 +22,7 @@ export default {
     CompanyMaintenance: '公司信息',
     DepartmentMaintenance: '部门信息',
     ProductionManagement: '工厂模型维护',
-    LineMaintenance: '生产组织管理',
+    LineMaintenance: '生产组织维护',
     WorkMaintenance: '工序信息',
     ProcessMaintenance: '工序信息',
     ProductMmanagement: '产品模型维护',
@@ -51,12 +51,10 @@ export default {
     ProductDefect: '产品缺陷',
     ProductQuality: '产品质量检验项',
     ProductQualityDetail: '产品质量检验项明细',
-    ProductDefects:'产品缺陷类型',
-    ProductsLack:'产品缺陷',
-    ProductQuality:'产品质量检验项',
-    ProductQualityDetail:'产品质量检验项明细',
-    
-
+    ProductDefects: '产品缺陷类型',
+    ProductsLack: '产品缺陷',
+    ProductQuality: '产品质量检验项',
+    ProductQualityDetail: '产品质量检验项明细',
 
     // 截止
 
