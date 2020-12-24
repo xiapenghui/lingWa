@@ -303,19 +303,33 @@
               <el-input-number v-model.trim="ruleForm.SplitQuantity" placeholder="拆分数量" :min="0" clearable style="width: 100%" />
             </el-form-item>
 
-            <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable /></el-form-item>
+            <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')">
+              <el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable />
+            </el-form-item>
 
+            <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')">
+              <el-input v-model.trim="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" clearable />
+            </el-form-item>
             <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
           </div>
           <div class="boxRight">
-            <el-form-item :label="$t('permission.ProductName')" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.ProductName" :disabled="isDisabled" placeholder="请选择" @click.native="finshBox" /></el-input>
+
+            <el-form-item v-if="!isActive" label="成品名称" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
+              <el-input v-model="ruleForm.ProductName" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
+            </el-form-item>
+
+            <el-form-item v-if="isActive" label="成品名称"><span style="color: red;position: absolute;left:-77px;z-index: 9;">*</span>
+              <el-input v-model="ruleForm.ProductName" disabled />
             </el-form-item>
 
             <el-form-item v-if="planAdd" label="BOM版本"><el-input v-model="ruleForm.BomVersion" placeholder="BOM版本" :disabled="true" /></el-form-item>
 
-            <el-form-item :label="$t('permission.CustomerName')" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" :disabled="isDisabled" placeholder="请选择" @click.native="userBox" /></el-input>
+            <el-form-item v-if="!isActive" :label="$t('permission.CustomerName')" prop="CustomerName">
+              <el-input v-model="ruleForm.CustomerName" disabled placeholder="请选择" class="disActive" @click.native="userBox" />
+            </el-form-item>
+
+            <el-form-item v-if="isActive" label="客户名称">
+              <el-input v-model="ruleForm.CustomerName" disabled />
             </el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
@@ -328,10 +342,6 @@
               <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable @change="changePriority">
                 <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
-            </el-form-item>
-
-            <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')">
-              <el-input v-model.trim="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" clearable />
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
@@ -1157,6 +1167,7 @@ export default {
       this.splitShow = true
       this.isAlarmItem = true
       this.isAlarmItemOther = false
+      this.isActive = true
       SplitQuery({ PlanCode: row.PlanCode }).then(res => {
         if (res.IsPass === true) {
           this.ruleForm = res.Obj
