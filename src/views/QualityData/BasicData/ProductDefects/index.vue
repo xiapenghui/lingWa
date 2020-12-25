@@ -266,8 +266,8 @@ export default {
     importChange(val) {
       this.pagination.importDate[0] = val[0]
       this.pagination.importDate[1] = val[1]
-      this.pagination.CreateTimeStart = this.pagination.importDate[0]
-      this.pagination.CreateTimeEnd = this.pagination.importDate[1]
+      this.pagination.ModifyTimeStart = this.pagination.importDate[0]
+      this.pagination.ModifyTimeEnd = this.pagination.importDate[1]
     },
     // 禁用，启用权限
     handleBan(row) {

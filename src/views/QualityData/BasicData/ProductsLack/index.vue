@@ -46,7 +46,7 @@
       <el-row v-show="showSearch" :gutter="20" style="margin-top: 10px;">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="创建日期" placement="top-start"><label class="radio-label">创建日期:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="维护时间" placement="top-start"><label class="radio-label">维护时间:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-date-picker
@@ -155,7 +155,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.time')" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -431,8 +431,8 @@ export default {
     importChange(val) {
       this.pagination.importDate[0] = val[0]
       this.pagination.importDate[1] = val[1]
-      this.pagination.CreateTimeStart = this.pagination.importDate[0]
-      this.pagination.CreateTimeEnd = this.pagination.importDate[1]
+      this.pagination.ModifyTimeStart = this.pagination.importDate[0]
+      this.pagination.ModifyTimeEnd = this.pagination.importDate[1]
     },
 
     // 折叠按钮互斥

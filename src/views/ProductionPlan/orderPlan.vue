@@ -71,7 +71,7 @@
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="维护日期" placement="top-start"><label class="radio-label">创建日期:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="维护时间" placement="top-start"><label class="radio-label">维护时间:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-date-picker
@@ -241,7 +241,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护日期" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -525,8 +525,8 @@ import i18n from '@/lang'
 // import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetMaterialList, GetCustomerList, orderModify, GetLine, orderAdd, orderFreeze } from '@/api/BasicData'
-import { orderList, orderDelete, orderStatus } from '@/api/ProductionPlan'
+import { GetDictionary, GetMaterialList, GetCustomerList, GetLine } from '@/api/BasicData'
+import { orderList, orderDelete, orderFreeze, orderAdd, orderModify, orderStatus } from '@/api/ProductionPlan'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
 const fixHeight = 260
@@ -720,8 +720,8 @@ export default {
     importChange(val) {
       this.pagination.importDate[0] = val[0]
       this.pagination.importDate[1] = val[1]
-      this.pagination.CreateTimeStart = this.pagination.importDate[0]
-      this.pagination.CreateTimeEnd = this.pagination.importDate[1]
+      this.pagination.ModifyTimeStart = this.pagination.importDate[0]
+      this.pagination.ModifyTimeEnd = this.pagination.importDate[1]
     },
 
     // 折叠按钮互斥
@@ -956,7 +956,7 @@ export default {
         .then(() => {
           const params = {
             OrderCode: row.OrderCode,
-            Status: 2
+            Status: 1
           }
           orderStatus(params).then(res => {
             if (res.IsPass === true) {
@@ -1025,7 +1025,7 @@ export default {
         .then(() => {
           const params = {
             OrderCode: row.OrderCode,
-            Status: 5
+            Status: 3
           }
           orderStatus(params).then(res => {
             if (res.IsPass === true) {
@@ -1058,8 +1058,7 @@ export default {
       })
         .then(() => {
           const params = {
-            OrderCode: row.OrderCode,
-            Status: 1
+            OrderCode: row.OrderCode
           }
           orderFreeze(params).then(res => {
             if (res.IsPass === true) {

@@ -244,35 +244,6 @@ export function MaterialStatus(data) {
   })
 }
 
-// 生产工单冻结取消
-// 修改生产工单状态
-// 功能范围：取消冻结
-export function orderFreeze(data) {
-  return request({
-    url: newUrl + '/api/PlanWorkOrder/ModifyUnfreeze',
-    method: 'post',
-    data
-  })
-}
-
-// 生产工单新增
-export function orderAdd(data) {
-  return request({
-    url: newUrl + '/api/PlanWorkOrder/Add',
-    method: 'post',
-    data
-  })
-}
-
-// 生产工单编辑
-export function orderModify(data) {
-  return request({
-    url: newUrl + '/api/PlanWorkOrder/Modify',
-    method: 'post',
-    data
-  })
-}
-
 // BOM信息维护列表分页
 export function bomList(data) {
   return request({

@@ -95,6 +95,35 @@ export function productionSplit(data) {
   })
 }
 
+// 生产工单冻结取消
+// 修改生产工单状态
+// 功能范围：取消冻结
+export function orderFreeze(data) {
+  return request({
+    url: newUrl + '/api/PlanWorkOrder/ModifyUnfreeze',
+    method: 'post',
+    data
+  })
+}
+
+// 生产工单新增
+export function orderAdd(data) {
+  return request({
+    url: newUrl + '/api/PlanWorkOrder/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 生产工单编辑
+export function orderModify(data) {
+  return request({
+    url: newUrl + '/api/PlanWorkOrder/Modify',
+    method: 'post',
+    data
+  })
+}
+
 // 生产工单列表
 export function orderList(data) {
   return request({
@@ -112,7 +141,7 @@ export function orderDelete(data) {
     data
   })
 }
-//
+
 // 生产工单冻结
 // 修改生产工单状态
 // 功能范围：工单发布、取消发布、工单冻结、强制完工

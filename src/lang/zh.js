@@ -338,7 +338,7 @@ export default {
     PlanEndDate: '计划完成日期',
     RealStartDate: '实际开始日期',
     RealEndDate: '实际完成日期',
-    CreateTime: '创建日期',
+    CreateTime: '维护时间',
     PlanDeliveryDate: '计划发货日期',
     EditProduction: '编辑',
     addProductiony: '新增',

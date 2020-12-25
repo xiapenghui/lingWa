@@ -518,7 +518,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="创建日期" width="150">
+        <el-table-column align="center" label="维护时间" width="150">
           <template slot-scope="scope">
             {{ scope.row.CreateTime }}
           </template>
@@ -882,8 +882,8 @@ export default {
     importChange(val) {
       this.pagination.importDate[0] = val[0]
       this.pagination.importDate[1] = val[1]
-      this.pagination.CreateStartDate = this.pagination.importDate[0]
-      this.pagination.CreateEndDate = this.pagination.importDate[1]
+      this.pagination.ModifyTimeStart = this.pagination.importDate[0]
+      this.pagination.ModifyTimeEnd = this.pagination.importDate[1]
     },
 
     // 折叠按钮互斥
