@@ -193,7 +193,7 @@ import WorkingName from '@/components/WorkingName' // 工序名称
 const fixHeight = 270
 const fixHeightBox = 350
 export default {
-  name: 'CenterInfo',
+  name: 'TerminalInfo',
   components: { Pagination, WorkingName },
   data() {
     return {

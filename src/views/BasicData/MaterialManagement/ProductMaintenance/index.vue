@@ -178,7 +178,7 @@ import LineName from '@/components/LineName' // 工艺路线弹
 const fixHeight = 270
 const fixHeightBox = 350
 export default {
-  name: 'MaterialInformation',
+  name: 'ProductMaintenance',
   components: { Pagination, LineName },
   data() {
     return {

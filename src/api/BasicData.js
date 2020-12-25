@@ -1,12 +1,8 @@
-
-// const newUrl = 'http://localhost:37120' // 测试地址
-// const newUrl = 'http://192.168.1.151:20000' // 本地地址
-const newUrl = 'http://121.196.123.158/WebAPI' // 服务器地址
 import request from '@/utils/request'
 // 通用下拉选择框
 export function GetDictionary(query) {
   return request({
-    url: newUrl + '/api/Common/GetDictionary',
+    url: '/api/Common/GetDictionary',
     method: 'post',
     params: query
   })
@@ -15,7 +11,7 @@ export function GetDictionary(query) {
 // 通用物料数据
 export function GetMaterialList(data) {
   return request({
-    url: newUrl + '/api/Common/GetMaterialList',
+    url: '/api/Common/GetMaterialList',
     method: 'post',
     data
   })
@@ -24,7 +20,7 @@ export function GetMaterialList(data) {
 // 通用客户信息数据
 export function GetCustomerList(data) {
   return request({
-    url: newUrl + '/api/Common/GetCustomerList',
+    url: '/api/Common/GetCustomerList',
     method: 'post',
     data
   })
@@ -33,7 +29,7 @@ export function GetCustomerList(data) {
 // 通用工艺路线
 export function GetByRouteList(data) {
   return request({
-    url: newUrl + '/api/Common/GetWorkingProcedureByRouteList',
+    url: '/api/Common/GetWorkingProcedureByRouteList',
     method: 'post',
     data
   })
@@ -42,7 +38,7 @@ export function GetByRouteList(data) {
 // 通用产品缺陷
 export function GetQuaDefectType(data) {
   return request({
-    url: newUrl + '/api/Common/GetQuaDefectTypeTextValuePair',
+    url: '/api/Common/GetQuaDefectTypeTextValuePair',
     method: 'post',
     data
   })
@@ -51,7 +47,7 @@ export function GetQuaDefectType(data) {
 // 通用获取当前公司
 export function GetAuthOrganizationRange(data) {
   return request({
-    url: newUrl + '/api/Common/GetAuthOrganizationRange',
+    url: '/api/Common/GetAuthOrganizationRange',
     method: 'post',
     data
   })
@@ -60,7 +56,7 @@ export function GetAuthOrganizationRange(data) {
 // 通用产线接口
 export function GetLine(data) {
   return request({
-    url: newUrl + '/api/Common/GetProductLineTextValuePair',
+    url: '/api/Common/GetProductLineTextValuePair',
     method: 'post',
     data
   })
@@ -69,7 +65,7 @@ export function GetLine(data) {
 // 通用BOM版本接口
 export function GetBomVersion(data) {
   return request({
-    url: newUrl + '/api/Common/GetBomVersion',
+    url: '/api/Common/GetBomVersion',
     method: 'post',
     data
   })
@@ -78,7 +74,7 @@ export function GetBomVersion(data) {
 // 公司信息管理列表
 export function OrganList(data) {
   return request({
-    url: newUrl + '/api/BaseOrganizationCorp/List',
+    url: '/api/BaseOrganizationCorp/List',
     method: 'post',
     data
   })
@@ -87,7 +83,7 @@ export function OrganList(data) {
 // 增加公司信息
 export function OrganAdd(data) {
   return request({
-    url: newUrl + '/api/BaseOrganizationCorp/Add',
+    url: '/api/BaseOrganizationCorp/Add',
     method: 'post',
     data
   })
@@ -96,7 +92,7 @@ export function OrganAdd(data) {
 // 删除公司信息
 export function OrganDelete(data) {
   return request({
-    url: newUrl + '/api/BaseOrganizationCorp/Delete',
+    url: '/api/BaseOrganizationCorp/Delete',
     method: 'post',
     data
   })
@@ -105,7 +101,7 @@ export function OrganDelete(data) {
 // 修改公司信息
 export function OrganModify(data) {
   return request({
-    url: newUrl + '/api/BaseOrganizationCorp/Modify',
+    url: '/api/BaseOrganizationCorp/Modify',
     method: 'post',
     data
   })
@@ -113,7 +109,7 @@ export function OrganModify(data) {
 // 修改公司信息状态
 export function OrganStatus(data) {
   return request({
-    url: newUrl + '/api/BaseOrganizationCorp/ModifyStatus',
+    url: '/api/BaseOrganizationCorp/ModifyStatus',
     method: 'post',
     data
   })
@@ -122,7 +118,7 @@ export function OrganStatus(data) {
 // 查看工序分页列表
 export function ProduceList(data) {
   return request({
-    url: newUrl + '/api/ProduceProcess/List',
+    url: '/api/ProduceProcess/List',
     method: 'post',
     data
   })
@@ -130,7 +126,7 @@ export function ProduceList(data) {
 // 查看工序增加
 export function ProduceAdd(data) {
   return request({
-    url: newUrl + '/api/ProduceProcess/Add',
+    url: '/api/ProduceProcess/Add',
     method: 'post',
     data
   })
@@ -138,7 +134,7 @@ export function ProduceAdd(data) {
 // 查看工序增加
 export function ProduceDelete(data) {
   return request({
-    url: newUrl + '/api/ProduceProcess/Delete',
+    url: '/api/ProduceProcess/Delete',
     method: 'post',
     data
   })
@@ -147,7 +143,7 @@ export function ProduceDelete(data) {
 // 修改工序增加
 export function ProduceModify(data) {
   return request({
-    url: newUrl + '/api/ProduceProcess/Modify',
+    url: '/api/ProduceProcess/Modify',
     method: 'post',
     data
   })
@@ -157,7 +153,7 @@ export function ProduceModify(data) {
 // 客户信息维护列表
 export function CustomerList(data) {
   return request({
-    url: newUrl + '/api/BaseMasterCustomer/List',
+    url: '/api/BaseMasterCustomer/List',
     method: 'post',
     data
   })
@@ -166,7 +162,7 @@ export function CustomerList(data) {
 // 客户信息删除
 export function CustomerDelete(data) {
   return request({
-    url: newUrl + '/api/BaseMasterCustomer/Delete',
+    url: '/api/BaseMasterCustomer/Delete',
     method: 'post',
     data
   })
@@ -175,7 +171,7 @@ export function CustomerDelete(data) {
 // 客户信息禁用启用
 export function CustomerStatus(data) {
   return request({
-    url: newUrl + '/api/BaseMasterCustomer/ModifyStatus',
+    url: '/api/BaseMasterCustomer/ModifyStatus',
     method: 'post',
     data
   })
@@ -184,7 +180,7 @@ export function CustomerStatus(data) {
 // 客户信息新增
 export function CustomerAdd(data) {
   return request({
-    url: newUrl + '/api/BaseMasterCustomer/Add',
+    url: '/api/BaseMasterCustomer/Add',
     method: 'post',
     data
   })
@@ -193,7 +189,7 @@ export function CustomerAdd(data) {
 // 客户信息编辑
 export function CustomerModify(data) {
   return request({
-    url: newUrl + '/api/BaseMasterCustomer/Modify',
+    url: '/api/BaseMasterCustomer/Modify',
     method: 'post',
     data
   })
@@ -203,7 +199,7 @@ export function CustomerModify(data) {
 // 原料信息维护列表
 export function MaterialList(data) {
   return request({
-    url: newUrl + '/api/BaseMaterial/List',
+    url: '/api/BaseMaterial/List',
     method: 'post',
     data
   })
@@ -212,7 +208,7 @@ export function MaterialList(data) {
 // 原料信息维护删除
 export function MaterialDelete(data) {
   return request({
-    url: newUrl + '/api/BaseMaterial/Delete',
+    url: '/api/BaseMaterial/Delete',
     method: 'post',
     data
   })
@@ -221,7 +217,7 @@ export function MaterialDelete(data) {
 // 原料信息维护心新增
 export function MaterialAdd(data) {
   return request({
-    url: newUrl + '/api/BaseMaterial/Add',
+    url: '/api/BaseMaterial/Add',
     method: 'post',
     data
   })
@@ -230,7 +226,7 @@ export function MaterialAdd(data) {
 // 原料信息维护心编辑
 export function MaterialModify(data) {
   return request({
-    url: newUrl + '/api/BaseMaterial/Modify',
+    url: '/api/BaseMaterial/Modify',
     method: 'post',
     data
   })
@@ -238,7 +234,7 @@ export function MaterialModify(data) {
 
 export function MaterialStatus(data) {
   return request({
-    url: newUrl + '/api/BaseMaterial/ModifyStatus',
+    url: '/api/BaseMaterial/ModifyStatus',
     method: 'post',
     data
   })
@@ -247,7 +243,7 @@ export function MaterialStatus(data) {
 // BOM信息维护列表分页
 export function bomList(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOM/List',
+    url: '/api/BaseProductBOM/List',
     method: 'post',
     data
   })
@@ -256,7 +252,7 @@ export function bomList(data) {
 // BOM信息维护列表--增加
 export function bomAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOM/Add',
+    url: '/api/BaseProductBOM/Add',
     method: 'post',
     data
   })
@@ -265,7 +261,7 @@ export function bomAdd(data) {
 // BOM信息维护列表--编辑
 export function bomModify(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOM/Modify',
+    url: '/api/BaseProductBOM/Modify',
     method: 'post',
     data
   })
@@ -274,7 +270,7 @@ export function bomModify(data) {
 // BOM信息维护列表 --状态
 export function bomModifyStatus(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOM/ModifyStatus',
+    url: '/api/BaseProductBOM/ModifyStatus',
     method: 'post',
     data
   })
@@ -283,7 +279,7 @@ export function bomModifyStatus(data) {
 // BOM信息维护列表 --删除
 export function bomDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOM/Delete',
+    url: '/api/BaseProductBOM/Delete',
     method: 'post',
     data
   })
@@ -292,7 +288,7 @@ export function bomDelete(data) {
 // BOM信息维护列表 --复制
 export function bomCopy(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOM/Copy',
+    url: '/api/BaseProductBOM/Copy',
     method: 'post',
     data
   })
@@ -301,7 +297,7 @@ export function bomCopy(data) {
 // BOM信息维护明细列表 --分页
 export function bomDetailList(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOMDetail/List',
+    url: '/api/BaseProductBOMDetail/List',
     method: 'post',
     data
   })
@@ -310,7 +306,7 @@ export function bomDetailList(data) {
 // BOM信息维护明细列表 --新增
 export function bomDetailAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOMDetail/Add',
+    url: '/api/BaseProductBOMDetail/Add',
     method: 'post',
     data
   })
@@ -319,7 +315,7 @@ export function bomDetailAdd(data) {
 // BOM信息维护明细列表 --修改
 export function bomDetailModify(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOMDetail/Modify',
+    url: '/api/BaseProductBOMDetail/Modify',
     method: 'post',
     data
   })
@@ -328,7 +324,7 @@ export function bomDetailModify(data) {
 // BOM信息维护明细列表 --删除
 export function bomDetailDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProductBOMDetail/Delete',
+    url: '/api/BaseProductBOMDetail/Delete',
     method: 'post',
     data
   })
@@ -337,7 +333,7 @@ export function bomDetailDelete(data) {
 // 工艺路线列表 --分页
 export function baseRouteList(data) {
   return request({
-    url: newUrl + '/api/BaseRoute/List',
+    url: '/api/BaseRoute/List',
     method: 'post',
     data
   })
@@ -346,7 +342,7 @@ export function baseRouteList(data) {
 // 工艺路线列表 --新增
 export function baseRouteAdd(data) {
   return request({
-    url: newUrl + '/api/BaseRoute/Add',
+    url: '/api/BaseRoute/Add',
     method: 'post',
     data
   })
@@ -355,7 +351,7 @@ export function baseRouteAdd(data) {
 // 工艺路线列表 --修改
 export function baseRouteModify(data) {
   return request({
-    url: newUrl + '/api/BaseRoute/Modify',
+    url: '/api/BaseRoute/Modify',
     method: 'post',
     data
   })
@@ -364,7 +360,7 @@ export function baseRouteModify(data) {
 // 工艺路线列表 --删除
 export function baseRouteDelete(data) {
   return request({
-    url: newUrl + '/api/BaseRoute/Delete',
+    url: '/api/BaseRoute/Delete',
     method: 'post',
     data
   })
@@ -373,7 +369,7 @@ export function baseRouteDelete(data) {
 // 工艺路线列表 --复制
 export function baseRouteCopy(data) {
   return request({
-    url: newUrl + '/api/BaseRoute/Copy',
+    url: '/api/BaseRoute/Copy',
     method: 'post',
     data
   })
@@ -382,7 +378,7 @@ export function baseRouteCopy(data) {
 // 工艺路线列表 --状态
 export function baseRouteStatus(data) {
   return request({
-    url: newUrl + '/api/BaseRoute/ModifyStatus',
+    url: '/api/BaseRoute/ModifyStatus',
     method: 'post',
     data
   })
@@ -391,7 +387,7 @@ export function baseRouteStatus(data) {
 // 工艺路线明细列表 --分页
 export function baseDetailList(data) {
   return request({
-    url: newUrl + '/api/BaseRouteDetail/List',
+    url: '/api/BaseRouteDetail/List',
     method: 'post',
     data
   })
@@ -400,7 +396,7 @@ export function baseDetailList(data) {
 // 工艺路线明细 --新增
 export function baseDetailAdd(data) {
   return request({
-    url: newUrl + '/api/BaseRouteDetail/Add',
+    url: '/api/BaseRouteDetail/Add',
     method: 'post',
     data
   })
@@ -408,7 +404,7 @@ export function baseDetailAdd(data) {
 // 工艺路线明细 --修改
 export function baseDetailModify(data) {
   return request({
-    url: newUrl + '/api/BaseRouteDetail/Modify',
+    url: '/api/BaseRouteDetail/Modify',
     method: 'post',
     data
   })
@@ -416,7 +412,7 @@ export function baseDetailModify(data) {
 // 工艺路线明细 --删除
 export function baseDetailDelete(data) {
   return request({
-    url: newUrl + '/api/BaseRouteDetail/Delete',
+    url: '/api/BaseRouteDetail/Delete',
     method: 'post',
     data
   })
@@ -425,7 +421,7 @@ export function baseDetailDelete(data) {
 // 工序列表--分页
 export function lineList(data) {
   return request({
-    url: newUrl + '/api/Route/List',
+    url: '/api/Route/List',
     method: 'post',
     data
   })
@@ -434,7 +430,7 @@ export function lineList(data) {
 // 工序列表--分页
 export function BaseProList(data) {
   return request({
-    url: newUrl + '/api/BaseProcess/List',
+    url: '/api/BaseProcess/List',
     method: 'post',
     data
   })
@@ -443,7 +439,7 @@ export function BaseProList(data) {
 // 工序列表--分页
 export function BaseProAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProcess/Add',
+    url: '/api/BaseProcess/Add',
     method: 'post',
     data
   })
@@ -452,7 +448,7 @@ export function BaseProAdd(data) {
 // 工序列表--删除
 export function BaseProDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProcess/Delete',
+    url: '/api/BaseProcess/Delete',
     method: 'post',
     data
   })
@@ -460,7 +456,7 @@ export function BaseProDelete(data) {
 // 工序列表--修改
 export function BaseProModify(data) {
   return request({
-    url: newUrl + '/api/BaseProcess/Modify',
+    url: '/api/BaseProcess/Modify',
     method: 'post',
     data
   })
@@ -469,7 +465,7 @@ export function BaseProModify(data) {
 // 工序列表--状态
 export function BaseProStatus(data) {
   return request({
-    url: newUrl + '/api/BaseProcess/ModifyStatus',
+    url: '/api/BaseProcess/ModifyStatus',
     method: 'post',
     data
   })
@@ -478,7 +474,7 @@ export function BaseProStatus(data) {
 // 生产组织管理树状图
 export function treeList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ListProductionOrganization',
+    url: '/api/BaseProduceOrganization/ListProductionOrganization',
     method: 'post',
     data
   })
@@ -487,7 +483,7 @@ export function treeList(data) {
 // 生产组织管理--工厂分页
 export function factoryList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/FactoryList',
+    url: '/api/BaseProduceOrganization/FactoryList',
     method: 'post',
     data
   })
@@ -496,7 +492,7 @@ export function factoryList(data) {
 // 生产组织管理--车间分页
 export function workShopList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkShopList',
+    url: '/api/BaseProduceOrganization/WorkShopList',
     method: 'post',
     data
   })
@@ -505,7 +501,7 @@ export function workShopList(data) {
 // 生产组织管理--产线分页
 export function ProductLineList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ProductLineList',
+    url: '/api/BaseProduceOrganization/ProductLineList',
     method: 'post',
     data
   })
@@ -514,7 +510,7 @@ export function ProductLineList(data) {
 // 生产组织管理--工作中心分页
 export function WorkCenterList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkCenterList',
+    url: '/api/BaseProduceOrganization/WorkCenterList',
     method: 'post',
     data
   })
@@ -523,7 +519,7 @@ export function WorkCenterList(data) {
 // 生产组织管理--工位分页
 export function stationList(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/TerminalList',
+    url: '/api/BaseProduceOrganization/TerminalList',
     method: 'post',
     data
   })
@@ -532,7 +528,7 @@ export function stationList(data) {
 // 生产组织管理--工厂增加
 export function factoryAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/FactoryAdd',
+    url: '/api/BaseProduceOrganization/FactoryAdd',
     method: 'post',
     data
   })
@@ -541,7 +537,7 @@ export function factoryAdd(data) {
 // 生产组织管理--车间增加
 export function workShopAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkShopAdd',
+    url: '/api/BaseProduceOrganization/WorkShopAdd',
     method: 'post',
     data
   })
@@ -550,7 +546,7 @@ export function workShopAdd(data) {
 // 生产组织管理--产线增加
 export function ProductLineAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ProductLineAdd',
+    url: '/api/BaseProduceOrganization/ProductLineAdd',
     method: 'post',
     data
   })
@@ -559,7 +555,7 @@ export function ProductLineAdd(data) {
 // 生产组织管理--工作中心增加
 export function WorkCenterAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkCenterAdd',
+    url: '/api/BaseProduceOrganization/WorkCenterAdd',
     method: 'post',
     data
   })
@@ -568,7 +564,7 @@ export function WorkCenterAdd(data) {
 // 生产组织管理--工位增加
 export function stationAdd(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/TerminalAdd',
+    url: '/api/BaseProduceOrganization/TerminalAdd',
     method: 'post',
     data
   })
@@ -577,7 +573,7 @@ export function stationAdd(data) {
 // 生产组织管理--工厂删除
 export function factoryDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/FactoryDelete',
+    url: '/api/BaseProduceOrganization/FactoryDelete',
     method: 'post',
     data
   })
@@ -586,7 +582,7 @@ export function factoryDelete(data) {
 // 生产组织管理--车间删除
 export function workShopDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkShopDelete',
+    url: '/api/BaseProduceOrganization/WorkShopDelete',
     method: 'post',
     data
   })
@@ -595,7 +591,7 @@ export function workShopDelete(data) {
 // 生产组织管理--产线删除
 export function ProductLineDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ProductLineDelete',
+    url: '/api/BaseProduceOrganization/ProductLineDelete',
     method: 'post',
     data
   })
@@ -604,7 +600,7 @@ export function ProductLineDelete(data) {
 // 生产组织管理--工作中心删除
 export function WorkCenterDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkCenterDelete',
+    url: '/api/BaseProduceOrganization/WorkCenterDelete',
     method: 'post',
     data
   })
@@ -613,7 +609,7 @@ export function WorkCenterDelete(data) {
 // 生产组织管理--工位删除
 export function stationDelete(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/TerminalDelete',
+    url: '/api/BaseProduceOrganization/TerminalDelete',
     method: 'post',
     data
   })
@@ -622,7 +618,7 @@ export function stationDelete(data) {
 // 生产组织管理--工厂编辑
 export function factoryModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/FactoryModify',
+    url: '/api/BaseProduceOrganization/FactoryModify',
     method: 'post',
     data
   })
@@ -631,7 +627,7 @@ export function factoryModify(data) {
 // 生产组织管理--车间编辑
 export function workShopModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkShopModify',
+    url: '/api/BaseProduceOrganization/WorkShopModify',
     method: 'post',
     data
   })
@@ -640,7 +636,7 @@ export function workShopModify(data) {
 // 生产组织管理--产线编辑
 export function ProductLineModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ProductLineModify',
+    url: '/api/BaseProduceOrganization/ProductLineModify',
     method: 'post',
     data
   })
@@ -649,7 +645,7 @@ export function ProductLineModify(data) {
 // 生产组织管理--工作中心编辑
 export function WorkCenterModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkCenterModify',
+    url: '/api/BaseProduceOrganization/WorkCenterModify',
     method: 'post',
     data
   })
@@ -658,7 +654,7 @@ export function WorkCenterModify(data) {
 // 生产组织管理--工位编辑
 export function stationModify(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/TerminalModify',
+    url: '/api/BaseProduceOrganization/TerminalModify',
     method: 'post',
     data
   })
@@ -667,7 +663,7 @@ export function stationModify(data) {
 // 生产组织管理--车间状态
 export function workShopStatus(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkShopModifyStatus',
+    url: '/api/BaseProduceOrganization/WorkShopModifyStatus',
     method: 'post',
     data
   })
@@ -676,7 +672,7 @@ export function workShopStatus(data) {
 // 生产组织管理--产线状态
 export function ProductLineStatus(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/ProductLineModifyStatus',
+    url: '/api/BaseProduceOrganization/ProductLineModifyStatus',
     method: 'post',
     data
   })
@@ -685,7 +681,7 @@ export function ProductLineStatus(data) {
 // 生产组织管理--工作中心状态
 export function WorkCenterStatus(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/WorkCenterModifyStatus',
+    url: '/api/BaseProduceOrganization/WorkCenterModifyStatus',
     method: 'post',
     data
   })
@@ -694,7 +690,7 @@ export function WorkCenterStatus(data) {
 // 生产组织管理--工位状态
 export function stationStatus(data) {
   return request({
-    url: newUrl + '/api/BaseProduceOrganization/TerminalModifyStatus',
+    url: '/api/BaseProduceOrganization/TerminalModifyStatus',
     method: 'post',
     data
   })

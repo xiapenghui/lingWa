@@ -96,6 +96,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
@@ -147,7 +153,8 @@
           <el-radio v-model="ruleForm.IsInspection" :label="true">是</el-radio>
           <el-radio v-model="ruleForm.IsInspection" :label="false">否</el-radio>
         </el-form-item>
-        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Description" placeholder="备注" type="textarea" clearable /></el-form-item>
+        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
+        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>

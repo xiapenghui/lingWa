@@ -243,7 +243,7 @@ import IncomingName from '@/components/IncomingName' // 来料检验规则
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
-  name: 'BomMangement',
+  name: 'MaterialInsp',
   components: { Pagination, MaterialName, IncomingName },
   data() {
     return {

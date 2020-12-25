@@ -82,6 +82,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable>
+        <template slot-scope="scope">
+          {{ scope.row.ModifyUserName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable>
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
@@ -138,7 +144,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import { workShopList, workShopDelete, workShopAdd, workShopModify, workShopStatus, GetAuthOrganizationRange } from '@/api/BasicData'
 const fixHeight = 260
 export default {
-  name: 'CustomerInformation',
+  name: 'WorkInfo',
   components: { Pagination },
   data() {
     return {

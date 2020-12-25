@@ -78,7 +78,7 @@
 <script>
 const fixHeightBox = 350
 export default {
-  name: 'MaterialName',
+  name: 'IncomingName',
   props: {
     incomingShow: {
       type: Boolean,

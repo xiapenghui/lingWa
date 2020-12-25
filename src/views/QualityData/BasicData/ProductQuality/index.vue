@@ -206,7 +206,7 @@ import FinshName from '@/components/FinshName' // 成品名称弹窗
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
-  name: 'BomMangement',
+  name: 'ProductQuality',
   components: { Pagination, FinshName },
   data() {
     return {

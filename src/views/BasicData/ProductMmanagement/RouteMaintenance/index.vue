@@ -51,7 +51,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生效时间" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="生效时间" width="150" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EffectiveDate | substringTime }}
         </template>
@@ -75,13 +75,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="200" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200" prop="ModifyTime" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -156,7 +156,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
-  name: 'BomMangement',
+  name: 'RouteMaintenance',
   components: { Pagination },
   data() {
     return {

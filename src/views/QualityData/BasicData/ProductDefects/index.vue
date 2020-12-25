@@ -149,7 +149,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import { QuaDefList, QuaDefAdd, QuaDefDelete, QuaDefModify, QuaDefStatus } from '@/api/QualityData'
 const fixHeight = 260
 export default {
-  name: 'CompanyMaintenance',
+  name: 'ProductDefects',
   components: { Pagination },
   data() {
     return {

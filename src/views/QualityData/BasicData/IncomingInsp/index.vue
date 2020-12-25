@@ -181,7 +181,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import { QuaIqcList, QuaIqcAdd, QuaIqcDelete, QuaIqcModify, QuaIqcStatus } from '@/api/QualityData'
 const fixHeight = 260
 export default {
-  name: 'CompanyMaintenance',
+  name: 'IncomingInsp',
   components: { Pagination },
   data() {
     return {

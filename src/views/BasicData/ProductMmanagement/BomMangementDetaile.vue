@@ -164,7 +164,7 @@ import MaterialName from '@/components/MaterialName' // 物料名称
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
-  name: 'BomMangement',
+  name: 'BomMangementDetaile',
   components: { Pagination, WorkingName, MaterialName },
   data() {
     return {

@@ -141,7 +141,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import { BaseProList, BaseProDelete, BaseProAdd, BaseProModify, BaseProStatus } from '@/api/BasicData'
 const fixHeight = 270
 export default {
-  name: 'CustomerInformation',
+  name: 'WorkMaintenance',
   components: { Pagination },
   data() {
     return {

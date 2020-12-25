@@ -176,7 +176,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 const fixHeight = 260
 export default {
-  name: 'RolePermission',
+  name: 'SystemManagement',
   components: { Pagination },
   data() {
     return {

@@ -676,11 +676,11 @@ import {
   productionSplit,
   orderList
 } from '@/api/ProductionPlan'
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 
 export default {
-  name: 'CompanyMaintenance',
+  name: 'ProducPlan',
   components: { Pagination, FinshName, CustomerName },
   data() {
     return {
@@ -889,9 +889,18 @@ export default {
     // 折叠按钮互斥
     toggle(status) {
       if (status === '0') {
-        this.tableHeight = '67vh'
-      } else {
-        this.tableHeight = '72vh'
+        if (window.innerHeight < 800) {
+          this.tableHeight = '60vh'
+        } else {
+          this.tableHeight = '68vh'
+        }
+      }
+      if (status === '1') {
+        if (window.innerHeight < 800) {
+          this.tableHeight = '63vh'
+        } else {
+          this.tableHeight = '73vh'
+        }
       }
       this.btnShow = !this.btnShow
       this.showSearch = !this.showSearch
@@ -1010,9 +1019,7 @@ export default {
     },
 
     // 封装拆分
-    commonSplit() {
-
-    },
+    commonSplit() {},
 
     // 编辑成功
     submitForm(formName) {

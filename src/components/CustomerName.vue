@@ -1,10 +1,10 @@
 <template>
-  <el-dialog :close-on-click-modal="false" :visible.sync="userShow" title="客户名称" width="70%" height="50%">
+  <el-dialog :close-on-click-modal="false" :visible.sync="userShow" :before-close="userClose" title="客户名称" width="70%" height="50%">
     <div class="searchBox" style="margin-bottom: 20px;">
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="客户编号" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="客户编号" placement="top-start">
               <label class="radio-label">{{ $t('permission.CustomerNum') }}:</label>
             </el-tooltip>
           </el-col>
@@ -13,7 +13,7 @@
 
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="客户名称" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="客户名称" placement="top-start">
               <label class="radio-label">{{ $t('permission.FullName') }}:</label>
             </el-tooltip>
           </el-col>

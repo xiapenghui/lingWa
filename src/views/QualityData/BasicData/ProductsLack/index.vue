@@ -260,7 +260,7 @@ import FinshName from '@/components/FinshName' // 成品名称弹窗
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
-  name: 'CompanyMaintenance',
+  name: 'ProductsLack',
   components: { Pagination, WorkingName, FinshName },
   data() {
     return {
@@ -438,9 +438,18 @@ export default {
     // 折叠按钮互斥
     toggle(status) {
       if (status === '0') {
-        this.tableHeight = '67vh'
-      } else {
-        this.tableHeight = '72vh'
+        if (window.innerHeight < 800) {
+          this.tableHeight = '60vh'
+        } else {
+          this.tableHeight = '68vh'
+        }
+      }
+      if (status === '1') {
+        if (window.innerHeight < 800) {
+          this.tableHeight = '63vh'
+        } else {
+          this.tableHeight = '73vh'
+        }
       }
       this.btnShow = !this.btnShow
       this.showSearch = !this.showSearch

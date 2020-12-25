@@ -180,7 +180,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 const fixHeight = 260
 
 export default {
-  name: 'BomMangement',
+  name: 'MaterialInspDetail',
   components: { Pagination },
   data() {
     return {

@@ -1,12 +1,8 @@
-// const newUrl = 'http://localhost:37120' // 测试地址
-// const newUrl = 'http://192.168.1.151:20000' // 本地地址
-const newUrl = 'http://121.196.123.158/WebAPI' // 服务器地址
 import request from '@/utils/request'
-
 //  基础数据 ---来料检验规则--列表分页
 export function QuaIqcList(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcRule/List',
+    url: '/api/QuaBaseIqcRule/List',
     method: 'post',
     data
   })
@@ -14,7 +10,7 @@ export function QuaIqcList(data) {
 //  基础数据 ---来料检验规则--增加
 export function QuaIqcAdd(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcRule/Add',
+    url: '/api/QuaBaseIqcRule/Add',
     method: 'post',
     data
   })
@@ -22,7 +18,7 @@ export function QuaIqcAdd(data) {
 //  基础数据 ---来料检验规则--删除
 export function QuaIqcDelete(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcRule/Delete',
+    url: '/api/QuaBaseIqcRule/Delete',
     method: 'post',
     data
   })
@@ -31,7 +27,7 @@ export function QuaIqcDelete(data) {
 //  基础数据 ---来料检验规则--编辑
 export function QuaIqcModify(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcRule/Modify',
+    url: '/api/QuaBaseIqcRule/Modify',
     method: 'post',
     data
   })
@@ -40,7 +36,7 @@ export function QuaIqcModify(data) {
 //  基础数据 ---来料检验规则--状态
 export function QuaIqcStatus(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcRule/ModifyStatus',
+    url: '/api/QuaBaseIqcRule/ModifyStatus',
     method: 'post',
     data
   })
@@ -49,7 +45,7 @@ export function QuaIqcStatus(data) {
 //  基础数据 ---原材料质量检验项--列表分页
 export function QuaIqcInList(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspect/List',
+    url: '/api/QuaBaseIqcInspect/List',
     method: 'post',
     data
   })
@@ -57,7 +53,7 @@ export function QuaIqcInList(data) {
 //  基础数据 ---原材料质量检验项--增加
 export function QuaIqcInAdd(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspect/Add',
+    url: '/api/QuaBaseIqcInspect/Add',
     method: 'post',
     data
   })
@@ -65,7 +61,7 @@ export function QuaIqcInAdd(data) {
 //  基础数据 ---原材料质量检验项--删除
 export function QuaIqcInDelete(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspect/Delete',
+    url: '/api/QuaBaseIqcInspect/Delete',
     method: 'post',
     data
   })
@@ -74,7 +70,7 @@ export function QuaIqcInDelete(data) {
 //  基础数据 ---原材料质量检验项--编辑
 export function QuaIqcInModify(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspect/Modify',
+    url: '/api/QuaBaseIqcInspect/Modify',
     method: 'post',
     data
   })
@@ -83,7 +79,7 @@ export function QuaIqcInModify(data) {
 // 基础数据-- - 原材料质量检验项--状态
 export function QuaIqcInStatus(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspect/ModifyStatus',
+    url: '/api/QuaBaseIqcInspect/ModifyStatus',
     method: 'post',
     data
   })
@@ -92,7 +88,7 @@ export function QuaIqcInStatus(data) {
 // 基础数据-- - 原材料质量检验项--复制
 export function QuaIqcInCopy(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspect/Copy',
+    url: '/api/QuaBaseIqcInspect/Copy',
     method: 'post',
     data
   })
@@ -101,7 +97,7 @@ export function QuaIqcInCopy(data) {
 // 基础数据-- - 原材料质量检验项明细--列表分页
 export function QuaIqDetList(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspectDetail/List',
+    url: '/api/QuaBaseIqcInspectDetail/List',
     method: 'post',
     data
   })
@@ -110,7 +106,7 @@ export function QuaIqDetList(data) {
 // 基础数据-- - 原材料质量检验项明细--列表增加
 export function QuaIqDetAdd(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspectDetail/Add',
+    url: '/api/QuaBaseIqcInspectDetail/Add',
     method: 'post',
     data
   })
@@ -119,7 +115,7 @@ export function QuaIqDetAdd(data) {
 // 基础数据-- - 原材料质量检验项明细--列表删除
 export function QuaIqDetDelete(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspectDetail/Delete',
+    url: '/api/QuaBaseIqcInspectDetail/Delete',
     method: 'post',
     data
   })
@@ -128,7 +124,7 @@ export function QuaIqDetDelete(data) {
 // 基础数据-- - 原材料质量检验项明细--列表修改
 export function QuaIqDetModify(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIqcInspectDetail/Modify',
+    url: '/api/QuaBaseIqcInspectDetail/Modify',
     method: 'post',
     data
   })
@@ -137,7 +133,7 @@ export function QuaIqDetModify(data) {
 // 基础数据-- - 产品缺陷类型--列表分页
 export function QuaDefList(data) {
   return request({
-    url: newUrl + '/api/QuaBaseDefectType/List',
+    url: '/api/QuaBaseDefectType/List',
     method: 'post',
     data
   })
@@ -146,7 +142,7 @@ export function QuaDefList(data) {
 // 基础数据-- - 产品缺陷类型--列表增加
 export function QuaDefAdd(data) {
   return request({
-    url: newUrl + '/api/QuaBaseDefectType/Add',
+    url: '/api/QuaBaseDefectType/Add',
     method: 'post',
     data
   })
@@ -155,7 +151,7 @@ export function QuaDefAdd(data) {
 // 基础数据-- - 产品缺陷类型--列表删除
 export function QuaDefDelete(data) {
   return request({
-    url: newUrl + '/api/QuaBaseDefectType/Delete',
+    url: '/api/QuaBaseDefectType/Delete',
     method: 'post',
     data
   })
@@ -164,7 +160,7 @@ export function QuaDefDelete(data) {
 // 基础数据-- - 产品缺陷类型--列表修改
 export function QuaDefModify(data) {
   return request({
-    url: newUrl + '/api/QuaBaseDefectType/Modify',
+    url: '/api/QuaBaseDefectType/Modify',
     method: 'post',
     data
   })
@@ -173,7 +169,7 @@ export function QuaDefModify(data) {
 // 基础数据-- - 产品缺陷类型--列表状态
 export function QuaDefStatus(data) {
   return request({
-    url: newUrl + '/api/QuaBaseDefectType/ModifyStatus',
+    url: '/api/QuaBaseDefectType/ModifyStatus',
     method: 'post',
     data
   })
@@ -182,7 +178,7 @@ export function QuaDefStatus(data) {
 // 基础数据-- - 产品缺陷--列表分页
 export function QuaProduList(data) {
   return request({
-    url: newUrl + '/api/QuaBaseProductDefect/List',
+    url: '/api/QuaBaseProductDefect/List',
     method: 'post',
     data
   })
@@ -191,7 +187,7 @@ export function QuaProduList(data) {
 // 基础数据-- - 产品缺陷--列表增加
 export function QuaProduAdd(data) {
   return request({
-    url: newUrl + '/api/QuaBaseProductDefect/Add',
+    url: '/api/QuaBaseProductDefect/Add',
     method: 'post',
     data
   })
@@ -200,7 +196,7 @@ export function QuaProduAdd(data) {
 // 基础数据-- - 产品缺陷--列表删除
 export function QuaProduDelete(data) {
   return request({
-    url: newUrl + '/api/QuaBaseProductDefect/Delete',
+    url: '/api/QuaBaseProductDefect/Delete',
     method: 'post',
     data
   })
@@ -209,7 +205,7 @@ export function QuaProduDelete(data) {
 // 基础数据-- - 产品缺陷--列表修改
 export function QuaProduModify(data) {
   return request({
-    url: newUrl + '/api/QuaBaseProductDefect/Modify',
+    url: '/api/QuaBaseProductDefect/Modify',
     method: 'post',
     data
   })
@@ -218,7 +214,7 @@ export function QuaProduModify(data) {
 // 基础数据-- - 产品缺陷--列表状态
 export function QuaProduStatus(data) {
   return request({
-    url: newUrl + '/api/QuaBaseProductDefect/ModifyStatus',
+    url: '/api/QuaBaseProductDefect/ModifyStatus',
     method: 'post',
     data
   })
@@ -227,7 +223,7 @@ export function QuaProduStatus(data) {
 //  质量管理 - 基础数据 - 产品质量检验项--列表分页
 export function QuaIpqcList(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcI/List',
+    url: '/api/QuaBaseIpqcI/List',
     method: 'post',
     data
   })
@@ -236,7 +232,7 @@ export function QuaIpqcList(data) {
 //  质量管理 - 基础数据 - 产品质量检验项--列表新增
 export function QuaIpqcAdd(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcI/Add',
+    url: '/api/QuaBaseIpqcI/Add',
     method: 'post',
     data
   })
@@ -245,7 +241,7 @@ export function QuaIpqcAdd(data) {
 //  质量管理 - 基础数据 - 产品质量检验项--列表修改
 export function QuaIpqcModify(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcI/Modify',
+    url: '/api/QuaBaseIpqcI/Modify',
     method: 'post',
     data
   })
@@ -254,7 +250,7 @@ export function QuaIpqcModify(data) {
 //  质量管理 - 基础数据 - 产品质量检验项--列表状态
 export function QuaIpqcModifyStatus(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcI/ModifyStatus',
+    url: '/api/QuaBaseIpqcI/ModifyStatus',
     method: 'post',
     data
   })
@@ -263,7 +259,7 @@ export function QuaIpqcModifyStatus(data) {
 //  质量管理 - 基础数据 - 产品质量检验项--列表删除
 export function QuaIpqcDelete(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcI/Delete',
+    url: '/api/QuaBaseIpqcI/Delete',
     method: 'post',
     data
   })
@@ -272,7 +268,7 @@ export function QuaIpqcDelete(data) {
 //  质量管理 - 基础数据 - 产品质量检验项--列表复制
 export function QuaIpqcCopy(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcI/Copy',
+    url: '/api/QuaBaseIpqcI/Copy',
     method: 'post',
     data
   })
@@ -281,7 +277,7 @@ export function QuaIpqcCopy(data) {
 //  质量管理 - 基础数据 - 产品质量检验项明细--列表分页
 export function QuaIpqcIDeList(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcIDetail/List',
+    url: '/api/QuaBaseIpqcIDetail/List',
     method: 'post',
     data
   })
@@ -290,7 +286,7 @@ export function QuaIpqcIDeList(data) {
 //  质量管理 - 基础数据 - 产品质量检验项明细--列表新增
 export function QuaIpqcIDeAdd(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcIDetail/Add',
+    url: '/api/QuaBaseIpqcIDetail/Add',
     method: 'post',
     data
   })
@@ -299,7 +295,7 @@ export function QuaIpqcIDeAdd(data) {
 //  质量管理 - 基础数据 - 产品质量检验项明细--列表修改
 export function QuaIpqcIDeModify(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcIDetail/Modify',
+    url: '/api/QuaBaseIpqcIDetail/Modify',
     method: 'post',
     data
   })
@@ -308,7 +304,7 @@ export function QuaIpqcIDeModify(data) {
 //  质量管理 - 基础数据 - 产品质量检验项明细--列表删除
 export function QuaIpqcIDeDelete(data) {
   return request({
-    url: newUrl + '/api/QuaBaseIpqcIDetail/Delete',
+    url: '/api/QuaBaseIpqcIDetail/Delete',
     method: 'post',
     data
   })

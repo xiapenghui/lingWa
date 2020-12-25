@@ -1,11 +1,8 @@
-// const newUrl = 'http://localhost:37120' // 测试地址
-// const newUrl = 'http://192.168.1.151:20000' // 本地地址
-const newUrl = 'http://121.196.123.158/WebAPI' // 服务器地址
 import request from '@/utils/request'
 // 获取管理角色列表
 export function ListRole(data) {
   return request({
-    url: newUrl + '/api/Role/ListRole',
+    url: '/api/Role/ListRole',
     method: 'post',
     data
   })
@@ -14,7 +11,7 @@ export function ListRole(data) {
 // 新增角色
 export function addRole(data) {
   return request({
-    url: newUrl + '/api/Role/Add',
+    url: '/api/Role/Add',
     method: 'post',
     data
   })
@@ -23,7 +20,7 @@ export function addRole(data) {
 // 编辑角色
 export function updateRole(data) {
   return request({
-    url: newUrl + '/api/Role/Modify',
+    url: '/api/Role/Modify',
     method: 'post',
     data
   })
@@ -32,7 +29,7 @@ export function updateRole(data) {
 // 删除角色
 export function deleteRole(data) {
   return request({
-    url: newUrl + '/api/Role/Delete',
+    url: '/api/Role/Delete',
     method: 'post',
     data
   })
@@ -41,7 +38,7 @@ export function deleteRole(data) {
 // 获取系统管理菜单
 export function ListMenuFunAll(data) {
   return request({
-    url: newUrl + '/api/Role/ListMenuFunAll',
+    url: '/api/Role/ListMenuFunAll',
     method: 'post',
     data
   })
@@ -50,7 +47,7 @@ export function ListMenuFunAll(data) {
 // 查看用户列表
 export function ListUser(query, data) {
   return request({
-    url: newUrl + '/api/Role/ListUser',
+    url: '/api/Role/ListUser',
     method: 'post',
     params: query,
     data
@@ -60,7 +57,7 @@ export function ListUser(query, data) {
 // 启用，禁用状态
 export function UpdateStatus(data) {
   return request({
-    url: newUrl + '/api/Role/ModifyStatus',
+    url: '/api/Role/ModifyStatus',
     method: 'post',
     data
   })
@@ -69,7 +66,7 @@ export function UpdateStatus(data) {
 // 编辑，复制
 export function ListRoleMenuFun(data) {
   return request({
-    url: newUrl + '/api/Role/ListRoleMenuFun',
+    url: '/api/Role/ListRoleMenuFun',
     method: 'post',
     data
   })
@@ -79,7 +76,7 @@ export function ListRoleMenuFun(data) {
 // 公司部门下拉列表
 export function companyList(data) {
   return request({
-    url: newUrl + '/api/User/ListConditionOrgDeptRole',
+    url: '/api/User/ListConditionOrgDeptRole',
     method: 'post',
     data
   })
@@ -88,7 +85,7 @@ export function companyList(data) {
 // 分页查询
 export function UserList(data) {
   return request({
-    url: newUrl + '/api/User/List',
+    url: '/api/User/List',
     method: 'post',
     data
   })
@@ -97,7 +94,7 @@ export function UserList(data) {
 // 新增用户
 export function UserAdd(data) {
   return request({
-    url: newUrl + '/api/User/Add',
+    url: '/api/User/Add',
     method: 'post',
     data
   })
@@ -106,7 +103,7 @@ export function UserAdd(data) {
 // 编辑用户
 export function UserUpdate(data) {
   return request({
-    url: newUrl + '/api/User/Modify',
+    url: '/api/User/Modify',
     method: 'post',
     data
   })
@@ -115,7 +112,7 @@ export function UserUpdate(data) {
 // 设置用户可用或者禁用状态
 export function RelerStatus(data) {
   return request({
-    url: newUrl + '/api/User/ModifyStatus',
+    url: '/api/User/ModifyStatus',
     method: 'post',
     data
   })
@@ -124,7 +121,7 @@ export function RelerStatus(data) {
 // 删除用户
 export function RelerDelete(data) {
   return request({
-    url: newUrl + '/api/User/Delete',
+    url: '/api/User/Delete',
     method: 'post',
     data
   })

@@ -1,13 +1,9 @@
-// const newUrl = 'http://localhost:37120' // 测试地址
-// const newUrl = 'http://192.168.1.151:20000' // 本地地址
-const newUrl = 'http://121.196.123.158/WebAPI' // 服务器地址
 import request from '@/utils/request'
-
 // 生产计划
 // 生产工单
 export function productionList(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/List',
+    url: '/api/PlanSchedule/List',
     method: 'post',
     data
   })
@@ -16,7 +12,7 @@ export function productionList(data) {
 // 冻结
 export function productionFreeze(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/Freeze',
+    url: '/api/PlanSchedule/Freeze',
     method: 'post',
     data
   })
@@ -25,7 +21,7 @@ export function productionFreeze(data) {
 // 解冻
 export function productionUnFreeze(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/UnFreeze',
+    url: '/api/PlanSchedule/UnFreeze',
     method: 'post',
     data
   })
@@ -34,7 +30,7 @@ export function productionUnFreeze(data) {
 // 强制完工
 export function ForceComplete(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/ForceComplete',
+    url: '/api/PlanSchedule/ForceComplete',
     method: 'post',
     data
   })
@@ -43,7 +39,7 @@ export function ForceComplete(data) {
 // 删除
 export function productionDelete(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/Delete',
+    url: '/api/PlanSchedule/Delete',
     method: 'post',
     data
   })
@@ -53,7 +49,7 @@ export function productionDelete(data) {
 
 export function productionPlanNum(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/PlanNum',
+    url: '/api/PlanSchedule/PlanNum',
     method: 'post',
     data
   })
@@ -62,7 +58,7 @@ export function productionPlanNum(data) {
 // 生产计划新增
 export function productionAdd(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/Add',
+    url: '/api/PlanSchedule/Add',
     method: 'post',
     data
   })
@@ -71,7 +67,7 @@ export function productionAdd(data) {
 // 生产计划编辑修改
 export function productionUpdate(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/Modify',
+    url: '/api/PlanSchedule/Modify',
     method: 'post',
     data
   })
@@ -80,7 +76,7 @@ export function productionUpdate(data) {
 // 生产计划获取要拆分的数据
 export function SplitQuery(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/SplitQuery',
+    url: '/api/PlanSchedule/SplitQuery',
     method: 'post',
     data
   })
@@ -89,7 +85,7 @@ export function SplitQuery(data) {
 // 生产计划获取要拆分的数据
 export function productionSplit(data) {
   return request({
-    url: newUrl + '/api/PlanSchedule/Split',
+    url: '/api/PlanSchedule/Split',
     method: 'post',
     data
   })
@@ -100,7 +96,7 @@ export function productionSplit(data) {
 // 功能范围：取消冻结
 export function orderFreeze(data) {
   return request({
-    url: newUrl + '/api/PlanWorkOrder/ModifyUnfreeze',
+    url: '/api/PlanWorkOrder/ModifyUnfreeze',
     method: 'post',
     data
   })
@@ -109,7 +105,7 @@ export function orderFreeze(data) {
 // 生产工单新增
 export function orderAdd(data) {
   return request({
-    url: newUrl + '/api/PlanWorkOrder/Add',
+    url: '/api/PlanWorkOrder/Add',
     method: 'post',
     data
   })
@@ -118,7 +114,7 @@ export function orderAdd(data) {
 // 生产工单编辑
 export function orderModify(data) {
   return request({
-    url: newUrl + '/api/PlanWorkOrder/Modify',
+    url: '/api/PlanWorkOrder/Modify',
     method: 'post',
     data
   })
@@ -127,7 +123,7 @@ export function orderModify(data) {
 // 生产工单列表
 export function orderList(data) {
   return request({
-    url: newUrl + '/api/PlanWorkOrder/List',
+    url: '/api/PlanWorkOrder/List',
     method: 'post',
     data
   })
@@ -136,7 +132,7 @@ export function orderList(data) {
 // 生产工单删除
 export function orderDelete(data) {
   return request({
-    url: newUrl + '/api/PlanWorkOrder/Delete',
+    url: '/api/PlanWorkOrder/Delete',
     method: 'post',
     data
   })
@@ -147,7 +143,7 @@ export function orderDelete(data) {
 // 功能范围：工单发布、取消发布、工单冻结、强制完工
 export function orderStatus(data) {
   return request({
-    url: newUrl + '/api/PlanWorkOrder/ModifyStatus',
+    url: '/api/PlanWorkOrder/ModifyStatus',
     method: 'post',
     data
   })

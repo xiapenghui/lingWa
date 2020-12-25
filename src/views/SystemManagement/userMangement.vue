@@ -190,6 +190,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { companyList, UserList, UserAdd, UserUpdate, RelerStatus, RelerDelete } from '@/api/role'
 const fixHeight = 260
+
 export default {
   name: 'UserMangement',
   components: { Pagination },
@@ -213,6 +214,7 @@ export default {
         callback()
       }
     }
+
     return {
       tableData: [],
       ruleForm: {
@@ -411,8 +413,6 @@ export default {
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 查看用户
-    handleLook() {},
     // 删除角色
     handleDelete(row) {
       if (this.tableData.length > 0) {
