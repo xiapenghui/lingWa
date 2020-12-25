@@ -5,7 +5,7 @@ import request from '@/utils/request'
 // 仓储物流--基础数据--仓库信息列表
 export function StoWareList(data) {
   return request({
-    url: newUrl + '/api/StoWarehouse/List',
+    url: newUrl + '/api/WareHouseBaseInfo/List',
     method: 'post',
     data
   })
@@ -13,7 +13,7 @@ export function StoWareList(data) {
 // 仓储物流--基础数据--仓库信息新增
 export function StoWareAdd(data) {
   return request({
-    url: newUrl + '/api/StoWarehouse/Add',
+    url: newUrl + '/api/WareHouseBaseInfo/Add',
     method: 'post',
     data
   })
@@ -21,7 +21,7 @@ export function StoWareAdd(data) {
 // 仓储物流--基础数据--仓库信息删除
 export function StoWareDelete(data) {
   return request({
-    url: newUrl + '/api/StoWarehouse/Delete',
+    url: newUrl + '/api/WareHouseBaseInfo/Delete',
     method: 'post',
     data
   })
@@ -30,7 +30,7 @@ export function StoWareDelete(data) {
 // 仓储物流--基础数据--仓库信息编辑
 export function StoWareModify(data) {
   return request({
-    url: newUrl + '/api/StoWarehouse/Modify',
+    url: newUrl + '/api/WareHouseBaseInfo/Modify',
     method: 'post',
     data
   })
@@ -67,6 +67,42 @@ export function WareHouseDelete(data) {
 export function WareHouseModify(data) {
   return request({
     url: newUrl + '/api/WareHouseBaseRegion/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 仓储物流--基础数据--库位信息列表
+export function WareHouseBaseList(data) {
+  return request({
+    url: newUrl + '/api/WareHouseBaseLocation/List',
+    method: 'post',
+    data
+  })
+}
+
+// 仓储物流--基础数据--库位信息新增
+export function WareHouseBaseAdd(data) {
+  return request({
+    url: newUrl + '/api/WareHouseBaseLocation/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 仓储物流--基础数据--库位信息删除
+export function WareHouseBaseDelete(data) {
+  return request({
+    url: newUrl + '/api/WareHouseBaseLocation/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 仓储物流--基础数据--库位信息编辑
+export function WareHouseBaseModify(data) {
+  return request({
+    url: newUrl + '/api/WareHouseBaseLocation/Modify',
     method: 'post',
     data
   })

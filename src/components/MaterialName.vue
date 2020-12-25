@@ -4,8 +4,8 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="原料编码" placement="top-start">
-              <label class="radio-label">原料编码:</label>
+            <el-tooltip class="item" effect="dark"   :enterable="false" content="原料编号" placement="top-start">
+              <label class="radio-label">原料编号:</label>
             </el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="paginationSearchMaterial.MaterialNum" clearable /></el-col>
@@ -47,7 +47,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="原料编码" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>

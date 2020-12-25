@@ -38,8 +38,8 @@
 
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁状态的产线" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的产线</el-checkbox>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -277,6 +277,7 @@ export default {
 
     // 获取新增产线名称级联
     treeList({ MinUnitType: 4 }).then(res => {
+      debugger
       this.allSubCatList = this.getTreeData(res.Obj[0].children)
     })
 
@@ -297,7 +298,7 @@ export default {
       this.rules = {
         LineName: [{ required: true, message: '请输入产线名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-         CascadeArray: [{ required: true, message: '请选择所属车间', trigger: 'blur' }]
+        CascadeArray: [{ required: true, message: '请选择所属车间', trigger: 'blur' }]
       }
     },
 
@@ -371,6 +372,9 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {
         OrgName: this.companyVal
       }
@@ -394,6 +398,9 @@ export default {
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 

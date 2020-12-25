@@ -36,8 +36,8 @@
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁状态的工位" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的工位</el-checkbox>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -158,7 +158,7 @@
           <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间/产线/中心" clearable />
         </el-form-item>
         <!-- <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择" clearable @input="workingBox" /></el-form-item> -->
-        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择"   @click.native="workingBox" class="disActive"/></el-form-item>
+        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择" class="disActive" @click.native="workingBox" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
@@ -199,7 +199,7 @@ export default {
     return {
       tableData: [],
       ruleForm: {
-        ProcessName:''
+        ProcessName: ''
       }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
@@ -400,6 +400,9 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {
         OrgName: this.companyVal
       }
@@ -422,6 +425,9 @@ export default {
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -529,9 +535,9 @@ export default {
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
-      console.log("row",row)
+      console.log('row', row)
       this.ruleForm.ProcessCode = row.ProcessCode
-      this.$set(this.ruleForm, 'ProcessName', row.Name);
+      this.$set(this.ruleForm, 'ProcessName', row.Name)
       // this.ruleForm.ProcessName = row.Name
       this.workingFormVisible = false
     },

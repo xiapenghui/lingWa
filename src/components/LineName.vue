@@ -3,8 +3,8 @@
     <div class="searchBox" style="margin-bottom: 20px;">
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-col :span="7">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="工艺路线名称" placement="top-start"><label class="radio-label">工艺路线名称:</label></el-tooltip>
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="工艺路线名称" placement="top-start"><label class="radio-label">工艺路线名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="paginationSearchLine.Name" clearable /></el-col>
         </el-col>
@@ -113,7 +113,7 @@ export default {
 <style lang="scss" scoped>
 .el-dialog__body {
   .searchBox {
-    .el-col-7 {
+    .el-col-8 {
       height: 30px;
       line-height: 25px;
       text-align: right;

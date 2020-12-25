@@ -4,15 +4,15 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="库区编号" placement="top-start"><label class="radio-label">库区编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="库位编号" placement="top-start"><label class="radio-label">库位编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.RegionNum" placeholder="库区编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.LocationNum" placeholder="库位编号" clearable /></el-col>
         </el-col>
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="库区名称" placement="top-start"><label class="radio-label">库区名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="库位名称" placement="top-start"><label class="radio-label">库位名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.RegionName" placeholder="库区名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.LocationName" placeholder="库位名称" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -44,6 +44,18 @@
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
           {{ scope.$index + 1 }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="库位编号" width="150" prop="LocationNum" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.LocationNum }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="库位名称" width="150" prop="LocationName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.LocationName }}
         </template>
       </el-table-column>
 
@@ -83,9 +95,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUser" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyUserName }}
+          {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
@@ -112,14 +124,20 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="库区编号" prop="RegionNum"><el-input v-model.trim="ruleForm.RegionNum" placeholder="仓库编号" clearable /></el-form-item>
-        <el-form-item label="库区名称" prop="RegionName"><el-input v-model.trim="ruleForm.RegionName" placeholder="仓库名称" clearable /></el-form-item>
+        <el-form-item label="库位编号" prop="LocationNum"><el-input v-model.trim="ruleForm.LocationNum" placeholder="库位编号" clearable /></el-form-item>
+        <el-form-item label="库位名称" prop="LocationName"><el-input v-model.trim="ruleForm.LocationName" placeholder="库位名称" clearable /></el-form-item>
 
         <el-form-item label="仓库编号" prop="WarehouseNum">
           <el-input v-model.trim="ruleForm.WarehouseNum" disabled placeholder="请选择" class="disActive" @click.native="WarehouseBox" />
         </el-form-item>
 
         <el-form-item label="仓库名称" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="仓库名称" disabled /></el-form-item>
+
+        <el-form-item label="库区编号" prop="RegionNum">
+          <el-input v-model.trim="ruleForm.RegionNum" disabled placeholder="请选择" class="disActive" @click.native="LocationBox" />
+        </el-form-item>
+
+        <el-form-item label="库区名称" prop="RegionName"><el-input v-model.trim="ruleForm.RegionName" placeholder="库区名称" disabled /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 
@@ -132,7 +150,7 @@
       </div>
     </el-dialog>
 
-    <!-- 封装仓库编号 -->
+    <!-- 封装仓库信息编号 -->
     <WarehouseName
       :ware-show="wareFormVisible"
       :ware-box-loading="wareBoxLoading"
@@ -144,6 +162,18 @@
       @handleSearchWare="handleSearchWare"
     />
 
+    <!-- 封装库区信息编号 -->
+    <LocationName
+      :location-show="locationFormVisible"
+      :location-box-loading="locationBoxLoading"
+      :table-box-height="tableBoxHeight"
+      :location-data="locationData"
+      :pagination-search="paginationSearchLocation"
+      @locationClose="locationClose"
+      @locationClick="locationClick"
+      @handleSearchLocation="handleSearchLocation"
+    />
+
   </div>
 </template>
 
@@ -152,14 +182,15 @@ import '../../../styles/scrollbar.css'
 import '../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import WarehouseName from '@/components/WarehouseName' // 成品名称弹窗
+import WarehouseName from '@/components/WarehouseName' // 仓库名称弹窗
+import LocationName from '@/components/LocationName' // 库区名称弹窗
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { StoWareList, WareHouseList, WareHouseAdd, WareHouseDelete, WareHouseModify } from '@/api/WarehouseData'
+import { StoWareList, WareHouseList, WareHouseBaseList, WareHouseBaseAdd, WareHouseBaseDelete, WareHouseBaseModify } from '@/api/WarehouseData'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'CompanyMaintenance',
-  components: { Pagination, WarehouseName },
+  components: { Pagination, WarehouseName, LocationName },
   data() {
     return {
       tableData: [],
@@ -170,28 +201,43 @@ export default {
         RegionNum: undefined,
         RegionName: undefined
       },
-      // 成品聚焦搜索条件
+      // 仓库编号搜索条件
       paginationSearchWare: {
         PageIndex: 1,
         PageSize: 100,
-        WarehouseNum: undefined,
-        WarehouseName: undefined
+        LocationNum: undefined,
+        LocationName: undefined
       },
+
+      // 库区信息搜索条件
+      paginationSearchLocation: {
+        PageIndex: 1,
+        PageSize: 100,
+        RegionNum: undefined,
+        RegionName: undefined
+      },
+
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
       wareData: [], // 仓库编号数组
+      locationData: [], // 库区编号
       wareBoxLoading: false, // 仓库编号loading
       wareFormVisible: false, // 仓库编号弹窗
+      locationBoxLoading: false, // 库区编号loading
+      locationFormVisible: false, // 库区编号弹窗
       addShow: true, // 继续新增
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       rules: {
+        LocationNum: [{ required: true, message: '请输入库位编号', trigger: 'blur' }],
+        LocationName: [{ required: true, message: '请输入库位名称', trigger: 'blur' }],
         RegionNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
         RegionName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
-        WarehouseNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }]
+        WarehouseNum: [{ required: true, message: '请输入库区编号', trigger: 'blur' }],
+        WarehouseName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
       // content1: this.$t('permission.companyNo'),
@@ -257,9 +303,12 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
+        LocationNum: [{ required: true, message: '请输入库位编号', trigger: 'blur' }],
+        LocationName: [{ required: true, message: '请输入库位名称', trigger: 'blur' }],
         RegionNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
         RegionName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
-        WarehouseNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }]
+        WarehouseNum: [{ required: true, message: '请输入库区编号', trigger: 'blur' }],
+        WarehouseName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }]
       }
     },
 
@@ -291,7 +340,7 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      WareHouseList(this.pagination).then(res => {
+      WareHouseBaseList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -330,7 +379,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            WareHouseModify(this.ruleForm).then(res => {
+            WareHouseBaseModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -347,7 +396,7 @@ export default {
               this.editLoading = false
             })
           } else {
-            WareHouseAdd(this.ruleForm).then(res => {
+            WareHouseBaseAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -379,7 +428,7 @@ export default {
     submitAdd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          WareHouseAdd(this.ruleForm).then(res => {
+          WareHouseBaseAdd(this.ruleForm).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -407,7 +456,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          WareHouseDelete({ RegionCode: row.RegionCode }).then(res => {
+          WareHouseBaseDelete({ RegionCode: row.RegionCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -459,7 +508,37 @@ export default {
     // 关闭仓库编号查询弹窗
     wareClose() {
       this.wareFormVisible = false
+    },
+
+    // 库区信息聚焦弹窗
+    LocationBox() {
+      this.locationFormVisible = true
+      this.locationLoading = true
+      WareHouseList(this.paginationSearchWare).then(res => {
+        if (res.IsPass === true) {
+          this.locationData = res.Obj
+          this.locationBoxLoading = false
+        }
+      })
+    },
+    // 库区信息弹窗搜索
+    handleSearchLocation() {
+      this.paginationSearchWare.PageIndex = 1
+      this.LocationBox()
+    },
+    // 增加库区信息双击事件获取当前行的值
+    locationClick(row) {
+      this.$set(this.ruleForm, 'RegionNum', row.RegionNum)
+      // this.ruleForm.ProcessNum = row.ProcessNum
+      this.ruleForm.RegionName = row.RegionName
+      this.ruleForm.RegionCode = row.RegionCode
+      this.locationFormVisible = false
+    },
+    // 关闭 库区信息查询弹窗
+    locationClose() {
+      this.locationFormVisible = false
     }
+
   }
 }
 </script>

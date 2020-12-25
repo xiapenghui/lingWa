@@ -303,9 +303,7 @@
               <el-input-number v-model.trim="ruleForm.SplitQuantity" placeholder="拆分数量" :min="0" clearable style="width: 100%" />
             </el-form-item>
 
-            <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')">
-              <el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable />
-            </el-form-item>
+            <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable /></el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')">
               <el-input v-model.trim="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" clearable />
@@ -313,12 +311,12 @@
             <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
           </div>
           <div class="boxRight">
-
             <el-form-item v-if="!isActive" label="成品名称" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
               <el-input v-model="ruleForm.ProductName" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
             </el-form-item>
 
-            <el-form-item v-if="isActive" label="成品名称"><span style="color: red;position: absolute;left:-77px;z-index: 9;">*</span>
+            <el-form-item v-if="isActive" label="成品名称">
+              <span style="color: red;position: absolute;left:-77px;z-index: 9;">*</span>
               <el-input v-model="ruleForm.ProductName" disabled />
             </el-form-item>
 
@@ -328,9 +326,7 @@
               <el-input v-model="ruleForm.CustomerName" disabled placeholder="请选择" class="disActive" @click.native="userBox" />
             </el-form-item>
 
-            <el-form-item v-if="isActive" label="客户名称">
-              <el-input v-model="ruleForm.CustomerName" disabled />
-            </el-form-item>
+            <el-form-item v-if="isActive" label="客户名称"><el-input v-model="ruleForm.CustomerName" disabled /></el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
               <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%" clearable @change="changeLine">
@@ -414,7 +410,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="成品编码" width="150">
+        <el-table-column align="center" label="成品编号" width="150">
           <template slot-scope="scope">
             {{ scope.row.ShortName }}
           </template>
@@ -981,6 +977,9 @@ export default {
       this.isAlarmItem = true
       this.isAlarmItemOther = true
       this.isActive = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {
         PlanNum: '',
         BomVersion: ''
@@ -1004,55 +1003,15 @@ export default {
       this.isAlarmItem = true
       this.isAlarmItemOther = true
       this.isActive = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
     // 封装拆分
     commonSplit() {
-      productionSplit(this.ruleForm).then(res => {
-        if (res.IsPass === true) {
-          this.$message({
-            type: 'success',
-            message: this.$t('table.SplitSuc')
-          })
-          SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
-            if (res.IsPass === true) {
-              this.ruleForm = res.Obj
-            }
-          })
-          this.getList()
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.MSG
-          })
-        }
-        this.editLoading = false
-      })
-    },
 
-    // 封装新增
-    commonAdd() {
-      const params = this.ruleForm
-      params.PlanType = this.typeCode
-      params.ProductLineCode = this.newLine
-      params.Priority = this.newPriority
-      params.BomCode = this.newBOMCode
-      productionAdd(params).then(res => {
-        if (res.IsPass === true) {
-          this.$message({
-            type: 'success',
-            message: this.$t('table.addSuc')
-          })
-          this.getList()
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.MSG
-          })
-        }
-        this.editLoading = false
-      })
     },
 
     // 编辑成功
@@ -1079,11 +1038,49 @@ export default {
               this.editLoading = false
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addProductiony')) {
-            this.commonAdd()
-            this.dialogFormVisible = false
+            const params = this.ruleForm
+            params.PlanType = this.typeCode
+            params.ProductLineCode = this.newLine
+            params.Priority = this.newPriority
+            params.BomCode = this.newBOMCode
+            productionAdd(params).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.addSuc')
+                })
+                this.dialogFormVisible = false
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+              this.editLoading = false
+            })
           } else {
-            this.commonSplit()
-            this.dialogFormVisible = false
+            productionSplit(this.ruleForm).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.SplitSuc')
+                })
+                SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
+                  if (res.IsPass === true) {
+                    this.ruleForm = res.Obj
+                  }
+                })
+                this.dialogFormVisible = false
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+              this.editLoading = false
+            })
           }
         } else {
           this.editLoading = false
@@ -1097,14 +1094,55 @@ export default {
     },
 
     // 继续新增
-    submitAdd() {
-      this.commonAdd()
-      this.handleAdd()
+    submitAdd(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          const params = this.ruleForm
+          params.PlanType = this.typeCode
+          params.ProductLineCode = this.newLine
+          params.Priority = this.newPriority
+          params.BomCode = this.newBOMCode
+          productionAdd(params).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: this.$t('table.addSuc')
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+            this.editLoading = false
+          })
+          this.handleAdd()
+        }
+      })
     },
-
     // 继续拆分
     submitSplit() {
-      this.commonSplit()
+      productionSplit(this.ruleForm).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: this.$t('table.SplitSuc')
+          })
+          SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
+            if (res.IsPass === true) {
+              this.ruleForm = res.Obj
+            }
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.MSG
+          })
+        }
+        this.editLoading = false
+      })
     },
     // 关联工单
     handleRelation(row) {

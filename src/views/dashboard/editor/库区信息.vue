@@ -4,38 +4,15 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="来料检验规则编号" placement="top-start"><label class="radio-label">检验编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="库区编号" placement="top-start"><label class="radio-label">库区编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.RuleNum" placeholder="来料检验规则编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.RegionNum" placeholder="库区编号" clearable /></el-col>
         </el-col>
-
-        <el-col :span="8">
-          <el-col :span="4">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="创建日期" placement="top-start"><label class="radio-label">创建日期:</label></el-tooltip>
+        <el-col :span="6">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="库区名称" placement="top-start"><label class="radio-label">库区名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16">
-            <el-date-picker
-              v-model="pagination.importDate"
-              type="daterange"
-              format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :clearable="true"
-              :picker-options="pickerOptions"
-              @change="importChange"
-            />
-          </el-col>
-        </el-col>
-
-        <el-col :span="4">
-          <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
-            </el-tooltip>
-          </el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.RegionName" placeholder="库区名称" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -70,43 +47,39 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验规则编号" width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="库区编号" width="150" prop="RegionNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RuleNum }}
+          {{ scope.row.RegionNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="批量范围从" width="150" prop="StartQty" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="库区名称" width="150" prop="RegionName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.StartQty }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="批量范围至" width="150" prop="EndQty" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.EndQty }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="采样数量" width="150" prop="SampleQty" sortable>
-        <template slot-scope="scope">
-          {{ scope.row.SampleQty }}
+          {{ scope.row.RegionName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="拒绝数量" width="150" prop="RejQty" sortable>
+      <el-table-column align="center" label="仓库编号" width="150" prop="WarehouseNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RejQty }}
+          {{ scope.row.WarehouseNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
+      <el-table-column align="center" label="仓库名称" width="150" prop="WarehouseName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+          {{ scope.row.WarehouseName }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 
@@ -122,18 +95,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
-            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
-            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
@@ -147,17 +112,14 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="来料检验编号" prop="RuleNum"><el-input v-model.trim="ruleForm.RuleNum" placeholder="来料检验编号" clearable /></el-form-item>
+        <el-form-item label="库区编号" prop="RegionNum"><el-input v-model.trim="ruleForm.RegionNum" placeholder="仓库编号" clearable /></el-form-item>
+        <el-form-item label="库区名称" prop="RegionName"><el-input v-model.trim="ruleForm.RegionName" placeholder="仓库名称" clearable /></el-form-item>
 
-        <el-form-item label="批量范围" prop="StartQty">
-          <el-input-number v-model="ruleForm.StartQty" :min="0" placeholder="批量范围从" style="width: 48%" />
-          -----
-          <el-input-number v-model="ruleForm.EndQty" :min="0" placeholder="批量范围至" style="width: 48%" />
+        <el-form-item label="仓库编号" prop="WarehouseNum">
+          <el-input v-model.trim="ruleForm.WarehouseNum" disabled placeholder="请选择" class="disActive" @click.native="WarehouseBox" />
         </el-form-item>
 
-        <el-form-item label="采样数量" prop="SampleQty"><el-input-number v-model="ruleForm.SampleQty" placeholder="采样数量" :min="0" style="width: 100%" /></el-form-item>
-
-        <el-form-item label="拒绝数量" prop="RejQty"><el-input-number v-model="ruleForm.RejQty" placeholder="拒绝数量" :min="0" style="width: 100%" /></el-form-item>
+        <el-form-item label="仓库名称" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="仓库名称" disabled /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 
@@ -169,20 +131,35 @@
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
+
+    <!-- 封装仓库编号 -->
+    <WarehouseName
+      :ware-show="wareFormVisible"
+      :ware-box-loading="wareBoxLoading"
+      :table-box-height="tableBoxHeight"
+      :ware-data="wareData"
+      :pagination-search="paginationSearchWare"
+      @wareClose="wareClose"
+      @wareClick="wareClick"
+      @handleSearchWare="handleSearchWare"
+    />
+
   </div>
 </template>
 
 <script>
-import '../../../../styles/scrollbar.css'
-import '../../../../styles/commentBox.scss'
+import '../../../styles/scrollbar.css'
+import '../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import WarehouseName from '@/components/WarehouseName' // 成品名称弹窗
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { QuaIqcList, QuaIqcAdd, QuaIqcDelete, QuaIqcModify, QuaIqcStatus } from '@/api/QualityData'
+import { StoWareList, WareHouseList, WareHouseAdd, WareHouseDelete, WareHouseModify } from '@/api/WarehouseData'
 const fixHeight = 260
+const fixHeightBox = 350
 export default {
   name: 'CompanyMaintenance',
-  components: { Pagination },
+  components: { Pagination, WarehouseName },
   data() {
     return {
       tableData: [],
@@ -190,53 +167,31 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        importDate: [],
-        RuleNum: undefined,
-        ShowBanned: false
+        RegionNum: undefined,
+        RegionName: undefined
+      },
+      // 仓库编号搜索条件
+      paginationSearchWare: {
+        PageIndex: 1,
+        PageSize: 100,
+        WarehouseNum: undefined,
+        WarehouseName: undefined
       },
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
+      wareData: [], // 仓库编号数组
+      wareBoxLoading: false, // 仓库编号loading
+      wareFormVisible: false, // 仓库编号弹窗
       addShow: true, // 继续新增
       tableHeight: window.innerHeight - fixHeight, // 表格高度
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
-            }
-          }
-        ]
-      },
+      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       rules: {
-        RuleNum: [{ required: true, message: '请输入检验规则编号', trigger: 'blur' }],
-        SampleQty: [{ required: true, message: '请输入采样数量', trigger: 'blur' }],
-        StartQty: [{ required: true, message: '请输入批量范围', trigger: 'blur' }],
-        RejQty: [{ required: true, message: '请输入拒绝数量', trigger: 'blur' }]
+        RegionNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
+        RegionName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
+        WarehouseNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
       // content1: this.$t('permission.companyNo'),
@@ -255,6 +210,16 @@ export default {
     tableHeight(val) {
       if (!this.timer) {
         this.tableHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
+      }
+    },
+    tableBoxHeight(val) {
+      if (!this.timer) {
+        this.tableBoxHeight = val
         this.timer = true
         const that = this
         setTimeout(function() {
@@ -282,9 +247,9 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
-    // Mock: get all routes and roles list from server
     this.getList()
     this.setFormRules()
   },
@@ -292,53 +257,10 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        RuleNum: [{ required: true, message: '请输入检验规则编号', trigger: 'blur' }],
-        SampleQty: [{ required: true, message: '请输入采样数量', trigger: 'blur' }],
-        StartQty: [{ required: true, message: '请输入批量范围', trigger: 'blur' }],
-        RejQty: [{ required: true, message: '请输入拒绝数量', trigger: 'blur' }]
+        RegionNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
+        RegionName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
+        WarehouseNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }]
       }
-    },
-    // 改变搜索框开始结束时间触发
-    importChange(val) {
-      this.pagination.importDate[0] = val[0]
-      this.pagination.importDate[1] = val[1]
-      this.pagination.CreateTimeStart = this.pagination.importDate[0]
-      this.pagination.CreateTimeEnd = this.pagination.importDate[1]
-    },
-    // 禁用，启用权限
-    handleBan(row) {
-      let status, statusTitle
-      if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle')
-        statusTitle = this.$t('permission.jingyongInfo')
-      } else {
-        status = this.$t('permission.qiyongTitle')
-        statusTitle = this.$t('permission.qiyongInfo')
-      }
-      this.$confirm(statusTitle, status, {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      }).then(() => {
-        const params = {
-          Status: (row.Status = row.Status !== true),
-          IQCCode: row.IQCCode
-        }
-        QuaIqcStatus(params).then(res => {
-          if (res.IsPass === true) {
-            this.$message({
-              type: 'success',
-              message: res.MSG
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.MSG
-            })
-          }
-          this.getList()
-        })
-      })
     },
 
     // 查询
@@ -346,6 +268,7 @@ export default {
       this.pagination.PageIndex = 1
       this.getList()
     },
+
     // 导出用户
     handleExport() {},
     // 导出用户
@@ -368,7 +291,7 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      QuaIqcList(this.pagination).then(res => {
+      WareHouseList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -391,9 +314,6 @@ export default {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.addShow = true
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
       this.ruleForm = {}
     },
     // 编辑
@@ -401,9 +321,6 @@ export default {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.addShow = false
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -413,7 +330,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            QuaIqcModify(this.ruleForm).then(res => {
+            WareHouseModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -430,7 +347,7 @@ export default {
               this.editLoading = false
             })
           } else {
-            QuaIqcAdd(this.ruleForm).then(res => {
+            WareHouseAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -462,7 +379,7 @@ export default {
     submitAdd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          QuaIqcAdd(this.ruleForm).then(res => {
+          WareHouseAdd(this.ruleForm).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -477,12 +394,12 @@ export default {
             }
             this.editLoading = false
           })
-          this.handleAdd()
         }
       })
+      this.handleAdd()
     },
 
-    // 删除角色
+    // 删除
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -490,7 +407,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          QuaIqcDelete({ IQCCode: row.IQCCode }).then(res => {
+          WareHouseDelete({ RegionCode: row.RegionCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -512,39 +429,39 @@ export default {
             message: this.$t('table.deleteError')
           })
         })
+    },
+
+    // 仓库编号聚焦弹窗
+    WarehouseBox() {
+      this.wareFormVisible = true
+      this.wareBoxLoading = true
+      StoWareList(this.paginationSearchWare).then(res => {
+        if (res.IsPass === true) {
+          this.wareData = res.Obj
+          this.wareBoxLoading = false
+        }
+      })
+    },
+    // 仓库编号弹窗搜索
+    handleSearchWare() {
+      this.paginationSearchWare.PageIndex = 1
+      this.WarehouseBox()
+    },
+    // 增加仓库编号双击事件获取当前行的值
+    wareClick(row) {
+      debugger
+      this.$set(this.ruleForm, 'WarehouseNum', row.WarehouseNum)
+      // this.ruleForm.ProcessNum = row.ProcessNum
+      this.ruleForm.WarehouseName = row.WarehouseName
+      this.ruleForm.WarehouseCode = row.WarehouseCode
+      this.wareFormVisible = false
+    },
+    // 关闭仓库编号查询弹窗
+    wareClose() {
+      this.wareFormVisible = false
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-::v-deep .el-form-item__label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.avatar-uploader .el-upload {
-  border: 1px dashed #999999;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-  border: 1px dashed #999999;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
-</style>
+<style lang="scss" scoped></style>

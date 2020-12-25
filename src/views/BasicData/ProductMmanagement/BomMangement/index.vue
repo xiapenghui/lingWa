@@ -16,8 +16,8 @@
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁状态BOM" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态BOM</el-checkbox>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -50,7 +50,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品编码" width="200" prop="ProductNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品编号" width="200" prop="ProductNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductNum }}
         </template>
@@ -255,7 +255,7 @@ export default {
       // finshCode: null, // 成品名称code值
       // lineCode: null, // 工艺路线的code值
       rules: {
-        ProductNum: [{ required: true, message: '请输入成品编码', trigger: 'blur' }],
+        ProductNum: [{ required: true, message: '请输入成品编号', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入BOM版本', trigger: 'blur' }],
         ProcessRouteName: [{ required: true, message: '请选择工艺路线', trigger: 'change' }],
         EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blur' }]
@@ -323,7 +323,7 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        ProductNum: [{ required: true, message: '请输入成品编码', trigger: 'blur' }],
+        ProductNum: [{ required: true, message: '请输入成品编号', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入BOM版本', trigger: 'blur' }],
         ProcessRouteName: [{ required: true, message: '请选择工艺路线', trigger: 'change' }],
         EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blur' }]
@@ -407,12 +407,18 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {}
     },
     // 编辑BOM
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 

@@ -10,8 +10,8 @@
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁状态工艺路线" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态工艺路线</el-checkbox>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -328,12 +328,18 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {}
     },
     // 编辑工艺路线
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 

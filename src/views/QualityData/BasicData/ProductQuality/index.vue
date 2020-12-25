@@ -4,9 +4,9 @@
       <el-row :gutter="20">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="成品编码" placement="top-start"><label class="radio-label">成品编码:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" placeholder="成品编码" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" placeholder="成品编号" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
@@ -29,8 +29,8 @@
 
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁用状态的成品" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁用状态的成品</el-checkbox>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -60,7 +60,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品编码" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
@@ -564,9 +564,9 @@ export default {
             }
             this.editLoading = false
           })
+          this.handleAdd()
         }
       })
-      this.handleAdd()
     },
 
     // 聚焦事件产成品弹窗

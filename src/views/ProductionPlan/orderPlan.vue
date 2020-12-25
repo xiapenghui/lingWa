@@ -127,7 +127,7 @@
         </template>
       </el-table-column>
 
-      <!--  <el-table-column align="center" label="成品编码" width="150" prop="ProductCode" sortable :show-overflow-tooltip="true">
+      <!--  <el-table-column align="center" label="成品编号" width="150" prop="ProductCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductCode }}
         </template>
@@ -803,6 +803,9 @@ export default {
       this.dialogTypeTitle = this.$t('permission.addOrder')
       this.dialogFormVisible = true
       this.addShow = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {
         PlanCode: ''
       }
@@ -813,30 +816,10 @@ export default {
       this.dialogTypeTitle = this.$t('permission.EditOrder')
       this.dialogFormVisible = true
       this.addShow = false
-      this.ruleForm = JSON.parse(JSON.stringify(row))
-    },
-
-    // 新增封装
-    commonAdd() {
-      const params = this.ruleForm
-      params.PlanType = this.typeCode
-      params.ProductLineCode = this.newLine
-      params.Priority = this.newPriority
-      orderAdd(params).then(res => {
-        if (res.IsPass === true) {
-          this.$message({
-            type: 'success',
-            message: this.$t('table.addSuc')
-          })
-          this.getList()
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.MSG
-          })
-        }
-        this.editLoading = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
       })
+      this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
     // 编辑成功
@@ -863,8 +846,26 @@ export default {
               this.editLoading = false
             })
           } else if (this.dialogTypeTitle === this.$t('permission.addOrder')) {
-            this.commonAdd()
-            this.dialogFormVisible = false
+            const params = this.ruleForm
+            params.PlanType = this.typeCode
+            params.ProductLineCode = this.newLine
+            params.Priority = this.newPriority
+            orderAdd(params).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: this.$t('table.addSuc')
+                })
+                this.dialogFormVisible = false
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+              this.editLoading = false
+            })
           }
         } else {
           this.editLoading = false
@@ -881,10 +882,28 @@ export default {
     submitAdd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.commonAdd()
+          const params = this.ruleForm
+          params.PlanType = this.typeCode
+          params.ProductLineCode = this.newLine
+          params.Priority = this.newPriority
+          orderAdd(params).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: this.$t('table.addSuc')
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+            this.editLoading = false
+          })
+          this.handleAdd()
         }
       })
-      this.handleAdd()
     },
 
     // BOM

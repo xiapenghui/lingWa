@@ -41,7 +41,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工序编码" prop="WorkingProcedureNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序编号" prop="WorkingProcedureNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkingProcedureNum }}
         </template>
@@ -51,7 +51,7 @@
           {{ scope.row.WorkingProcedureName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料编码" prop="MaterialNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="原料编号" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaterialNum }}
         </template>
@@ -323,12 +323,18 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {}
     },
     // 编辑
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
     // 删除

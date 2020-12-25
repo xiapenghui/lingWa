@@ -27,8 +27,8 @@
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁状态的车间" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的车间</el-checkbox>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -112,7 +112,7 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '增加'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="车间编码"><el-input v-model.trim="ruleForm.WorkshopNum" placeholder="车间名称" clearable /></el-form-item>
+        <el-form-item label="车间编号"><el-input v-model.trim="ruleForm.WorkshopNum" placeholder="车间名称" clearable /></el-form-item>
         <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model.trim="ruleForm.WorkshopName" placeholder="车间名称" clearable /></el-form-item>
         <el-form-item label="公司名称" prop="OrgName" style="display: none;">
           <el-select v-model="ruleForm.OrgName" placeholder="公司名称" style="width: 100%" @change="changeName">
@@ -306,6 +306,9 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {
         OrgName: this.companyVal
       }
@@ -314,6 +317,9 @@ export default {
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 

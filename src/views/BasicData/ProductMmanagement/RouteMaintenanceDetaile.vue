@@ -33,7 +33,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工序编码" width="200" prop="ProcessNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序编号" width="200" prop="ProcessNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessNum }}
         </template>
@@ -435,9 +435,9 @@ export default {
             }
             this.editLoading = false
           })
+          this.handleAdd()
         }
       })
-      this.handleAdd()
     },
 
     // 工序聚焦事件原料弹窗

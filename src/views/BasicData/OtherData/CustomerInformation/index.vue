@@ -18,8 +18,8 @@
         </el-col>
         <el-col :span="4">
           <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="包含禁状态的客户" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">包含禁状态的客户</el-checkbox>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
             </el-tooltip>
           </el-col>
         </el-col>
@@ -306,6 +306,9 @@ export default {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.isPassword = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {}
     },
     // 编辑角色
@@ -313,10 +316,13 @@ export default {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.isPassword = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 删除角色
+    // 删除
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -336,8 +342,8 @@ export default {
                 message: res.MSG
               })
             }
+            this.getList()
           })
-          this.getList()
         })
         .catch(() => {
           this.$message({
