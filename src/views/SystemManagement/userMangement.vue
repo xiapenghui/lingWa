@@ -403,6 +403,9 @@ export default {
       this.dialogType = 'new'
       this.isPassword = true
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {}
     },
     // 编辑角色
@@ -410,6 +413,9 @@ export default {
       this.dialogType = 'edit'
       this.isPassword = false
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 

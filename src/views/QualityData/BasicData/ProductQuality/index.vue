@@ -408,7 +408,9 @@ export default {
       this.$router.push({
         path: '/QualityData/BasicData/ProductQualityDetail',
         query: {
-          ItemCode: row.ItemCode
+          ItemCode: row.ItemCode,
+          MaterialNum: row.MaterialNum,
+          MaterialName: row.MaterialName
         }
       })
     },

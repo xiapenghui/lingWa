@@ -326,6 +326,9 @@ export default {
       this.dialogType = 'new'
       this.dialogTypeTitle = this.$t('permission.addRole')
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {}
       ListMenuFunAll({}).then(res => {
         if (res.IsPass === true) {
@@ -349,6 +352,9 @@ export default {
       this.dialogType = type
       this.dialogTypeTitle = typeTitle
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
       ListRoleMenuFun({ RoleCode: row.RoleCode }).then(res => {
         if (res.IsPass === true) {

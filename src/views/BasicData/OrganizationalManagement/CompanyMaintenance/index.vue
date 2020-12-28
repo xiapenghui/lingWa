@@ -78,7 +78,7 @@
           {{ scope.row.Tel }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.companyAddress')" width="150" prop="Address" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.companyAddress')" width="200" prop="Address" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Address }}
         </template>
@@ -107,7 +107,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
@@ -121,9 +121,9 @@
             <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
+          <!-- <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
-          </el-tooltip>
+          </el-tooltip> -->
         </template>
       </el-table-column>
     </el-table>
@@ -137,7 +137,7 @@
         <el-form-item label="公司简称"><el-input v-model.trim="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
         <el-form-item label="公司电话"><el-input v-model.trim="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
         <el-form-item label="公司地址"><el-input v-model.trim="ruleForm.Address" placeholder="公司地址" clearable /></el-form-item>
-        <el-form-item label="公司LOGO">
+        <!-- <el-form-item label="公司LOGO">
           <el-upload
             class="avatar-uploader"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -148,7 +148,7 @@
             <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="描述" /></el-form-item>
       </el-form>

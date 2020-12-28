@@ -1,9 +1,7 @@
 <template>
   <div class="navbar">
-
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
         <el-tooltip :content="$t('navbar.size')" effect="dark" :enterable="false" placement="bottom">
@@ -35,14 +33,23 @@
           <router-link to="/">
             <el-dropdown-item>{{ $t('navbar.dashboard') }}</el-dropdown-item>
           </router-link>
+          <el-dropdown-item><span style="display:block;" @click="revisePas">修改密码</span></el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
     </div>
 
+    <!-- 修改密 -->
+    <el-dialog title="修改密码" :visible.sync="dialogPassWord" :modal-append-to-body="false" :close-on-click-modal="false" width="30%">
+      <el-form ref="ruleForm" :model="ruleForm" status-icon :rules="rules" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="用户名:">{{ this.$store.state.permission.userName }}</el-form-item>
+        <el-form-item label="密码:" prop="password"><el-input v-model="ruleForm.password" type="password" :show-password="true" /></el-form-item>
+        <el-form-item label="确认密码:" prop="checkPass"><el-input v-model="ruleForm.checkPass" type="password" :show-password="true" /></el-form-item>
+        <el-form-item style="text-align: center;"><el-button type="primary" @click="submitForm('ruleForm')">提交</el-button></el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -65,15 +72,41 @@ export default {
     // Search
   },
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
+        }
+        callback()
+      }
+    }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
+      dialogPassWord: false,
       value: '选项1',
       options: [{
         value: '选项1',
-        label: '上海灵娃科技有限公司'
-      }, {
-        value: '选项2',
-        label: '上海中智浩云科技有限公司'
-      }]
+        label: '上海施耐德配电电器有限公司'
+      }],
+      ruleForm: {
+        id: this.$store.state.user.id,
+        password: '',
+        checkPass: ''
+      },
+      rules: {
+        password: [{ validator: validatePass, trigger: 'blur' }],
+        checkPass: [{ validator: validatePass2, trigger: 'blur' }]
+      }
     }
   },
   computed: {
@@ -90,6 +123,32 @@ export default {
       this.$store.dispatch('user/logout')
       this.$store.dispatch('permission/logout')
       this.$router.push({ path: '/login' })
+    },
+    // 修改密码
+    revisePas() {
+      this.dialogPassWord = true
+    },
+    // 密码提交
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          userEdit(this.ruleForm).then(res => {
+            if (res.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '修改密码成功,请从新登录!'
+              })
+              this.dialogPassWord = false
+              setTimeout(() => {
+                this.logout()
+              }, 2000)
+            }
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
 }

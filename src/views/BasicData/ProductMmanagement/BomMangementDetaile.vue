@@ -22,7 +22,13 @@
       </el-row>
     </div>
 
-    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
+    <div class="rightBtn">
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button>
+      <span style="margin: 0 10px; font-size: 13px">所属上级:</span>
+      <el-tag type="danger" size="medium">成品编号:{{this.$route.query.ProductNum}}</el-tag>
+      <el-tag type="warning" size="medium">成品名称:{{this.$route.query.ProductName}}</el-tag>
+      <el-tag type="success" size="medium">BOM版本:{{this.$route.query.Version}}</el-tag>
+    </div>
 
     <el-table
       v-loading="listLoading"
@@ -102,7 +108,6 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-
         <el-form-item label="工序" prop="WorkingProcedureName">
           <el-input v-model="ruleForm.WorkingProcedureName" disabled placeholder="请选择" class="disActive" @click.native="workingBox" />
         </el-form-item>
@@ -112,9 +117,7 @@
           <el-input v-model="ruleForm.MaterialName" disabled placeholder="请选择" class="disActive" @click.native="materialBox(1)" />
         </el-form-item>
 
-        <el-form-item label="原料用量" prop="Usage">
-          <el-input-number v-model.trim="ruleForm.Usage" placeholder="原料用量" :min="0" clearable style="width: 100%" />
-        </el-form-item>
+        <el-form-item label="原料用量" prop="Usage"><el-input-number v-model.trim="ruleForm.Usage" placeholder="原料用量" :min="0" clearable style="width: 100%" /></el-form-item>
         <el-form-item label="替代物料">
           <!-- <el-input v-model="ruleForm.SubMaterialName" placeholder="请输入并选择替代物料" clearable @input="materialBox(2)" /> -->
           <el-input v-model="ruleForm.SubMaterialName" disabled placeholder="请选择" class="disActive" @click.native="materialBox(2)" />
@@ -154,15 +157,15 @@
 </template>
 
 <script>
-import '../../../styles/commentBox.scss'
-import '../../../styles/scrollbar.css'
-import i18n from '@/lang'
-import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, MaterialList, GetByRouteList } from '@/api/BasicData'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import WorkingName from '@/components/WorkingName' // 工序名称
-import MaterialName from '@/components/MaterialName' // 物料名称
-const fixHeight = 260
-const fixHeightBox = 350
+import '../../../styles/commentBox.scss';
+import '../../../styles/scrollbar.css';
+import i18n from '@/lang';
+import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, MaterialList, GetByRouteList } from '@/api/BasicData';
+import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
+import WorkingName from '@/components/WorkingName'; // 工序名称
+import MaterialName from '@/components/MaterialName'; // 物料名称
+const fixHeight = 260;
+const fixHeightBox = 350;
 export default {
   name: 'BomMangementDetaile',
   components: { Pagination, WorkingName, MaterialName },
@@ -205,7 +208,9 @@ export default {
         Name: undefined,
         ShowBanned: false
       },
-
+      ProductNum: this.$route.query.ProductNum,
+      ProductName: this.$route.query.ProductName,
+      Version: this.$route.query.Version,
       listLoading: false,
       materialBoxLoading: false, // 原料名称loading
       workingBoxLoading: false, // 工序搜索loading
@@ -233,29 +238,29 @@ export default {
       // content7: this.$t('permission.passwords'),
       // content8: this.$t('permission.roleUser'),
       // content9: this.$t('permission.description')
-    }
+    };
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val
-        this.timer = true
-        const that = this
+        this.tableHeight = val;
+        this.timer = true;
+        const that = this;
         setTimeout(function() {
-          that.timer = false
-        }, 400)
+          that.timer = false;
+        }, 400);
       }
     },
     tableBoxHeight(val) {
       if (!this.timer) {
-        this.tableBoxHeight = val
-        this.timer = true
-        const that = this
+        this.tableBoxHeight = val;
+        this.timer = true;
+        const that = this;
         setTimeout(function() {
-          that.timer = false
-        }, 400)
+          that.timer = false;
+        }, 400);
       }
     },
     // 监听data属性中英文切换问题
@@ -269,19 +274,19 @@ export default {
       // this.content7 = this.$t('permission.passwords')
       // this.content8 = this.$t('permission.roleUser')
       // this.content9 = this.$t('permission.description')
-      this.setFormRules()
+      this.setFormRules();
     }
   },
   created() {
     // 监听表格高度
-    const that = this
+    const that = this;
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight
-      })()
-    }
-    this.getList()
-    this.setFormRules()
+        that.tableHeight = window.innerHeight - fixHeight;
+      })();
+    };
+    this.getList();
+    this.setFormRules();
   },
   methods: {
     // 表单验证切换中英文
@@ -290,52 +295,52 @@ export default {
         WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'blur' }],
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'blur' }],
         Usage: [{ required: true, message: '请输入用量', trigger: 'blur' }]
-      }
+      };
     },
 
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1
-      this.getList()
+      this.pagination.PageIndex = 1;
+      this.getList();
     },
 
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       bomDetailList(this.pagination).then(res => {
-        this.tableData = res.Obj
-        this.total = res.TotalRowCount
-        this.listLoading = false
-      })
+        this.tableData = res.Obj;
+        this.total = res.TotalRowCount;
+        this.listLoading = false;
+      });
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`)
+        route.title = i18n.t(`route.${route.title}`);
         if (route.children) {
-          route.children = this.i18n(route.children)
+          route.children = this.i18n(route.children);
         }
-        return route
-      })
-      return app
+        return route;
+      });
+      return app;
     },
 
     // 增加
     handleAdd() {
-      this.dialogType = 'new'
-      this.dialogFormVisible = true
+      this.dialogType = 'new';
+      this.dialogFormVisible = true;
       this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-      this.ruleForm = {}
+        this.$refs.ruleForm.clearValidate();
+      });
+      this.ruleForm = {};
     },
     // 编辑
     handleEdit(row) {
-      this.dialogType = 'edit'
-      this.dialogFormVisible = true
+      this.dialogType = 'edit';
+      this.dialogFormVisible = true;
       this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-      this.ruleForm = JSON.parse(JSON.stringify(row))
+        this.$refs.ruleForm.clearValidate();
+      });
+      this.ruleForm = JSON.parse(JSON.stringify(row));
     },
     // 删除
     handleDelete(row) {
@@ -350,156 +355,166 @@ export default {
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
-              })
-              this.getList()
+              });
+              this.getList();
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              })
+              });
             }
-          })
+          });
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: this.$t('table.deleteError')
-          })
-        })
+          });
+        });
     },
 
     // 编辑成功
     submitForm(formName) {
-      this.editLoading = true
+      this.editLoading = true;
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            const params = this.ruleForm
-            params.BomCode = this.$route.query.BomCode
-            params.ProcessRouteCode = this.$route.query.ProcessRouteCode
+            const params = this.ruleForm;
+            params.BomCode = this.$route.query.BomCode;
+            params.ProcessRouteCode = this.$route.query.ProcessRouteCode;
             bomDetailModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                })
-                this.dialogFormVisible = false
-                this.getList()
+                });
+                this.dialogFormVisible = false;
+                this.getList();
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                })
+                });
               }
-              this.editLoading = false
-            })
+              this.editLoading = false;
+            });
           } else {
-            const params = this.ruleForm
-            params.BomCode = this.$route.query.BomCode
-            params.ProcessRouteCode = this.$route.query.ProcessRouteCode
+            const params = this.ruleForm;
+            params.BomCode = this.$route.query.BomCode;
+            params.ProcessRouteCode = this.$route.query.ProcessRouteCode;
             bomDetailAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
-                })
-                this.editLoading = false
-                this.dialogFormVisible = false
-                this.getList()
+                });
+                this.editLoading = false;
+                this.dialogFormVisible = false;
+                this.getList();
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                })
+                });
               }
-            })
-            this.editLoading = false
+            });
+            this.editLoading = false;
           }
         } else {
-          this.editLoading = false
+          this.editLoading = false;
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          })
-          return false
+          });
+          return false;
         }
-      })
+      });
     },
 
     // 原料聚焦事件原料弹窗
     materialBox(index) {
-      this.materialActiveIndex = index
-      this.materialFormVisible = true
-      this.materialBoxLoading = true
+      this.materialActiveIndex = index;
+      this.materialFormVisible = true;
+      this.materialBoxLoading = true;
       MaterialList(this.paginationSearchMaterial).then(res => {
         if (res.IsPass === true) {
-          this.materialData = res.Obj
-          this.materialBoxLoading = false
+          this.materialData = res.Obj;
+          this.materialBoxLoading = false;
         }
-      })
+      });
     },
     // 原料弹窗搜索
     handleSearchMaterial() {
-      this.paginationSearchMaterial.PageIndex = 1
-      this.materialBox()
+      this.paginationSearchMaterial.PageIndex = 1;
+      this.materialBox();
     },
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
       if (this.materialActiveIndex === 1) {
         // this.ruleForm.MaterialName = row.Name
-        this.$set(this.ruleForm, 'MaterialName', row.Name)
-        this.ruleForm.materialCode = row.MaterialCode
+        this.$set(this.ruleForm, 'MaterialName', row.Name);
+        this.ruleForm.materialCode = row.MaterialCode;
       } else {
         // this.ruleForm.SubMaterialName = row.Name
-        this.$set(this.ruleForm, 'SubMaterialName', row.Name)
-        this.ruleForm.SubMaterialCode = row.MaterialCode
+        this.$set(this.ruleForm, 'SubMaterialName', row.Name);
+        this.ruleForm.SubMaterialCode = row.MaterialCode;
       }
-      this.materialFormVisible = false
+      this.materialFormVisible = false;
     },
     // 关闭成品名称查询弹窗
     materialClose() {
-      this.materialFormVisible = false
+      this.materialFormVisible = false;
     },
 
     // 替换物料
     replaceBox() {
-      this.materialFormVisible = true
-      this.materialBoxLoading = true
+      this.materialFormVisible = true;
+      this.materialBoxLoading = true;
       MaterialList(this.paginationSearchMaterial).then(res => {
         if (res.IsPass === true) {
-          this.materialData = res.Obj
-          this.materialBoxLoading = false
+          this.materialData = res.Obj;
+          this.materialBoxLoading = false;
         }
-      })
+      });
     },
 
     // 工序聚焦事件原料弹窗
     workingBox() {
-      this.workingFormVisible = true
-      this.workingBoxLoading = true
+      this.workingFormVisible = true;
+      this.workingBoxLoading = true;
       GetByRouteList(this.paginationSearchWorking).then(res => {
         if (res.IsPass === true) {
-          this.workingData = res.Obj
-          this.workingBoxLoading = false
+          this.workingData = res.Obj;
+          this.workingBoxLoading = false;
         }
-      })
+      });
     },
     // 工序弹窗搜索
     handleSearchWorking() {
-      this.paginationSearchMaterial.PageIndex = 1
-      this.workingBox()
+      this.paginationSearchMaterial.PageIndex = 1;
+      this.workingBox();
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
       // this.ruleForm.WorkingProcedureName = row.Name
-      this.$set(this.ruleForm, 'WorkingProcedureName', row.Name)
-      this.ruleForm.WorkingProcedureCode = row.ProcessCode
-      this.workingFormVisible = false
+      this.$set(this.ruleForm, 'WorkingProcedureName', row.Name);
+      this.ruleForm.WorkingProcedureCode = row.ProcessCode;
+      this.workingFormVisible = false;
     },
     // 关闭工序名称查询弹窗
     workingClose() {
-      this.workingFormVisible = false
+      this.workingFormVisible = false;
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.app-container {
+  .rightBtn {
+    .el-tag {
+      margin-right: 10px;
     }
   }
 }
-</script>
+</style>

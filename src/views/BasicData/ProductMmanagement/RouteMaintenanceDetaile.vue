@@ -15,7 +15,12 @@
         </el-col>
       </el-row>
     </div>
-    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
+    <div class="rightBtn">
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button>
+      <span style="margin: 0 10px; font-size: 13px">所属上级:</span>
+      <el-tag type="danger" size="medium">工艺路线名称:{{ this.$route.query.Name }}</el-tag>
+      <el-tag type="success" size="medium">版本:{{ this.$route.query.Version }}</el-tag>
+    </div>
     <el-table
       v-loading="listLoading"
       :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
@@ -188,6 +193,8 @@ export default {
         Name: undefined,
         ShowBanned: false
       },
+      Name: this.$route.query.Name,
+      Version: this.$route.query.Version,
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
@@ -471,3 +478,12 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.app-container {
+  .rightBtn {
+    .el-tag {
+      margin-right: 10px;
+    }
+  }
+}
+</style>

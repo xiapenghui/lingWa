@@ -132,7 +132,7 @@
         <el-form-item label="客户名称" prop="FullName"><el-input v-model.trim="ruleForm.FullName" placeholder="客户名称" clearable /></el-form-item>
         <el-form-item label="联系人"><el-input v-model.trim="ruleForm.Contact" placeholder="联系人" clearable /></el-form-item>
         <el-form-item label="公司电话"><el-input v-model.trim="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
-        <el-form-item label="邮箱"><el-input v-model.trim="ruleForm.Email" placeholder="邮箱" clearable /></el-form-item>
+        <el-form-item label="邮箱" prop="Email"><el-input v-model.trim="ruleForm.Email" show-word-limit placeholder="邮箱" clearable /></el-form-item>
         <el-form-item label="地址"><el-input v-model.trim="ruleForm.Address" placeholder="地址" clearable /></el-form-item>
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
       </el-form>
@@ -145,12 +145,21 @@
 </template>
 
 <script>
+
+import * as validate from '@/utils/validate.js'
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { CustomerList, CustomerDelete, CustomerAdd, CustomerModify, CustomerStatus } from '@/api/BasicData'
 const fixHeight = 270
+export const isEmail = (rule, value, callback) => {
+  if (value !== '') { // 不为空的时候进行验证
+    validate.isEmail(value) ? callback() : callback(new Error('邮箱格式错误'))
+  } else { // 为空的时候就直接放过去（这里一定要写，不然既不报错也不会往下走【应该和router的next()相同】）
+    callback()
+  }
+}
 export default {
   name: 'CustomerInformation',
   components: { Pagination },
@@ -179,7 +188,8 @@ export default {
       rouleOptions: [], // 获取新增框角色列表
       rules: {
         CustomerNum: [{ required: true, message: '请输入客户编号', trigger: 'blur' }],
-        FullName: [{ required: true, message: '请输入客户名称', trigger: 'blur' }]
+        FullName: [{ required: true, message: '请输入客户名称', trigger: 'blur' }],
+        Email: [{ validator: isEmail, trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),

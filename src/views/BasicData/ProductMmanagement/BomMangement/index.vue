@@ -136,13 +136,17 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <!-- <el-form-item label="成品编号" prop="ProductNum"><el-input v-model.trim="ruleForm.ProductNum" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item> -->
-        <el-form-item label="成品编号" prop="ProductNum"><el-input v-model.trim="ruleForm.ProductNum" disabled placeholder="请选择" class="disActive" @click.native="finshBox" /></el-form-item>
+        <el-form-item label="成品编号" prop="ProductNum">
+          <el-input v-model.trim="ruleForm.ProductNum" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
+        </el-form-item>
 
         <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.ProductName" placeholder="成品名称" :disabled="true" /></el-form-item>
         <el-form-item label="BOM版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="BOM版本" clearable /></el-form-item>
 
         <!-- <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="请输入并选择" clearable @input="lineBox" /></el-form-item> -->
-        <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" disabled placeholder="请选择" class="disActive" @click.native="lineBox" /></el-form-item>
+        <el-form-item label="工艺路线" prop="ProcessRouteName">
+          <el-input v-model="ruleForm.ProcessRouteName" disabled placeholder="请选择" class="disActive" @click.native="lineBox" />
+        </el-form-item>
 
         <el-form-item label="生效时间" prop="EffectiveDate">
           <el-date-picker
@@ -329,6 +333,7 @@ export default {
         EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blur' }]
       }
     },
+
     // 禁用，启用权限
     handleBan(row) {
       debugger
@@ -373,7 +378,10 @@ export default {
         query: {
           BomCode: row.BomCode,
           ProcessRouteCode: row.ProcessRouteCode,
-          ProductCode: row.ProductCode
+          ProductCode: row.ProductCode,
+          ProductNum: row.ProductNum,
+          ProductName: row.ProductName,
+          Version: row.Version
         }
       })
     },

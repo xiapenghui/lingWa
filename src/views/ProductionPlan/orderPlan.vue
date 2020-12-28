@@ -285,6 +285,11 @@
             <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
               <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
             </el-tooltip>
+
+            <el-tooltip class="item" effect="dark" :enterable="false" content="作废" placement="top-start">
+              <el-button type="danger" size="small" icon="el-icon-error" plain @click="handleVoid(scope.row)" />
+            </el-tooltip>
+
             <el-button slot="reference" type="success" size="small" icon="el-icon-menu" plain style="margin-left: 10px;" />
           </el-popover>
         </template>
@@ -999,7 +1004,7 @@ export default {
         .then(() => {
           const params = {
             OrderCode: row.OrderCode,
-            Status: 1
+            Status: 0
           }
           orderStatus(params).then(res => {
             if (res.IsPass === true) {
@@ -1102,6 +1107,41 @@ export default {
           const params = {
             OrderCode: row.OrderCode,
             Status: 4
+          }
+          orderStatus(params).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: res.MSG
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: this.$t('table.cancelSuccess')
+          })
+        })
+    },
+
+    // 作废
+    handleVoid(row) {
+      this.$confirm(this.$t('permission.VoidInfo'), this.$t('permission.errorTitle'), {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      })
+        .then(() => {
+          const params = {
+            OrderCode: row.OrderCode,
+            Status: 5
           }
           orderStatus(params).then(res => {
             if (res.IsPass === true) {

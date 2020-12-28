@@ -29,7 +29,8 @@
       </el-row>
     </div>
 
-    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
+    <div class="rightBtn">
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
 
     <el-table
       v-loading="listLoading"
@@ -447,7 +448,9 @@ export default {
       this.$router.push({
         path: '/QualityData/BasicData/MaterialInspDetail',
         query: {
-          ItemCode: row.ItemCode
+          ItemCode: row.ItemCode,
+          MaterialNum: row.MaterialNum,
+          MaterialName: row.MaterialName
         }
       })
     },

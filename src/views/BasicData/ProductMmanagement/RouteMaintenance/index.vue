@@ -40,7 +40,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工艺路路线名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工艺路线名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
@@ -294,7 +294,9 @@ export default {
       this.$router.push({
         path: '/BasicData/ProductMmanagement/RouteMaintenanceDetaile',
         query: {
-          ProcessRouteCode: row.ProcessRouteCode
+          ProcessRouteCode: row.ProcessRouteCode,
+          Name: row.Name,
+          Version: row.Version
         }
       })
     },
