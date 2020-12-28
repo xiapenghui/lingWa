@@ -126,3 +126,13 @@ export function RelerDelete(data) {
     data
   })
 }
+
+// 修改密码
+export function UpdatePassword(data) {
+  return request({
+    url: '/api/User/UpdatePassword',
+    method: 'post',
+    data
+  })
+}
+

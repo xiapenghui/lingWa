@@ -202,7 +202,6 @@ export default {
         ShowBanned: false
       },
       lineData: [], // 工艺路线弹窗
-      // lineCode: null, // 工艺路线code
       listLoading: false,
       lineLoading: false, // 新增工艺路线搜索loading
       lineFormVisible: false, // 新增工艺路线弹窗
@@ -414,8 +413,7 @@ export default {
         if (valid) {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
-            // params.Unit = this.newUnit
-            // params.RouteCode = this.lineCode
+            params.RouteCode = this.ruleForm.RouteCode
             MaterialModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -435,7 +433,7 @@ export default {
           } else {
             const params = this.ruleForm
             params.Unit = this.newUnit
-            params.RouteCode = this.lineCode
+            params.RouteCode = this.ruleForm.RouteCode
             MaterialAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -482,7 +480,7 @@ export default {
     },
     // 增加工艺路线双击事件获取当前行的值
     lineClick(row) {
-      // this.ruleForm.RouteName = row.Names
+      // this.ruleForm.RouteName = row.Name
       this.$set(this.ruleForm, 'RouteName', row.Name)
       this.ruleForm.RouteCode = row.ProcessRouteCode
       this.lineFormVisible = false

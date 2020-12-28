@@ -42,3 +42,17 @@ export function setUseName(name) {
 export function removeUseName() {
   return Cookies.remove(NameKey)
 }
+
+const CodeKey = 'Admin-Code'
+
+export function getUseCode() {
+  return Cookies.get(CodeKey)
+}
+
+export function setUseCode(name) {
+  return Cookies.set(CodeKey, name)
+}
+
+export function removeUseCode() {
+  return Cookies.remove(CodeKey)
+}

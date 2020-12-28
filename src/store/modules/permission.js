@@ -10,7 +10,8 @@ import {
 } from 'element-ui'
 import {
   getUseName,
-  setUseName
+  setUseName,
+  getUseCode
 } from '@/utils/auth'
 
 // import { getMenu, setMenu } from '@/utils/auth'
@@ -78,7 +79,9 @@ console.log('getUseName', getUseName())
 const state = {
   routes: [],
   addRoutes: [],
-  userName: getUseName()
+  userName: getUseName(),
+  userCode: getUseCode()
+
 }
 
 const mutations = {
@@ -90,6 +93,10 @@ const mutations = {
   SET_USERNAME: (state, name) => {
     console.log('name', name)
     state.userName = name
+  },
+
+  SET_USERCODE: (state, code) => {
+    state.userCode = code
   }
 
 }
@@ -112,6 +119,7 @@ const actions = {
         } else {
           console.log('response', response.Obj)
           commit('SET_USERNAME', response.Obj.username)
+          commit('SET_USERCODE', response.Obj.usercode)
           setUseName(response.Obj.username)
           const data = response.Obj.MenuList
           Object.assign(loadMenuData, data)

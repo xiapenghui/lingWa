@@ -12,6 +12,7 @@ const getters = {
   roles: state => state.user.roles,
   errorLogs: state => state.errorLog.logs,
   username: state => state.permission.username,
+  usercode: state => state.permission.usercode,
   permission_routes: state => state.permission.routes // 异步加载的路由  添加
 }
 export default getters

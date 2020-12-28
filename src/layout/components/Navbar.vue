@@ -45,7 +45,7 @@
     <el-dialog title="修改密码" :visible.sync="dialogPassWord" :modal-append-to-body="false" :close-on-click-modal="false" width="30%">
       <el-form ref="ruleForm" :model="ruleForm" status-icon :rules="rules" label-width="100px" class="demo-ruleForm">
         <el-form-item label="用户名:">{{ this.$store.state.permission.userName }}</el-form-item>
-        <el-form-item label="密码:" prop="password"><el-input v-model="ruleForm.password" type="password" :show-password="true" /></el-form-item>
+        <el-form-item label="密码:" prop="AccountPwd"><el-input v-model="ruleForm.AccountPwd" type="password" :show-password="true" /></el-form-item>
         <el-form-item label="确认密码:" prop="checkPass"><el-input v-model="ruleForm.checkPass" type="password" :show-password="true" /></el-form-item>
         <el-form-item style="text-align: center;"><el-button type="primary" @click="submitForm('ruleForm')">提交</el-button></el-form-item>
       </el-form>
@@ -61,7 +61,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 // import Search from '@/components/HeaderSearch'
-
+import { UpdatePassword } from '@/api/role'
 export default {
   components: {
     Breadcrumb,
@@ -85,7 +85,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm.password) {
+      } else if (value !== this.ruleForm.AccountPwd) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
@@ -99,12 +99,12 @@ export default {
         label: '上海施耐德配电电器有限公司'
       }],
       ruleForm: {
-        id: this.$store.state.user.id,
-        password: '',
+        UserCode: this.$store.state.permission.userCode,
+        AccountPwd: '',
         checkPass: ''
       },
       rules: {
-        password: [{ validator: validatePass, trigger: 'blur' }],
+        AccountPwd: [{ validator: validatePass, trigger: 'blur' }],
         checkPass: [{ validator: validatePass2, trigger: 'blur' }]
       }
     }
@@ -132,8 +132,8 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          userEdit(this.ruleForm).then(res => {
-            if (res.code === 200) {
+          UpdatePassword(this.ruleForm).then(res => {
+            if (res.IsPass === true) {
               this.$message({
                 type: 'success',
                 message: '修改密码成功,请从新登录!'

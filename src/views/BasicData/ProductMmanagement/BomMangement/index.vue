@@ -374,7 +374,8 @@ export default {
     // 查看BOM明细
     handleLook(row) {
       this.$router.push({
-        path: '/BasicData/ProductMmanagement/BomMangementDetaile',
+        // path: '/BasicData/ProductMmanagement/BomMangementDetaile',
+        name: 'BomMangementDetaile',
         query: {
           BomCode: row.BomCode,
           ProcessRouteCode: row.ProcessRouteCode,
