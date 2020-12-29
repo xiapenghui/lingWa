@@ -79,12 +79,12 @@
             <el-button type="warning" size="small" icon="el-icon-view" plain @click="handleLook(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
-            <el-button v-if="scope.row.Status == true" v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          <el-tooltip v-if="scope.row.Status == true" class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
+            <el-button v-show="scope.row.Keep == 0" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
-            <el-button v-if="scope.row.Status == false" v-show="scope.row.Keep == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          <el-tooltip v-if="scope.row.Status == false" class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
+            <el-button v-show="scope.row.Keep == 0" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">

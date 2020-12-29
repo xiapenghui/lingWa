@@ -50,16 +50,24 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品编号" width="200" prop="ProductNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品编号" width="150" prop="ProductNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="成品名称" width="200" prop="ProductName" sortable :show-overflow-tooltip="true">
+
+      <el-table-column align="center" label="成品名称" width="150" prop="ProductName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProductName }}
         </template>
       </el-table-column>
+
+      <el-table-column align="center" label="工艺路线名称" width="150" prop="ProcessRouteName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.ProcessRouteName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="BOM版本" width="150" prop="Version" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Version }}
@@ -72,13 +80,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="描述" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Remark }}
         </template>
@@ -116,12 +124,12 @@
             <el-button type="success" size="small" icon="el-icon-star-on" plain @click="handleCopy(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
-            <el-button v-if="scope.row.Status == true" type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          <el-tooltip v-if="scope.row.Status == true" class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
-          <el-tooltip class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
-            <el-button v-if="scope.row.Status == false" type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          <el-tooltip v-if="scope.row.Status == false" class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
+            <el-button type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
@@ -382,6 +390,7 @@ export default {
           ProductCode: row.ProductCode,
           ProductNum: row.ProductNum,
           ProductName: row.ProductName,
+          ProcessRouteName: row.ProcessRouteName,
           Version: row.Version
         }
       })

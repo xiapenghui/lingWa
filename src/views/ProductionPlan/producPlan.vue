@@ -355,7 +355,7 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button v-if="addShow" type="primary" @click="submitAdd">{{ $t('permission.continueAdd') }}</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">{{ $t('permission.continueAdd') }}</el-button>
         <el-button v-if="splitShow" type="primary" @click="submitSplit">{{ $t('permission.continueSplit') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>

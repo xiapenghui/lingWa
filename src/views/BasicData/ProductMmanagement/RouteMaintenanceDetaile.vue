@@ -109,14 +109,8 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
 
-        <!-- <el-form-item label="工序编号" prop="ProcessNum">
-          <div class="dialogInput" @click="workingBox">
-            <el-input v-model="ruleForm.ProcessNum" disabled placeholder="请选择" class="disActive" />
-          </div>
-        </el-form-item> -->
-
         <el-form-item label="工序编号" prop="ProcessNum">
-          <el-input v-model="ruleForm.ProcessNum" disabled placeholder="请选择" class="disActive" @click.native="workingBox" />
+          <el-input v-model="ruleForm.ProcessNum" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
         </el-form-item>
 
         <el-form-item label="工序名称" :required="true"><el-input v-model.trim="ruleForm.ProcessName" placeholder="工序名称" :disabled="true" /></el-form-item>
@@ -216,7 +210,7 @@ export default {
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
       rules: {
-        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }]
+        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'change' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -328,6 +322,9 @@ export default {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.addShow = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {}
     },
     // 编辑工艺路线
@@ -335,6 +332,9 @@ export default {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.addShow = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -476,6 +476,10 @@ export default {
       this.ruleForm.ProcessName = row.Name
       this.ruleForm.ProcessCode = row.ProcessCode
       this.workingFormVisible = false
+      this.$nextTick(() => {
+        debugger
+        this.$refs.ruleForm.clearValidate()
+      })
     },
     // 关闭工序名称查询弹窗
     workingClose() {
