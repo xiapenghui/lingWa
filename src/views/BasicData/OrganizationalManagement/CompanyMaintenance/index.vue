@@ -95,9 +95,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="CreateUserName" sortable>
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUserName" sortable>
         <template slot-scope="scope">
-          {{ scope.row.CreateUserName }}
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 

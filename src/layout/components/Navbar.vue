@@ -14,11 +14,11 @@
           <lang-select class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
-      <el-select v-model="value" placeholder="请选择" style="bottom: 7px; width: auto; ">
+      <el-select v-model="companyVal" placeholder="请选择" style="bottom: 7px; width: auto; ">
         <el-option
           v-for="item in options"
           :key="item.value"
-          :label="item.label"
+          :label="item.text"
           :value="item.value"
         />
       </el-select>
@@ -62,6 +62,7 @@ import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 // import Search from '@/components/HeaderSearch'
 import { UpdatePassword } from '@/api/role'
+import { ListMenu } from '@/api/user'
 export default {
   components: {
     Breadcrumb,
@@ -93,11 +94,8 @@ export default {
     }
     return {
       dialogPassWord: false,
-      value: '选项1',
-      options: [{
-        value: '选项1',
-        label: '上海施耐德配电电器有限公司'
-      }],
+      companyVal: '',
+      options: [],
       ruleForm: {
         UserCode: this.$store.state.permission.userCode,
         AccountPwd: '',
@@ -115,6 +113,16 @@ export default {
       return this.$store.state.settings.theme
     }
   },
+
+  created() {
+    ListMenu().then(res => {
+      if (res.IsPass === true) {
+        this.options = res.Obj.orglist
+        this.companyVal = res.Obj.orglist[0].text
+      }
+    })
+  },
+
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')

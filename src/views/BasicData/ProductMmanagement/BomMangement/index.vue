@@ -84,9 +84,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护者" width="150" prop="CreateUser" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维护者" width="150" prop="ModifyUser" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CreateUser }}
+          {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 

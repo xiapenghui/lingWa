@@ -17,6 +17,9 @@
          color: #333;
       }
     }
+    .el-input.is-disabled .el-input__inner{
+        color: #333;
+    }
     padding: 20px;
     .el-upload__tip {
       margin-top: 10px;

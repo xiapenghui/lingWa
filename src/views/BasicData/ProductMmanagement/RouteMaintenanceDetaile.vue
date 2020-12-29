@@ -108,7 +108,13 @@
     <!-- 编辑弹窗 -->
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <!-- <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model="ruleForm.ProcessNum" placeholder="请输入并选择" @input="workingBox" /></el-form-item> -->
+
+        <!-- <el-form-item label="工序编号" prop="ProcessNum">
+          <div class="dialogInput" @click="workingBox">
+            <el-input v-model="ruleForm.ProcessNum" disabled placeholder="请选择" class="disActive" />
+          </div>
+        </el-form-item> -->
+
         <el-form-item label="工序编号" prop="ProcessNum">
           <el-input v-model="ruleForm.ProcessNum" disabled placeholder="请选择" class="disActive" @click.native="workingBox" />
         </el-form-item>

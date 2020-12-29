@@ -429,12 +429,19 @@ export default {
     },
     // 改变搜索框开始结束时间触发
     importChange(val) {
-      this.pagination.importDate[0] = val[0]
-      this.pagination.importDate[1] = val[1]
-      this.pagination.ModifyTimeStart = this.pagination.importDate[0]
-      this.pagination.ModifyTimeEnd = this.pagination.importDate[1]
+      if (val === null) {
+        this.$nextTick(function() {
+          this.pagination.importDate = []
+          this.pagination.ModifyTimeStart = ''
+          this.pagination.ModifyTimeEnd = ''
+        })
+      } else {
+        this.pagination.importDate[0] = val[0]
+        this.pagination.importDate[1] = val[1]
+        this.pagination.ModifyTimeStart = this.pagination.importDate[0]
+        this.pagination.ModifyTimeEnd = this.pagination.importDate[1]
+      }
     },
-
     // 折叠按钮互斥
     toggle(status) {
       if (status === '0') {
@@ -573,6 +580,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
+            debugger
             QuaProduModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({

@@ -97,9 +97,16 @@
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工作中心描述" :show-overflow-tooltip="true">
+
+      <el-table-column align="center" label="描述" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 
@@ -115,7 +122,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维护时间" width="200" prop="ModifyTime" sortable>
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable>
         <template slot-scope="scope">
           {{ scope.row.ModifyTime | substringTime }}
         </template>
@@ -158,7 +165,7 @@
           <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间/产线/中心" clearable />
         </el-form-item>
         <!-- <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择" clearable @input="workingBox" /></el-form-item> -->
-        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择" class="disActive" @click.native="workingBox" /></el-form-item>
+        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" disabled placeholder="请选择" class="disActive" @click.native="workingBox" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>

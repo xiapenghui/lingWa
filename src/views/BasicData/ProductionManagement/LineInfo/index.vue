@@ -76,27 +76,33 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线名称" prop="LineName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="产线名称" width="150" prop="LineName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="所属车间" prop="WorkshopName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="所属车间" width="150" prop="WorkshopName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线类别" prop="LineType" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="产线类别" width="150" prop="LineType" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.LineTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产线描述" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 

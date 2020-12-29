@@ -127,11 +127,11 @@
         </template>
       </el-table-column>
 
-      <!--  <el-table-column align="center" label="成品编号" width="150" prop="ProductCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品编号" width="150" prop="ProductNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ProductCode }}
+          {{ scope.row.ProductNum }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
       <el-table-column align="center" label="成品名称" width="150" prop="ProductName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -679,7 +679,10 @@ export default {
       this.content5 = this.$t('permission.CustomerName')
       this.content6 = this.$t('permission.PlanTypeName')
       this.content7 = this.$t('permission.StatusName')
-    }
+    },
+
+    immediate: true,
+    deep: true
   },
   created() {
     // 监听表格高度
@@ -723,10 +726,18 @@ export default {
   methods: {
     // 改变搜索框开始结束时间触发
     importChange(val) {
-      this.pagination.importDate[0] = val[0]
-      this.pagination.importDate[1] = val[1]
-      this.pagination.ModifyTimeStart = this.pagination.importDate[0]
-      this.pagination.ModifyTimeEnd = this.pagination.importDate[1]
+      if (val === null) {
+        this.$nextTick(function() {
+          this.pagination.importDate = []
+          this.pagination.ModifyTimeStart = ''
+          this.pagination.ModifyTimeEnd = ''
+        })
+      } else {
+        this.pagination.importDate[0] = val[0]
+        this.pagination.importDate[1] = val[1]
+        this.pagination.ModifyTimeStart = this.pagination.importDate[0]
+        this.pagination.ModifyTimeEnd = this.pagination.importDate[1]
+      }
     },
 
     // 折叠按钮互斥

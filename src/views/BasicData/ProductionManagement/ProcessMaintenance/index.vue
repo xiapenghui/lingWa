@@ -121,7 +121,7 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' :'新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工序编号"><el-input v-model.trim="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
+        <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model.trim="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
         <el-form-item label="工序名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>
         <el-form-item label="倒扣账标识" prop="IsBackFlush">
           <el-radio v-model="ruleForm.IsBackFlush" :label="true">是</el-radio>
@@ -167,6 +167,7 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
       rules: {
+        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }],
         Name: [{ required: true, message: '请输入工序名称', trigger: 'blur' }],
         IsBackFlush: [{ required: true, message: '请选择倒扣账标识', trigger: 'change' }]
       }
@@ -225,6 +226,7 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
+        ProcessNum: [{ required: true, message: '请输入工序编号', trigger: 'blur' }],
         Name: [{ required: true, message: '请输入工序名称', trigger: 'blur' }],
         IsBackFlush: [{ required: true, message: '请选择倒扣账标识', trigger: 'change' }]
       }
