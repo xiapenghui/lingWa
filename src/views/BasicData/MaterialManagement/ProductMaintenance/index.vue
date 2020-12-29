@@ -144,7 +144,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="工艺路线"><el-input v-model.trim="ruleForm.RouteName" disabled placeholder="请选择" class="disActive" @click.native="lineBox" /></el-form-item>
+        <el-form-item label="工艺路线"><el-input v-model.trim="ruleForm.RouteName" readonly placeholder="请选择" class="disActive" @focus="lineBox" /></el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
       </el-form>
@@ -489,6 +489,9 @@ export default {
       // this.ruleForm.RouteName = row.Name
       this.$set(this.ruleForm, 'RouteName', row.Name)
       this.ruleForm.RouteCode = row.ProcessRouteCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.lineFormVisible = false
     },
     // 关闭工艺路线查询弹窗

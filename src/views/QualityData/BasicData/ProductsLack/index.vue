@@ -203,11 +203,11 @@
 
         <el-form-item label="工序名称">
           <!-- <el-input v-model.trim="ruleForm.ProcessName" placeholder="请输入并选择" clearable @input="workingBox" /> -->
-          <el-input v-model.trim="ruleForm.ProcessName" disabled placeholder="请选择" class="disActive" @click.native="workingBox" />
+          <el-input v-model.trim="ruleForm.ProcessName" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
         </el-form-item>
         <el-form-item label="成品名称">
           <!-- <el-input v-model.trim="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="finshBox" /> -->
-          <el-input v-model.trim="ruleForm.MaterialName" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
+          <el-input v-model.trim="ruleForm.MaterialName" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
         </el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
@@ -705,6 +705,9 @@ export default {
       this.ruleForm.ProcessCode = row.ProcessCode
       // this.ruleForm.ProcessName = row.Name
       this.$set(this.ruleForm, 'ProcessName', row.Name)
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.workingFormVisible = false
     },
     // 关闭工序名称查询弹窗
@@ -733,6 +736,9 @@ export default {
       // this.ruleForm.MaterialName = row.Name
       this.$set(this.ruleForm, 'MaterialName', row.Name)
       this.ruleForm.MaterialCode = row.MaterialCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗

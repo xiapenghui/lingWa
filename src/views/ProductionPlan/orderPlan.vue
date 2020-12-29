@@ -330,12 +330,12 @@
           <div class="boxRight">
             <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'change' }]">
               <!-- <el-input v-model="ruleForm.ProductName" placeholder="请输入并选择成品名称" clearable @input="finshBox" /> -->
-              <el-input v-model="ruleForm.ProductName" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
+              <el-input v-model="ruleForm.ProductName" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
             </el-form-item>
 
             <el-form-item label="客户名称" prop="CustomerName">
               <!-- <el-input v-model="ruleForm.CustomerName" placeholder="请输入并选择客户名称" clearable @input="userBox" /> -->
-              <el-input v-model="ruleForm.CustomerName" disabled placeholder="请选择" class="disActive" @click.native="userBox" />
+              <el-input v-model="ruleForm.CustomerName" readonly placeholder="请选择" class="disActive" @focus="userBox" />
             </el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
@@ -1198,6 +1198,9 @@ export default {
       // this.ruleForm.ProductName = row.Name
       this.$set(this.ruleForm, 'ProductName', row.Name)
       this.ruleForm.ProductCode = row.MaterialCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗
@@ -1224,6 +1227,9 @@ export default {
       // this.ruleForm.CustomerName = row.FullName
       this.$set(this.ruleForm, 'CustomerName', row.FullName)
       this.ruleForm.CustomerCode = row.CustomerCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.userFormVisible = false
     },
     // 关闭客户名称查询弹窗

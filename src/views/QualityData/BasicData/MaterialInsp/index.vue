@@ -160,7 +160,7 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="原料名称" prop="MaterialName">
           <!-- <el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="materialBox" /> -->
-          <el-input v-model="ruleForm.MaterialName" disabled placeholder="请选择" class="disActive" @click.native="materialBox" />
+          <el-input v-model="ruleForm.MaterialName" readonly placeholder="请选择" class="disActive" @focus="materialBox" />
         </el-form-item>
 
         <el-form-item label="供应商名称"><el-input v-model="ruleForm.SupplierName" placeholder="供应商名称" :disabled="true" /></el-form-item>
@@ -179,7 +179,7 @@
 
         <el-form-item label="来料检验规则" prop="IQCRuleNum">
           <!-- <el-input v-model="ruleForm.IQCRuleNum" placeholder="请输入并选择" clearable @input="incomingBox" /> -->
-          <el-input v-model="ruleForm.IQCRuleNum" disabled placeholder="请选择" class="disActive" @click.native="incomingBox" />
+          <el-input v-model="ruleForm.IQCRuleNum" readonly placeholder="请选择" class="disActive" @focus="incomingBox" />
         </el-form-item>
 
         <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>
@@ -669,6 +669,9 @@ export default {
       // this.ruleForm.MaterialName = row.Name
       this.$set(this.ruleForm, 'MaterialName', row.Name)
       this.ruleForm.MaterialCode = row.MaterialCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.materialFormVisible = false
     },
     // 关闭原料名称查询弹窗
@@ -697,6 +700,9 @@ export default {
       // this.ruleForm.IQCRuleNum = row.RuleNum
       this.$set(this.ruleForm, 'IQCRuleNum', row.RuleNum)
       this.ruleForm.IQCCode = row.IQCCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.incomingFormVisible = false
     },
     // 关闭来料检验规则查询弹窗

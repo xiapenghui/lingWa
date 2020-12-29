@@ -149,7 +149,7 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="成品名称" prop="MaterialName">
           <!-- <el-input v-model="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="finshBox" /> -->
-          <el-input v-model="ruleForm.MaterialName" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
+          <el-input v-model="ruleForm.MaterialName" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
         </el-form-item>
 
         <el-form-item label="规格"><el-input v-model="ruleForm.MaterialSpec" placeholder="规格" :disabled="true" /></el-form-item>
@@ -593,6 +593,9 @@ export default {
       this.$set(this.ruleForm, 'MaterialName', row.Name)
       this.ruleForm.MaterialSpec = row.Spec
       this.ruleForm.MaterialCode = row.MaterialCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗

@@ -145,7 +145,7 @@
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <!-- <el-form-item label="成品编号" prop="ProductNum"><el-input v-model.trim="ruleForm.ProductNum" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item> -->
         <el-form-item label="成品编号" prop="ProductNum">
-          <el-input v-model.trim="ruleForm.ProductNum" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
+          <el-input v-model.trim="ruleForm.ProductNum" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
         </el-form-item>
 
         <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.ProductName" placeholder="成品名称" :disabled="true" /></el-form-item>
@@ -153,7 +153,7 @@
 
         <!-- <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="请输入并选择" clearable @input="lineBox" /></el-form-item> -->
         <el-form-item label="工艺路线" prop="ProcessRouteName">
-          <el-input v-model="ruleForm.ProcessRouteName" disabled placeholder="请选择" class="disActive" @click.native="lineBox" />
+          <el-input v-model="ruleForm.ProcessRouteName" readonly placeholder="请选择" class="disActive" @focus="lineBox" />
         </el-form-item>
 
         <el-form-item label="生效时间" prop="EffectiveDate">
@@ -581,6 +581,9 @@ export default {
       this.$set(this.ruleForm, 'ProductName', row.Name)
       // this.ruleForm.ProductName = row.Name
       this.ruleForm.ProductCode = row.MaterialCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗
@@ -609,6 +612,9 @@ export default {
       this.$set(this.ruleForm, 'ProcessRouteName', row.Name)
       // this.ruleForm.ProcessRouteName = row.Name
       this.ruleForm.ProcessRouteCode = row.ProcessRouteCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.lineFormVisible = false
     },
     // 关闭工艺路线查询弹窗

@@ -128,13 +128,13 @@
         <el-form-item label="库位名称" prop="LocationName"><el-input v-model.trim="ruleForm.LocationName" placeholder="库位名称" clearable /></el-form-item>
 
         <el-form-item label="仓库编号" prop="WarehouseNum">
-          <el-input v-model.trim="ruleForm.WarehouseNum" disabled placeholder="请选择" class="disActive" @click.native="WarehouseBox" />
+          <el-input v-model.trim="ruleForm.WarehouseNum" readonly placeholder="请选择" class="disActive" @focus="WarehouseBox" />
         </el-form-item>
 
         <el-form-item label="仓库名称" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="仓库名称" disabled /></el-form-item>
 
         <el-form-item label="库区编号" prop="RegionNum">
-          <el-input v-model.trim="ruleForm.RegionNum" disabled placeholder="请选择" class="disActive" @click.native="LocationBox" />
+          <el-input v-model.trim="ruleForm.RegionNum" readonly placeholder="请选择" class="disActive" @focus="LocationBox" />
         </el-form-item>
 
         <el-form-item label="库区名称" prop="RegionName"><el-input v-model.trim="ruleForm.RegionName" placeholder="库区名称" disabled /></el-form-item>
@@ -503,6 +503,9 @@ export default {
       // this.ruleForm.ProcessNum = row.ProcessNum
       this.ruleForm.WarehouseName = row.WarehouseName
       this.ruleForm.WarehouseCode = row.WarehouseCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.wareFormVisible = false
     },
     // 关闭仓库编号查询弹窗
@@ -532,6 +535,9 @@ export default {
       // this.ruleForm.ProcessNum = row.ProcessNum
       this.ruleForm.RegionName = row.RegionName
       this.ruleForm.RegionCode = row.RegionCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.locationFormVisible = false
     },
     // 关闭 库区信息查询弹窗

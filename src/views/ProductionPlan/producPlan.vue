@@ -312,7 +312,7 @@
           </div>
           <div class="boxRight">
             <el-form-item v-if="!isActive" label="成品名称" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.ProductName" disabled placeholder="请选择" class="disActive" @click.native="finshBox" />
+              <el-input v-model="ruleForm.ProductName" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
             </el-form-item>
 
             <el-form-item v-if="isActive" label="成品名称">
@@ -323,7 +323,7 @@
             <el-form-item v-if="planAdd" label="BOM版本"><el-input v-model="ruleForm.BomVersion" placeholder="BOM版本" :disabled="true" /></el-form-item>
 
             <el-form-item v-if="!isActive" :label="$t('permission.CustomerName')" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" disabled placeholder="请选择" class="disActive" @click.native="userBox" />
+              <el-input v-model="ruleForm.CustomerName" readonly placeholder="请选择" class="disActive" @focus="userBox" />
             </el-form-item>
 
             <el-form-item v-if="isActive" label="客户名称"><el-input v-model="ruleForm.CustomerName" disabled /></el-form-item>
@@ -341,7 +341,7 @@
             </el-form-item>
 
             <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
-              <el-date-picker v-model="ruleForm.PlanDeliveryDate" value-format="yyyy-MM-dd" placeholder="选择日期" />
+              <el-date-picker v-model="ruleForm.PlanDeliveryDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
             <el-form-item :label="$t('permission.PlanStartDate')" prop="PlanStartDate" :rules="[{ required: isAlarmItemOther, message: '请输入计划开始日期', trigger: 'blur' }]">
               <el-date-picker v-model="ruleForm.PlanStartDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
@@ -1348,6 +1348,9 @@ export default {
           })
         }
       })
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.finshFormVisible = false
     },
     // 关闭成品名称查询弹窗
@@ -1374,6 +1377,9 @@ export default {
       // this.ruleForm.CustomerName = row.FullName
       this.$set(this.ruleForm, 'CustomerName', row.FullName)
       this.ruleForm.CustomerCode = row.CustomerCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.userFormVisible = false
     },
     // 关闭客户名称查询弹窗

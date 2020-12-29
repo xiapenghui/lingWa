@@ -116,7 +116,7 @@
         <el-form-item label="库区名称" prop="RegionName"><el-input v-model.trim="ruleForm.RegionName" placeholder="仓库名称" clearable /></el-form-item>
 
         <el-form-item label="仓库编号" prop="WarehouseNum">
-          <el-input v-model.trim="ruleForm.WarehouseNum" disabled placeholder="请选择" class="disActive" @click.native="WarehouseBox" />
+          <el-input v-model.trim="ruleForm.WarehouseNum" readonly placeholder="请选择" class="disActive" @focus="WarehouseBox" />
         </el-form-item>
 
         <el-form-item label="仓库名称" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="仓库名称" disabled /></el-form-item>
@@ -454,6 +454,9 @@ export default {
       // this.ruleForm.ProcessNum = row.ProcessNum
       this.ruleForm.WarehouseName = row.WarehouseName
       this.ruleForm.WarehouseCode = row.WarehouseCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.wareFormVisible = false
     },
     // 关闭仓库编号查询弹窗

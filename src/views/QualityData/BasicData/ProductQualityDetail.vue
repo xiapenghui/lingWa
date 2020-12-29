@@ -138,7 +138,7 @@
 
         <el-form-item label="工序名称" prop="ProcessName">
           <!-- <el-input v-model="ruleForm.ProcessName" placeholder="清输入并工序名称" clearable @input="workingBox" /> -->
-          <el-input v-model="ruleForm.ProcessName" disabled placeholder="请选择" class="disActive" @click.native="workingBox" />
+          <el-input v-model="ruleForm.ProcessName" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
         </el-form-item>
 
         <el-form-item label="判断方式" prop="JudgmentWay">
@@ -532,6 +532,9 @@ export default {
       this.ruleForm.ProcessCode = row.ProcessCode
       // this.ruleForm.ProcessName = row.Name
       this.$set(this.ruleForm, 'ProcessName', row.Name)
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.workingFormVisible = false
     },
     // 关闭工序名称查询弹窗
