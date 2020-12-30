@@ -1,5 +1,5 @@
 <template>
-  <div>设备管理</div>
+  <div>pda管理</div>
 </template>
 
 <script>

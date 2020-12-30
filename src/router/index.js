@@ -33,49 +33,49 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 export const constantRoutes = [{
-    path: '/redirect',
-    component: Layout,
-    hidden: true,
-    children: [{
-      path: '/redirect/:path(.*)',
-      component: () => import('@/views/redirect/index')
-    }]
-  },
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-  {
-    path: '/auth-redirect',
-    component: () => import('@/views/login/auth-redirect'),
-    hidden: true
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/error-page/404'),
-    hidden: true
-  },
-  {
-    path: '/401',
-    component: () => import('@/views/error-page/401'),
-    hidden: true
-  },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
-      name: 'Dashboard',
-      meta: {
-        title: 'dashboard',
-        icon: 'dashboard',
-        affix: true
-      }
-    }]
-  }
+  path: '/redirect',
+  component: Layout,
+  hidden: true,
+  children: [{
+    path: '/redirect/:path(.*)',
+    component: () => import('@/views/redirect/index')
+  }]
+},
+{
+  path: '/login',
+  component: () => import('@/views/login/index'),
+  hidden: true
+},
+{
+  path: '/auth-redirect',
+  component: () => import('@/views/login/auth-redirect'),
+  hidden: true
+},
+{
+  path: '/404',
+  component: () => import('@/views/error-page/404'),
+  hidden: true
+},
+{
+  path: '/401',
+  component: () => import('@/views/error-page/401'),
+  hidden: true
+},
+{
+  path: '/',
+  component: Layout,
+  redirect: '/dashboard',
+  children: [{
+    path: 'dashboard',
+    component: () => import('@/views/dashboard/index'),
+    name: 'Dashboard',
+    meta: {
+      title: 'dashboard',
+      icon: 'dashboard',
+      affix: true
+    }
+  }]
+}
 
 ]
 
@@ -124,23 +124,23 @@ export const asyncRoutes = [
         },
         redirect: '/BasicData/OrganizationalManagement/CompanyMaintenance',
         children: [{
-            path: 'CompanyMaintenance',
-            component: () => import('@/views/BasicData/OrganizationalManagement/CompanyMaintenance'),
-            name: 'CompanyMaintenance',
-            meta: {
-              title: 'CompanyMaintenance'
+          path: 'CompanyMaintenance',
+          component: () => import('@/views/BasicData/OrganizationalManagement/CompanyMaintenance'),
+          name: 'CompanyMaintenance',
+          meta: {
+            title: 'CompanyMaintenance'
 
-            }
-          },
-          {
-            path: 'DepartmentMaintenance',
-            component: () => import('@/views/BasicData/OrganizationalManagement/DepartmentMaintenance'),
-            name: 'DepartmentMaintenance',
-            meta: {
-              title: 'DepartmentMaintenance'
-
-            }
           }
+        },
+        {
+          path: 'DepartmentMaintenance',
+          component: () => import('@/views/BasicData/OrganizationalManagement/DepartmentMaintenance'),
+          name: 'DepartmentMaintenance',
+          meta: {
+            title: 'DepartmentMaintenance'
+
+          }
+        }
         ]
       },
 
@@ -154,50 +154,49 @@ export const asyncRoutes = [
         },
         redirect: '/BasicData/ProductionManagement/ProcessMaintenance',
         children: [{
-            path: 'ProcessMaintenance',
-            component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
-            name: 'ProcessMaintenance',
-            meta: {
-              title: 'ProcessMaintenance'
-            }
-          },
+          path: 'ProcessMaintenance',
+          component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
+          name: 'ProcessMaintenance',
+          meta: {
+            title: 'ProcessMaintenance'
+          }
+        },
 
-          {
-            path: 'WorkInfo',
-            component: () => import('@/views/BasicData/ProductionManagement/WorkInfo'),
-            name: 'WorkInfo',
-            meta: {
-              title: 'WorkInfo'
-            }
-          },
+        {
+          path: 'WorkInfo',
+          component: () => import('@/views/BasicData/ProductionManagement/WorkInfo'),
+          name: 'WorkInfo',
+          meta: {
+            title: 'WorkInfo'
+          }
+        },
 
-          {
-            path: 'LineInfo',
-            component: () => import('@/views/BasicData/ProductionManagement/LineInfo'),
-            name: 'LineInfo',
-            meta: {
-              title: 'LineInfo'
-            }
-          },
+        {
+          path: 'LineInfo',
+          component: () => import('@/views/BasicData/ProductionManagement/LineInfo'),
+          name: 'LineInfo',
+          meta: {
+            title: 'LineInfo'
+          }
+        },
 
-          {
-            path: 'CenterInfo',
-            component: () => import('@/views/BasicData/ProductionManagement/CenterInfo'),
-            name: 'CenterInfo',
-            meta: {
-              title: 'CenterInfo'
-            }
-          },
+        {
+          path: 'CenterInfo',
+          component: () => import('@/views/BasicData/ProductionManagement/CenterInfo'),
+          name: 'CenterInfo',
+          meta: {
+            title: 'CenterInfo'
+          }
+        },
 
-          {
-            path: 'TerminalInfo',
-            component: () => import('@/views/BasicData/ProductionManagement/TerminalInfo'),
-            name: 'TerminalInfo',
-            meta: {
-              title: 'TerminalInfo'
-            }
-          },
-
+        {
+          path: 'TerminalInfo',
+          component: () => import('@/views/BasicData/ProductionManagement/TerminalInfo'),
+          name: 'TerminalInfo',
+          meta: {
+            title: 'TerminalInfo'
+          }
+        }
 
         ]
       },
@@ -248,8 +247,7 @@ export const asyncRoutes = [
             meta: {
               title: 'RouteMaintenanceDetaile'
             }
-          },
-
+          }
 
         ]
       },
@@ -264,23 +262,22 @@ export const asyncRoutes = [
         },
         redirect: '/BasicData/MaterialManagement/MaterialInformation',
         children: [{
-            path: 'MaterialInformation',
-            component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
-            name: 'MaterialInformation',
-            meta: {
-              title: 'MaterialInformation'
+          path: 'MaterialInformation',
+          component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
+          name: 'MaterialInformation',
+          meta: {
+            title: 'MaterialInformation'
 
-            }
-          },
-          {
-            path: 'ProductMaintenance',
-            component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
-            name: 'ProductMaintenance',
-            meta: {
-              title: 'ProductMaintenance'
-
-            }
           }
+        },
+        {
+          path: 'ProductMaintenance',
+          component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
+          name: 'ProductMaintenance',
+          meta: {
+            title: 'ProductMaintenance'
+          }
+        }
         ]
       },
 
@@ -307,6 +304,77 @@ export const asyncRoutes = [
     ]
   },
 
+  // 仓储物流
+  {
+    path: '/WareHouse',
+    component: Layout,
+    redirect: '/WareHouse/BasicData',
+    name: 'WareHouse',
+    meta: {
+      title: 'WareHouse',
+      icon: 'tab'
+    },
+    children: [{
+      path: 'BasicData',
+      component: () => import('@/views/WareHouse/BasicData/index'),
+      name: 'BasicData',
+      meta: {
+        title: 'BasicData'
+      },
+      redirect: '/WareHouse/BasicData/WarehouseInfor',
+      children: [{
+        path: 'WarehouseInfor',
+        component: () => import('@/views/WareHouse/BasicData/WarehouseInfor'),
+        name: 'WarehouseInfor',
+        meta: {
+          title: 'WarehouseInfor'
+        }
+      },
+      {
+        path: 'ReservoirInfor',
+        component: () => import('@/views/WareHouse/BasicData/ReservoirInfor'),
+        name: 'ReservoirInfor',
+        meta: {
+          title: 'ReservoirInfor'
+        }
+      },
+      {
+        path: 'LocationInfor',
+        component: () => import('@/views/WareHouse/BasicData/LocationInfor'),
+        name: 'LocationInfor',
+        meta: {
+          title: 'LocationInfor'
+        }
+      },
+      {
+        path: 'LocationRule',
+        component: () => import('@/views/WareHouse/BasicData/LocationRule'),
+        name: 'LocationRule',
+        meta: {
+          title: 'LocationRule'
+        }
+      }
+      ]
+    },
+    {
+      path: 'InventoryReport',
+      component: () => import('@/views/WareHouse/InventoryReport'),
+      name: 'InventoryReport',
+      meta: {
+        title: 'InventoryReport'
+      }
+    },
+    {
+      path: 'PdaAdministra',
+      component: () => import('@/views/WareHouse/PdaAdministra'),
+      name: 'PdaAdministra',
+      meta: {
+        title: 'PdaAdministra'
+      }
+    }
+    ]
+  },
+
   // 质量管理
   {
     path: '/QualityData',
@@ -318,134 +386,101 @@ export const asyncRoutes = [
       icon: 'tab'
     },
     children: [{
-        path: 'BasicData',
-        component: () => import('@/views/QualityData/BasicData/index'),
-        name: 'BasicData',
+      path: 'BasicData',
+      component: () => import('@/views/QualityData/BasicData/index'),
+      name: 'BasicData',
+      meta: {
+        title: 'BasicData'
+      },
+      redirect: '/QualityData/BasicData/MaterialDefects',
+      children: [{
+        path: 'MaterialDefects',
+        component: () => import('@/views/QualityData/BasicData/MaterialDefects'),
+        name: 'MaterialDefects',
         meta: {
-          title: 'BasicData'
-        },
-        redirect: '/QualityData/BasicData/MaterialDefects',
-        children: [{
-            path: 'MaterialDefects',
-            component: () => import('@/views/QualityData/BasicData/MaterialDefects'),
-            name: 'MaterialDefects',
-            meta: {
-              title: 'MaterialDefects'
-            }
-          },
-          {
-            path: 'IncomingInsp',
-            component: () => import('@/views/QualityData/BasicData/IncomingInsp'),
-            name: 'IncomingInsp',
-            meta: {
-              title: 'IncomingInsp'
-            }
-          },
-          {
-            path: 'MaterialInsp',
-            component: () => import('@/views/QualityData/BasicData/MaterialInsp'),
-            name: 'MaterialInsp',
-            meta: {
-              title: 'MaterialInsp'
-            }
-          },
-          {
-            path: 'MaterialInspDetail',
-            component: () => import('@/views/QualityData/BasicData/MaterialInspDetail'),
-            name: 'MaterialInspDetail',
-            meta: {
-              title: 'MaterialInspDetail'
-            }
-          },
-
-          {
-            path: 'ProductDefects',
-            component: () => import('@/views/QualityData/BasicData/ProductDefects'),
-            name: 'ProductDefects',
-            meta: {
-              title: 'ProductDefects'
-            }
-          },
-
-          {
-            path: 'ProductsLack',
-            component: () => import('@/views/QualityData/BasicData/ProductsLack'),
-            name: 'ProductsLack',
-            meta: {
-              title: 'ProductsLack'
-            }
-          },
-
-          {
-            path: 'ProductQuality',
-            component: () => import('@/views/QualityData/BasicData/ProductQuality'),
-            name: 'ProductQuality',
-            meta: {
-              title: 'ProductQuality'
-            }
-          },
-          
-          {
-            path: 'ProductQualityDetail',
-            component: () => import('@/views/QualityData/BasicData/ProductQualityDetail'),
-            name: 'ProductQualityDetail',
-            meta: {
-              title: 'ProductQualityDetail'
-            }
-          },
-
-        ]
+          title: 'MaterialDefects'
+        }
       },
       {
-        path: 'InspectionTask',
-        component: () => import('@/views/QualityData/InspectionTask'),
-        name: 'InspectionTask',
+        path: 'IncomingInsp',
+        component: () => import('@/views/QualityData/BasicData/IncomingInsp'),
+        name: 'IncomingInsp',
         meta: {
-          title: 'InspectionTask'
-        },
-        redirect: '/QualityData/InspectionTasks'
+          title: 'IncomingInsp'
+        }
       },
       {
-        path: 'MobileInspection',
-        component: () => import('@/views/QualityData/MobileInspection'),
-        name: 'MobileInspection',
+        path: 'MaterialInsp',
+        component: () => import('@/views/QualityData/BasicData/MaterialInsp'),
+        name: 'MaterialInsp',
         meta: {
-          title: 'MobileInspection'
-        },
-        redirect: '/QualityData/MobileInspection'
+          title: 'MaterialInsp'
+        }
+      },
+      {
+        path: 'MaterialInspDetail',
+        component: () => import('@/views/QualityData/BasicData/MaterialInspDetail'),
+        name: 'MaterialInspDetail',
+        meta: {
+          title: 'MaterialInspDetail'
+        }
+      },
+
+      {
+        path: 'ProductDefects',
+        component: () => import('@/views/QualityData/BasicData/ProductDefects'),
+        name: 'ProductDefects',
+        meta: {
+          title: 'ProductDefects'
+        }
+      },
+
+      {
+        path: 'ProductsLack',
+        component: () => import('@/views/QualityData/BasicData/ProductsLack'),
+        name: 'ProductsLack',
+        meta: {
+          title: 'ProductsLack'
+        }
+      },
+
+      {
+        path: 'ProductQuality',
+        component: () => import('@/views/QualityData/BasicData/ProductQuality'),
+        name: 'ProductQuality',
+        meta: {
+          title: 'ProductQuality'
+        }
+      },
+
+      {
+        path: 'ProductQualityDetail',
+        component: () => import('@/views/QualityData/BasicData/ProductQualityDetail'),
+        name: 'ProductQualityDetail',
+        meta: {
+          title: 'ProductQualityDetail'
+        }
       }
+
+      ]
+    },
+    {
+      path: 'InspectionTask',
+      component: () => import('@/views/QualityData/InspectionTask'),
+      name: 'InspectionTask',
+      meta: {
+        title: 'InspectionTask'
+      }
+    },
+    {
+      path: 'MobileInspection',
+      component: () => import('@/views/QualityData/MobileInspection'),
+      name: 'MobileInspection',
+      meta: {
+        title: 'MobileInspection'
+      }
+    }
     ]
-  },
-
-  // 参数信息
-  {
-    path: '/ParameterInfo',
-    component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/ParameterInfo/index'),
-      name: 'ParameterInfo',
-      meta: {
-        title: 'ParameterInfo',
-        icon: 'tab'
-
-      }
-    }]
-  },
-  // 标签管理
-  {
-    path: '/LabelManagement',
-    component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/LabelManagement/index'),
-      name: 'LabelManagement',
-      meta: {
-        title: 'LabelManagement',
-        icon: 'tab'
-
-      }
-    }]
   },
 
   // 生产计划
@@ -459,115 +494,25 @@ export const asyncRoutes = [
       icon: 'lock'
     },
     children: [{
-        path: 'producPlan',
-        component: () => import('@/views/ProductionPlan/producPlan'),
-        name: 'producPlan',
-        meta: {
-          title: 'producPlan'
-        }
-      },
-      {
-        path: 'orderPlan',
-        component: () => import('@/views/ProductionPlan/orderPlan'),
-        name: 'orderPlan',
-        meta: {
-          title: 'orderPlan'
-        }
+      path: 'producPlan',
+      component: () => import('@/views/ProductionPlan/producPlan'),
+      name: 'producPlan',
+      meta: {
+        title: 'producPlan'
       }
+    },
+    {
+      path: 'orderPlan',
+      component: () => import('@/views/ProductionPlan/orderPlan'),
+      name: 'orderPlan',
+      meta: {
+        title: 'orderPlan'
+      }
+    }
     ]
   },
 
-  // 生产过程
-  {
-    path: '/ProductionManagements',
-    component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/ProductionManagements/index'),
-      name: 'ProductionManagements',
-      meta: {
-        title: 'ProductionManagements',
-        icon: 'tab'
-
-      }
-    }]
-  },
-
-  // 安灯管理
-  {
-    path: '/LampManagement',
-    component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/LampManagement/index'),
-      name: 'LampManagement',
-      meta: {
-        title: 'LampManagement',
-        icon: 'tab'
-
-      }
-    }]
-  },
-
-  // 质量管理
-  {
-    path: '/QualityAdministration',
-    component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/QualityAdministration/index'),
-      name: 'QualityAdministration',
-      meta: {
-        title: 'QualityAdministration',
-        icon: 'tab'
-      }
-    }]
-  },
-  // 设备管理
-  {
-    path: '/DeviceManagement',
-    component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/DeviceManagement/index'),
-      name: 'DeviceManagement',
-      meta: {
-        title: 'DeviceManagement',
-        icon: 'tab'
-
-      }
-    }]
-  },
-  // 报表看板
-  {
-    path: '/ReportBoard',
-    component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/ReportBoard/index'),
-      name: 'ReportBoard',
-      meta: {
-        title: 'ReportBoard',
-        icon: 'tab'
-
-      }
-    }]
-  },
-  // 数据集成
-  {
-    path: '/DataIntegration',
-    component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/DataIntegration/index'),
-      name: 'DataIntegration',
-      meta: {
-        title: 'DataIntegration',
-        icon: 'tab'
-
-      }
-    }]
-  },
+  // 系统管理
   {
     path: '/SystemManagement',
     component: Layout,
@@ -578,21 +523,21 @@ export const asyncRoutes = [
       icon: 'lock'
     },
     children: [{
-        path: 'index',
-        component: () => import('@/views/SystemManagement/index'),
-        name: 'RolePermission',
-        meta: {
-          title: 'RolePermission'
-        }
-      },
-      {
-        path: 'userMangement',
-        component: () => import('@/views/SystemManagement/userMangement'),
-        name: 'userMangement',
-        meta: {
-          title: 'userMangement'
-        }
+      path: 'index',
+      component: () => import('@/views/SystemManagement/index'),
+      name: 'RolePermission',
+      meta: {
+        title: 'RolePermission'
       }
+    },
+    {
+      path: 'userMangement',
+      component: () => import('@/views/SystemManagement/userMangement'),
+      name: 'userMangement',
+      meta: {
+        title: 'userMangement'
+      }
+    }
     ]
   },
 
@@ -607,23 +552,23 @@ export const asyncRoutes = [
       icon: '404'
     },
     children: [{
-        path: '401',
-        component: () => import('@/views/error-page/401'),
-        name: 'Page401',
-        meta: {
-          title: 'page401',
-          noCache: true
-        }
-      },
-      {
-        path: '404',
-        component: () => import('@/views/error-page/404'),
-        name: 'Page404',
-        meta: {
-          title: 'page404',
-          noCache: true
-        }
+      path: '401',
+      component: () => import('@/views/error-page/401'),
+      name: 'Page401',
+      meta: {
+        title: 'page401',
+        noCache: true
       }
+    },
+    {
+      path: '404',
+      component: () => import('@/views/error-page/404'),
+      name: 'Page404',
+      meta: {
+        title: 'page404',
+        noCache: true
+      }
+    }
     ]
   },
 

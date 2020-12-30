@@ -1,5 +1,5 @@
 <template>
-  <div>报表看吧</div>
+  <div>库存报表</div>
 </template>
 
 <script>

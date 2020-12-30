@@ -33,7 +33,7 @@ export default {
     producPlan: '生产计划维护',
     OtherData: '其他数据维护',
     CustomerInformation: '客户信息',
-    BomMangementDetaile: 'BOM明细',
+    BomMangementDetaile: '产品BOM明细',
     RouteMaintenanceDetaile: '工艺路线明细',
     FactoryInfo: '工厂信息',
     WorkInfo: '车间信息',
@@ -53,8 +53,13 @@ export default {
     ProductQualityDetail: '产品质量检验项明细',
     ProductDefects: '产品缺陷类型',
     ProductsLack: '产品缺陷',
-    ProductQuality: '产品质量检验项',
-    ProductQualityDetail: '产品质量检验项明细',
+    WareHouse: '仓储物流',
+    WarehouseInfor: '仓库信息',
+    ReservoirInfor: '库区信息',
+    LocationInfor: '库位信息',
+    LocationRule: '库位规则',
+    InventoryReport: '库存报表',
+    PdaAdministra: 'PDA管理',
 
     // 截止
 
