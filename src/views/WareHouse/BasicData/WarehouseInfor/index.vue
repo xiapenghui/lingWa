@@ -307,6 +307,9 @@ export default {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.addShow = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {}
     },
     // 编辑
@@ -314,6 +317,9 @@ export default {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.addShow = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 

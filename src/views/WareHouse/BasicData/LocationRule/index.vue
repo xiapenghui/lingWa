@@ -101,9 +101,21 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" width="150" prop="RegionName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="状态" width="150" prop="RegionName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RegionName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="描述" width="200" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Description }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 
@@ -136,9 +148,6 @@
 
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="库位编号" prop="LocationNum"><el-input v-model.trim="ruleForm.LocationNum" placeholder="库位编号" clearable /></el-form-item>
-        <el-form-item label="库位名称" prop="LocationName"><el-input v-model.trim="ruleForm.LocationName" placeholder="库位名称" clearable /></el-form-item>
-
         <el-form-item label="仓库编号" prop="WarehouseNum">
           <el-input v-model.trim="ruleForm.WarehouseNum" readonly placeholder="请选择" class="disActive" @focus="WarehouseBox" />
         </el-form-item>
@@ -150,6 +159,14 @@
         </el-form-item>
 
         <el-form-item label="库区名称" prop="RegionName"><el-input v-model.trim="ruleForm.RegionName" placeholder="库区名称" disabled /></el-form-item>
+
+        <el-form-item label="库位编号" prop="LocationNum">
+          <el-input v-model.trim="ruleForm.LocationNum" placeholder="库位编号" @focus="LocationBox" />
+        </el-form-item>
+
+        <el-form-item label="库位名称" prop="LocationName">
+          <el-input v-model.trim="ruleForm.LocationName" placeholder="库位名称" disabled />
+        </el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
 
@@ -185,7 +202,20 @@
       @locationClick="locationClick"
       @handleSearchLocation="handleSearchLocation"
     />
+
+    <!-- 封装库位信息编号 -->
+    <SeatName
+      :seat-show="seatFormVisible"
+      :seat-box-loading="seatBoxLoading"
+      :table-box-height="tableBoxHeight"
+      :seat-data="seatData"
+      :pagination-search="paginationSearchSeat"
+      @seatClose="seatClose"
+      @seatClick="seatClick"
+      @handleSearchSeat="handleSearchSeat"
+    />
   </div>
+
 </template>
 
 <script>
@@ -195,13 +225,14 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WarehouseName from '@/components/WarehouseName' // 仓库名称弹窗
 import LocationName from '@/components/LocationName' // 库区名称弹窗
+import SeatName from '@/components/SeatName' // 库位名称弹窗
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { StoWareList, WareHouseList, WareHouseBaseList, WareHouseBaseAdd, WareHouseBaseDelete, WareHouseBaseModify } from '@/api/WarehouseData'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'CompanyMaintenance',
-  components: { Pagination, WarehouseName, LocationName },
+  components: { Pagination, WarehouseName, LocationName, SeatName },
   data() {
     return {
       tableData: [],
@@ -209,15 +240,15 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        RegionNum: undefined,
-        RegionName: undefined
+        LocationNum: undefined,
+        LocationName: undefined
       },
       // 仓库编号搜索条件
       paginationSearchWare: {
         PageIndex: 1,
         PageSize: 100,
-        LocationNum: undefined,
-        LocationName: undefined
+        WarehouseNum: undefined,
+        WarehouseName: undefined
       },
 
       // 库区信息搜索条件
@@ -227,6 +258,13 @@ export default {
         RegionNum: undefined,
         RegionName: undefined
       },
+      // 库位信息搜索条件
+      paginationSearchSeat: {
+        PageIndex: 1,
+        PageSize: 100,
+        LocationNum: undefined,
+        LocationName: undefined
+      },
 
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -234,21 +272,24 @@ export default {
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
       wareData: [], // 仓库编号数组
-      locationData: [], // 库区编号
+      locationData: [], // 库区数组
+      seatData: [], // 库位数组
       wareBoxLoading: false, // 仓库编号loading
       wareFormVisible: false, // 仓库编号弹窗
       locationBoxLoading: false, // 库区编号loading
       locationFormVisible: false, // 库区编号弹窗
+      seatBoxLoading: false, // 库位信息loading
+      seatFormVisible: false, // 库位信息弹窗
       addShow: true, // 继续新增
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       rules: {
-        LocationNum: [{ required: true, message: '请输入库位编号', trigger: 'blur' }],
-        LocationName: [{ required: true, message: '请输入库位名称', trigger: 'blur' }],
+        WarehouseNum: [{ required: true, message: '请输入库区编号', trigger: 'blur' }],
+        WarehouseName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
         RegionNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
         RegionName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
-        WarehouseNum: [{ required: true, message: '请输入库区编号', trigger: 'blur' }],
-        WarehouseName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }]
+        LocationNum: [{ required: true, message: '请输入库位编号', trigger: 'blur' }],
+        LocationName: [{ required: true, message: '请输入库位名称', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
       // content1: this.$t('permission.companyNo'),
@@ -314,12 +355,12 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        LocationNum: [{ required: true, message: '请输入库位编号', trigger: 'blur' }],
-        LocationName: [{ required: true, message: '请输入库位名称', trigger: 'blur' }],
+        WarehouseNum: [{ required: true, message: '请输入库区编号', trigger: 'blur' }],
+        WarehouseName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
         RegionNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
         RegionName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }],
-        WarehouseNum: [{ required: true, message: '请输入库区编号', trigger: 'blur' }],
-        WarehouseName: [{ required: true, message: '请输入库区名称', trigger: 'blur' }]
+        LocationNum: [{ required: true, message: '请输入库位编号', trigger: 'blur' }],
+        LocationName: [{ required: true, message: '请输入库位名称', trigger: 'blur' }]
       }
     },
 
@@ -374,6 +415,9 @@ export default {
       this.dialogType = 'new'
       this.dialogFormVisible = true
       this.addShow = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = {}
     },
     // 编辑
@@ -381,6 +425,9 @@ export default {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
       this.addShow = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
@@ -554,7 +601,40 @@ export default {
     // 关闭 库区信息查询弹窗
     locationClose() {
       this.locationFormVisible = false
+    },
+
+    // 库位信息聚焦弹窗
+    SeatBox() {
+      this.seatFormVisible = true
+      this.SeatLoading = true
+      WareHouseBaseList(this.paginationSearchSeat).then(res => {
+        if (res.IsPass === true) {
+          this.seatData = res.Obj
+          this.seatBoxLoading = false
+        }
+      })
+    },
+    // 库位信息弹窗搜索
+    handleSearchSeat() {
+      this.paginationSearchSeat.PageIndex = 1
+      this.SeatBox()
+    },
+    // 增加库位信息双击事件获取当前行的值
+    seatClick(row) {
+      this.$set(this.ruleForm, 'LocationNum', row.LocationNum)
+      // this.ruleForm.ProcessNum = row.ProcessNum
+      this.ruleForm.LocationName = row.LocationName
+      this.ruleForm.LocationCode = row.LocationCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
+      this.seatFormVisible = false
+    },
+    // 关闭 库位信息查询弹窗
+    seatClose() {
+      this.seatFormVisible = false
     }
+
   }
 }
 </script>

@@ -127,6 +127,15 @@ export function RelerDelete(data) {
   })
 }
 
+// 重置密码
+export function RelerPassword(data) {
+  return request({
+    url: '/api/User/ResetPassword',
+    method: 'post',
+    data
+  })
+}
+
 // 修改密码
 export function UpdatePassword(data) {
   return request({
@@ -135,4 +144,3 @@ export function UpdatePassword(data) {
     data
   })
 }
-

@@ -129,7 +129,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
@@ -143,9 +143,14 @@
             <el-button type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
+          <el-tooltip class="item" effect="dark" :enterable="false" content="重置密码" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-refresh" plain @click="handleReset(scope.row)" />
+          </el-tooltip>
+
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
+
         </template>
       </el-table-column>
     </el-table>
@@ -161,7 +166,7 @@
           <el-input v-model.trim="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable :show-password="true" />
         </el-form-item>
 
-        <el-form-item v-if="isPassword" label="重复密码" prop="passwords" :required="true">
+        <el-form-item v-if="isPassword" label="重复密码" prop="passwords" required="true">
           <el-input v-model.trim="ruleForm.passwords" type="password" placeholder="重复密码" clearable :show-password="true" />
         </el-form-item>
 
@@ -188,7 +193,7 @@ import '../../styles/commentBox.scss'
 import '../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { companyList, UserList, UserAdd, UserUpdate, RelerStatus, RelerDelete } from '@/api/role'
+import { companyList, UserList, UserAdd, UserUpdate, RelerStatus, RelerDelete, RelerPassword } from '@/api/role'
 const fixHeight = 260
 
 export default {
@@ -417,6 +422,37 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
       this.ruleForm = JSON.parse(JSON.stringify(row))
+    },
+
+    // 重置密码
+    handleReset(row) {
+      this.$confirm('您确定要重置密码吗？', '重置', {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      })
+        .then(() => {
+          RelerPassword({ UserCode: row.UserCode }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: '重置成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+            this.getList()
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '重置失败'
+          })
+        })
     },
 
     // 删除角色

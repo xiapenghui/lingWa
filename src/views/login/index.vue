@@ -39,20 +39,19 @@
 <script>
 // import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
-
 export default {
   name: 'Login',
   components: { LangSelect },
   data() {
-    // const validateUsername = (rule, value, callback) => {
-    //   if (!validUsername(value)) {
-    //     callback(new Error(this.$t('login.errorName')))
-    //   } else {
-    //     callback()
-    //   }
-    // }
+    const validateUsername = (rule, value, callback) => {
+      if (value.length < 1) {
+        callback(new Error(this.$t('login.errorName')))
+      } else {
+        callback()
+      }
+    }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 4) {
+      if (value.length < 1) {
         callback(new Error(this.$t('login.errorPassword')))
       } else {
         callback()
@@ -64,8 +63,7 @@ export default {
         password: ''
       },
       loginRules: {
-        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        // username: [{ required: true, trigger: 'blur' }],
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',

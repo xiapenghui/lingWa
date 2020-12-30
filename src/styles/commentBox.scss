@@ -17,7 +17,7 @@
          color: #333;
       }
     }
- 
+
     .el-input.is-disabled .el-input__inner{
         color: #333;
     }
@@ -49,6 +49,11 @@
     .el-select {
       width: 100%;
     }
+  }
+  .el-menu{
+     .el-submenu__title i{
+       color: #FFFFFF;
+     }
   }
 }
 .app-container {
