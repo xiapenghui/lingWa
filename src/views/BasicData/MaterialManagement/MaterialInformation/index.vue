@@ -293,6 +293,7 @@ export default {
               type: 'success',
               message: res.MSG
             })
+            this.getList()
           } else {
             this.$message({
               type: 'error',
@@ -300,7 +301,6 @@ export default {
             })
           }
         })
-        this.getList()
       })
     },
 
@@ -351,7 +351,7 @@ export default {
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 删除角色
+    // 删除
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -395,8 +395,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
@@ -414,8 +414,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',

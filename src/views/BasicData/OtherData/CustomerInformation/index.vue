@@ -135,11 +135,10 @@
         <el-form-item
           prop="Email"
           label="邮箱"
-          :rules="[
-            { required: false, message: '请输入邮箱地址', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-          ]"
-        ><el-input v-model.trim="ruleForm.Email" show-word-limit placeholder="邮箱" clearable /></el-form-item>
+          :rules="[{ required: false, message: '请输入邮箱地址', trigger: 'blur' }, { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }]"
+        >
+          <el-input v-model.trim="ruleForm.Email" show-word-limit placeholder="邮箱" clearable />
+        </el-form-item>
         <el-form-item label="地址"><el-input v-model.trim="ruleForm.Address" placeholder="地址" clearable /></el-form-item>
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
       </el-form>
@@ -152,7 +151,6 @@
 </template>
 
 <script>
-
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
@@ -274,13 +272,13 @@ export default {
               type: 'success',
               message: res.MSG
             })
+            this.getList()
           } else {
             this.$message({
               type: 'error',
               message: res.MSG
             })
           }
-          this.getList()
         })
       })
     },
@@ -345,13 +343,13 @@ export default {
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
               })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
               })
             }
-            this.getList()
           })
         })
         .catch(() => {
@@ -374,8 +372,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
@@ -391,8 +389,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',

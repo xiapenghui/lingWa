@@ -342,8 +342,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
@@ -359,8 +359,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
@@ -427,7 +427,6 @@ export default {
               })
             }
           })
-          this.getList()
         })
         .catch(() => {
           this.$message({
@@ -455,7 +454,6 @@ export default {
     },
     // 增加仓库编号双击事件获取当前行的值
     wareClick(row) {
-      debugger
       this.$set(this.ruleForm, 'WarehouseNum', row.WarehouseNum)
       // this.ruleForm.ProcessNum = row.ProcessNum
       this.ruleForm.WarehouseName = row.WarehouseName

@@ -59,11 +59,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="header-center" :label="$t('permission.description')" :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.description')" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
       </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.operations')" width="250">
         <template slot-scope="scope">
 
@@ -148,16 +149,19 @@
             {{ scope.row.NameCN }}
           </template>
         </el-table-column>
+
         <el-table-column align="center" :label="$t('permission.loginUser')" width="250" prop="AccountName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.AccountName }}
           </template>
         </el-table-column>
+
         <el-table-column align="center" :label="$t('permission.company')" prop="OrgFullName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.OrgFullName }}
           </template>
         </el-table-column>
+
         <el-table-column align="center" :label="$t('permission.department')" prop="DepFullName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.DepFullName }}
@@ -330,7 +334,7 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
       this.ruleForm = {}
-      ListMenuFunAll({}).then(res => {
+      ListMenuFunAll().then(res => {
         if (res.IsPass === true) {
           newFn(res.Obj)
           function newFn(obj) {
@@ -420,7 +424,7 @@ export default {
     },
     // 编辑成功
     submitForm(formName) {
-      // this.editLoading = true;
+      this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
           const treeSelect = this.$refs.tree.getCheckedNodes(false, true)
@@ -476,8 +480,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
@@ -493,6 +497,7 @@ export default {
                   type: 'success',
                   message: res.MSG
                 })
+                this.getList()
                 this.dialogFormVisible = false
               } else {
                 this.$message({
@@ -500,9 +505,8 @@ export default {
                   message: res.MSG
                 })
               }
+              this.editLoading = false
             })
-            this.editLoading = false
-            this.getList()
           }
         } else {
           this.editLoading = false

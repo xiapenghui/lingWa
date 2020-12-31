@@ -443,8 +443,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
@@ -460,8 +460,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
@@ -506,7 +506,7 @@ export default {
       this.handleAdd()
     },
 
-    // 删除角色
+    // 删除
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -528,7 +528,6 @@ export default {
               })
             }
           })
-          this.getList()
         })
         .catch(() => {
           this.$message({

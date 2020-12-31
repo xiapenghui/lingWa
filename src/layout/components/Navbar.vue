@@ -45,9 +45,9 @@
     <el-dialog title="修改密码" :visible.sync="dialogPassWord" :modal-append-to-body="false" :close-on-click-modal="false" width="30%">
       <el-form ref="ruleForm" :model="ruleForm" status-icon :rules="rules" label-width="100px" class="demo-ruleForm">
         <el-form-item label="用户名:">{{ this.$store.state.permission.userName }}</el-form-item>
-        <el-form-item label="密码:" prop="AccountPwd"><el-input v-model="ruleForm.AccountPwd" type="password" :show-password="true" /></el-form-item>
-        <el-form-item label="确认密码:" prop="checkPass"><el-input v-model="ruleForm.checkPass" type="password" :show-password="true" /></el-form-item>
-        <el-form-item style="text-align: center;"><el-button type="primary" @click="submitForm('ruleForm')">提交</el-button></el-form-item>
+        <el-form-item label="密码:" prop="AccountPwd"><el-input v-model.trim="ruleForm.AccountPwd" type="password" :show-password="true" /></el-form-item>
+        <el-form-item label="确认密码:" prop="checkPass"><el-input v-model.trim="ruleForm.checkPass" type="password" :show-password="true" /></el-form-item>
+        <el-form-item style="text-align: center"><el-button type="primary" @click="submitForm('ruleForm')">提交</el-button></el-form-item>
       </el-form>
     </el-dialog>
   </div>

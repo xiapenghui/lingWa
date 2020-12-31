@@ -62,10 +62,9 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="工位编号" width="150" prop="TerminalNum" sortable :show-overflow-tooltip="true">
@@ -165,7 +164,9 @@
           <el-cascader v-model="ruleForm.CascadeArray" :options="allSubCatList" :props="optionProps" style="width: 100%" placeholder="正确格式为:车间/产线/中心" clearable />
         </el-form-item>
         <!-- <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" placeholder="请输入选择" clearable @input="workingBox" /></el-form-item> -->
-        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model="ruleForm.ProcessName" readonly placeholder="请选择" class="disActive" @focus="workingBox" /></el-form-item>
+        <el-form-item label="所属工序" prop="ProcessName">
+          <el-input v-model="ruleForm.ProcessName" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
+        </el-form-item>
 
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
@@ -452,13 +453,13 @@ export default {
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
               })
+              this.getList()
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
               })
             }
-            this.getList()
           })
         })
         .catch(() => {
@@ -483,8 +484,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
@@ -502,8 +503,8 @@ export default {
                   type: 'success',
                   message: this.$t('table.addSuc')
                 })
-                this.dialogFormVisible = false
                 this.getList()
+                this.dialogFormVisible = false
               } else {
                 this.$message({
                   type: 'error',
