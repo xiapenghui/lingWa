@@ -10,17 +10,10 @@
         <el-tooltip :content="$t('navbar.words')" effect="dark" :enterable="false" placement="bottom" style="display: none;">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
-        <el-tooltip :content="$t('navbar.Chinese')" effect="dark" :enterable="false" placement="bottom">
-          <lang-select class="right-menu-item hover-effect" />
-        </el-tooltip>
+        <el-tooltip :content="$t('navbar.Chinese')" effect="dark" :enterable="false" placement="bottom"><lang-select class="right-menu-item hover-effect" /></el-tooltip>
       </template>
       <el-select v-model="companyVal" placeholder="请选择" style="bottom: 7px; width: auto; ">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.text"
-          :value="item.value"
-        />
+        <el-option v-for="item in options" :key="item.value" :label="item.text" :value="item.value" />
       </el-select>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -42,7 +35,7 @@
     </div>
 
     <!-- 修改密 -->
-    <el-dialog title="修改密码" :visible.sync="dialogPassWord" :modal-append-to-body="false" :close-on-click-modal="false" width="30%">
+    <el-dialog v-dialogDrag title="修改密码" :visible.sync="dialogPassWord" :modal-append-to-body="false" :close-on-click-modal="false" width="30%">
       <el-form ref="ruleForm" :model="ruleForm" status-icon :rules="rules" label-width="100px" class="demo-ruleForm">
         <el-form-item label="用户名:">{{ this.$store.state.permission.userName }}</el-form-item>
         <el-form-item label="密码:" prop="AccountPwd"><el-input v-model.trim="ruleForm.AccountPwd" type="password" :show-password="true" /></el-form-item>
@@ -63,6 +56,7 @@ import LangSelect from '@/components/LangSelect'
 // import Search from '@/components/HeaderSearch'
 import { UpdatePassword } from '@/api/role'
 import { ListMenu } from '@/api/user'
+import VueEvent from '../../api/bus.js'
 export default {
   components: {
     Breadcrumb,
@@ -115,15 +109,25 @@ export default {
   },
 
   created() {
-    ListMenu().then(res => {
-      if (res.IsPass === true) {
-        this.options = res.Obj.orglist
-        this.companyVal = res.Obj.orglist[0].text
-      }
+    this.companyList()
+    debugger
+    VueEvent.$on('msg', (e) => {
+      this.message = e
+      console.log(`传来的数据是：${e}`)
     })
   },
 
   methods: {
+    // 获取导航公司下拉
+    companyList() {
+      ListMenu().then(res => {
+        if (res.IsPass === true) {
+          this.options = res.Obj.orglist
+          this.companyVal = res.Obj.orglist[0].text
+        }
+      })
+    },
+
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },

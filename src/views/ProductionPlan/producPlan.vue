@@ -277,7 +277,7 @@
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="120px" label-position="left" class="demo-ruleForm">
         <div class="bigUpBox">
           <div class="boxLeft">
@@ -527,7 +527,7 @@
     </el-dialog>
 
     <!-- BOM弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="bomFormVisible" title=" BOM弹窗" width="70%" height="50%">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="bomFormVisible" title=" BOM弹窗" width="70%" height="50%">
       <el-table
         v-loading="bomBoxLoading"
         :height="tableBoxHeight"
@@ -596,7 +596,7 @@
     </el-dialog>
 
     <!-- 工艺线路弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线" width="70%" height="50%">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线" width="70%" height="50%">
       <el-table
         v-loading="lineBoxLoading"
         :height="tableBoxHeight"

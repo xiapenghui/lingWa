@@ -98,7 +98,7 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 添加编辑菜单 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.title')" prop="RoleName">
@@ -124,6 +124,7 @@
 
     <!-- 查看用户 -->
     <el-dialog
+      v-dialogDrag
       title="列表"
       :visible.sync="dialogTableVisible"
     >

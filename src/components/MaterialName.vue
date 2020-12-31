@@ -1,10 +1,10 @@
 <template>
-  <el-dialog :close-on-click-modal="false" :visible.sync="materialShow" :before-close="materialClose" title="列表" width="70%" height="50%">
+  <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="materialShow" :before-close="materialClose" title="列表" width="70%" height="50%">
     <div class="searchBox" style="margin-bottom: 20px;">
       <el-row :gutter="20">
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="原料编号" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="原料编号" placement="top-start">
               <label class="radio-label">原料编号:</label>
             </el-tooltip>
           </el-col>
@@ -13,7 +13,7 @@
 
         <el-col :span="8">
           <el-col :span="6">
-            <el-tooltip class="item" effect="dark"   :enterable="false" content="原料名称" placement="top-start">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="原料名称" placement="top-start">
               <label class="radio-label">原料名称:</label>
             </el-tooltip>
           </el-col>

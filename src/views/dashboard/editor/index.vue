@@ -198,13 +198,14 @@
     </el-dialog>
 
     <!--明细弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="detailFormVisible" title="列表">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="detailFormVisible" title="列表">
       <el-form ref="ruleForm" v-loading="detailLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-table
           v-loading="listLoading"
           :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
           :data="tableData"
-          style="width: 100%;height: 55vh;"
+          height="55vh"
+          style="width: 100%;"
           border
           element-loading-text="拼命加载中"
           fit
@@ -216,27 +217,27 @@
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="检验项目" width="200" prop="WarehouseNum" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="检验项目" width="150" prop="WarehouseNum" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
               {{ scope.row.WarehouseNum }}
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="下限值" prop="WarehouseName" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="下限值" prop="LowerLimit" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.WarehouseName }}
+              {{ scope.row.LowerLimit }}
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="上限值" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="上限值" prop="UpperLimit" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.WarehouseType }}
+              {{ scope.row.UpperLimit }}
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="检测值" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="检测值" prop="StandardValue" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.WarehouseType }}
+              <el-input-number v-model="scope.row.num" label="请输入数字" />
             </template>
           </el-table-column>
 

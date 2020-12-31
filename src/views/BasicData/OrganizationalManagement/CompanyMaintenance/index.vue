@@ -130,7 +130,7 @@
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="公司编号"><el-input v-model.trim="ruleForm.OrgNum" placeholder="公司编号" /></el-form-item>
         <el-form-item label="公司全称" prop="FullName"><el-input v-model.trim="ruleForm.FullName" placeholder="公司全称" clearable /></el-form-item>
@@ -149,7 +149,6 @@
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item> -->
-
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="描述" /></el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -168,6 +167,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { OrganList, OrganAdd, OrganStatus, OrganModify, OrganDelete } from '@/api/BasicData'
 import { getToken } from '@/utils/auth'
+import VueEvent from '../../../../api/bus.js'
 const fixHeight = 260
 export default {
   name: 'CompanyMaintenance',
@@ -364,6 +364,7 @@ export default {
                 })
                 this.getList()
                 this.dialogFormVisible = false
+                VueEvent.$emit('msg', '我要传给兄弟组件们，你收到没有')
               } else {
                 this.$message({
                   type: 'error',
@@ -381,6 +382,7 @@ export default {
                 })
                 this.getList()
                 this.dialogFormVisible = false
+                VueEvent.$emit('msg', '我要传给兄弟组件们，你收到没有')
               } else {
                 this.$message({
                   type: 'error',

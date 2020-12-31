@@ -119,7 +119,7 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' :'新增'">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' :'新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model.trim="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
         <el-form-item label="工序名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>

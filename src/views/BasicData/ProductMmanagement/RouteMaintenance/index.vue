@@ -118,7 +118,7 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="工艺路线名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="工艺路线名称" clearable /></el-form-item>
         <el-form-item label="版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="版本" clearable /></el-form-item>

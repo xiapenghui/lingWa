@@ -141,7 +141,7 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <!-- <el-form-item label="成品编号" prop="ProductNum"><el-input v-model.trim="ruleForm.ProductNum" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item> -->
         <el-form-item label="成品编号" prop="ProductNum">
@@ -449,7 +449,9 @@ export default {
       })
         .then(() => {
           bomDelete({ BomCode: row.BomCode }).then(res => {
+            debugger
             if (res.IsPass === true) {
+              debugger
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')

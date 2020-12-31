@@ -95,7 +95,7 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total > 0" :total="total" :page.sync="form.page" :limit.sync="form.limit" @pagination="getList" />
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditFinished') : $t('permission.addFinished')">
+    <el-dialog v-dialogDrag :visible.sync="dialogVisible" :title="dialogType === 'edit' ? $t('permission.EditFinished') : $t('permission.addFinished')">
       <el-form :model="role" :rules="rules" label-width="100px" label-position="left">
         <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
           <el-form-item :label="$t('permission.finishedNo')" prop="finishedNo">
