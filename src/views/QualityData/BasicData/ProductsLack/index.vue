@@ -186,8 +186,8 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="缺陷编号" prop="DefectNum"><el-input v-model.trim="ruleForm.DefectNum" placeholder="缺陷编号" clearable /></el-form-item>
-        <el-form-item label="缺陷名称" prop="DefectName"><el-input v-model.trim="ruleForm.DefectName" placeholder="缺陷编号" clearable /></el-form-item>
+        <el-form-item label="缺陷编号" prop="DefectNum"><el-input v-model.trim="ruleForm.DefectNum" placeholder="缺陷编号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="缺陷名称" prop="DefectName"><el-input v-model.trim="ruleForm.DefectName" placeholder="缺陷名称" clearable /></el-form-item>
 
         <el-form-item label="缺陷类型" prop="DefectType">
           <el-select v-model="ruleForm.DefectType" placeholder="缺陷类型" style="width: 100%" clearable @change="changeDefect">

@@ -97,6 +97,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="所属工序" width="150" prop="WorkshopName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.WorkshopName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="描述" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
@@ -151,7 +157,9 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '工位' : '工位'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工位编号"><el-input v-model.trim="ruleForm.TerminalNum" placeholder="工位编号" clearable /></el-form-item>
+        <el-form-item label="工位编号">
+          <el-input v-model.trim="ruleForm.TerminalNum" placeholder="工位编号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable />
+        </el-form-item>
         <el-form-item label="工位名称" prop="TerminalName"><el-input v-model.trim="ruleForm.TerminalName" placeholder="工位名称" clearable /></el-form-item>
 
         <el-form-item label="公司名称" prop="OrgName" style="display: none;">
@@ -192,14 +200,14 @@
 </template>
 
 <script>
-import '../../../../styles/commentBox.scss'
-import '../../../../styles/scrollbar.css'
-import i18n from '@/lang'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { stationList, stationDelete, stationAdd, stationModify, stationStatus, treeList, GetAuthOrganizationRange, BaseProList } from '@/api/BasicData'
-import WorkingName from '@/components/WorkingName' // 工序名称
-const fixHeight = 270
-const fixHeightBox = 350
+import '../../../../styles/commentBox.scss';
+import '../../../../styles/scrollbar.css';
+import i18n from '@/lang';
+import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
+import { stationList, stationDelete, stationAdd, stationModify, stationStatus, treeList, GetAuthOrganizationRange, BaseProList } from '@/api/BasicData';
+import WorkingName from '@/components/WorkingName'; // 工序名称
+const fixHeight = 270;
+const fixHeightBox = 350;
 export default {
   name: 'TerminalInfo',
   components: { Pagination, WorkingName },
@@ -247,7 +255,8 @@ export default {
       rules: {
         TerminalName: [{ required: true, message: '请输入工位名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-        CascadeArray: [{ required: true, message: '请输入工作中心', trigger: 'blur' }]
+        CascadeArray: [{ required: true, message: '请输入工作中心', trigger: 'blur' }],
+        ProcessName: [{ required: true, message: '请选择所属工序', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -258,29 +267,29 @@ export default {
       // content7: this.$t('permission.passwords'),
       // content8: this.$t('permission.roleUser'),
       // content9: this.$t('permission.description')
-    }
+    };
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val
-        this.timer = true
-        const that = this
+        this.tableHeight = val;
+        this.timer = true;
+        const that = this;
         setTimeout(function() {
-          that.timer = false
-        }, 400)
+          that.timer = false;
+        }, 400);
       }
     },
     tableBoxHeight(val) {
       if (!this.timer) {
-        this.tableBoxHeight = val
-        this.timer = true
-        const that = this
+        this.tableBoxHeight = val;
+        this.timer = true;
+        const that = this;
         setTimeout(function() {
-          that.timer = false
-        }, 400)
+          that.timer = false;
+        }, 400);
       }
     },
     // 监听data属性中英文切换问题
@@ -294,38 +303,38 @@ export default {
       // this.content7 = this.$t('permission.passwords')
       // this.content8 = this.$t('permission.roleUser')
       // this.content9 = this.$t('permission.description')
-      this.setFormRules()
+      this.setFormRules();
     }
   },
   created() {
     // 监听表格高度
-    const that = this
+    const that = this;
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight
-      })()
-    }
+        that.tableHeight = window.innerHeight - fixHeight;
+      })();
+    };
 
     // 获取搜索公司下来
     GetAuthOrganizationRange().then(res => {
       if (res.IsPass === true) {
-        this.companyData = res.Obj
+        this.companyData = res.Obj;
         this.companyData.map((item, index) => {
           if (index === 0) {
-            this.pagination.OrgCode = item.value
-            this.companyVal = item.value
+            this.pagination.OrgCode = item.value;
+            this.companyVal = item.value;
           }
-        })
+        });
       }
-    })
+    });
 
     // 获取新增产线名称级联
     treeList({ MinUnitType: 6 }).then(res => {
-      this.allSubCatList = this.getTreeData(res.Obj[0].children)
-    })
+      this.allSubCatList = this.getTreeData(res.Obj[0].children);
+    });
 
-    this.getList()
-    this.setFormRules()
+    this.getList();
+    this.setFormRules();
   },
   mounted() {},
   methods: {
@@ -334,24 +343,25 @@ export default {
       this.rules = {
         TerminalName: [{ required: true, message: '请输入工位名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-        CascadeArray: [{ required: true, message: '请输入工作中心', trigger: 'blur' }]
-      }
+        CascadeArray: [{ required: true, message: '请输入工作中心', trigger: 'blur' }],
+        ProcessName: [{ required: true, message: '请选择所属工序', trigger: 'blur' }]
+      };
     },
 
     // 公司下拉获取值
     changeName(val) {
-      this.companyVal = val
+      this.companyVal = val;
     },
 
     // 禁用，启用权限
     handleBan(row) {
-      let status, statusTitle
+      let status, statusTitle;
       if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle')
-        statusTitle = this.$t('permission.jingyongInfo')
+        status = this.$t('permission.jingyongTitle');
+        statusTitle = this.$t('permission.jingyongInfo');
       } else {
-        status = this.$t('permission.qiyongTitle')
-        statusTitle = this.$t('permission.qiyongInfo')
+        status = this.$t('permission.qiyongTitle');
+        statusTitle = this.$t('permission.qiyongInfo');
       }
       this.$confirm(statusTitle, status, {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -361,59 +371,59 @@ export default {
         const params = {
           Status: (row.Status = row.Status !== true),
           TerminalCode: row.TerminalCode
-        }
+        };
         stationStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
               message: res.MSG
-            })
+            });
           } else {
             this.$message({
               type: 'error',
               message: res.MSG
-            })
+            });
           }
-          this.getList()
-        })
-      })
+          this.getList();
+        });
+      });
     },
 
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1
-      this.getList()
+      this.pagination.PageIndex = 1;
+      this.getList();
     },
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       stationList(this.pagination).then(res => {
-        this.tableData = res.Obj
-        this.total = res.TotalRowCount
-        this.listLoading = false
-      })
+        this.tableData = res.Obj;
+        this.total = res.TotalRowCount;
+        this.listLoading = false;
+      });
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`)
+        route.title = i18n.t(`route.${route.title}`);
         if (route.children) {
-          route.children = this.i18n(route.children)
+          route.children = this.i18n(route.children);
         }
-        return route
-      })
-      return app
+        return route;
+      });
+      return app;
     },
 
     // 增加工位
     handleAdd() {
-      this.dialogType = 'new'
-      this.dialogFormVisible = true
+      this.dialogType = 'new';
+      this.dialogFormVisible = true;
       this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
+        this.$refs.ruleForm.clearValidate();
+      });
       this.ruleForm = {
         OrgName: this.companyVal
-      }
+      };
     },
 
     // 获取新增工作中心名称级联
@@ -421,22 +431,22 @@ export default {
       for (var i = 0; i < data.length; i++) {
         if (data[i].children.length < 1) {
           // children若为空数组，则将children设为undefined
-          data[i].children = undefined
+          data[i].children = undefined;
         } else {
           // children若不为空数组，则继续 递归调用 本方法
-          this.getTreeData(data[i].children)
+          this.getTreeData(data[i].children);
         }
       }
-      return data
+      return data;
     },
     // 编辑工位
     handleEdit(row) {
-      this.dialogType = 'edit'
-      this.dialogFormVisible = true
+      this.dialogType = 'edit';
+      this.dialogFormVisible = true;
       this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-      this.ruleForm = JSON.parse(JSON.stringify(row))
+        this.$refs.ruleForm.clearValidate();
+      });
+      this.ruleForm = JSON.parse(JSON.stringify(row));
     },
 
     // 删除工位
@@ -452,112 +462,112 @@ export default {
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
-              })
-              this.getList()
+              });
+              this.getList();
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              })
+              });
             }
-          })
+          });
         })
         .catch(() => {
           this.$message({
             type: 'info',
             message: this.$t('table.deleteError')
-          })
-        })
+          });
+        });
     },
 
     // 编辑成功
     submitForm(formName) {
-      this.editLoading = true
+      this.editLoading = true;
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            const params = this.ruleForm
-            params.OrgCode = this.companyVal
+            const params = this.ruleForm;
+            params.OrgCode = this.companyVal;
             stationModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                })
-                this.getList()
-                this.dialogFormVisible = false
+                });
+                this.getList();
+                this.dialogFormVisible = false;
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                })
+                });
               }
-              this.editLoading = false
-            })
+              this.editLoading = false;
+            });
           } else {
-            const params = this.ruleForm
-            params.OrgCode = this.companyVal
+            const params = this.ruleForm;
+            params.OrgCode = this.companyVal;
             stationAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.addSuc')
-                })
-                this.getList()
-                this.dialogFormVisible = false
+                });
+                this.getList();
+                this.dialogFormVisible = false;
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                })
+                });
               }
-              this.editLoading = false
-            })
+              this.editLoading = false;
+            });
           }
         } else {
-          this.editLoading = false
+          this.editLoading = false;
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          })
-          return false
+          });
+          return false;
         }
-      })
+      });
     },
 
     // 工序聚焦事件原料弹窗
     workingBox() {
-      this.workingFormVisible = true
-      this.workingBoxLoading = true
+      this.workingFormVisible = true;
+      this.workingBoxLoading = true;
       BaseProList(this.paginationSearchWorking).then(res => {
         if (res.IsPass === true) {
-          this.workingData = res.Obj
-          this.workingBoxLoading = false
+          this.workingData = res.Obj;
+          this.workingBoxLoading = false;
         }
-      })
+      });
     },
     // 工序弹窗搜索
     handleSearchWorking() {
-      this.paginationSearchWorking.PageIndex = 1
-      this.workingBox()
+      this.paginationSearchWorking.PageIndex = 1;
+      this.workingBox();
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
-      console.log('row', row)
-      this.ruleForm.ProcessCode = row.ProcessCode
-      this.$set(this.ruleForm, 'ProcessName', row.Name)
+      console.log('row', row);
+      this.ruleForm.ProcessCode = row.ProcessCode;
+      this.$set(this.ruleForm, 'ProcessName', row.Name);
       // this.ruleForm.ProcessName = row.Name
       this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-      this.workingFormVisible = false
+        this.$refs.ruleForm.clearValidate();
+      });
+      this.workingFormVisible = false;
     },
     // 关闭工序名称查询弹窗
     workingClose() {
-      this.workingFormVisible = false
+      this.workingFormVisible = false;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped></style>

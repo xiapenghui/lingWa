@@ -112,7 +112,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="库区编号" prop="RegionNum"><el-input v-model.trim="ruleForm.RegionNum" placeholder="仓库编号" clearable /></el-form-item>
+        <el-form-item label="库区编号" prop="RegionNum"><el-input v-model.trim="ruleForm.RegionNum" placeholder="仓库编号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable /></el-form-item>
         <el-form-item label="库区名称" prop="RegionName"><el-input v-model.trim="ruleForm.RegionName" placeholder="仓库名称" clearable /></el-form-item>
 
         <el-form-item label="仓库编号" prop="WarehouseNum">
