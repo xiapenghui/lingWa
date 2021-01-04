@@ -60,6 +60,8 @@ export default {
     LocationRule: '库位规则',
     InventoryReport: '库存报表',
     PdaAdministra: 'PDA管理',
+    ProcessInspec: '过程检验任务',
+    FinishedInspec: '成品检验任务',
 
     // 截止
 

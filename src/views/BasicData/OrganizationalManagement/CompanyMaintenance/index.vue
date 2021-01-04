@@ -132,7 +132,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="公司编号"><el-input v-model.trim="ruleForm.OrgNum" placeholder="公司编号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable/></el-form-item>
+        <el-form-item label="公司编号"><el-input v-model.trim="ruleForm.OrgNum" placeholder="公司编号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable /></el-form-item>
         <el-form-item label="公司全称" prop="FullName"><el-input v-model.trim="ruleForm.FullName" placeholder="公司全称" clearable /></el-form-item>
         <el-form-item label="公司简称"><el-input v-model.trim="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
         <el-form-item label="公司电话"><el-input v-model.trim="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
@@ -167,7 +167,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { OrganList, OrganAdd, OrganStatus, OrganModify, OrganDelete } from '@/api/BasicData'
 import { getToken } from '@/utils/auth'
-import VueEvent from '../../../../api/bus.js'
+// import VueEvent from '../../../../api/bus.js'
 const fixHeight = 260
 export default {
   name: 'CompanyMaintenance',
@@ -364,7 +364,7 @@ export default {
                 })
                 this.getList()
                 this.dialogFormVisible = false
-                VueEvent.$emit('msg', '我要传给兄弟组件们，你收到没有')
+                // VueEvent.$emit('msg', '我要传给兄弟组件们，你收到没有')
               } else {
                 this.$message({
                   type: 'error',
@@ -382,7 +382,7 @@ export default {
                 })
                 this.getList()
                 this.dialogFormVisible = false
-                VueEvent.$emit('msg', '我要传给兄弟组件们，你收到没有')
+                // VueEvent.$emit('msg', '我要传给兄弟组件们，你收到没有')
               } else {
                 this.$message({
                   type: 'error',

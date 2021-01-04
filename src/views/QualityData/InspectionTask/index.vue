@@ -1,9 +1,3 @@
 <template>
-  <div>测试1</div>
+  <router-view />
 </template>
-
-<script>
-</script>
-
-<style>
-</style>

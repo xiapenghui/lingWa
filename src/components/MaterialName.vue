@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="materialShow" :before-close="materialClose" title="列表" width="70%" height="50%">
+  <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="materialShow" :before-close="materialClose" title="原料信息表" width="70%" height="50%">
     <div class="searchBox" style="margin-bottom: 20px;">
       <el-row :gutter="20">
         <el-col :span="8">

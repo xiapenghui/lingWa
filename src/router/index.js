@@ -470,7 +470,26 @@ export const asyncRoutes = [
       name: 'InspectionTask',
       meta: {
         title: 'InspectionTask'
-      }
+      },
+      redirect: '/QualityData/InspectionTask/ProcessInspec',
+      children: [
+        {
+          path: 'ProcessInspec',
+          component: () => import('@/views/QualityData/InspectionTask/ProcessInspec'),
+          name: 'ProcessInspec',
+          meta: {
+            title: 'ProcessInspec'
+          }
+        },
+        {
+          path: 'FinishedInspec',
+          component: () => import('@/views/QualityData/InspectionTask/FinishedInspec'),
+          name: 'FinishedInspec',
+          meta: {
+            title: 'FinishedInspec'
+          }
+        }
+      ]
     },
     {
       path: 'MobileInspection',

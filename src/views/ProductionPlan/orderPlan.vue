@@ -384,7 +384,7 @@
     />
 
     <!-- BOM弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="bomFormVisible" title="列表" width="70%" height="50%">
+    <el-dialog :close-on-click-modal="false" :visible.sync="bomFormVisible" title="BOM信息表" width="70%" height="50%">
       <el-table
         v-loading="bomBoxLoading"
         :height="tableBoxHeight"
@@ -396,52 +396,52 @@
         fit
         highlight-current-row
       >
-         <el-table-column align="center" label="序号" width="50" fixed>
-           <template slot-scope="scope">
-             {{ scope.$index + 1 }}
-           </template>
-         </el-table-column>
-         
-         <el-table-column align="center" label="成品编号" width="150" prop="ProductNum" sortable :show-overflow-tooltip="true">
-           <template slot-scope="scope">
-             {{ scope.row.ProductNum }}
-           </template>
-         </el-table-column>
-         
-         <el-table-column align="center" label="成品名称" width="150" prop="ProductName" sortable :show-overflow-tooltip="true">
-           <template slot-scope="scope">
-             {{ scope.row.ProductName }}
-           </template>
-         </el-table-column>
-         
-         <el-table-column align="center" label="工艺路线名称" width="150" prop="ProcessRouteName" sortable :show-overflow-tooltip="true">
-           <template slot-scope="scope">
-             {{ scope.row.ProcessRouteName }}
-           </template>
-         </el-table-column>
-         
-         <el-table-column align="center" label="BOM版本" width="150" prop="Version" sortable :show-overflow-tooltip="true">
-           <template slot-scope="scope">
-             {{ scope.row.Version }}
-           </template>
-         </el-table-column>
-         
-         <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
-           <template slot-scope="scope">
-             {{ scope.row.Description }}
-           </template>
-         </el-table-column>
-         
-         <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
-           <template slot-scope="scope">
-             {{ scope.row.Remark }}
-           </template>
-         </el-table-column>
+        <el-table-column align="center" label="序号" width="50" fixed>
+          <template slot-scope="scope">
+            {{ scope.$index + 1 }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="成品编号" width="150" prop="ProductNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProductNum }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="成品名称" width="150" prop="ProductName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProductName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="工艺路线名称" width="150" prop="ProcessRouteName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessRouteName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="BOM版本" width="150" prop="Version" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.Version }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.Description }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.Remark }}
+          </template>
+        </el-table-column>
       </el-table>
     </el-dialog>
 
     <!-- 工艺线路弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="lineFormVisible" title="列表" width="70%" height="50%">
+    <el-dialog :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线信息表" width="70%" height="50%">
       <el-table
         v-loading="lineBoxLoading"
         :height="tableBoxHeight"
@@ -458,7 +458,7 @@
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
-        
+
         <el-table-column align="center" label="工艺路线名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.Name }}
@@ -469,19 +469,19 @@
             {{ scope.row.Version }}
           </template>
         </el-table-column>
-        
+
         <el-table-column align="center" label="生效时间" width="150" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.EffectiveDate | substringTime }}
           </template>
         </el-table-column>
-        
+
         <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.Description }}
           </template>
         </el-table-column>
-        
+
         <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.Remark }}
@@ -499,7 +499,7 @@ import i18n from '@/lang'
 // import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetMaterialList, GetCustomerList, GetLine ,bomList ,baseRouteList} from '@/api/BasicData'
+import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, bomList, baseRouteList } from '@/api/BasicData'
 import { orderList, orderDelete, orderFreeze, orderAdd, orderModify, orderStatus } from '@/api/ProductionPlan'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
@@ -903,28 +903,28 @@ export default {
     handleBOM(row) {
       bomList({ BomCode: row.BomCode }).then(res => {
         if (res.IsPass === true) {
-          this.bomFormVisible = true;
-          this.bomBoxLoading = true;
-          this.bomData = res.Obj;
+          this.bomFormVisible = true
+          this.bomBoxLoading = true
+          this.bomData = res.Obj
         } else {
-          this.$message('暂无数据！');
+          this.$message('暂无数据！')
         }
-        this.bomBoxLoading = false;
-      });
+        this.bomBoxLoading = false
+      })
     },
 
     // 查看工艺路线
     handleLine(row) {
-      baseRouteList({ RouteCode: row.RouteCode }).then(res => {
+      baseRouteList({ ProcessRouteCode: row.RouteCode }).then(res => {
         if (res.IsPass === true) {
-          this.lineFormVisible = true;
-          this.lineBoxLoading = true;
-          this.lineData = res.Obj;
+          this.lineFormVisible = true
+          this.lineBoxLoading = true
+          this.lineData = res.Obj
         } else {
-          this.$message('暂无数据！');
+          this.$message('暂无数据！')
         }
-        this.lineBoxLoading = false;
-      });
+        this.lineBoxLoading = false
+      })
     },
 
     // 删除按钮

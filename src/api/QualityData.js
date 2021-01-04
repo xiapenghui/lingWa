@@ -309,3 +309,13 @@ export function QuaIpqcIDeDelete(data) {
     data
   })
 }
+
+//  过程检验任务 - 过程检验任务--获取任务单号
+export function CreateTaskNum(data) {
+  return request({
+    url: '/api/QuaTaskInspectWoSn/CreateTaskNum',
+    method: 'post',
+    data
+  })
+}
+

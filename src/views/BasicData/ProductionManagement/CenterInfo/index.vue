@@ -91,10 +91,10 @@
           {{ scope.row.WorkshopName }}
         </template>
       </el-table-column>
-      
-      <el-table-column align="center" label="工作中心类别" width="150" prop="WorkshopName" sortable :show-overflow-tooltip="true">
+
+      <el-table-column align="center" label="工作中心类别" width="150" prop="WorkCenterTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WorkshopName }}
+          {{ scope.row.WorkCenterTypeText }}
         </template>
       </el-table-column>
 

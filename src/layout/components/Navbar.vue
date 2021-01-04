@@ -56,7 +56,7 @@ import LangSelect from '@/components/LangSelect'
 // import Search from '@/components/HeaderSearch'
 import { UpdatePassword } from '@/api/role'
 import { ListMenu } from '@/api/user'
-import VueEvent from '../../api/bus.js'
+// import VueEvent from '../../api/bus.js'
 export default {
   components: {
     Breadcrumb,
@@ -110,11 +110,11 @@ export default {
 
   created() {
     this.companyList()
-    debugger
-    VueEvent.$on('msg', (e) => {
-      this.message = e
-      console.log(`传来的数据是：${e}`)
-    })
+    // debugger
+    // VueEvent.$on('msg', (e) => {
+    //   this.message = e
+    //   console.log(`传来的数据是：${e}`)
+    // })
   },
 
   methods: {
