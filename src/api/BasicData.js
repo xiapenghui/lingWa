@@ -71,6 +71,24 @@ export function GetBomVersion(data) {
   })
 }
 
+// 通用工艺路线接口
+export function GetRouteTextValuePair(data) {
+  return request({
+    url: '/api/Common/GetRouteTextValuePair',
+    method: 'post',
+    data
+  })
+}
+
+// 通用物料数据
+export function GetMaterial(data) {
+  return request({
+    url: '/api/Common/GetMaterial',
+    method: 'post',
+    data
+  })
+}
+
 // 公司信息管理列表
 export function OrganList(data) {
   return request({

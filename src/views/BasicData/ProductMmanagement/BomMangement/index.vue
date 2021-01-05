@@ -62,11 +62,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工艺路线名称" width="150" prop="ProcessRouteName" sortable :show-overflow-tooltip="true">
+      <!--   <el-table-column align="center" label="工艺路线名称" width="150" prop="ProcessRouteName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessRouteName }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column align="center" label="BOM版本" width="150" prop="Version" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -143,7 +143,7 @@
     <!-- 编辑弹窗 -->
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <!-- <el-form-item label="成品编号" prop="ProductNum"><el-input v-model.trim="ruleForm.ProductNum" placeholder="请输入并选择" clearable @input="finshBox" /></el-form-item> -->
+
         <el-form-item label="成品编号" prop="ProductNum">
           <el-input v-model.trim="ruleForm.ProductNum" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
         </el-form-item>
@@ -151,10 +151,9 @@
         <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.ProductName" placeholder="成品名称" :disabled="true" /></el-form-item>
         <el-form-item label="BOM版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="BOM版本" clearable /></el-form-item>
 
-        <!-- <el-form-item label="工艺路线" prop="ProcessRouteName"><el-input v-model="ruleForm.ProcessRouteName" placeholder="请输入并选择" clearable @input="lineBox" /></el-form-item> -->
-        <el-form-item label="工艺路线" prop="ProcessRouteName">
+        <!--  <el-form-item label="工艺路线" prop="ProcessRouteName">
           <el-input v-model="ruleForm.ProcessRouteName" readonly placeholder="请选择" class="disActive" @focus="lineBox" />
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="生效时间" prop="EffectiveDate">
           <el-date-picker
@@ -386,7 +385,7 @@ export default {
         // name: 'BomMangementDetaile',
         query: {
           BomCode: row.BomCode,
-          ProcessRouteCode: row.ProcessRouteCode,
+          ProcessCode: row.ProcessCode,
           ProductCode: row.ProductCode,
           ProductNum: row.ProductNum,
           ProductName: row.ProductName,

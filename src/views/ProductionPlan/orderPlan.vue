@@ -211,6 +211,18 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="BOM版本" width="150" prop="BomVersion" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.BomVersion }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="工艺路线" width="150" prop="RouteName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.RouteName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="计开始日期" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PlanStartDate | substringTime }}
@@ -303,7 +315,7 @@
         <div class="bigUpBox">
           <div class="boxLeft">
             <el-form-item label="生产工单号" prop="OrderNum" :rules="[{ required: true, message: '请输入生产工单号', trigger: 'blur' }]">
-              <el-input v-model.trim="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" clearable />
+              <el-input v-model.trim="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable />
             </el-form-item>
 
             <el-form-item label="工单类型" prop="OrderType" :rules="[{ required: true, message: '请选择生产计划类型', trigger: 'change' }]">
@@ -325,16 +337,24 @@
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
+
+            <el-form-item label="备注"><el-input v-model.trim="ruleForm.Description" type="textarea" clearable /></el-form-item>
           </div>
 
           <div class="boxRight">
             <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: true, message: '请输入成品名称', trigger: 'change' }]">
-              <!-- <el-input v-model="ruleForm.ProductName" placeholder="请输入并选择成品名称" clearable @input="finshBox" /> -->
               <el-input v-model="ruleForm.ProductName" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
             </el-form-item>
 
+            <el-form-item label="BOM版本" prop="BomVersion"><el-input v-model.trim="ruleForm.BomVersion" placeholder="BOM版本" disabled /></el-form-item>
+
+            <el-form-item label="工艺路线" prop="RouteName" :rules="[{ required: true, message: '请选择工艺路线', trigger: 'change' }]">
+              <el-select v-model="ruleForm.RouteName" placeholder="工艺路线" style="width: 100%" clearable @change="changeRoute">
+                <el-option v-for="item in RouteNameList" :key="item.value" :label="item.text" :value="item.value" />
+              </el-select>
+            </el-form-item>
+
             <el-form-item label="客户名称" prop="CustomerName">
-              <!-- <el-input v-model="ruleForm.CustomerName" placeholder="请输入并选择客户名称" clearable @input="userBox" /> -->
               <el-input v-model="ruleForm.CustomerName" readonly placeholder="请选择" class="disActive" @focus="userBox" />
             </el-form-item>
 
@@ -347,8 +367,6 @@
             <el-form-item label="计划结束日期">
               <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" clearable />
             </el-form-item>
-
-            <el-form-item label="备注"><el-input v-model.trim="ruleForm.Description" type="textarea" clearable /></el-form-item>
           </div>
         </div>
       </el-form>
@@ -384,7 +402,7 @@
     />
 
     <!-- BOM弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="bomFormVisible" title="BOM信息表" width="70%" height="50%">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="bomFormVisible" title="BOM信息表" width="70%" height="50%">
       <el-table
         v-loading="bomBoxLoading"
         :height="tableBoxHeight"
@@ -441,7 +459,7 @@
     </el-dialog>
 
     <!-- 工艺线路弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线信息表" width="70%" height="50%">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线信息表" width="70%" height="50%">
       <el-table
         v-loading="lineBoxLoading"
         :height="tableBoxHeight"
@@ -499,7 +517,7 @@ import i18n from '@/lang'
 // import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, bomList, baseRouteList } from '@/api/BasicData'
+import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, bomList, baseRouteList, GetBomVersion, GetRouteTextValuePair, GetMaterial } from '@/api/BasicData'
 import { orderList, orderDelete, orderFreeze, orderAdd, orderModify, orderStatus } from '@/api/ProductionPlan'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
@@ -514,11 +532,18 @@ export default {
       tableData: [],
       ruleForm: {
         ProductName: '',
-        CustomerName: ''
+        CustomerName: '',
+        BomVersion: ''
       }, // 编辑弹窗
       CreateTime: null,
       btnShow: true, // 互斥按钮
       showSearch: false, // 隐藏搜素条件
+      dialogTypeTitle: null,
+      newLine: null, // 获取计划下拉产线
+      newRoute: null, // 获取工艺路线
+      newPriority: null, // 获取下拉优先级
+      BOMCode: null, // 获取新的Bomcode值
+      RouteNameCode: null, // 获取新的routeCode值
       PlanTypeNameData: [], // 工单类型下拉框
       StatusNameData: [], // 工单状态下拉框
       finshData: [], // 成品弹窗数组
@@ -528,6 +553,7 @@ export default {
       isGive: [], // 弹窗计划类型radio数组
       PriorityList: [], // 优先级下拉列表
       ProductList: [], // 计划投入产线
+      RouteNameList: [], // 工艺路线
       typeCode: null, // 计划类型code值
       pagination: {
         PageIndex: 1,
@@ -567,9 +593,6 @@ export default {
       userFormVisible: false, // input客户名称弹窗
       bomFormVisible: false, // BOM弹窗
       lineFormVisible: false, // 工艺路线弹窗
-      dialogTypeTitle: null,
-      newLine: null, // 获取计划下拉产线
-      newPriority: null, // 获取下拉优先级
       addShow: true, // 继续添加仅新增可见
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 表格高度
@@ -688,6 +711,12 @@ export default {
         this.ProductList = res.Obj
       }
     })
+    // 获取新增修改工艺路线下拉
+    GetRouteTextValuePair().then(res => {
+      if (res.IsPass === true) {
+        this.RouteNameList = res.Obj
+      }
+    })
 
     // Mock: get all routes and roles list from server
     this.getList()
@@ -738,6 +767,11 @@ export default {
     // 获取计划下拉产线
     changeLine(val) {
       this.newLine = val
+    },
+
+    // 获取工艺路线下拉
+    changeRoute(val) {
+      this.newRoute = val
     },
 
     // 获取下拉优先级
@@ -823,6 +857,8 @@ export default {
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditOrder')) {
             const params = this.ruleForm
+            // params.BomCode = this.BOMCode
+            // params.RouteCode = this.newRoute
             orderModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -843,6 +879,9 @@ export default {
             const params = this.ruleForm
             params.PlanType = this.typeCode
             params.ProductLineCode = this.newLine
+            params.BomCode = this.BOMCode
+            params.RouteCode = this.newRoute
+            // params.RouteCode = this.RouteNameCode
             params.Priority = this.newPriority
             orderAdd(params).then(res => {
               if (res.IsPass === true) {
@@ -879,6 +918,8 @@ export default {
           const params = this.ruleForm
           params.PlanType = this.typeCode
           params.ProductLineCode = this.newLine
+          params.BomCode = this.BOMCode
+          params.RouteCode = this.newRoute
           params.Priority = this.newPriority
           orderAdd(params).then(res => {
             if (res.IsPass === true) {
@@ -1185,6 +1226,25 @@ export default {
       // this.ruleForm.ProductName = row.Name
       this.$set(this.ruleForm, 'ProductName', row.Name)
       this.ruleForm.ProductCode = row.MaterialCode
+      const params = {
+        MaterialType: '1',
+        MaterialCode: row.MaterialCode
+      }
+      GetMaterial(params).then(res => {
+        if (res.IsPass === true) {
+          debugger
+          this.$set(this.ruleForm, 'RouteName', res.Obj.RouteName)
+          this.RouteNameCode = res.Obj.RouteCode
+        }
+      })
+      GetBomVersion(params).then(res => {
+        if (res.IsPass === true) {
+          debugger
+          this.$set(this.ruleForm, 'BomVersion', res.Obj.Version)
+          this.BOMCode = res.Obj.Code
+        }
+      })
+
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })

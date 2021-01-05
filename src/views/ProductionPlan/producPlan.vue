@@ -387,7 +387,7 @@
     />
 
     <!-- 关联工单弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="orderFormVisible" title="工单信息表" width="70%" height="50%">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="orderFormVisible" title="工单信息表" width="70%" height="50%">
       <el-table
         v-loading="orderBoxLoading"
         :height="tableBoxHeight"
@@ -1140,7 +1140,7 @@ export default {
     },
     // 关联工单
     handleRelation(row) {
-      orderList({ ProductCode: row.ProductCode }).then(res => {
+      orderList({ PlanCode: row.PlanCode }).then(res => {
         if (res.IsPass === true) {
           this.orderFormVisible = true
           this.orderBoxLoading = true

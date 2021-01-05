@@ -319,3 +319,38 @@ export function CreateTaskNum(data) {
   })
 }
 
+//  过程检验任务 - 过程检验任务--获取SN查询
+export function QuerySN(data) {
+  return request({
+    url: '/api/QuaTaskInspectWoSn/Query',
+    method: 'post',
+    data
+  })
+}
+
+//  过程检验任务 - 过程检验任务--过程成品检验列表
+export function QuaTaskList(data) {
+  return request({
+    url: '/api/QuaTaskInspect/List',
+    method: 'post',
+    data
+  })
+}
+
+//  过程检验任务 - 过程检验任务--过程成品检验新增
+export function QuaTaskAdd(data) {
+  return request({
+    url: '/api/QuaTaskInspect/Add',
+    method: 'post',
+    data
+  })
+}
+
+//  过程检验任务 - 过程检验任务--过程成品检验新增
+export function QuaDetaiList(data) {
+  return request({
+    url: '/api/QuaTaskInspectDetail/List',
+    method: 'post',
+    data
+  })
+}

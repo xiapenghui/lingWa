@@ -48,14 +48,14 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工序编号" width="150" prop="WorkingProcedureNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序编号" width="150" prop="ProcessCodeNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WorkingProcedureNum }}
+          {{ scope.row.ProcessCodeNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称" width="150" prop="WorkingProcedureName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序名称" width="150" prop="ProcessCodeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WorkingProcedureName }}
+          {{ scope.row.ProcessCodeName }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="原料编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
@@ -167,7 +167,7 @@
 import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, MaterialList, GetByRouteList } from '@/api/BasicData'
+import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, MaterialList, BaseProList } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WorkingName from '@/components/WorkingName' // 工序名称
 import MaterialName from '@/components/MaterialName' // 物料名称
@@ -208,9 +208,6 @@ export default {
       paginationSearchWorking: {
         PageIndex: 1,
         PageSize: 100,
-        ProcessRouteCode: this.$route.query.ProcessRouteCode,
-        RouteCode: this.$route.query.ProcessRouteCode,
-        Status: true,
         ProcessNum: undefined,
         Name: undefined,
         ShowBanned: false
@@ -492,7 +489,7 @@ export default {
     workingBox() {
       this.workingFormVisible = true
       this.workingBoxLoading = true
-      GetByRouteList(this.paginationSearchWorking).then(res => {
+      BaseProList(this.paginationSearchWorking).then(res => {
         if (res.IsPass === true) {
           this.workingData = res.Obj
           this.workingBoxLoading = false
@@ -508,7 +505,7 @@ export default {
     workingClick(row) {
       // this.ruleForm.WorkingProcedureName = row.Name
       this.$set(this.ruleForm, 'WorkingProcedureName', row.Name)
-      this.ruleForm.WorkingProcedureCode = row.ProcessCode
+      this.ruleForm.ProcessCode = row.ProcessCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
