@@ -348,8 +348,8 @@
 
             <el-form-item label="BOM版本" prop="BomVersion"><el-input v-model.trim="ruleForm.BomVersion" placeholder="BOM版本" disabled /></el-form-item>
 
-            <el-form-item label="工艺路线" prop="RouteName" :rules="[{ required: true, message: '请选择工艺路线', trigger: 'change' }]">
-              <el-select v-model="ruleForm.RouteName" placeholder="工艺路线" style="width: 100%" clearable @change="changeRoute">
+            <el-form-item label="工艺路线" prop="RouteCode" :rules="[{ required: true, message: '请选择工艺路线', trigger: 'change' }]">
+              <el-select v-model="ruleForm.RouteCode" placeholder="工艺路线" style="width: 100%" clearable >
                 <el-option v-for="item in RouteNameList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
@@ -857,8 +857,6 @@ export default {
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditOrder')) {
             const params = this.ruleForm
-            // params.BomCode = this.BOMCode
-            // params.RouteCode = this.newRoute
             orderModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -879,9 +877,7 @@ export default {
             const params = this.ruleForm
             params.PlanType = this.typeCode
             params.ProductLineCode = this.newLine
-            params.BomCode = this.BOMCode
-            params.RouteCode = this.newRoute
-            // params.RouteCode = this.RouteNameCode
+            // params.BomCode = this.BOMCode
             params.Priority = this.newPriority
             orderAdd(params).then(res => {
               if (res.IsPass === true) {
@@ -918,8 +914,8 @@ export default {
           const params = this.ruleForm
           params.PlanType = this.typeCode
           params.ProductLineCode = this.newLine
-          params.BomCode = this.BOMCode
-          params.RouteCode = this.newRoute
+          // params.BomCode = this.BOMCode
+          // params.RouteCode = this.newRoute
           params.Priority = this.newPriority
           orderAdd(params).then(res => {
             if (res.IsPass === true) {
@@ -1233,8 +1229,8 @@ export default {
       GetMaterial(params).then(res => {
         if (res.IsPass === true) {
           debugger
-          this.$set(this.ruleForm, 'RouteName', res.Obj.RouteName)
-          this.RouteNameCode = res.Obj.RouteCode
+          this.$set(this.ruleForm, 'RouteCode', res.Obj.RouteCode)
+          //this.RouteNameCode = res.Obj.RouteCode
         }
       })
       GetBomVersion(params).then(res => {
