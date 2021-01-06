@@ -247,6 +247,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
@@ -315,7 +321,7 @@
         <div class="bigUpBox">
           <div class="boxLeft">
             <el-form-item label="生产工单号" prop="OrderNum" :rules="[{ required: true, message: '请输入生产工单号', trigger: 'blur' }]">
-              <el-input v-model.trim="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable />
+              <el-input v-model.trim="ruleForm.OrderNum" :placeholder="$t('permission.PlanNum')" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable />
             </el-form-item>
 
             <el-form-item label="工单类型" prop="OrderType" :rules="[{ required: true, message: '请选择生产计划类型', trigger: 'change' }]">
@@ -349,7 +355,7 @@
             <el-form-item label="BOM版本" prop="BomVersion"><el-input v-model.trim="ruleForm.BomVersion" placeholder="BOM版本" disabled /></el-form-item>
 
             <el-form-item label="工艺路线" prop="RouteCode" :rules="[{ required: true, message: '请选择工艺路线', trigger: 'change' }]">
-              <el-select v-model="ruleForm.RouteCode" placeholder="工艺路线" style="width: 100%" clearable >
+              <el-select v-model="ruleForm.RouteCode" placeholder="工艺路线" style="width: 100%" clearable>
                 <el-option v-for="item in RouteNameList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
@@ -1230,7 +1236,7 @@ export default {
         if (res.IsPass === true) {
           debugger
           this.$set(this.ruleForm, 'RouteCode', res.Obj.RouteCode)
-          //this.RouteNameCode = res.Obj.RouteCode
+          // this.RouteNameCode = res.Obj.RouteCode
         }
       })
       GetBomVersion(params).then(res => {

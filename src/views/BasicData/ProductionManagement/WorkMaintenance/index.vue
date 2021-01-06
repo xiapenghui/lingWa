@@ -115,7 +115,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editBasePro') : $t('permission.addBasePro')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工序编号"><el-input v-model.trim="ruleForm.ProcessNum" placeholder="工序编号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="工序编号"><el-input v-model.trim="ruleForm.ProcessNum" placeholder="工序编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
         <el-form-item label="工序名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>
         <el-form-item label="倒扣账标识" prop="IsBackFlush">
           <el-radio v-model="ruleForm.IsBackFlush" :label="true">是</el-radio>

@@ -123,7 +123,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="缺陷类型编号" prop="DefectTypeNum"><el-input v-model.trim="ruleForm.DefectTypeNum" placeholder="缺陷类型编号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="缺陷类型编号" prop="DefectTypeNum"><el-input v-model.trim="ruleForm.DefectTypeNum" placeholder="缺陷类型编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
 
         <el-form-item label="缺陷类型名称" prop="DefectTypeName"><el-input v-model.trim="ruleForm.DefectTypeName" placeholder="缺陷类型名称" clearable /></el-form-item>
 

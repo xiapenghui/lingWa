@@ -165,7 +165,7 @@
     <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="检验单号" prop="OrderNum"><el-input v-model.trim="ruleForm.OrderNum" placeholder="检验单号" disabled /></el-form-item>
-        <el-form-item label="条码" prop="ProductLineCode"><el-input v-model.trim="ruleForm.ProductLineCode" placeholder="扫描产品序列号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="条码" prop="ProductLineCode"><el-input v-model.trim="ruleForm.ProductLineCode" placeholder="扫描产品序列号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
         <el-form-item label="工单号" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="工单号" disabled /></el-form-item>
         <el-form-item label="成品名称" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="成品名称" disabled /></el-form-item>
 

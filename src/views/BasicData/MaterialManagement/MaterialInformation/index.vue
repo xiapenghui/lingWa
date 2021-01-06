@@ -138,7 +138,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="原料编号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="原料编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
         <el-form-item label="原料名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="原料名称" clearable /></el-form-item>
         <el-form-item label="原料规格"><el-input v-model.trim="ruleForm.Spec" placeholder="原料规格" clearable /></el-form-item>
         <el-form-item label="颜色"><el-input v-model.trim="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>

@@ -346,7 +346,25 @@ export function QuaTaskAdd(data) {
   })
 }
 
-//  过程检验任务 - 过程检验任务--过程成品检验新增
+//  过程检验任务 - 过程检验任务--过程成品检验删除
+export function QuaTaskDelete(data) {
+  return request({
+    url: '/api/QuaTaskInspect/Delete',
+    method: 'post',
+    data
+  })
+}
+
+//  过程检验任务 - 过程检验任务--过程成品检验编辑
+export function QuaTaskModify(data) {
+  return request({
+    url: '/api/QuaTaskInspect/Modify',
+    method: 'post',
+    data
+  })
+}
+
+//  过程检验任务 - 过程检验任务--过程成品检验明细列表
 export function QuaDetaiList(data) {
   return request({
     url: '/api/QuaTaskInspectDetail/List',

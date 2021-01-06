@@ -167,10 +167,10 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="任务单号" prop="TaskNum"><el-input v-model.trim="ruleForm.TaskNum" placeholder="任务单号" disabled /></el-form-item>
-        <el-form-item label="产品序列号" prop="ProductSN"><el-input v-model.trim="ruleForm.ProductSN" placeholder="产品序列号" clearable @blur="ProductBox" /></el-form-item>
+        <el-form-item label="产品序列号" prop="ProductSN"><el-input v-model.trim="ruleForm.ProductSN" placeholder="产品序列号" clearable onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" @blur="ProductBox" /></el-form-item>
         <el-form-item label="工单号" prop="OrderNum"><el-input v-model.trim="ruleForm.OrderNum" placeholder="工单号" disabled /></el-form-item>
         <el-form-item label="产线" prop="LineName"><el-input v-model.trim="ruleForm.LineName" placeholder="产线" disabled /></el-form-item>
         <el-form-item label="工位" prop="TerminalName"><el-input v-model.trim="ruleForm.TerminalName" placeholder="工位" disabled /></el-form-item>
@@ -241,9 +241,9 @@
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="检验结果" prop="WarehouseType" :show-overflow-tooltip="true">
+          <el-table-column align="center" label="检验结果" prop="InspectResult" :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.WarehouseType }}
+              {{ scope.row.InspectResult }}
             </template>
           </el-table-column>
         </el-table>
@@ -264,8 +264,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary } from '@/api/BasicData'
-import { CreateTaskNum, QuerySN, QuaTaskList, QuaTaskAdd, QuaDetaiList } from '@/api/QualityData'
-import { StoWareDelete, StoWareModify } from '@/api/WarehouseData'
+import { CreateTaskNum, QuerySN, QuaTaskList, QuaTaskAdd, QuaTaskDelete, QuaDetaiList, QuaTaskModify } from '@/api/QualityData'
 const fixHeight = 260
 export default {
   name: 'CompanyMaintenance',
@@ -279,6 +278,7 @@ export default {
         LineCode: null, // 产线Code
         OrderCode: null, // 工单code
         MaterialCode: null // 成品名称Code
+
       }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
@@ -421,9 +421,10 @@ export default {
         this.$set(this.ruleForm, 'LineName', res.Obj.LineName)
         this.$set(this.ruleForm, 'TerminalName', res.Obj.TerminalName)
         this.$set(this.ruleForm, 'ProductName', res.Obj.ProductName)
-        this.$set(this.ruleForm, 'LineCode', res.Obj.LineCode)
+        this.$set(this.ruleForm, 'ProductLineCode', res.Obj.LineCode)
         this.$set(this.ruleForm, 'OrderCode', res.Obj.OrderCode)
-        this.$set(this.ruleForm, 'MaterialCode', res.Obj.MaterialCode)
+        this.$set(this.ruleForm, 'TerminalCode', res.Obj.TerminalCode)
+        this.$set(this.ruleForm, 'ProductCode', res.Obj.ProductCode)
       })
     },
 
@@ -454,7 +455,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            StoWareModify(this.ruleForm).then(res => {
+            QuaTaskModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -473,7 +474,9 @@ export default {
           } else {
             const params = this.ruleForm
             params.TaskType = 'IPQC'
+            params.InspectResult = 'NG'
             QuaTaskAdd(params).then(res => {
+              debugger
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -512,7 +515,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          StoWareDelete({ WarehouseCode: row.WarehouseCode }).then(res => {
+          QuaTaskDelete({ TaskNum: row.TaskNum }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',

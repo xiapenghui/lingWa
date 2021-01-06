@@ -152,7 +152,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '增加'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="工作中心编号"><el-input v-model.trim="ruleForm.WorkCenterNum" placeholder="工作中心编号" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="工作中心编号"><el-input v-model.trim="ruleForm.WorkCenterNum" placeholder="工作中心编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
         <el-form-item label="工作中心名称" prop="WorkCenterName">
           <el-input v-model.trim="ruleForm.WorkCenterName" placeholder="工作中心名称" clearable />
         </el-form-item>
