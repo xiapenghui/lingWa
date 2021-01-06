@@ -194,7 +194,7 @@
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="detailFormVisible" title="明细信息系表">
       <el-form ref="ruleForm" v-loading="detailLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-table
-          v-loading="listLoading"
+
           :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
           :data="tableData"
           height="55vh"

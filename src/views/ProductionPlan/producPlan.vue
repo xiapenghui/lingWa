@@ -246,7 +246,6 @@
           </el-tooltip>
 
           <el-popover placement="top" trigger="hover" popper-class="popoverBackB">
-
             <!-- <el-tooltip class="item" effect="dark" :enterable="false" content="BOM" placement="top-start">
               <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
             </el-tooltip>
@@ -1140,16 +1139,21 @@ export default {
     },
     // 关联工单
     handleRelation(row) {
-      orderList({ PlanCode: row.PlanCode }).then(res => {
-        if (res.IsPass === true) {
-          this.orderFormVisible = true
-          this.orderBoxLoading = true
-          this.orderData = res.Obj
-        } else {
-          this.$message('暂无数据！')
-        }
-        this.orderBoxLoading = false
-      })
+      const params = {
+        PlanCode: row.PlanCode
+      }
+      if (row.RouteCode === null) {
+        this.$message('暂无数据！')
+      } else {
+        orderList(params).then(res => {
+          if (res.IsPass === true) {
+            this.orderFormVisible = true
+            this.orderBoxLoading = true
+            this.orderData = res.Obj
+          }
+          this.lineBoxLoading = false
+        })
+      }
     },
     // BOM
     handleBOM(row) {

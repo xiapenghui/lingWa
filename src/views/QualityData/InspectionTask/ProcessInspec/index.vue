@@ -199,11 +199,11 @@
 
     <!--明细弹窗 -->
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="detailFormVisible" title="明细信息系表">
-      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
+      <el-form ref="inServForm" :model="inServForm" :hide-required-asterisk="false" label-width="120px" label-position="left">
         <el-table
           v-loading="detailLoading"
           :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
-          :data="tableDetaliData"
+          :data="inServForm.tableDetaliData"
           height="55vh"
           style="width: 100%;"
           border
@@ -223,12 +223,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="下限值" prop="LowerLimit" sortable :show-overflow-tooltip="true">
-            <!-- <el-form-item label="下限值" prop="ProductName"><el-input v-model.trim="ruleForm.LowerLimit" disabled /></el-form-item> -->
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.LowerLimit" />
-            </template>
-          </el-table-column>
+          <el-table-column align="center" label="下限值" prop="LowerLimit" sortable :show-overflow-tooltip="true" />
 
           <el-table-column align="center" label="上限值" prop="UpperLimit" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
@@ -238,7 +233,9 @@
 
           <el-table-column align="center" label="检测值" prop="StandardValue" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.StandardValue }}
+              <el-form-item class="standardValueInput" label="" :prop="'tableDetaliData.'+scope.$index+'.StandardValue'" :rules="[{ required: scope.row.IsRequired, message: '请输入检测值', trigger: 'blur' }]">
+                <el-input v-model="scope.row.StandardValue" :type="scope.row.JudgmentWay === '1' ? 'text':'number' " @change="(value) => onChangeJudgmentWay(value, scope)" />
+              </el-form-item>
             </template>
           </el-table-column>
 
@@ -251,8 +248,8 @@
       </el-form>
       <div style="text-align:right;margin-top: 20px;">
         <el-button type="danger" @click="detailFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
+        <el-button type="primary" @click="submitForm('inServForm')">保存</el-button>
+        <el-button type="primary" @click="submitForm('inServForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -273,13 +270,15 @@ export default {
   data() {
     return {
       tableData: [], // 主列表
+      inServForm: {
+        tableDetaliData: []
+      },
       tableDetaliData: [], // 详情
       ruleForm: {
         TerminalCode: null, // 工位Code
         LineCode: null, // 产线Code
         OrderCode: null, // 工单code
         MaterialCode: null // 成品名称Code
-
       }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
@@ -345,6 +344,24 @@ export default {
     this.setFormRules()
   },
   methods: {
+    onChangeJudgmentWay(value, scope) {
+      console.log('11', value, scope)
+      // 文本
+      if (scope.row.JudgmentWay === '1') {
+        if (scope.row.StandardValue !== '') {
+          scope.row.InspectResult = '合格'
+        } else {
+          scope.row.InspectResult = '不合格'
+        }
+      } else {
+        // 数值
+        if (scope.row.LowerLimit <= parseInt(scope.row.StandardValue) && scope.row.UpperLimit >= parseInt(scope.row.StandardValue)) {
+          scope.row.InspectResult = '合格'
+        } else {
+          scope.row.InspectResult = '不合格'
+        }
+      }
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
@@ -444,7 +461,24 @@ export default {
       this.detailLoading = true
       QuaDetaiList({ TaskNum: row.TaskNum }).then(res => {
         if (res.IsPass === true) {
-          this.tableDetaliData = res.Obj
+          res.Obj.map(item => {
+            // 文本
+            if (item.JudgmentWay === '1') {
+              if (item.StandardValue !== '') {
+                item.InspectResult = '合格'
+              } else {
+                item.InspectResult = '不合格'
+              }
+            } else {
+              // 数值
+              if (item.LowerLimit <= parseInt(item.StandardValue) && item.UpperLimit >= parseInt(item.StandardValue)) {
+                item.InspectResult = '合格'
+              } else {
+                item.InspectResult = '不合格'
+              }
+            }
+          })
+          this.inServForm.tableDetaliData = res.Obj
         }
       })
       this.detailLoading = false
@@ -543,4 +577,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style>
+.standardValueInput .el-form-item__content{
+  margin-left: 0 !important;
+}
+</style>

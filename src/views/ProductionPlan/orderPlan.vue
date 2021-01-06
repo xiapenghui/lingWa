@@ -426,33 +426,54 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="成品编号" width="150" prop="ProductNum" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="序号" width="50" fixed>
           <template slot-scope="scope">
-            {{ scope.row.ProductNum }}
+            {{ scope.$index + 1 }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="成品名称" width="150" prop="ProductName" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="工序编号" width="150" prop="ProcessCodeNum" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.ProductName }}
+            {{ scope.row.ProcessCodeNum }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="工序名称" width="150" prop="ProcessCodeName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessCodeName }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="原料编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialNum }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="原料名称" width="150" prop="MaterialName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialName }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="工艺路线名称" width="150" prop="ProcessRouteName" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="原料规格" width="150" prop="MaterialSpec" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.ProcessRouteName }}
+            {{ scope.row.MaterialSpec }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="BOM版本" width="150" prop="Version" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="用量" width="150" prop="Usage" sortable>
           <template slot-scope="scope">
-            {{ scope.row.Version }}
+            {{ scope.row.Usage }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
+        <el-table-column align="center" label="替代原料编号" width="170" prop="SubMaterialNum" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.Description }}
+            {{ scope.row.SubMaterialNum }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="替代原料名称" width="170" prop="SubMaterialName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.SubMaterialName }}
           </template>
         </el-table-column>
 
@@ -483,20 +504,44 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="工艺路线名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="工序编号" width="200" prop="ProcessNum" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.Name }}
+            {{ scope.row.ProcessNum }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="版本" width="200" prop="Version" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="工序名称" width="200" prop="ProcessName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.Version }}
+            {{ scope.row.ProcessName }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="生效时间" width="150" prop="EffectiveDate" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="是否检验" prop="IsChecked" sortable>
           <template slot-scope="scope">
-            {{ scope.row.EffectiveDate | substringTime }}
+            <el-tag :style="{ color: scope.row.IsChecked === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsChecked === false ? '否' : '是' }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="检验方式" prop="CheckedTypeText" sortable>
+          <template slot-scope="scope">
+            {{ scope.row.CheckedTypeText }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否必过" prop="IsMustPass" sortable>
+          <template slot-scope="scope">
+            <el-tag :style="{ color: scope.row.IsMustPass === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsMustPass === false ? '否' : '是' }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否打印" prop="IsPrint" sortable>
+          <template slot-scope="scope">
+            <el-tag :style="{ color: scope.row.IsPrint === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsPrint === false ? '否' : '是' }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="顺序" prop="OrderNum" sortable>
+          <template slot-scope="scope">
+            {{ scope.row.OrderNum }}
           </template>
         </el-table-column>
 
@@ -506,11 +551,6 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
-            {{ scope.row.Remark }}
-          </template>
-        </el-table-column>
       </el-table>
     </el-dialog>
   </div>
@@ -523,7 +563,7 @@ import i18n from '@/lang'
 // import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, bomList, baseRouteList, GetBomVersion, GetRouteTextValuePair, GetMaterial } from '@/api/BasicData'
+import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, bomDetailList, baseRouteList, GetBomVersion, GetRouteTextValuePair, GetMaterial } from '@/api/BasicData'
 import { orderList, orderDelete, orderFreeze, orderAdd, orderModify, orderStatus } from '@/api/ProductionPlan'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
@@ -863,6 +903,7 @@ export default {
         if (valid) {
           if (this.dialogTypeTitle === this.$t('permission.EditOrder')) {
             const params = this.ruleForm
+            params.BomCode = this.BOMCode
             orderModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -883,7 +924,7 @@ export default {
             const params = this.ruleForm
             params.PlanType = this.typeCode
             params.ProductLineCode = this.newLine
-            // params.BomCode = this.BOMCode
+            params.BomCode = this.BOMCode
             params.Priority = this.newPriority
             orderAdd(params).then(res => {
               if (res.IsPass === true) {
@@ -920,7 +961,7 @@ export default {
           const params = this.ruleForm
           params.PlanType = this.typeCode
           params.ProductLineCode = this.newLine
-          // params.BomCode = this.BOMCode
+          params.BomCode = this.BOMCode
           // params.RouteCode = this.newRoute
           params.Priority = this.newPriority
           orderAdd(params).then(res => {
@@ -944,30 +985,40 @@ export default {
     },
     // BOM
     handleBOM(row) {
-      bomList({ BomCode: row.BomCode }).then(res => {
-        if (res.IsPass === true) {
-          this.bomFormVisible = true
-          this.bomBoxLoading = true
-          this.bomData = res.Obj
-        } else {
-          this.$message('暂无数据！')
-        }
-        this.bomBoxLoading = false
-      })
+      const params = {
+        BomCode: row.BomCode
+      }
+      if (row.BomCode === null) {
+        this.$message('暂无数据！')
+      } else {
+        bomDetailList(params).then(res => {
+          if (res.IsPass === true) {
+            this.bomFormVisible = true
+            this.bomBoxLoading = true
+            this.bomData = res.Obj
+          }
+          this.bomBoxLoading = false
+        })
+      }
     },
 
     // 查看工艺路线
     handleLine(row) {
-      baseRouteList({ ProcessRouteCode: row.RouteCode }).then(res => {
-        if (res.IsPass === true) {
-          this.lineFormVisible = true
-          this.lineBoxLoading = true
-          this.lineData = res.Obj
-        } else {
-          this.$message('暂无数据！')
-        }
-        this.lineBoxLoading = false
-      })
+      const params = {
+        ProcessRouteCode: row.RouteCode
+      }
+      if (row.RouteCode === null) {
+        this.$message('暂无数据！')
+      } else {
+        baseRouteList(params).then(res => {
+          if (res.IsPass === true) {
+            this.lineFormVisible = true
+            this.lineBoxLoading = true
+            this.lineData = res.Obj
+          }
+          this.lineBoxLoading = false
+        })
+      }
     },
 
     // 删除按钮
@@ -1241,7 +1292,6 @@ export default {
       })
       GetBomVersion(params).then(res => {
         if (res.IsPass === true) {
-          debugger
           this.$set(this.ruleForm, 'BomVersion', res.Obj.Version)
           this.BOMCode = res.Obj.Code
         }
