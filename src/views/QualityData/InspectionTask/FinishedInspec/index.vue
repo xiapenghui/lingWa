@@ -230,14 +230,14 @@
 
           <el-table-column align="center" label="检测值" prop="StandardValue" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.num" label="请输入数字" />
+              <el-input-number v-model="scope.row.num" placeholder="请输入数字" />
+              <el-input v-model="scope.row.num" placeholder="请输入NG或OK" />
             </template>
           </el-table-column>
 
           <el-table-column align="center" label="检验结果" prop="WarehouseType" :show-overflow-tooltip="true">
-            <template slot-scope="scope">
-              {{ scope.row.WarehouseType }}
-            </template>
+            <span>合格</span>
+            <span>不合格</span>
           </el-table-column>
         </el-table>
       </el-form>
