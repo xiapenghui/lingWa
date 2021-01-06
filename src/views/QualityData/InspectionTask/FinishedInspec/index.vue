@@ -210,9 +210,9 @@
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="检验项目" width="150" prop="WarehouseNum" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="检验项目" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.WarehouseNum }}
+              {{ scope.row.InspectItemName }}
             </template>
           </el-table-column>
 

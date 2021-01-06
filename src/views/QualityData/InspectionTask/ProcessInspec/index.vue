@@ -199,9 +199,9 @@
 
     <!--明细弹窗 -->
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="detailFormVisible" title="明细信息系表">
-      <el-form ref="ruleForm" v-loading="detailLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
+      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-table
-          v-loading="listLoading"
+          v-loading="detailLoading"
           :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
           :data="tableDetaliData"
           height="55vh"
@@ -217,15 +217,16 @@
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="检验项目" width="150" prop="WarehouseNum" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="检验项目" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.WarehouseNum }}
+              {{ scope.row.InspectItemName }}
             </template>
           </el-table-column>
 
           <el-table-column align="center" label="下限值" prop="LowerLimit" sortable :show-overflow-tooltip="true">
+            <!-- <el-form-item label="下限值" prop="ProductName"><el-input v-model.trim="ruleForm.LowerLimit" disabled /></el-form-item> -->
             <template slot-scope="scope">
-              {{ scope.row.LowerLimit }}
+              <el-input v-model="scope.row.LowerLimit" />
             </template>
           </el-table-column>
 
@@ -237,7 +238,7 @@
 
           <el-table-column align="center" label="检测值" prop="StandardValue" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.num" label="请输入数字" />
+              {{ scope.row.StandardValue }}
             </template>
           </el-table-column>
 
@@ -439,13 +440,13 @@ export default {
     },
     // 查看明细
     handleLook(row) {
-      debugger
+      this.detailFormVisible = true
+      this.detailLoading = true
       QuaDetaiList({ TaskNum: row.TaskNum }).then(res => {
         if (res.IsPass === true) {
           this.tableDetaliData = res.Obj
         }
       })
-      this.detailFormVisible = true
       this.detailLoading = false
     },
 
