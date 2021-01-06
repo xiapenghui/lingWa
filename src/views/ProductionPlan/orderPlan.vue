@@ -563,7 +563,7 @@ import i18n from '@/lang'
 // import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, bomDetailList, baseRouteList, GetBomVersion, GetRouteTextValuePair, GetMaterial } from '@/api/BasicData'
+import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, bomDetailList, baseDetailList, GetBomVersion, GetRouteTextValuePair, GetMaterial } from '@/api/BasicData'
 import { orderList, orderDelete, orderFreeze, orderAdd, orderModify, orderStatus } from '@/api/ProductionPlan'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
@@ -1010,7 +1010,7 @@ export default {
       if (row.RouteCode === null) {
         this.$message('暂无数据！')
       } else {
-        baseRouteList(params).then(res => {
+        baseDetailList(params).then(res => {
           if (res.IsPass === true) {
             this.lineFormVisible = true
             this.lineBoxLoading = true

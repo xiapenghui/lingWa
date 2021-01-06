@@ -324,13 +324,13 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
               message: res.MSG
             })
           }
+          this.getList()
         })
       })
     },

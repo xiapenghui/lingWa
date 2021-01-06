@@ -29,6 +29,7 @@
 <script>
 import ScrollPane from './ScrollPane'
 import { generateTitle } from '@/utils/i18n'
+import Bus from '@/api/bus.js'
 import path from 'path'
 
 export default {
@@ -69,6 +70,11 @@ export default {
   mounted() {
     this.initTags()
     this.addTags()
+    const self = this
+    Bus.$on('clearTag', function() {
+      console.log('啦啦啦啦')
+      self.closeAllTags(self.selectedTag)
+    })
   },
   methods: {
     generateTitle, // generateTitle by vue-i18n

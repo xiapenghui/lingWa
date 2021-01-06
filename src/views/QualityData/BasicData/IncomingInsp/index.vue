@@ -147,7 +147,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="来料检验编号" prop="RuleNum"><el-input v-model.trim="ruleForm.RuleNum" placeholder="来料检验编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')"  clearable /></el-form-item>
+        <el-form-item label="来料检验编号" prop="RuleNum"><el-input v-model.trim="ruleForm.RuleNum" placeholder="来料检验编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
 
         <el-form-item label="批量范围" prop="StartQty">
           <el-input-number v-model="ruleForm.StartQty" :min="0" placeholder="批量范围从" style="width: 48%" />
@@ -338,13 +338,13 @@ export default {
               type: 'success',
               message: res.MSG
             })
-            this.getList()
           } else {
             this.$message({
               type: 'error',
               message: res.MSG
             })
           }
+          this.getList()
         })
       })
     },

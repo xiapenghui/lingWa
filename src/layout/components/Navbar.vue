@@ -57,6 +57,7 @@ import LangSelect from '@/components/LangSelect'
 import { UpdatePassword } from '@/api/role'
 import { ListMenu } from '@/api/user'
 // import VueEvent from '../../api/bus.js'
+import Bus from '@/api/bus.js'
 export default {
   components: {
     Breadcrumb,
@@ -131,8 +132,9 @@ export default {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
+    logout() {
+      Bus.$emit('clearTag')
+      this.$store.dispatch('user/logout')
       this.$store.dispatch('permission/logout')
       this.$router.push({ path: '/login' })
     },

@@ -27,7 +27,6 @@
       <span style="margin: 0 10px; font-size: 13px">所属上级:</span>
       <el-tag type="danger" size="medium">成品编号:{{ this.$route.query.ProductNum }}</el-tag>
       <el-tag type="warning" size="medium">成品名称:{{ this.$route.query.ProductName }}</el-tag>
-      <el-tag size="medium">工艺路线名称:{{ this.$route.query.ProcessRouteName }}</el-tag>
       <el-tag type="success" size="medium">BOM版本:{{ this.$route.query.Version }}</el-tag>
     </div>
 
@@ -214,7 +213,6 @@ export default {
       },
       ProductNum: this.$route.query.ProductNum,
       ProductName: this.$route.query.ProductName,
-      ProcessRouteName: this.$route.query.ProcessRouteName,
       Version: this.$route.query.Version,
       listLoading: false,
       materialBoxLoading: false, // 原料名称loading
