@@ -132,7 +132,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="成品编号" prop="MaterialNum"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="成品编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="成品编号" prop="MaterialNum"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="成品编号" clearable /></el-form-item>
 
         <el-form-item label="成品名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="成品名称" clearable /></el-form-item>
         <el-form-item label="成品规格"><el-input v-model.trim="ruleForm.Spec" placeholder="成品规格" clearable /></el-form-item>
@@ -253,6 +253,10 @@ export default {
         }, 400)
       }
     },
+    'ruleForm.MaterialNum': function(val) {
+      this.ruleForm.MaterialNum = this.filterInput(val)
+    },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.content1 = this.$t('permission.userName')
@@ -288,6 +292,9 @@ export default {
     this.setFormRules()
   },
   methods: {
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {

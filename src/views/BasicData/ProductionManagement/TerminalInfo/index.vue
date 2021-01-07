@@ -158,7 +158,7 @@
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="工位编号">
-          <el-input v-model.trim="ruleForm.TerminalNum" placeholder="工位编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable />
+          <el-input v-model.trim="ruleForm.TerminalNum" placeholder="工位编号" clearable />
         </el-form-item>
         <el-form-item label="工位名称" prop="TerminalName"><el-input v-model.trim="ruleForm.TerminalName" placeholder="工位名称" clearable /></el-form-item>
 
@@ -292,6 +292,11 @@ export default {
         }, 400)
       }
     },
+
+    'ruleForm.TerminalNum': function(val) {
+      this.ruleForm.TerminalNum = this.filterInput(val)
+    },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.content1 = this.$t('permission.userName')
@@ -338,6 +343,9 @@ export default {
   },
   mounted() {},
   methods: {
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {

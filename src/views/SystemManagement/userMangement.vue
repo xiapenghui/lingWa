@@ -201,7 +201,7 @@ export default {
   components: { Pagination },
   data() {
     var validatePass = (rule, value, callback) => {
-      if (value === '') {
+      if (value === '' || value === undefined) {
         callback(new Error('请输入密码'))
       } else {
         if (this.ruleForm.passwords !== '') {
@@ -211,7 +211,7 @@ export default {
       }
     }
     var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
+      if (value === '' || value === undefined) {
         callback(new Error('请再次输入密码'))
       } else if (value !== this.ruleForm.AccountPwd) {
         callback(new Error('两次输入密码不一致!'))

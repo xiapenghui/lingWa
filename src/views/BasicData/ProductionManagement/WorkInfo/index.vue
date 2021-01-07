@@ -124,7 +124,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="车间编号"><el-input v-model.trim="ruleForm.WorkshopNum" placeholder="车间编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="车间编号"><el-input v-model.trim="ruleForm.WorkshopNum" placeholder="车间编号" clearable /></el-form-item>
         <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model.trim="ruleForm.WorkshopName" placeholder="车间名称" clearable /></el-form-item>
         <el-form-item label="公司名称" prop="OrgName" style="display: none;">
           <el-select v-model="ruleForm.OrgName" placeholder="公司名称" style="width: 100%" @change="changeName">
@@ -201,6 +201,10 @@ export default {
         }, 400)
       }
     },
+    'ruleForm.WorkshopNum': function(val) {
+      this.ruleForm.WorkshopNum = this.filterInput(val)
+    },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.content1 = this.$t('permission.userName')
@@ -242,6 +246,9 @@ export default {
   },
   mounted() {},
   methods: {
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {

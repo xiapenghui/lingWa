@@ -28,9 +28,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="rightBtn">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button>
-    </div>
+    <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button></div>
 
     <el-table
       v-loading="listLoading"
@@ -43,19 +41,18 @@
       fit
       highlight-current-row
     >
-
       <el-table-column align="center" label="序号" width="50" fixed>
         <template slot-scope="scope">
-          {{ scope.$index+1 }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工序编号" prop="ProcessNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序编号" prop="ProcessNum" width="200" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工序名称" prop="Name" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序名称" prop="Name" width="200" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
@@ -119,9 +116,9 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' :'新增'">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model.trim="ruleForm.ProcessNum" placeholder="工序编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model.trim="ruleForm.ProcessNum" placeholder="工序编号" clearable /></el-form-item>
         <el-form-item label="工序名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="工序名称" clearable /></el-form-item>
         <el-form-item label="倒扣账标识" prop="IsBackFlush">
           <el-radio v-model="ruleForm.IsBackFlush" :label="true">是</el-radio>
@@ -195,6 +192,10 @@ export default {
         }, 400)
       }
     },
+    'ruleForm.ProcessNum': function(val) {
+      this.ruleForm.ProcessNum = this.filterInput(val)
+    },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.content1 = this.$t('permission.userName')
@@ -223,6 +224,9 @@ export default {
   },
   mounted() {},
   methods: {
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {

@@ -186,7 +186,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="缺陷编号" prop="DefectNum"><el-input v-model.trim="ruleForm.DefectNum" placeholder="缺陷编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="缺陷编号" prop="DefectNum"><el-input v-model.trim="ruleForm.DefectNum" placeholder="缺陷编号" clearable /></el-form-item>
         <el-form-item label="缺陷名称" prop="DefectName"><el-input v-model.trim="ruleForm.DefectName" placeholder="缺陷名称" clearable /></el-form-item>
 
         <el-form-item label="缺陷类型" prop="DefectType">
@@ -202,11 +202,11 @@
         </el-form-item>
 
         <el-form-item label="工序名称">
-          <!-- <el-input v-model.trim="ruleForm.ProcessName" placeholder="请输入并选择" clearable @input="workingBox" /> -->
+
           <el-input v-model.trim="ruleForm.ProcessName" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
         </el-form-item>
         <el-form-item label="成品名称">
-          <!-- <el-input v-model.trim="ruleForm.MaterialName" placeholder="请输入并选择" clearable @input="finshBox" /> -->
+
           <el-input v-model.trim="ruleForm.MaterialName" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
         </el-form-item>
 
@@ -376,6 +376,9 @@ export default {
         }, 400)
       }
     },
+    'ruleForm.DefectNum': function(val) {
+      this.ruleForm.DefectNum = this.filterInput(val)
+    },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.parentMsg = this.$t('permission.importCompany')
@@ -418,6 +421,9 @@ export default {
     this.setFormRules()
   },
   methods: {
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {

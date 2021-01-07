@@ -132,7 +132,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="公司编号" prop="OrgNum"><el-input v-model.trim="ruleForm.OrgNum" placeholder="公司编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="公司编号" prop="OrgNum"><el-input v-model.trim="ruleForm.OrgNum" placeholder="公司编号" clearable /></el-form-item>
         <el-form-item label="公司全称" prop="FullName"><el-input v-model.trim="ruleForm.FullName" placeholder="公司全称" clearable /></el-form-item>
         <el-form-item label="公司简称"><el-input v-model.trim="ruleForm.ShortName" placeholder="公司简称" clearable /></el-form-item>
         <el-form-item label="公司电话"><el-input v-model.trim="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
@@ -218,6 +218,11 @@ export default {
         }, 400)
       }
     },
+
+    'ruleForm.OrgNum': function(val) {
+      this.ruleForm.OrgNum = this.filterInput(val)
+    },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.parentMsg = this.$t('permission.importCompany')
@@ -245,6 +250,9 @@ export default {
     this.setFormRules()
   },
   methods: {
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {

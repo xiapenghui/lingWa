@@ -148,7 +148,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="产线编号"><el-input v-model.trim="ruleForm.LineNum" placeholder="产线编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="产线编号"><el-input v-model.trim="ruleForm.LineNum" placeholder="产线编号" clearable /></el-form-item>
         <el-form-item label="产线名称" prop="LineName"><el-input v-model.trim="ruleForm.LineName" placeholder="产线名称" clearable /></el-form-item>
 
         <el-form-item label="公司名称" prop="OrgName" style="display: none;">
@@ -245,6 +245,10 @@ export default {
         }, 400)
       }
     },
+    'ruleForm.LineNum': function(val) {
+      this.ruleForm.LineNum = this.filterInput(val)
+    },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.content1 = this.$t('permission.userName')
@@ -283,7 +287,6 @@ export default {
 
     // 获取新增产线名称级联
     treeList({ MinUnitType: 4 }).then(res => {
-      debugger
       this.allSubCatList = this.getTreeData(res.Obj[0].children)
     })
 
@@ -299,6 +302,9 @@ export default {
   },
   mounted() {},
   methods: {
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {

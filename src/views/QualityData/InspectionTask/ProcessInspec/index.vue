@@ -170,7 +170,7 @@
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="任务单号" prop="TaskNum"><el-input v-model.trim="ruleForm.TaskNum" placeholder="任务单号" disabled /></el-form-item>
-        <el-form-item label="产品序列号" prop="ProductSN"><el-input v-model.trim="ruleForm.ProductSN" placeholder="产品序列号" clearable onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" @blur="ProductBox" /></el-form-item>
+        <el-form-item label="产品序列号" prop="ProductSN"><el-input v-model.trim="ruleForm.ProductSN" placeholder="产品序列号" clearable @blur="ProductBox" /></el-form-item>
         <el-form-item label="工单号" prop="OrderNum"><el-input v-model.trim="ruleForm.OrderNum" placeholder="工单号" disabled /></el-form-item>
         <el-form-item label="产线" prop="LineName"><el-input v-model.trim="ruleForm.LineName" placeholder="产线" disabled /></el-form-item>
         <el-form-item label="工位" prop="TerminalName"><el-input v-model.trim="ruleForm.TerminalName" placeholder="工位" disabled /></el-form-item>
@@ -320,6 +320,11 @@ export default {
         }, 400)
       }
     },
+
+    'ruleForm.ProductSN': function(val) {
+      this.ruleForm.ProductSN = this.filterInput(val)
+    },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.parentMsg = this.$t('permission.importCompany')
@@ -344,6 +349,10 @@ export default {
     this.setFormRules()
   },
   methods: {
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+    },
+
     onChangeJudgmentWay(value, scope) {
       console.log('11', value, scope)
       // 文本

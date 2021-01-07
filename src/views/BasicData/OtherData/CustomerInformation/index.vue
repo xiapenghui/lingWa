@@ -128,7 +128,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editCustomer') : $t('permission.addCustomer')">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="客户编号" prop="CustomerNum"><el-input v-model.trim="ruleForm.CustomerNum" placeholder="客户编号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
+        <el-form-item label="客户编号" prop="CustomerNum"><el-input v-model.trim="ruleForm.CustomerNum" placeholder="客户编号" clearable /></el-form-item>
         <el-form-item label="客户名称" prop="FullName"><el-input v-model.trim="ruleForm.FullName" placeholder="客户名称" clearable /></el-form-item>
         <el-form-item label="联系人"><el-input v-model.trim="ruleForm.Contact" placeholder="联系人" clearable /></el-form-item>
         <el-form-item label="公司电话"><el-input v-model.trim="ruleForm.Tel" placeholder="公司电话" clearable /></el-form-item>
@@ -212,6 +212,10 @@ export default {
         }, 400)
       }
     },
+    'ruleForm.CustomerNum': function(val) {
+      this.ruleForm.CustomerNum = this.filterInput(val)
+    },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.content1 = this.$t('permission.userName')
@@ -240,6 +244,9 @@ export default {
   },
   mounted() {},
   methods: {
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
