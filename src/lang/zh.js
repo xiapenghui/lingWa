@@ -29,8 +29,8 @@ export default {
     BomMangement: '产品BOM',
     RouteMaintenance: '工艺路线',
     // do
-    orderPlan: '生产工单维护',
-    producPlan: '生产计划维护',
+    OrderPlan: '生产工单管理',
+    ProducPlan: '生产计划管理',
     OtherData: '其他数据维护',
     CustomerInformation: '客户信息',
     BomMangementDetaile: '产品BOM明细',
@@ -62,6 +62,14 @@ export default {
     PdaAdministra: 'PDA管理',
     ProcessInspec: '过程检验任务',
     FinishedInspec: '成品检验任务',
+    ImprotPlan: '生产计划导入',
+    ControlPlan: '生产控制计划',
+    SplitPlan: '生产计划拆分',
+    ListPlan: '生产计划排单',
+    OrderQuery: '生产工单查询',
+    OrderMaintain: '生产工单维护',
+    OrderSend: '生产工单下达',
+    OrderControl: '生产工单控制',
 
     // 截止
 

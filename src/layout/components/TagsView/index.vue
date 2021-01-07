@@ -72,7 +72,6 @@ export default {
     this.addTags()
     const self = this
     Bus.$on('clearTag', function() {
-      console.log('啦啦啦啦')
       self.closeAllTags(self.selectedTag)
     })
   },

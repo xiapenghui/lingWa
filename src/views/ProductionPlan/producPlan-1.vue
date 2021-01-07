@@ -1146,12 +1146,13 @@ export default {
         this.$message('暂无数据！')
       } else {
         orderList(params).then(res => {
+          debugger
           if (res.IsPass === true) {
             this.orderFormVisible = true
             this.orderBoxLoading = true
             this.orderData = res.Obj
           }
-          this.lineBoxLoading = false
+          this.orderBoxLoading = false
         })
       }
     },

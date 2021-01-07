@@ -285,28 +285,79 @@ const asyncRoutes = [
   // 生产计划
   {
     path: '/ProductionPlan',
-    redirect: '/ProductionPlan/producPlan',
+    redirect: '/ProductionPlan/ProducPlan',
     name: 'ProductionPlan',
     meta: {
       title: 'ProductionPlan',
-      icon: 'lock'
+      icon: 'tab'
     },
-    children: [{
-      path: 'producPlan',
-      component: () => import('@/views/ProductionPlan/producPlan'),
-      name: 'producPlan',
-      meta: {
-        title: 'producPlan'
+    children: [
+      {
+        path: 'ProducPlan',
+        component: () => import('@/views/ProductionPlan/ProducPlan/index'),
+        name: 'ProducPlan',
+        meta: {
+          title: 'ProducPlan'
+        },
+        redirect: '/ProductionPlan/ProducPlan/ImprotPlan',
+        children: [
+          {
+            path: 'ImprotPlan',
+            component: () => import('@/views/ProductionPlan/ProducPlan/ImprotPlan'),
+            name: 'ImprotPlan',
+            meta: {
+              title: 'ImprotPlan'
+            }
+          },
+
+          {
+            path: 'ControlPlan',
+            component: () => import('@/views/ProductionPlan/ProducPlan/ControlPlan'),
+            name: 'ControlPlan',
+            meta: {
+              title: 'ControlPlan'
+            }
+          },
+          {
+            path: 'SplitPlan',
+            component: () => import('@/views/ProductionPlan/ProducPlan/SplitPlan'),
+            name: 'SplitPlan',
+            meta: {
+              title: 'SplitPlan'
+            }
+          },
+
+          {
+            path: 'ListPlan',
+            component: () => import('@/views/ProductionPlan/ProducPlan/ListPlan'),
+            name: 'ListPlan',
+            meta: {
+              title: 'ListPlan'
+            }
+          }
+        ]
       }
-    },
-    {
-      path: 'orderPlan',
-      component: () => import('@/views/ProductionPlan/orderPlan'),
-      name: 'orderPlan',
-      meta: {
-        title: 'orderPlan'
-      }
-    }
+
+      // 生产工单
+      // {
+      //   path: 'OrderPlan',
+      //   component: () => import('@/views/ProductionPlan/OrderPlan'),
+      //   name: 'OrderPlan',
+      //   meta: {
+      //     title: 'OrderPlan'
+      //   },
+      //   redirect: '/ProductionPlan/OrderPlan/ProcessInspec',
+      //   children: [
+      //     {
+      //       path: 'ProcessInspec',
+      //       component: () => import('@/views/ProductionPlan/OrderPlan/ProcessInspec'),
+      //       name: 'ProcessInspec',
+      //       meta: {
+      //         title: 'ProcessInspec'
+      //       }
+      //     }
+      //   ]
+      // }
     ]
   },
   // 生产过程

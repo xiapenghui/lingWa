@@ -247,9 +247,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="描述" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Remark }}
+          {{ scope.row.Description }}
         </template>
       </el-table-column>
 
@@ -344,7 +344,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="备注"><el-input v-model.trim="ruleForm.Description" type="textarea" clearable /></el-form-item>
+            <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" type="textarea" clearable /></el-form-item>
           </div>
 
           <div class="boxRight">
@@ -420,12 +420,6 @@
         fit
         highlight-current-row
       >
-        <el-table-column align="center" label="序号" width="50" fixed>
-          <template slot-scope="scope">
-            {{ scope.$index + 1 }}
-          </template>
-        </el-table-column>
-
         <el-table-column align="center" label="序号" width="50" fixed>
           <template slot-scope="scope">
             {{ scope.$index + 1 }}
