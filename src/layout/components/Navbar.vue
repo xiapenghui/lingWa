@@ -55,9 +55,8 @@ import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 // import Search from '@/components/HeaderSearch'
 import { UpdatePassword } from '@/api/role'
-import { ListMenu } from '@/api/user'
-// import VueEvent from '../../api/bus.js'
-import Bus from '@/api/bus.js'
+import { ListMenu, Logout } from '@/api/user'
+// import Bus from '@/api/bus.js'
 export default {
   components: {
     Breadcrumb,
@@ -133,10 +132,16 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     logout() {
-      Bus.$emit('clearTag')
-      this.$store.dispatch('user/logout')
-      this.$store.dispatch('permission/logout')
-      this.$router.push({ path: '/login' })
+      debugger
+      Logout().then(res => {
+        this.$store.dispatch('user/logout')
+        this.$store.dispatch('permission/logout')
+        this.$router.push({ path: '/login' })
+      })
+      // Bus.$emit('clearTag')
+      // this.$store.dispatch('user/logout')
+      // this.$store.dispatch('permission/logout')
+      // this.$router.push({ path: '/login' })
     },
     // 修改密码
     revisePas() {

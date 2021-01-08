@@ -41,7 +41,7 @@
       @row-dblclick="locationClick"
     >
 
-      <el-table-column align="center" label="序号" width="50" fixed>
+      <el-table-column align="center" label="行号" width="50" fixed>
         <template slot-scope="scope">
           {{ scope.$index + 1 }}
         </template>

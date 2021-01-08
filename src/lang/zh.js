@@ -429,7 +429,7 @@ export default {
     add: '添加',
     export: '导出',
     reviewer: '审核人',
-    id: '序号',
+    id: '行号',
     date: '时间',
     author: '作者',
     readings: '阅读数',

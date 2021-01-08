@@ -109,7 +109,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="序号" width="50" type="index" :index="table_index" fixed />
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="生产计划单号" width="150" prop="PlanNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -201,9 +201,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划投入产线" width="150" prop="ProductLineCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划投入产线" width="150" prop="ProductLineName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ProductLineCode }}
+          {{ scope.row.ProductLineName }}
         </template>
       </el-table-column>
 
@@ -308,7 +308,7 @@
               <el-date-picker v-model="ruleForm.PlanStartDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
 
-            <el-form-item label="计划投入线" prop="ProductLineCode">
+            <el-form-item label="计划投入产线" prop="ProductLineCode">
               <el-select v-model="ruleForm.ProductLineCode" placeholder="计划投入产线" style="width: 100%" clearable @change="changeLine">
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
@@ -390,7 +390,7 @@
         fit
         highlight-current-row
       >
-        <el-table-column align="center" label="序号" width="50" fixed>
+        <el-table-column align="center" label="行号" width="50" fixed>
           <template slot-scope="scope">
             {{ scope.$index + 1 }}
           </template>
@@ -462,7 +462,7 @@
         fit
         highlight-current-row
       >
-        <el-table-column align="center" label="序号" width="50" fixed>
+        <el-table-column align="center" label="行号" width="50" fixed>
           <template slot-scope="scope">
             {{ scope.$index + 1 }}
           </template>

@@ -47,11 +47,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="序号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="客户编号" width="150" prop="CustomerNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -244,6 +240,12 @@ export default {
   },
   mounted() {},
   methods: {
+    // 分页
+    table_index(index) {
+      return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
+    },
+
+    // 输入框禁止输入中文
     filterInput(val) {
       return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
     },

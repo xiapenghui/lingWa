@@ -14,3 +14,11 @@ export function ListMenu() {
     method: 'post'
   })
 }
+
+// 退出登录
+export function Logout() {
+  return request({
+    url: '/api/User/Logout',
+    method: 'post'
+  })
+}
