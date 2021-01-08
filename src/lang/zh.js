@@ -63,7 +63,7 @@ export default {
     ProcessInspec: '过程检验任务',
     FinishedInspec: '成品检验任务',
     ImprotPlan: '生产计划导入',
-    ControlPlan: '生产控制计划',
+    ControlPlan: '生产计划控制',
     SplitPlan: '生产计划拆分',
     ListPlan: '生产计划排单',
     OrderQuery: '生产工单查询',

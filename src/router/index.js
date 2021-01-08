@@ -557,28 +557,52 @@ export const asyncRoutes = [
             }
           }
         ]
-      }
+      },
 
       // 生产工单
-      // {
-      //   path: 'OrderPlan',
-      //   component: () => import('@/views/ProductionPlan/OrderPlan'),
-      //   name: 'OrderPlan',
-      //   meta: {
-      //     title: 'OrderPlan'
-      //   },
-      //   redirect: '/ProductionPlan/OrderPlan/ProcessInspec',
-      //   children: [
-      //     {
-      //       path: 'ProcessInspec',
-      //       component: () => import('@/views/ProductionPlan/OrderPlan/ProcessInspec'),
-      //       name: 'ProcessInspec',
-      //       meta: {
-      //         title: 'ProcessInspec'
-      //       }
-      //     }
-      //   ]
-      // }
+      {
+        path: 'OrderPlan',
+        component: () => import('@/views/ProductionPlan/OrderPlan'),
+        name: 'OrderPlan',
+        meta: {
+          title: 'OrderPlan'
+        },
+        redirect: '/ProductionPlan/OrderPlan/OrderQuery',
+        children: [
+          {
+            path: 'OrderQuery',
+            component: () => import('@/views/ProductionPlan/OrderPlan/OrderQuery'),
+            name: 'OrderQuery',
+            meta: {
+              title: 'OrderQuery'
+            }
+          },
+          {
+            path: 'OrderMaintain',
+            component: () => import('@/views/ProductionPlan/OrderPlan/OrderMaintain'),
+            name: 'OrderMaintain',
+            meta: {
+              title: 'OrderMaintain'
+            }
+          },
+          {
+            path: 'OrderSend',
+            component: () => import('@/views/ProductionPlan/OrderPlan/OrderSend'),
+            name: 'OrderSend',
+            meta: {
+              title: 'OrderSend'
+            }
+          },
+          {
+            path: 'OrderControl',
+            component: () => import('@/views/ProductionPlan/OrderPlan/OrderControl'),
+            name: 'OrderControl',
+            meta: {
+              title: 'OrderControl'
+            }
+          }
+        ]
+      }
     ]
   },
 

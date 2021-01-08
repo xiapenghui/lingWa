@@ -124,7 +124,7 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="车间编号"><el-input v-model.trim="ruleForm.WorkshopNum" placeholder="车间编号" clearable /></el-form-item>
+        <el-form-item label="车间编号" prop="WorkshopNum"><el-input v-model.trim="ruleForm.WorkshopNum" placeholder="车间编号" clearable /></el-form-item>
         <el-form-item label="车间名称" prop="WorkshopName"><el-input v-model.trim="ruleForm.WorkshopName" placeholder="车间名称" clearable /></el-form-item>
         <el-form-item label="公司名称" prop="OrgName" style="display: none;">
           <el-select v-model="ruleForm.OrgName" placeholder="公司名称" style="width: 100%" @change="changeName">
@@ -174,6 +174,7 @@ export default {
       companyVal: null, // 获取公司下拉值
       companyData: [], // 获取搜索框公司列表
       rules: {
+        WorkshopNum: [{ required: true, message: '请输入车间编号', trigger: 'blur' }],
         WorkshopName: [{ required: true, message: '请输入车间名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }]
       }
@@ -252,6 +253,7 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
+        WorkshopNum: [{ required: true, message: '请输入车间编号', trigger: 'blur' }],
         WorkshopName: [{ required: true, message: '请输入车间名称', trigger: 'blur' }],
         OrgName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }]
       }
