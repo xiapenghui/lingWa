@@ -242,7 +242,7 @@ export default {
       // 仓库编号搜索条件
       paginationSearchWare: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         WarehouseNum: undefined,
         WarehouseName: undefined
       },
@@ -250,14 +250,14 @@ export default {
       // 库区信息搜索条件
       paginationSearchLocation: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         RegionNum: undefined,
         RegionName: undefined
       },
       // 库位信息搜索条件
       paginationSearchSeat: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         LocationNum: undefined,
         LocationName: undefined
       },

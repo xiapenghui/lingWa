@@ -398,7 +398,7 @@ export default {
       // 成品聚焦搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         MaterialType: 1,
         MaterialNum: undefined,
         Name: undefined,
@@ -407,7 +407,7 @@ export default {
       // 客户聚焦搜索条件
       paginationUser: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         CustomerNum: undefined,
         FullName: undefined,
         ShowBanned: false

@@ -56,7 +56,7 @@ import LangSelect from '@/components/LangSelect'
 // import Search from '@/components/HeaderSearch'
 import { UpdatePassword } from '@/api/role'
 import { ListMenu, Logout } from '@/api/user'
-// import Bus from '@/api/bus.js'
+import Bus from '@/api/bus.js'
 export default {
   components: {
     Breadcrumb,
@@ -110,11 +110,10 @@ export default {
 
   created() {
     this.companyList()
-    // debugger
-    // VueEvent.$on('msg', (e) => {
-    //   this.message = e
-    //   console.log(`传来的数据是：${e}`)
-    // })
+    const self = this
+    Bus.$on('companyList', function() {
+      self.companyList()
+    })
   },
 
   methods: {
@@ -132,8 +131,8 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     logout() {
-      debugger
       Logout().then(res => {
+        Bus.$emit('clearTag')
         this.$store.dispatch('user/logout')
         this.$store.dispatch('permission/logout')
         this.$router.push({ path: '/login' })

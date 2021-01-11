@@ -372,3 +372,24 @@ export function QuaDetaiList(data) {
     data
   })
 }
+
+
+//  过程检验任务 - 过程检验任务--过程成品检验明细保存
+export function QuaDetaiSave(data) {
+  return request({
+    url: '/api/QuaTaskInspectDetail/Save',
+    method: 'post',
+    data
+  })
+}
+
+//  过程检验任务 - 过程检验任务--过程成品检验明细提交
+export function QuaDetaiSubmit(data) {
+  return request({
+    url: '/api/QuaTaskInspectDetail/Submit',
+    method: 'post',
+    data
+  })
+}
+
+ 

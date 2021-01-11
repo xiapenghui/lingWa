@@ -58,7 +58,6 @@ service.interceptors.response.use(
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
@@ -73,12 +72,20 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
+    MessageBox.confirm('为保证您的账号安全，系统自动断开链接，请您再次登录', '温馨提醒', {
+      cancelButtonText: '确定',
+      type: 'warning'
+    }).then(() => {
+      store.dispatch('user/resetToken').then(() => {
+        location.reload()
+      })
     })
+    // console.log('err' + error)
+    // Message({
+    //   message: error.message,
+    //   type: 'error',
+    //   duration: 5 * 1000
+    // })
     return Promise.reject(error)
   }
 )

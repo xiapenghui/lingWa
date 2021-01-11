@@ -163,7 +163,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { OrganList, OrganAdd, OrganStatus, OrganModify, OrganDelete } from '@/api/BasicData'
 import { getToken } from '@/utils/auth'
-// import VueEvent from '../../../../api/bus.js'
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 export default {
   name: 'CompanyMaintenance',
@@ -245,6 +245,7 @@ export default {
     this.getList()
     this.setFormRules()
   },
+
   methods: {
     // 分页
     table_index(index) {
@@ -376,7 +377,7 @@ export default {
                 })
                 this.getList()
                 this.dialogFormVisible = false
-                // VueEvent.$emit('msg', '我要传给兄弟组件们，你收到没有')
+                Bus.$emit('companyList')
               } else {
                 this.$message({
                   type: 'error',
@@ -394,7 +395,7 @@ export default {
                 })
                 this.getList()
                 this.dialogFormVisible = false
-                // VueEvent.$emit('msg', '我要传给兄弟组件们，你收到没有')
+                Bus.$emit('companyList')
               } else {
                 this.$message({
                   type: 'error',

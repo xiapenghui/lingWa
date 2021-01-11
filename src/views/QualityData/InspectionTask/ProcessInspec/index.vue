@@ -163,7 +163,12 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
+    <el-dialog
+      v-dialogDrag
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')"
+    >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="任务单号" prop="TaskNum"><el-input v-model.trim="ruleForm.TaskNum" placeholder="任务单号" disabled /></el-form-item>
         <el-form-item label="产品序列号" prop="ProductSN"><el-input v-model.trim="ruleForm.ProductSN" placeholder="产品序列号" clearable @blur="ProductBox" /></el-form-item>
@@ -200,33 +205,31 @@
           v-loading="detailLoading"
           :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
           :data="inServForm.tableDetaliData"
-          height="55vh"
           style="width: 100%;"
+          height="55vh"
           border
           element-loading-text="拼命加载中"
           fit
           highlight-current-row
         >
-          <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
+          <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" />
 
-          <el-table-column align="center" label="检验项目" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
-            <template slot-scope="scope">
-              {{ scope.row.InspectItemName }}
-            </template>
-          </el-table-column>
-
+          <el-table-column align="center" label="检验项目" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true" />
           <el-table-column align="center" label="下限值" prop="LowerLimit" sortable :show-overflow-tooltip="true" />
 
-          <el-table-column align="center" label="上限值" prop="UpperLimit" sortable :show-overflow-tooltip="true">
-            <template slot-scope="scope">
-              {{ scope.row.UpperLimit }}
-            </template>
-          </el-table-column>
+          <el-table-column align="center" label="上限值" prop="UpperLimit" sortable :show-overflow-tooltip="true" />
+          <el-table-column align="center" label="状态" prop="JudgmentWayText" sortable :show-overflow-tooltip="true" />
 
           <el-table-column align="center" label="检测值" prop="StandardValue" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              <el-form-item class="standardValueInput" label="" :prop="'tableDetaliData.'+scope.$index+'.StandardValue'" :rules="[{ required: scope.row.IsRequired, message: '请输入检测值', trigger: 'blur' }]">
-                <el-input v-model="scope.row.StandardValue" :type="scope.row.JudgmentWay === '1' ? 'text':'number' " @change="(value) => onChangeJudgmentWay(value, scope)" />
+              <el-form-item
+                class="standardValueInput"
+                label=""
+                :prop="'tableDetaliData.' + scope.$index + '.StandardValue'"
+                :rules="[{ required: scope.row.IsRequired, message: '请输入检测值', trigger: 'blur' }]"
+              >
+                <span v-if="scope.row.IsRequired === true" class="iptCenter">*</span>
+                <el-input v-model="scope.row.StandardValue" :type="scope.row.JudgmentWay === '1' ? 'text' : 'number'" @change="value => onChangeJudgmentWay(value, scope)" />
               </el-form-item>
             </template>
           </el-table-column>
@@ -240,8 +243,8 @@
       </el-form>
       <div style="text-align:right;margin-top: 20px;">
         <el-button type="danger" @click="detailFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="submitForm('inServForm')">保存</el-button>
-        <el-button type="primary" @click="submitForm('inServForm')">{{ $t('permission.confirm') }}</el-button>
+        <el-button type="primary" @click="submitDetailForm('inServForm', '0')">保存</el-button>
+        <el-button type="primary" @click="submitDetailForm('inServForm', '1')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -254,7 +257,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary } from '@/api/BasicData'
-import { CreateTaskNum, QuerySN, QuaTaskList, QuaTaskAdd, QuaTaskDelete, QuaDetaiList, QuaTaskModify } from '@/api/QualityData'
+import { CreateTaskNum, QuerySN, QuaTaskList, QuaTaskAdd, QuaTaskDelete, QuaDetaiList, QuaTaskModify, QuaDetaiSave, QuaDetaiSubmit } from '@/api/QualityData'
 const fixHeight = 260
 export default {
   name: 'CompanyMaintenance',
@@ -485,9 +488,9 @@ export default {
             }
           })
           this.inServForm.tableDetaliData = res.Obj
+          this.detailLoading = false
         }
       })
-      this.detailLoading = false
     },
 
     // 编辑成功
@@ -545,6 +548,60 @@ export default {
       })
     },
 
+    // 保存和提交
+    submitDetailForm(formName, status) {
+      debugger
+      this.detailLoading = true
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if (status === '0') {
+            debugger
+            QuaDetaiSave(this.inServForm.tableDetaliData).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: '保存成功!'
+                })
+                this.detailFormVisible = false
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+              this.detailLoading = false
+            })
+          } else {
+            debugger
+            QuaDetaiSubmit(this.inServForm.tableDetaliData).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: '提交成功!'
+                })
+                this.detailFormVisible = false
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+              this.detailLoading = false
+            })
+          }
+        } else {
+          this.detailLoading = false
+          this.$message({
+            type: 'error',
+            message: '必填项不能为空'
+          })
+          return false
+        }
+      })
+    },
+
     // 撤销
     handleRevoke() {},
 
@@ -584,7 +641,19 @@ export default {
 </script>
 
 <style>
-.standardValueInput .el-form-item__content{
+.standardValueInput .el-form-item__content {
   margin-left: 0 !important;
+}
+.el-dialog__body .el-form-item {
+  margin: 10px;
+}
+.el-dialog__body .el-form-item__content .el-tooltip {
+  position: relative;
+}
+.el-dialog__body .el-form-item__content .iptCenter {
+  position: absolute;
+  left: -10px;
+  color: red;
+  z-index: 99;
 }
 </style>

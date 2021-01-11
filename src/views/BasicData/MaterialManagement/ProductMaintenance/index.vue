@@ -195,7 +195,7 @@ export default {
       paginationSearchLine: {
         Name: undefined,
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         ShowBanned: false
       },
       lineData: [], // 工艺路线弹窗

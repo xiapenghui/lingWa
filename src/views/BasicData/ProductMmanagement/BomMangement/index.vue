@@ -228,7 +228,7 @@ export default {
       // 搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         MaterialType: 1,
         MaterialNum: undefined,
         Name: undefined,
@@ -236,7 +236,7 @@ export default {
       },
       paginationSearchLine: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         Name: undefined,
         ShowBanned: false
       },

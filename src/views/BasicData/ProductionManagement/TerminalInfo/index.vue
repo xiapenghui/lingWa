@@ -226,7 +226,7 @@ export default {
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         ProcessNum: undefined,
         Name: undefined,
         ShowBanned: false

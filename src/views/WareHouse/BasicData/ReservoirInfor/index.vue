@@ -169,7 +169,7 @@ export default {
       // 仓库编号搜索条件
       paginationSearchWare: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         WarehouseNum: undefined,
         WarehouseName: undefined
       },

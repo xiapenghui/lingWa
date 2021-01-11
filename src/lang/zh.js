@@ -445,7 +445,7 @@ export default {
     deleteError: '删除已取消',
     deleteSuccess: '删除成功',
     editSuc: '编辑成功',
-    addSuc: '增加成功',
+    addSuc: '新增成功',
     Tips: '提示：',
     FrozenInfo: '此操作将冻结数据, 是否继续?',
     CancelInfo: '此操作将取消冻结数据, 是否继续?',

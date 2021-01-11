@@ -277,7 +277,7 @@ export default {
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         ProcessNum: undefined,
         Name: undefined,
         ShowBanned: false
@@ -285,7 +285,7 @@ export default {
       // 成品聚焦搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         MaterialType: 1,
         MaterialNum: undefined,
         Name: undefined,

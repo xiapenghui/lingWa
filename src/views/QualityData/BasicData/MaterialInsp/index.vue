@@ -259,7 +259,7 @@ export default {
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         MaterialType: 0,
         MaterialNum: undefined,
         MaterialName: undefined,
@@ -269,7 +269,7 @@ export default {
       // 来料检验规则条件
       paginationSearchIncoming: {
         PageIndex: 1,
-        PageSize: 100,
+        PageSize: 10000,
         RuleNum: undefined,
         ShowBanned: false
       },
