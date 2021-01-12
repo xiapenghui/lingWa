@@ -92,7 +92,7 @@
 
       <el-table-column align="center" label="检验结果" width="150" prop="InspectResult" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.InspectResult }}
+          <el-tag :style="{ color: scope.row.InspectResult === 'NG' ? '#FF5757' : '#13ce66' }">{{ scope.row.InspectResult === 'NG' ? '不合格' : '合格' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -220,16 +220,16 @@
           <el-table-column align="center" label="上限值" prop="UpperLimit" sortable :show-overflow-tooltip="true" />
           <el-table-column align="center" label="状态" prop="JudgmentWayText" sortable :show-overflow-tooltip="true" />
 
-          <el-table-column align="center" label="检测值" prop="StandardValue" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="检测值" prop="InspectValue" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
               <el-form-item
                 class="standardValueInput"
                 label=""
-                :prop="'tableDetaliData.' + scope.$index + '.StandardValue'"
+                :prop="'tableDetaliData.' + scope.$index + '.InspectValue'"
                 :rules="[{ required: scope.row.IsRequired, message: '请输入检测值', trigger: 'blur' }]"
               >
                 <span v-if="scope.row.IsRequired === true" class="iptCenter">*</span>
-                <el-input v-model="scope.row.StandardValue" :type="scope.row.JudgmentWay === '1' ? 'text' : 'number'" @change="value => onChangeJudgmentWay(value, scope)" />
+                <el-input v-model="scope.row.InspectValue" :type="scope.row.JudgmentWay === '1' ? 'text' : 'number'" @change="value => onChangeJudgmentWay(value, scope)" />
               </el-form-item>
             </template>
           </el-table-column>
@@ -244,7 +244,7 @@
       <div style="text-align:right;margin-top: 20px;">
         <el-button type="danger" @click="detailFormVisible = false">{{ $t('permission.cancel') }}</el-button>
         <el-button type="primary" @click="submitDetailForm('inServForm', '0')">保存</el-button>
-        <el-button type="primary" @click="submitDetailForm('inServForm', '1')">{{ $t('permission.confirm') }}</el-button>
+        <el-button type="primary" @click="submitDetailForm('inServForm', '1')">提交</el-button>
       </div>
     </el-dialog>
   </div>
@@ -270,10 +270,7 @@ export default {
       },
       tableDetaliData: [], // 详情
       ruleForm: {
-        TerminalCode: null, // 工位Code
-        LineCode: null, // 产线Code
-        OrderCode: null, // 工单code
-        MaterialCode: null // 成品名称Code
+        TaskNum: null
       }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
@@ -316,6 +313,7 @@ export default {
       }
     },
 
+    // input禁止中文输入
     'ruleForm.ProductSN': function(val) {
       this.ruleForm.ProductSN = this.filterInput(val)
     },
@@ -350,21 +348,25 @@ export default {
     },
     // 输入框禁止输入中文
     filterInput(val) {
-      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+      if (val === undefined) {
+        val = ''
+      } else {
+        return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+      }
     },
 
     onChangeJudgmentWay(value, scope) {
       console.log('11', value, scope)
       // 文本
       if (scope.row.JudgmentWay === '1') {
-        if (scope.row.StandardValue !== '') {
+        if (scope.row.InspectValue !== '') {
           scope.row.InspectResult = '合格'
         } else {
           scope.row.InspectResult = '不合格'
         }
       } else {
         // 数值
-        if (scope.row.LowerLimit <= parseInt(scope.row.StandardValue) && scope.row.UpperLimit >= parseInt(scope.row.StandardValue)) {
+        if (scope.row.LowerLimit <= parseInt(scope.row.InspectValue) && scope.row.UpperLimit >= parseInt(scope.row.InspectValue)) {
           scope.row.InspectResult = '合格'
         } else {
           scope.row.InspectResult = '不合格'
@@ -443,7 +445,6 @@ export default {
     // 产品序列号失去焦点时间
     ProductBox() {
       QuerySN({ ProductSN: this.ruleForm.ProductSN }).then(res => {
-        debugger
         this.$set(this.ruleForm, 'OrderNum', res.Obj.OrderNum)
         this.$set(this.ruleForm, 'LineName', res.Obj.LineName)
         this.$set(this.ruleForm, 'TerminalName', res.Obj.TerminalName)
@@ -473,14 +474,14 @@ export default {
           res.Obj.map(item => {
             // 文本
             if (item.JudgmentWay === '1') {
-              if (item.StandardValue !== '') {
+              if (item.InspectValue !== '') {
                 item.InspectResult = '合格'
               } else {
                 item.InspectResult = '不合格'
               }
             } else {
               // 数值
-              if (item.LowerLimit <= parseInt(item.StandardValue) && item.UpperLimit >= parseInt(item.StandardValue)) {
+              if (item.LowerLimit <= parseInt(item.InspectValue) && item.UpperLimit >= parseInt(item.InspectValue)) {
                 item.InspectResult = '合格'
               } else {
                 item.InspectResult = '不合格'
@@ -520,7 +521,6 @@ export default {
             params.TaskType = 'IPQC'
             params.InspectResult = 'NG'
             QuaTaskAdd(params).then(res => {
-              debugger
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -550,13 +550,19 @@ export default {
 
     // 保存和提交
     submitDetailForm(formName, status) {
-      debugger
       this.detailLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
+          const newArr = this.inServForm.tableDetaliData.map(item => {
+            if (item.InspectResult === '不合格') {
+              item.InspectResult = 'NG'
+            } else {
+              item.InspectResult = 'OK'
+            }
+            return item
+          })
           if (status === '0') {
-            debugger
-            QuaDetaiSave(this.inServForm.tableDetaliData).then(res => {
+            QuaDetaiSave(newArr).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -573,8 +579,7 @@ export default {
               this.detailLoading = false
             })
           } else {
-            debugger
-            QuaDetaiSubmit(this.inServForm.tableDetaliData).then(res => {
+            QuaDetaiSubmit(newArr).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',

@@ -263,7 +263,11 @@ export default {
     },
     // 输入框禁止输入中文
     filterInput(val) {
-      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+      if (val === undefined) {
+        val = ''
+      } else {
+        return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+      }
     },
     // 表单验证切换中英文
     setFormRules: function() {

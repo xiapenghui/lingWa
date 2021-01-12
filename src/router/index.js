@@ -152,51 +152,44 @@ export const asyncRoutes = [
         meta: {
           title: 'ProductionManagement'
         },
-        redirect: '/BasicData/ProductionManagement/ProcessMaintenance',
-        children: [{
-          path: 'ProcessMaintenance',
-          component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
-          name: 'ProcessMaintenance',
-          meta: {
-            title: 'ProcessMaintenance'
-          }
-        },
+        redirect: '/BasicData/ProductionManagement/WorkInfo',
+        children: [
 
-        {
-          path: 'WorkInfo',
-          component: () => import('@/views/BasicData/ProductionManagement/WorkInfo'),
-          name: 'WorkInfo',
-          meta: {
-            title: 'WorkInfo'
-          }
-        },
+          {
+            path: 'WorkInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/WorkInfo'),
+            name: 'WorkInfo',
+            meta: {
+              title: 'WorkInfo'
+            }
+          },
 
-        {
-          path: 'LineInfo',
-          component: () => import('@/views/BasicData/ProductionManagement/LineInfo'),
-          name: 'LineInfo',
-          meta: {
-            title: 'LineInfo'
-          }
-        },
+          {
+            path: 'LineInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/LineInfo'),
+            name: 'LineInfo',
+            meta: {
+              title: 'LineInfo'
+            }
+          },
 
-        {
-          path: 'CenterInfo',
-          component: () => import('@/views/BasicData/ProductionManagement/CenterInfo'),
-          name: 'CenterInfo',
-          meta: {
-            title: 'CenterInfo'
-          }
-        },
+          {
+            path: 'CenterInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/CenterInfo'),
+            name: 'CenterInfo',
+            meta: {
+              title: 'CenterInfo'
+            }
+          },
 
-        {
-          path: 'TerminalInfo',
-          component: () => import('@/views/BasicData/ProductionManagement/TerminalInfo'),
-          name: 'TerminalInfo',
-          meta: {
-            title: 'TerminalInfo'
+          {
+            path: 'TerminalInfo',
+            component: () => import('@/views/BasicData/ProductionManagement/TerminalInfo'),
+            name: 'TerminalInfo',
+            meta: {
+              title: 'TerminalInfo'
+            }
           }
-        }
 
         ]
       },
@@ -209,8 +202,16 @@ export const asyncRoutes = [
         meta: {
           title: 'ProductMmanagement'
         },
-        redirect: '/BasicData/ProductMmanagement/BomMangement',
+        redirect: '/BasicData/ProductMmanagement/ProcessMaintenance',
         children: [
+          {
+            path: 'ProcessMaintenance',
+            component: () => import('@/views/BasicData/ProductMmanagement/ProcessMaintenance'),
+            name: 'ProcessMaintenance',
+            meta: {
+              title: 'ProcessMaintenance'
+            }
+          },
 
           {
             path: 'BomMangement',
@@ -472,23 +473,22 @@ export const asyncRoutes = [
         title: 'InspectionTask'
       },
       redirect: '/QualityData/InspectionTask/ProcessInspec',
-      children: [
-        {
-          path: 'ProcessInspec',
-          component: () => import('@/views/QualityData/InspectionTask/ProcessInspec'),
-          name: 'ProcessInspec',
-          meta: {
-            title: 'ProcessInspec'
-          }
-        },
-        {
-          path: 'FinishedInspec',
-          component: () => import('@/views/QualityData/InspectionTask/FinishedInspec'),
-          name: 'FinishedInspec',
-          meta: {
-            title: 'FinishedInspec'
-          }
+      children: [{
+        path: 'ProcessInspec',
+        component: () => import('@/views/QualityData/InspectionTask/ProcessInspec'),
+        name: 'ProcessInspec',
+        meta: {
+          title: 'ProcessInspec'
         }
+      },
+      {
+        path: 'FinishedInspec',
+        component: () => import('@/views/QualityData/InspectionTask/FinishedInspec'),
+        name: 'FinishedInspec',
+        meta: {
+          title: 'FinishedInspec'
+        }
+      }
       ]
     },
     {
@@ -512,97 +512,94 @@ export const asyncRoutes = [
       title: 'ProductionPlan',
       icon: 'tab'
     },
-    children: [
-      {
-        path: 'ProducPlan',
-        component: () => import('@/views/ProductionPlan/ProducPlan/index'),
-        name: 'ProducPlan',
+    children: [{
+      path: 'ProducPlan',
+      component: () => import('@/views/ProductionPlan/ProducPlan/index'),
+      name: 'ProducPlan',
+      meta: {
+        title: 'ProducPlan'
+      },
+      redirect: '/ProductionPlan/ProducPlan/ImprotPlan',
+      children: [{
+        path: 'ImprotPlan',
+        component: () => import('@/views/ProductionPlan/ProducPlan/ImprotPlan'),
+        name: 'ImprotPlan',
         meta: {
-          title: 'ProducPlan'
-        },
-        redirect: '/ProductionPlan/ProducPlan/ImprotPlan',
-        children: [
-          {
-            path: 'ImprotPlan',
-            component: () => import('@/views/ProductionPlan/ProducPlan/ImprotPlan'),
-            name: 'ImprotPlan',
-            meta: {
-              title: 'ImprotPlan'
-            }
-          },
-
-          {
-            path: 'ControlPlan',
-            component: () => import('@/views/ProductionPlan/ProducPlan/ControlPlan'),
-            name: 'ControlPlan',
-            meta: {
-              title: 'ControlPlan'
-            }
-          },
-          {
-            path: 'SplitPlan',
-            component: () => import('@/views/ProductionPlan/ProducPlan/SplitPlan'),
-            name: 'SplitPlan',
-            meta: {
-              title: 'SplitPlan'
-            }
-          },
-
-          {
-            path: 'ListPlan',
-            component: () => import('@/views/ProductionPlan/ProducPlan/ListPlan'),
-            name: 'ListPlan',
-            meta: {
-              title: 'ListPlan'
-            }
-          }
-        ]
+          title: 'ImprotPlan'
+        }
       },
 
-      // 生产工单
       {
-        path: 'OrderPlan',
-        component: () => import('@/views/ProductionPlan/OrderPlan'),
-        name: 'OrderPlan',
+        path: 'ControlPlan',
+        component: () => import('@/views/ProductionPlan/ProducPlan/ControlPlan'),
+        name: 'ControlPlan',
         meta: {
-          title: 'OrderPlan'
-        },
-        redirect: '/ProductionPlan/OrderPlan/OrderQuery',
-        children: [
-          {
-            path: 'OrderQuery',
-            component: () => import('@/views/ProductionPlan/OrderPlan/OrderQuery'),
-            name: 'OrderQuery',
-            meta: {
-              title: 'OrderQuery'
-            }
-          },
-          {
-            path: 'OrderMaintain',
-            component: () => import('@/views/ProductionPlan/OrderPlan/OrderMaintain'),
-            name: 'OrderMaintain',
-            meta: {
-              title: 'OrderMaintain'
-            }
-          },
-          {
-            path: 'OrderSend',
-            component: () => import('@/views/ProductionPlan/OrderPlan/OrderSend'),
-            name: 'OrderSend',
-            meta: {
-              title: 'OrderSend'
-            }
-          },
-          {
-            path: 'OrderControl',
-            component: () => import('@/views/ProductionPlan/OrderPlan/OrderControl'),
-            name: 'OrderControl',
-            meta: {
-              title: 'OrderControl'
-            }
-          }
-        ]
+          title: 'ControlPlan'
+        }
+      },
+      {
+        path: 'SplitPlan',
+        component: () => import('@/views/ProductionPlan/ProducPlan/SplitPlan'),
+        name: 'SplitPlan',
+        meta: {
+          title: 'SplitPlan'
+        }
+      },
+
+      {
+        path: 'ListPlan',
+        component: () => import('@/views/ProductionPlan/ProducPlan/ListPlan'),
+        name: 'ListPlan',
+        meta: {
+          title: 'ListPlan'
+        }
       }
+      ]
+    },
+
+    // 生产工单
+    {
+      path: 'OrderPlan',
+      component: () => import('@/views/ProductionPlan/OrderPlan'),
+      name: 'OrderPlan',
+      meta: {
+        title: 'OrderPlan'
+      },
+      redirect: '/ProductionPlan/OrderPlan/OrderQuery',
+      children: [{
+        path: 'OrderQuery',
+        component: () => import('@/views/ProductionPlan/OrderPlan/OrderQuery'),
+        name: 'OrderQuery',
+        meta: {
+          title: 'OrderQuery'
+        }
+      },
+      {
+        path: 'OrderMaintain',
+        component: () => import('@/views/ProductionPlan/OrderPlan/OrderMaintain'),
+        name: 'OrderMaintain',
+        meta: {
+          title: 'OrderMaintain'
+        }
+      },
+      {
+        path: 'OrderSend',
+        component: () => import('@/views/ProductionPlan/OrderPlan/OrderSend'),
+        name: 'OrderSend',
+        meta: {
+          title: 'OrderSend'
+        }
+      },
+      {
+        path: 'OrderControl',
+        component: () => import('@/views/ProductionPlan/OrderPlan/OrderControl'),
+        name: 'OrderControl',
+        meta: {
+          title: 'OrderControl'
+        }
+      }
+      ]
+    }
     ]
   },
 

@@ -280,7 +280,7 @@
             </el-form-item>
 
             <el-form-item label="计划投入产线" prop="ProductLineCode">
-              <el-select v-model="ruleForm.ProductLineCode" placeholder="计划投入产线" style="width: 100%" clearable  >
+              <el-select v-model="ruleForm.ProductLineCode" placeholder="计划投入产线" style="width: 100%" clearable>
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
@@ -303,7 +303,7 @@
             </el-form-item>
 
             <el-form-item label="优先级" prop="Priority">
-              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable >
+              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable>
                 <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
@@ -344,7 +344,7 @@ export default {
         BomVersion: ''
       }, // 编辑弹窗
       CreateTime: null,
-      dialogFormVisible:false,
+      dialogFormVisible: false,
       BOMCode: null, // 获取新的Bomcode值
       PlanTypeNameData: [], // 工单类型下拉框
       StatusNameData: [], // 工单状态下拉框
@@ -432,7 +432,6 @@ export default {
       this.content6 = this.$t('permission.PlanTypeName')
       this.content7 = this.$t('permission.StatusName')
     },
-
     immediate: true,
     deep: true
   },
@@ -502,10 +501,6 @@ export default {
       this.pagination.PageIndex = 1
       this.getList()
     },
-
-
-
-
 
     // 导出用户
     handleExport() {},

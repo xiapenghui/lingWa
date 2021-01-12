@@ -166,16 +166,8 @@ const actions = {
                     title: 'WorkMaintenance'
 
                   }
-                },
-                {
-                  path: 'ProcessMaintenance',
-                  component: () => import('@/views/BasicData/ProductionManagement/ProcessMaintenance'),
-                  name: 'ProcessMaintenance',
-                  meta: {
-                    title: 'ProcessMaintenance'
-
-                  }
                 }
+
                 ]
               },
 

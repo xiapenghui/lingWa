@@ -373,7 +373,6 @@ export function QuaDetaiList(data) {
   })
 }
 
-
 //  过程检验任务 - 过程检验任务--过程成品检验明细保存
 export function QuaDetaiSave(data) {
   return request({
@@ -391,5 +390,3 @@ export function QuaDetaiSubmit(data) {
     data
   })
 }
-
- 

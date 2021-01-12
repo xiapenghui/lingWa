@@ -44,8 +44,7 @@
       fit
       highlight-current-row
     >
-
-    <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="成品编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -127,7 +126,12 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
+    <el-dialog
+      v-dialogDrag
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
+    >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="成品编号" prop="MaterialNum"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="成品编号" clearable /></el-form-item>
 
@@ -250,6 +254,7 @@ export default {
         }, 400)
       }
     },
+
     'ruleForm.MaterialNum': function(val) {
       this.ruleForm.MaterialNum = this.filterInput(val)
     },
@@ -289,14 +294,18 @@ export default {
     this.setFormRules()
   },
   methods: {
-     // 分页
-        table_index(index) {
-          return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
-        },
-     // 输入框禁止输入中文
-     
+    // 分页
+    table_index(index) {
+      return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
+    },
+
+    // 输入框禁止输入中文
     filterInput(val) {
-      return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+      if (val === undefined) {
+        val = ''
+      } else {
+        return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+      }
     },
     // 表单验证切换中英文
     setFormRules: function() {
