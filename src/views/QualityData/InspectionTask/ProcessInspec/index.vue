@@ -6,7 +6,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" placeholder="仓库编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" placeholder="成品编号" clearable /></el-col>
         </el-col>
 
         <el-col :span="6">
@@ -134,8 +134,7 @@
 
       <el-table-column align="center" :label="$t('permission.time')" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <!-- {{ scope.row.ModifyTime | substringTime }} -->
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -218,7 +217,13 @@
           <el-table-column align="center" label="下限值" prop="LowerLimit" sortable :show-overflow-tooltip="true" />
 
           <el-table-column align="center" label="上限值" prop="UpperLimit" sortable :show-overflow-tooltip="true" />
-          <el-table-column align="center" label="状态" prop="JudgmentWayText" sortable :show-overflow-tooltip="true" />
+          <el-table-column align="center" label="判断状态" prop="JudgmentWayText" sortable :show-overflow-tooltip="true" />
+
+          <el-table-column align="center" label="是否必填" prop="IsRequired" sortable :show-overflow-tooltip="true">
+            <template slot-scope="scope">
+              <el-tag :style="{ color: scope.row.IsRequired === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsRequired === false ? '否' : '是' }}</el-tag>
+            </template>
+          </el-table-column>
 
           <el-table-column align="center" label="检测值" prop="InspectValue" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
@@ -315,7 +320,11 @@ export default {
 
     // input禁止中文输入
     'ruleForm.ProductSN': function(val) {
-      this.ruleForm.ProductSN = this.filterInput(val)
+      if (val === '' || val === undefined) {
+        return
+      } else {
+        this.ruleForm.ProductSN = this.filterInput(val)
+      }
     },
 
     // 监听data属性中英文切换问题
@@ -348,10 +357,11 @@ export default {
     },
     // 输入框禁止输入中文
     filterInput(val) {
-      if (val === undefined) {
-        val = ''
+      debugger
+      if (val === '') {
+        return val
       } else {
-        return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+        return val.replace(/[\u4e00-\u9fa5\s]/gi, '')
       }
     },
 
@@ -444,16 +454,24 @@ export default {
     },
     // 产品序列号失去焦点时间
     ProductBox() {
-      QuerySN({ ProductSN: this.ruleForm.ProductSN }).then(res => {
-        this.$set(this.ruleForm, 'OrderNum', res.Obj.OrderNum)
-        this.$set(this.ruleForm, 'LineName', res.Obj.LineName)
-        this.$set(this.ruleForm, 'TerminalName', res.Obj.TerminalName)
-        this.$set(this.ruleForm, 'ProductName', res.Obj.ProductName)
-        this.$set(this.ruleForm, 'ProductLineCode', res.Obj.LineCode)
-        this.$set(this.ruleForm, 'OrderCode', res.Obj.OrderCode)
-        this.$set(this.ruleForm, 'TerminalCode', res.Obj.TerminalCode)
-        this.$set(this.ruleForm, 'ProductCode', res.Obj.ProductCode)
-      })
+      debugger
+      const params = {
+        ProductSN: this.ruleForm.ProductSN
+      }
+      if (this.ruleForm.ProductSN === undefined) {
+        return
+      } else {
+        QuerySN(params).then(res => {
+          this.$set(this.ruleForm, 'OrderNum', res.Obj.OrderNum)
+          this.$set(this.ruleForm, 'LineName', res.Obj.LineName)
+          this.$set(this.ruleForm, 'TerminalName', res.Obj.TerminalName)
+          this.$set(this.ruleForm, 'ProductName', res.Obj.ProductName)
+          this.$set(this.ruleForm, 'ProductLineCode', res.Obj.LineCode)
+          this.$set(this.ruleForm, 'OrderCode', res.Obj.OrderCode)
+          this.$set(this.ruleForm, 'TerminalCode', res.Obj.TerminalCode)
+          this.$set(this.ruleForm, 'ProductCode', res.Obj.ProductCode)
+        })
+      }
     },
 
     // 编辑
@@ -649,8 +667,8 @@ export default {
 .standardValueInput .el-form-item__content {
   margin-left: 0 !important;
 }
-.el-dialog__body .el-form-item {
-  margin: 10px;
+.el-dialog__body .el-table__row .el-form-item {
+  margin: 15px;
 }
 .el-dialog__body .el-form-item__content .el-tooltip {
   position: relative;

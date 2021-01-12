@@ -216,7 +216,11 @@ export default {
     },
 
     'ruleForm.OrgNum': function(val) {
-      this.ruleForm.OrgNum = this.filterInput(val)
+      if (val === '' || val === undefined) {
+        return
+      } else {
+        this.ruleForm.OrgNum = this.filterInput(val)
+      }
     },
 
     // 监听data属性中英文切换问题
@@ -254,10 +258,10 @@ export default {
 
     // 输入框禁止输入中文
     filterInput(val) {
-      if (val === undefined) {
-        val = ''
+      if (val === '') {
+        return val
       } else {
-        return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+        return val.replace(/[\u4e00-\u9fa5\s]/gi, '')
       }
     },
     // 表单验证切换中英文

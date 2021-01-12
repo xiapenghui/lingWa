@@ -4,16 +4,15 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="成品序列号" placement="top-start"><label class="radio-label">成品序列号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="产品序列号" placement="top-start"><label class="radio-label">产品序列号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.WarehouseNum" placeholder="成品序列号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductSN" placeholder="产品序列号" clearable /></el-col>
         </el-col>
-
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.WarehouseNum" placeholder="成品编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" placeholder="成品编号" clearable /></el-col>
         </el-col>
 
         <el-col :span="6">
@@ -21,7 +20,7 @@
             <el-tooltip class="item" effect="dark" :enterable="false" content="状态" placement="top-start"><label class="radio-label">状态:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.TaskType" clearable style="width: 100%">
+            <el-select v-model="pagination.TaskStatus" clearable style="width: 100%">
               <el-option v-for="item in TaskTypeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
@@ -55,57 +54,57 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="任务单号" width="150" prop="WarehouseNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="任务单号" width="150" prop="TaskNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseNum }}
+          {{ scope.row.TaskNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="产品序列号" width="150" prop="WarehouseName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="产品序列号" width="150" prop="ProductSN" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseName }}
+          {{ scope.row.ProductSN }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品编号" width="150" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品编号" width="150" prop="ProductNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseType }}
+          {{ scope.row.ProductNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="成品名称" width="150" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="成品名称" width="150" prop="ProductName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseType }}
+          {{ scope.row.ProductName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工单号" width="150" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工单号" width="150" prop="OrderNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseType }}
+          {{ scope.row.OrderNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验结果" width="150" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验结果" width="150" prop="InspectResult" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseType }}
+          <el-tag :style="{ color: scope.row.InspectResult === 'NG' ? '#FF5757' : '#13ce66' }">{{ scope.row.InspectResult === 'NG' ? '不合格' : '合格' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划检验日期" width="150" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划检验日期" width="150" prop="PlanInspectDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseType }}
+          {{ scope.row.PlanInspectDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="实际检验日期" width="150" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="实际检验日期" width="150" prop="ActInspectDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseType }}
+          {{ scope.row.ActInspectDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态" width="150" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="状态" width="150" prop="TaskStatusText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseType }}
+          {{ scope.row.TaskStatusText }}
         </template>
       </el-table-column>
 
@@ -129,8 +128,7 @@
 
       <el-table-column align="center" :label="$t('permission.time')" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <!-- {{ scope.row.ModifyTime | substringTime }} -->
-          {{ scope.row.ModifyTime }}
+          {{ scope.row.ModifyTime | substringTime }}
         </template>
       </el-table-column>
 
@@ -158,16 +156,22 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
+    <el-dialog
+      v-dialogDrag
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')"
+    >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="检验单号" prop="OrderNum"><el-input v-model.trim="ruleForm.OrderNum" placeholder="检验单号" disabled /></el-form-item>
-        <el-form-item label="条码" prop="ProductLineCode"><el-input v-model.trim="ruleForm.ProductLineCode" placeholder="扫描产品序列号" onkeyup="value=value.replace(/[\u4e00-\u9fa5/\s+/]/ig,'')" clearable /></el-form-item>
-        <el-form-item label="工单号" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="工单号" disabled /></el-form-item>
-        <el-form-item label="成品名称" prop="WarehouseName"><el-input v-model.trim="ruleForm.WarehouseName" placeholder="成品名称" disabled /></el-form-item>
+        <el-form-item label="检验单号" prop="TaskNum"><el-input v-model.trim="ruleForm.TaskNum" placeholder="检验单号" disabled /></el-form-item>
+        <el-form-item label="条码" prop="ProductSN"><el-input v-model.trim="ruleForm.ProductSN" placeholder="扫描产品序列号" clearable @blur="ProductBox" /></el-form-item>
+        <el-form-item label="工单号" prop="OrderNum"><el-input v-model.trim="ruleForm.OrderNum" placeholder="工单号" disabled /></el-form-item>
 
-        <el-form-item label="计划检验日期" prop="EffectiveDate">
+        <el-form-item label="成品名称" prop="ProductName"><el-input v-model.trim="ruleForm.ProductName" placeholder="成品名称" disabled /></el-form-item>
+
+        <el-form-item label="计划检验日期" prop="PlanInspectDate">
           <el-date-picker
-            v-model="ruleForm.EffectiveDate"
+            v-model="ruleForm.PlanInspectDate"
             :picker-options="expireTimeOption"
             value-format="yyyy-MM-dd"
             type="date"
@@ -188,55 +192,57 @@
 
     <!--明细弹窗 -->
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="detailFormVisible" title="明细信息系表">
-      <el-form ref="ruleForm" v-loading="detailLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
+      <el-form ref="inServForm" :model="inServForm" :hide-required-asterisk="false" label-width="120px" label-position="left">
         <el-table
-
+          v-loading="detailLoading"
           :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
-          :data="tableData"
-          height="55vh"
+          :data="inServForm.tableDetaliData"
           style="width: 100%;"
+          height="55vh"
           border
           element-loading-text="拼命加载中"
           fit
           highlight-current-row
         >
-          <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
+          <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" />
 
-          <el-table-column align="center" label="检验项目" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="检验项目" prop="InspectItemName" sortable :show-overflow-tooltip="true" />
+          <el-table-column align="center" label="下限值" prop="LowerLimit" sortable :show-overflow-tooltip="true" />
+
+          <el-table-column align="center" label="上限值" prop="UpperLimit" sortable :show-overflow-tooltip="true" />
+          <el-table-column align="center" label="判断方式" prop="JudgmentWayText" sortable :show-overflow-tooltip="true" />
+
+          <el-table-column align="center" label="是否必填" prop="IsRequired" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.InspectItemName }}
+              <el-tag :style="{ color: scope.row.IsRequired === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsRequired === false ? '否' : '是' }}</el-tag>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="下限值" prop="LowerLimit" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="检测值" prop="InspectValue" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.LowerLimit }}
+              <el-form-item
+                class="standardValueInput"
+                label=""
+                :prop="'tableDetaliData.' + scope.$index + '.InspectValue'"
+                :rules="[{ required: scope.row.IsRequired, message: '请输入检测值', trigger: 'blur' }]"
+              >
+                <span v-if="scope.row.IsRequired === true" class="iptCenter">*</span>
+                <el-input v-model="scope.row.InspectValue" :type="scope.row.JudgmentWay === '1' ? 'text' : 'number'" @change="value => onChangeJudgmentWay(value, scope)" />
+              </el-form-item>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="上限值" prop="UpperLimit" sortable :show-overflow-tooltip="true">
+          <el-table-column align="center" label="检验结果" prop="InspectResult" :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              {{ scope.row.UpperLimit }}
+              {{ scope.row.InspectResult }}
             </template>
-          </el-table-column>
-
-          <el-table-column align="center" label="检测值" prop="StandardValue" sortable :show-overflow-tooltip="true">
-            <template slot-scope="scope">
-              <el-input-number v-model="scope.row.num" placeholder="请输入数字" />
-              <el-input v-model="scope.row.num" placeholder="请输入NG或OK" />
-            </template>
-          </el-table-column>
-
-          <el-table-column align="center" label="检验结果" prop="WarehouseType" :show-overflow-tooltip="true">
-            <span>合格</span>
-            <span>不合格</span>
           </el-table-column>
         </el-table>
       </el-form>
       <div style="text-align:right;margin-top: 20px;">
         <el-button type="danger" @click="detailFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
+        <el-button type="primary" @click="submitDetailForm('inServForm', '0')">保存</el-button>
+        <el-button type="primary" @click="submitDetailForm('inServForm', '1')">提交</el-button>
       </div>
     </el-dialog>
   </div>
@@ -249,25 +255,28 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary } from '@/api/BasicData'
-import { CreateTaskNum } from '@/api/QualityData'
-import { StoWareAdd, StoWareDelete, StoWareModify } from '@/api/WarehouseData'
+import { CreateTaskNum, QuerySN, QuaTaskList, QuaTaskAdd, QuaTaskDelete, QuaDetaiList, QuaTaskModify, QuaDetaiSave, QuaDetaiSubmit } from '@/api/QualityData'
 const fixHeight = 260
 export default {
   name: 'CompanyMaintenance',
   components: { Pagination },
   data() {
     return {
-      tableData: [
-        {
-          WarehouseNum: '1'
-        }
-      ],
-      ruleForm: {}, // 编辑弹窗
+      tableData: [], // 主列表
+      inServForm: {
+        tableDetaliData: []
+      },
+      tableDetaliData: [], // 详情
+      ruleForm: {
+        TaskNum: null
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        WarehouseNum: undefined,
-        WarehouseName: undefined
+        ProductSN: undefined,
+        ProductNum: undefined,
+        TaskStatus: undefined,
+        TaskType: 'FQC'
       },
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -284,10 +293,7 @@ export default {
         }
       },
       rules: {
-        OrderNum: [{ required: true, message: '请输入任务单号', trigger: 'blur' }],
-        WarehouseName: [{ required: true, message: '请输入仓库类型', trigger: 'blur' }],
-        IsFIFO: [{ required: true, message: '请选择FIFO', trigger: 'change' }],
-        IsShelfManage: [{ required: true, message: '请选择是否上架', trigger: 'change' }]
+        ProductSN: [{ required: true, message: '请输入产品序列号', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
     }
@@ -305,6 +311,16 @@ export default {
         }, 400)
       }
     },
+
+    // input禁止中文输入
+    'ruleForm.ProductSN': function(val) {
+      if (val === '' || val === undefined) {
+        return
+      } else {
+        this.ruleForm.ProductSN = this.filterInput(val)
+      }
+    },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.parentMsg = this.$t('permission.importCompany')
@@ -333,14 +349,33 @@ export default {
     table_index(index) {
       return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
     },
+    // 输入框禁止输入中文
+    filterInput(val) {
+      return val.replace(/[\u4e00-\u9fa5\s]/gi, '')
+    },
 
+    onChangeJudgmentWay(value, scope) {
+      console.log('11', value, scope)
+      // 文本
+      if (scope.row.JudgmentWay === '1') {
+        if (scope.row.InspectValue !== '') {
+          scope.row.InspectResult = '合格'
+        } else {
+          scope.row.InspectResult = '不合格'
+        }
+      } else {
+        // 数值
+        if (scope.row.LowerLimit <= parseInt(scope.row.InspectValue) && scope.row.UpperLimit >= parseInt(scope.row.InspectValue)) {
+          scope.row.InspectResult = '合格'
+        } else {
+          scope.row.InspectResult = '不合格'
+        }
+      }
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        WarehouseNum: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
-        WarehouseName: [{ required: true, message: '请输入仓库类型', trigger: 'blur' }],
-        IsFIFO: [{ required: true, message: '请选择FIFO', trigger: 'change' }],
-        IsShelfManage: [{ required: true, message: '请选择是否上架', trigger: 'change' }]
+        ProductSN: [{ required: true, message: '请输入产品序列号', trigger: 'blur' }]
       }
     },
 
@@ -371,12 +406,12 @@ export default {
 
     // 获取列表
     getList() {
-      // this.listLoading = true
-      // StoWareList(this.pagination).then(res => {
-      //   this.tableData = res.Obj
-      //   this.total = res.TotalRowCount
-      //   this.listLoading = false
-      // })
+      this.listLoading = true
+      QuaTaskList(this.pagination).then(res => {
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
@@ -398,14 +433,31 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
       this.ruleForm = {
-        OrderNum: ''
+        TaskNum: ''
       }
       CreateTaskNum().then(res => {
         if (res.IsPass === true) {
-          this.ruleForm.OrderNum = res.Obj
+          this.ruleForm.TaskNum = res.Obj
         }
       })
     },
+    // 产品序列号失去焦点时间
+    ProductBox() {
+      const params = {
+        ProductSN: this.ruleForm.ProductSN
+      }
+      if (this.ruleForm.ProductSN === undefined) {
+        return
+      } else {
+        QuerySN(params).then(res => {
+          this.$set(this.ruleForm, 'OrderNum', res.Obj.OrderNum)
+          this.$set(this.ruleForm, 'ProductName', res.Obj.ProductName)
+          this.$set(this.ruleForm, 'OrderCode', res.Obj.OrderCode)
+          this.$set(this.ruleForm, 'ProductCode', res.Obj.ProductCode)
+        })
+      }
+    },
+
     // 编辑
     handleEdit(row) {
       this.dialogType = 'edit'
@@ -418,7 +470,30 @@ export default {
     // 查看明细
     handleLook(row) {
       this.detailFormVisible = true
-      this.detailLoading = false
+      this.detailLoading = true
+      QuaDetaiList({ TaskNum: row.TaskNum }).then(res => {
+        if (res.IsPass === true) {
+          res.Obj.map(item => {
+            // 文本
+            if (item.JudgmentWay === '1') {
+              if (item.InspectValue !== '') {
+                item.InspectResult = '合格'
+              } else {
+                item.InspectResult = '不合格'
+              }
+            } else {
+              // 数值
+              if (item.LowerLimit <= parseInt(item.InspectValue) && item.UpperLimit >= parseInt(item.InspectValue)) {
+                item.InspectResult = '合格'
+              } else {
+                item.InspectResult = '不合格'
+              }
+            }
+          })
+          this.inServForm.tableDetaliData = res.Obj
+          this.detailLoading = false
+        }
+      })
     },
 
     // 编辑成功
@@ -427,7 +502,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            StoWareModify(this.ruleForm).then(res => {
+            QuaTaskModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -444,7 +519,12 @@ export default {
               this.editLoading = false
             })
           } else {
-            StoWareAdd(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            params.TaskType = 'FQC'
+            params.InspectResult = 'NG'
+            params.TerminalCode = ''
+            params.ProductLineCode = ''
+            QuaTaskAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -472,6 +552,65 @@ export default {
       })
     },
 
+    // 保存和提交
+    submitDetailForm(formName, status) {
+      this.detailLoading = true
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          const newArr = this.inServForm.tableDetaliData.map(item => {
+            if (item.InspectResult === '不合格') {
+              item.InspectResult = 'NG'
+            } else {
+              item.InspectResult = 'OK'
+            }
+            return item
+          })
+          if (status === '0') {
+            QuaDetaiSave(newArr).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: '保存成功!'
+                })
+                this.detailFormVisible = false
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+              this.detailLoading = false
+            })
+          } else {
+            QuaDetaiSubmit(newArr).then(res => {
+              if (res.IsPass === true) {
+                this.$message({
+                  type: 'success',
+                  message: '提交成功!'
+                })
+                this.detailFormVisible = false
+                this.getList()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.MSG
+                })
+              }
+              this.detailLoading = false
+            })
+          }
+        } else {
+          this.detailLoading = false
+          this.$message({
+            type: 'error',
+            message: '必填项不能为空'
+          })
+          return false
+        }
+      })
+    },
+
     // 撤销
     handleRevoke() {},
 
@@ -483,7 +622,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          StoWareDelete({ WarehouseCode: row.WarehouseCode }).then(res => {
+          QuaTaskDelete({ TaskNum: row.TaskNum }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -510,4 +649,20 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style>
+.standardValueInput .el-form-item__content {
+  margin-left: 0 !important;
+}
+.el-dialog__body .el-table__row .el-form-item {
+  margin: 15px;
+}
+.el-dialog__body .el-form-item__content .el-tooltip {
+  position: relative;
+}
+.el-dialog__body .el-form-item__content .iptCenter {
+  position: absolute;
+  left: -10px;
+  color: red;
+  z-index: 99;
+}
+</style>

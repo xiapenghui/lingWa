@@ -142,7 +142,7 @@ export default {
 
   },
   login: {
-    title: '系统登录',
+    title: '上海灵娃MES系统',
     logIn: '登录',
     username: '账号',
     password: '密码',

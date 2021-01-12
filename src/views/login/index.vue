@@ -1,5 +1,22 @@
 <template>
   <div class="login-container">
+    <vue-particles
+      color="#dedede"
+      :particle-opacity="0.7"
+      :particles-number="80"
+      shape-type="circle"
+      :particle-size="4"
+      lines-color="#dedede"
+      :lines-width="1"
+      :line-linked="true"
+      :line-opacity="0.4"
+      :lines-distance="150"
+      :move-speed="3"
+      :hover-effect="true"
+      hover-mode="grab"
+      :click-effect="true"
+      click-mode="push"
+    />
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
@@ -121,7 +138,7 @@ export default {
           _this.loading = true
           _this.$store
             .dispatch('user/login', _this.loginForm)
-            .then((res) => {
+            .then(res => {
               console.log('res', res)
               if (res.IsPass === true) {
                 _this.$router.push({ path: '/' })
@@ -189,11 +206,10 @@ $cursor: #fff;
         box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: $cursor !important;
       }
-     &::-webkit-input-placeholder{
-       color: #ffffff
-     }
+      &::-webkit-input-placeholder {
+        color: #ffffff;
+      }
     }
-
   }
 
   .el-form-item {
@@ -202,8 +218,8 @@ $cursor: #fff;
     border-radius: 5px;
     color: #454545;
   }
-  .svg-icon{
-     color:#ffffff
+  .svg-icon {
+    color: #ffffff;
   }
 }
 </style>
@@ -216,22 +232,27 @@ $light_gray: #ffffff;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  // background-color: $bg;
   // background-image: linear-gradient(to right, #1a68ad, #4ea962);
+  background-image: url(../../assets/home/bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
   overflow: hidden;
 
   .login-form {
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 260px 35px 0;
-    margin: 0 auto;
+    padding: 60px 35px 60px 35px;
+    margin: -750px auto;
     overflow: hidden;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 20px;
     .el-button {
-      width:100%;
-      margin-bottom:30px;
-      background-color: #F8B502;
-      border: 1px solid #F8B502;
+      width: 100%;
+      margin-bottom: 30px;
+      background-color: #f8b502;
+      border: 1px solid #f8b502;
       font-weight: bold;
       letter-spacing: 5px;
     }
@@ -261,12 +282,12 @@ $light_gray: #ffffff;
     position: relative;
 
     .title {
-      font-size:35px;
+      font-size: 35px;
       color: $light_gray;
       margin: 0px auto 30px auto;
       text-align: center;
       font-weight: bold;
-      letter-spacing:5px;
+      letter-spacing: 5px;
       font-family: '宋体';
     }
 

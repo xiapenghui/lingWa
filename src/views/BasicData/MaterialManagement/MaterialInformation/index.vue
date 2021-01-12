@@ -132,7 +132,12 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
+    <el-dialog
+      v-dialogDrag
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
+    >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="原料编号" clearable /></el-form-item>
         <el-form-item label="原料名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="原料名称" clearable /></el-form-item>
@@ -220,7 +225,11 @@ export default {
       }
     },
     'ruleForm.MaterialNum': function(val) {
-      this.ruleForm.MaterialNum = this.filterInput(val)
+      if (val === '' || val === undefined) {
+        return
+      } else {
+        this.ruleForm.MaterialNum = this.filterInput(val)
+      }
     },
 
     // 监听data属性中英文切换问题
@@ -263,10 +272,10 @@ export default {
     },
     // 输入框禁止输入中文
     filterInput(val) {
-      if (val === undefined) {
-        val = ''
+      if (val === '') {
+        return val
       } else {
-        return val.replace(/[\u4e00-\u9fa5/\s+/]/gi, '')
+        return val.replace(/[\u4e00-\u9fa5\s]/gi, '')
       }
     },
     // 表单验证切换中英文
