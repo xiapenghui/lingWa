@@ -68,7 +68,7 @@ export default {
     ListPlan: '生产计划排单',
     OrderQuery: '生产工单查询',
     OrderMaintain: '生产工单维护',
-    OrderSend: '生产工单下达',
+    OrderSend: '生产工单发布',
     OrderControl: '生产工单控制',
 
     // 截止

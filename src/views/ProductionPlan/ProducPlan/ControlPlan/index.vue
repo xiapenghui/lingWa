@@ -156,6 +156,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label=" 工艺路线名称" width="150" prop="RouteName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.RouteName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.SaleNum')" width="150" prop="SaleNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SaleNum }}
@@ -241,8 +247,6 @@
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="强制完工" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-warning-outline" plain @click="forceOver(scope.row)" />
-          </el-tooltip>
-
           </el-tooltip>
 
         </template>

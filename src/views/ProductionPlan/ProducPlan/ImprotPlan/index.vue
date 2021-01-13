@@ -167,6 +167,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label=" 工艺路线名称" width="150" prop="RouteName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.RouteName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.SaleNum')" width="150" prop="SaleNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SaleNum }}
@@ -241,7 +247,6 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="250">
         <template slot-scope="scope">
-
           <el-tooltip class="item" effect="dark" :enterable="false" content="BOM" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
           </el-tooltip>
@@ -318,6 +323,12 @@
 
             <el-form-item v-if="isActive" label="客户名称"><el-input v-model="ruleForm.CustomerName" disabled /></el-form-item>
 
+            <el-form-item v-if="!isActive" label="工艺路线" prop="RouteName">
+              <el-input v-model="ruleForm.RouteName" readonly placeholder="请选择" class="disActive" @focus="lineBox" />
+            </el-form-item>
+
+            <el-form-item v-if="isActive" label="工艺路线"><el-input v-model="ruleForm.RouteName" disabled /></el-form-item>
+
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
               <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%" clearable @change="changeLine">
                 <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
@@ -346,7 +357,6 @@
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
         <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">{{ $t('permission.continueAdd') }}</el-button>
-        <el-button v-if="splitShow" type="primary" @click="submitSplit">{{ $t('permission.continueSplit') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -375,6 +385,18 @@
       @handleUserBox="handleUserBox"
     />
 
+    <!-- 新增加页面工艺路线聚焦弹窗 -->
+    <LineName
+      :line-show="lineFormVisible"
+      :line-loading="lineLoading"
+      :table-box-height="tableBoxHeight"
+      :line-data="lineData"
+      :pagination-search-line="paginationSearchLine"
+      @lineClick="lineClick"
+      @lineClose="lineClose"
+      @lineBox="lineBox"
+    />
+
     <!-- 关联工单弹窗 -->
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="orderFormVisible" title="工单信息表" width="70%" height="50%">
       <el-table
@@ -389,7 +411,7 @@
         highlight-current-row
       >
         <el-table-column align="center" label="行号" width="50" fixed>
-          <template slot-scope="scope">
+          <template slot-scope="scope">s
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
@@ -589,12 +611,12 @@
     </el-dialog>
 
     <!-- 工艺线路弹窗 -->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线信息表" width="70%" height="50%">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="lineFormVisibleBig" title="工艺路线信息表" width="70%" height="50%">
       <el-table
-        v-loading="lineBoxLoading"
+        v-loading="lineBoxLoadingBig"
         :height="tableBoxHeight"
         :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
-        :data="lineData"
+        :data="lineDataBig"
         style="width: 100%"
         border
         element-loading-text="拼命加载中"
@@ -653,7 +675,6 @@
             {{ scope.row.Description }}
           </template>
         </el-table-column>
-
       </el-table>
     </el-dialog>
   </div>
@@ -667,14 +688,15 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import FinshName from '@/components/FinshName' // 成品名称弹窗
 import CustomerName from '@/components/CustomerName' // 客户名称弹窗
-import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, GetBomVersion, bomDetailList, baseDetailList } from '@/api/BasicData'
-import { productionList, productionDelete, productionPlanNum, productionAdd, productionUpdate, SplitQuery, productionSplit, orderList } from '@/api/ProductionPlan'
+import LineName from '@/components/LineName' // 工艺路线弹
+import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, GetBomVersion, bomDetailList, baseDetailList, baseRouteList } from '@/api/BasicData'
+import { productionList, productionDelete, productionPlanNum, productionAdd, productionUpdate, orderList } from '@/api/ProductionPlan'
 const fixHeight = 260
 const fixHeightBox = 350
 
 export default {
   name: 'ImprotPlan',
-  components: { Pagination, FinshName, CustomerName },
+  components: { Pagination, FinshName, CustomerName, LineName },
   data() {
     return {
       tableData: [],
@@ -699,7 +721,8 @@ export default {
       userData: [], // 客户名称弹窗数组
       orderData: [], // 关联工单弹窗
       bomData: [], // BOM弹窗
-      lineData: [], // 工艺路线弹窗
+      lineDataBig: [], // 工艺路线弹窗
+      lineData: [], // 工艺路线封装Loading
       isGive: [], // 弹窗计划类型radio数组
       PriorityList: [], // 优先级下拉列表
       ProductList: [], // 计划投入产线
@@ -734,12 +757,21 @@ export default {
         ShowBanned: false
       },
 
+      // 搜索条件
+      paginationSearchLine: {
+        Name: undefined,
+        PageIndex: 1,
+        PageSize: 10000,
+        ShowBanned: false
+      },
+
       listLoading: false, // 主列表
       listBoxLoading: false, // 成品名称搜索loading
       userBoxLoading: false, // 客户名称搜索loading
       orderBoxLoading: false, // 关联工单弹窗loading
       bomBoxLoading: false, // bom弹窗loading
-      lineBoxLoading: false, // 工艺路线弹窗loading
+      lineLoading: false, // 工艺路线封装loading
+      lineBoxLoadingBig: false, // 工艺路线弹窗loading
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
@@ -747,7 +779,8 @@ export default {
       userFormVisible: false, // input客户名称弹窗
       orderFormVisible: false, // 关联工单弹窗
       bomFormVisible: false, // BOM弹窗
-      lineFormVisible: false, // 工艺路线弹窗
+      lineFormVisible: false, // 工艺路线封装弹窗
+      lineFormVisibleBig: false, // 工艺路线弹窗
       dialogTypeTitle: null,
       newLine: null, // 获取计划下拉产线
       newPriority: null, // 获取下拉优先级
@@ -1068,28 +1101,6 @@ export default {
               }
               this.editLoading = false
             })
-          } else {
-            productionSplit(this.ruleForm).then(res => {
-              if (res.IsPass === true) {
-                this.$message({
-                  type: 'success',
-                  message: this.$t('table.SplitSuc')
-                })
-                SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
-                  if (res.IsPass === true) {
-                    this.ruleForm = res.Obj
-                  }
-                })
-                this.getList()
-                this.dialogFormVisible = false
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
-              }
-              this.editLoading = false
-            })
           }
         } else {
           this.editLoading = false
@@ -1130,29 +1141,7 @@ export default {
         }
       })
     },
-    // 继续拆分
-    submitSplit() {
-      productionSplit(this.ruleForm).then(res => {
-        if (res.IsPass === true) {
-          this.$message({
-            type: 'success',
-            message: this.$t('table.SplitSuc')
-          })
-          SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
-            if (res.IsPass === true) {
-              this.ruleForm = res.Obj
-            }
-          })
-          this.getList()
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.MSG
-          })
-        }
-        this.editLoading = false
-      })
-    },
+
     // 关联工单
     handleRelation(row) {
       const params = {
@@ -1201,11 +1190,11 @@ export default {
       } else {
         baseDetailList(params).then(res => {
           if (res.IsPass === true) {
-            this.lineFormVisible = true
-            this.lineBoxLoading = true
-            this.lineData = res.Obj
+            this.lineFormVisibleBig = true
+            this.lineBoxLoadingBig = true
+            this.lineDataBig = res.Obj
           }
-          this.lineBoxLoading = false
+          this.lineBoxLoadingBig = false
         })
       }
     },
@@ -1307,7 +1296,40 @@ export default {
     // 关闭客户名称查询弹窗
     userClose() {
       this.userFormVisible = false
+    },
+
+    // 聚焦事件工艺路线弹窗
+    lineBox() {
+      this.lineFormVisible = true
+      this.lineLoading = true
+      baseRouteList(this.paginationSearchLine).then(res => {
+        if (res.IsPass === true) {
+          this.lineData = res.Obj
+          this.lineLoading = false
+        }
+      })
+    },
+    // 工艺路线弹窗搜索
+    LineBox() {
+      this.paginationSearchLine.PageIndex = 1
+      this.lineBox()
+    },
+    // 增加工艺路线双击事件获取当前行的值
+    lineClick(row) {
+      debugger
+      // this.ruleForm.RouteName = row.Name
+      this.$set(this.ruleForm, 'RouteName', row.Name)
+      this.ruleForm.RouteCode = row.ProcessRouteCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
+      this.lineFormVisible = false
+    },
+    // 关闭工艺路线查询弹窗
+    lineClose() {
+      this.lineFormVisible = false
     }
+
   }
 }
 </script>

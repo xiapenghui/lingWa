@@ -12,7 +12,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ProductCode" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
@@ -33,7 +33,6 @@
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
           </el-col>
         </el-col>
-
       </el-row>
 
       <el-row :gutter="20" style="margin-top: 10px;">
@@ -101,11 +100,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="生产计划单号" width="150" prop="PlanNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -257,66 +252,164 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="80">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
-
-          <el-tooltip class="item" effect="dark" :enterable="false" content="排单" placement="top-start">
-            <el-button type="warning" size="small" icon="el-icon-document" plain @click="handleEdit(scope.row)" />
+          <el-tooltip class="item" effect="dark" :enterable="false" content="工艺路线" placement="top-start">
+            <el-button type="primary" size="small" icon="el-icon-s-operation" plain @click="handleLine(scope.row)" />
           </el-tooltip>
 
+          <el-tooltip class="item" effect="dark" :enterable="false" content="BOM" placement="top-start">
+            <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" title="排单">
-      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="100px" label-position="left" class="demo-ruleForm">
-        <div class="bigUpBox">
-          <div class="boxLeft">
+    <!-- BOM弹窗 -->
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="bomFormVisible" title="BOM信息表" width="70%" height="50%">
+      <el-table
+        v-loading="bomBoxLoading"
+        :height="tableBoxHeight"
+        :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
+        :data="bomData"
+        style="width: 100%"
+        border
+        element-loading-text="拼命加载中"
+        fit
+        highlight-current-row
+      >
+        <el-table-column align="center" label="行号" width="50" fixed>
+          <template slot-scope="scope">
+            {{ scope.$index + 1 }}
+          </template>
+        </el-table-column>
 
-            <el-form-item label="计划开始日期">
-              <el-date-picker v-model="ruleForm.PlanStartDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
-            </el-form-item>
+        <el-table-column align="center" label="工序编号" width="150" prop="ProcessCodeNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessCodeNum }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="工序名称" width="150" prop="ProcessCodeName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessCodeName }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="原料编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialNum }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="原料名称" width="150" prop="MaterialName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialName }}
+          </template>
+        </el-table-column>
 
-            <el-form-item label="计划投入产线" prop="ProductLineCode">
-              <el-select v-model="ruleForm.ProductLineCode" placeholder="计划投入产线" style="width: 100%" clearable>
-                <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
-              </el-select>
-            </el-form-item>
+        <el-table-column align="center" label="原料规格" width="150" prop="MaterialSpec" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialSpec }}
+          </template>
+        </el-table-column>
 
-            <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" type="textarea" clearable /></el-form-item>
-          </div>
+        <el-table-column align="center" label="用量" width="150" prop="Usage" sortable>
+          <template slot-scope="scope">
+            {{ scope.row.Usage }}
+          </template>
+        </el-table-column>
 
-          <div class="boxRight">
+        <el-table-column align="center" label="替代原料编号" width="170" prop="SubMaterialNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.SubMaterialNum }}
+          </template>
+        </el-table-column>
 
-            <el-form-item label="计划结束日期">
-              <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" splaceholder="选择日期" clearable />
-            </el-form-item>
+        <el-table-column align="center" label="替代原料名称" width="170" prop="SubMaterialName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.SubMaterialName }}
+          </template>
+        </el-table-column>
 
-            <el-form-item label="BOM版本" prop="BomVersion"><el-input v-model.trim="ruleForm.BomVersion" placeholder="BOM版本" disabled /></el-form-item>
-
-            <el-form-item label="工艺路线" prop="RouteCode" :rules="[{ required: true, message: '请选择工艺路线', trigger: 'change' }]">
-              <el-select v-model="ruleForm.RouteCode" placeholder="工艺路线" style="width: 100%" clearable>
-                <el-option v-for="item in RouteNameList" :key="item.value" :label="item.text" :value="item.value" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item label="优先级" prop="Priority">
-              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable>
-                <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
-              </el-select>
-            </el-form-item>
-
-          </div>
-        </div>
-      </el-form>
-      <div style="text-align:right;">
-        <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
-      </div>
+        <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.Remark }}
+          </template>
+        </el-table-column>
+      </el-table>
     </el-dialog>
 
+    <!-- 工艺线路弹窗 -->
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线信息表" width="70%" height="50%">
+      <el-table
+        v-loading="lineBoxLoading"
+        :height="tableBoxHeight"
+        :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
+        :data="lineData"
+        style="width: 100%"
+        border
+        element-loading-text="拼命加载中"
+        fit
+        highlight-current-row
+      >
+        <el-table-column align="center" label="行号" width="50" fixed>
+          <template slot-scope="scope">
+            {{ scope.$index + 1 }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="工序编号" width="200" prop="ProcessNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessNum }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="工序名称" width="200" prop="ProcessName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否检验" prop="IsChecked" sortable>
+          <template slot-scope="scope">
+            <el-tag :style="{ color: scope.row.IsChecked === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsChecked === false ? '否' : '是' }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="检验方式" prop="CheckedTypeText" sortable>
+          <template slot-scope="scope">
+            {{ scope.row.CheckedTypeText }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否必过" prop="IsMustPass" sortable>
+          <template slot-scope="scope">
+            <el-tag :style="{ color: scope.row.IsMustPass === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsMustPass === false ? '否' : '是' }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否打印" prop="IsPrint" sortable>
+          <template slot-scope="scope">
+            <el-tag :style="{ color: scope.row.IsPrint === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsPrint === false ? '否' : '是' }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="顺序" prop="OrderNum" sortable>
+          <template slot-scope="scope">
+            {{ scope.row.OrderNum }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.Description }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -327,45 +420,41 @@ import i18n from '@/lang'
 // import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetLine, GetRouteTextValuePair } from '@/api/BasicData'
-import { orderList, orderModify } from '@/api/ProductionPlan'
-
+import { GetDictionary, bomDetailList, baseDetailList } from '@/api/BasicData'
+import { orderList, orderDelete } from '@/api/ProductionPlan'
 const fixHeight = 260
+const fixHeightBox = 350
 
 export default {
-  name: 'OrderMaintain',
+  name: 'OrderPlan',
   components: { Pagination },
   data() {
     return {
       tableData: [],
-      ruleForm: {
-        ProductName: '',
-        CustomerName: '',
-        BomVersion: ''
-      }, // 编辑弹窗
       CreateTime: null,
-      dialogFormVisible: false,
-      BOMCode: null, // 获取新的Bomcode值
       PlanTypeNameData: [], // 工单类型下拉框
       StatusNameData: [], // 工单状态下拉框
-      PriorityList: [], // 优先级下拉列表
-      ProductList: [], // 计划投入产线
-      RouteNameList: [], // 工艺路线
+      bomData: [], // BOM弹窗
+      lineData: [], // 工艺路线弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
         importDate: [],
         OrderNum: undefined,
-        ProductCode: undefined,
+        ProductNum: undefined,
         ProductName: undefined,
         CustomerName: undefined,
         OrderType: undefined,
         PrevStatus: undefined
       },
       listLoading: false, // 主列表
-      editLoading: false, // 编辑loading
+      bomBoxLoading: false, // bom弹窗loading
+      lineBoxLoading: false, // 工艺路线弹窗loading
       total: 10,
+      bomFormVisible: false, // BOM弹窗
+      lineFormVisible: false, // 工艺路线弹窗
       tableHeight: window.innerHeight - fixHeight, // 表格高度
+      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
         shortcuts: [
           {
@@ -420,6 +509,16 @@ export default {
         }, 400)
       }
     },
+    tableBoxHeight(val) {
+      if (!this.timer) {
+        this.tableBoxHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
+      }
+    },
 
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
@@ -432,6 +531,7 @@ export default {
       this.content6 = this.$t('permission.PlanTypeName')
       this.content7 = this.$t('permission.StatusName')
     },
+
     immediate: true,
     deep: true
   },
@@ -441,6 +541,7 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
 
@@ -457,29 +558,15 @@ export default {
         this.StatusNameData = res.Obj
       }
     })
-    // 优先级下拉
-    GetDictionary({ code: '0017' }).then(res => {
-      if (res.IsPass === true) {
-        this.PriorityList = res.Obj
-      }
-    })
-    // 拆分生产计划产线下拉
-    GetLine().then(res => {
-      if (res.IsPass === true) {
-        this.ProductList = res.Obj
-      }
-    })
-    // 获取新增修改工艺路线下拉
-    GetRouteTextValuePair().then(res => {
-      if (res.IsPass === true) {
-        this.RouteNameList = res.Obj
-      }
-    })
 
     // Mock: get all routes and roles list from server
     this.getList()
   },
   methods: {
+    // 分页
+    table_index(index) {
+      return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
+    },
     // 改变搜索框开始结束时间触发
     importChange(val) {
       if (val === null) {
@@ -545,49 +632,74 @@ export default {
       return app
     },
 
-    // 编辑
-    handleEdit(row) {
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-      this.ruleForm = JSON.parse(JSON.stringify(row))
+    // BOM
+    handleBOM(row) {
+      const params = {
+        BomCode: row.BomCode
+      }
+      if (row.BomCode === null) {
+        this.$message('暂无数据！')
+      } else {
+        bomDetailList(params).then(res => {
+          if (res.IsPass === true) {
+            this.bomFormVisible = true
+            this.bomBoxLoading = true
+            this.bomData = res.Obj
+          }
+          this.bomBoxLoading = false
+        })
+      }
     },
 
-    // 编辑成功
-    submitForm(formName) {
-      this.editLoading = true
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          const params = this.ruleForm
-          params.BomCode = this.BOMCode
-          orderModify(params).then(res => {
+    // 查看工艺路线
+    handleLine(row) {
+      const params = {
+        ProcessRouteCode: row.RouteCode
+      }
+      if (row.RouteCode === null) {
+        this.$message('暂无数据！')
+      } else {
+        baseDetailList(params).then(res => {
+          if (res.IsPass === true) {
+            this.lineFormVisible = true
+            this.lineBoxLoading = true
+            this.lineData = res.Obj
+          }
+          this.lineBoxLoading = false
+        })
+      }
+    },
+
+    // 删除按钮
+    handleDelete(row) {
+      this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      })
+        .then(() => {
+          orderDelete({ OrderCode: row.OrderCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
-                message: this.$t('table.editSuc')
+                message: this.$t('table.deleteSuccess')
               })
               this.getList()
-              this.dialogFormVisible = false
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
               })
             }
-            this.editLoading = false
           })
-        } else {
-          this.editLoading = false
+        })
+        .catch(() => {
           this.$message({
-            type: 'error',
-            message: '必填项不能为空'
+            type: 'info',
+            message: this.$t('table.cancelSuccess')
           })
-          return false
-        }
-      })
+        })
     }
-
   }
 }
 </script>

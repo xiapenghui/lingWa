@@ -12,7 +12,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ProductCode" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
@@ -452,7 +452,7 @@ export default {
         PageSize: 30,
         importDate: [],
         OrderNum: undefined,
-        ProductCode: undefined,
+        ProductNum: undefined,
         ProductName: undefined,
         CustomerName: undefined,
         OrderType: undefined,

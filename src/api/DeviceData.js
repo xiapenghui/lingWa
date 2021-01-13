@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 设备管理 - 基础数据 - 设备类型列表
 export function EquBaseList(data) {
   return request({
-    url: '/api/EquBaseEquType/List',
+    url: '/api/EquType/List',
     method: 'post',
     data
   })
@@ -12,7 +12,7 @@ export function EquBaseList(data) {
 // 设备管理 - 基础数据 - 设备类型新增
 export function EquBaseAdd(data) {
   return request({
-    url: '/api/EquBaseEquType/Add',
+    url: '/api/EquType/Add',
     method: 'post',
     data
   })
@@ -21,7 +21,7 @@ export function EquBaseAdd(data) {
 // 设备管理 - 基础数据 - 设备类型删除
 export function EquBaseDelete(data) {
   return request({
-    url: '/api/EquBaseEquType/Delete',
+    url: '/api/EquType/Delete',
     method: 'post',
     data
   })
@@ -30,7 +30,7 @@ export function EquBaseDelete(data) {
 // 设备管理 - 基础数据 - 设备类型编辑
 export function EquBaseModify(data) {
   return request({
-    url: '/api/EquBaseEquType/Modify',
+    url: '/api/EquType/Modify',
     method: 'post',
     data
   })
@@ -39,7 +39,7 @@ export function EquBaseModify(data) {
 // 设备管理 - 基础数据 - 设备类型状态
 export function EquBaseModifyStatus(data) {
   return request({
-    url: '/api/EquBaseEquType/ModifyStatus',
+    url: '/api/EquType/ModifyStatus',
     method: 'post',
     data
   })

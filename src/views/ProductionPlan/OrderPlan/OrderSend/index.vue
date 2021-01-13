@@ -12,7 +12,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ProductCode" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
@@ -33,7 +33,6 @@
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
           </el-col>
         </el-col>
-
       </el-row>
 
       <el-row :gutter="20" style="margin-top: 10px;">
@@ -253,8 +252,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="工艺路线" placement="top-start">
+            <el-button type="primary" size="small" icon="el-icon-s-operation" plain @click="handleLine(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" :enterable="false" content="BOM" placement="top-start">
+            <el-button type="primary" size="small" icon="el-icon-tickets" plain @click="handleBOM(scope.row)" />
+          </el-tooltip>
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="工单发布" placement="top-start">
             <el-button type="success" size="small" icon="el-icon-s-promotion" plain @click="orderSend(scope.row)" />
@@ -263,13 +269,147 @@
           <el-tooltip class="item" effect="dark" :enterable="false" content="取消发布" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-circle-close" plain @click="cancelSend(scope.row)" />
           </el-tooltip>
-
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
+    <!-- BOM弹窗 -->
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="bomFormVisible" title="BOM信息表" width="70%" height="50%">
+      <el-table
+        v-loading="bomBoxLoading"
+        :height="tableBoxHeight"
+        :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
+        :data="bomData"
+        style="width: 100%"
+        border
+        element-loading-text="拼命加载中"
+        fit
+        highlight-current-row
+      >
+        <el-table-column align="center" label="行号" width="50" fixed>
+          <template slot-scope="scope">
+            {{ scope.$index + 1 }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="工序编号" width="150" prop="ProcessCodeNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessCodeNum }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="工序名称" width="150" prop="ProcessCodeName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessCodeName }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="原料编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialNum }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="原料名称" width="150" prop="MaterialName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="原料规格" width="150" prop="MaterialSpec" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.MaterialSpec }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="用量" width="150" prop="Usage" sortable>
+          <template slot-scope="scope">
+            {{ scope.row.Usage }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="替代原料编号" width="170" prop="SubMaterialNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.SubMaterialNum }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="替代原料名称" width="170" prop="SubMaterialName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.SubMaterialName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.Remark }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+
+    <!-- 工艺线路弹窗 -->
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="lineFormVisible" title="工艺路线信息表" width="70%" height="50%">
+      <el-table
+        v-loading="lineBoxLoading"
+        :height="tableBoxHeight"
+        :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
+        :data="lineData"
+        style="width: 100%"
+        border
+        element-loading-text="拼命加载中"
+        fit
+        highlight-current-row
+      >
+        <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
+
+        <el-table-column align="center" label="工序编号" width="200" prop="ProcessNum" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessNum }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="工序名称" width="200" prop="ProcessName" sortable :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.ProcessName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否检验" prop="IsChecked" sortable>
+          <template slot-scope="scope">
+            <el-tag :style="{ color: scope.row.IsChecked === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsChecked === false ? '否' : '是' }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="检验方式" prop="CheckedTypeText" sortable>
+          <template slot-scope="scope">
+            {{ scope.row.CheckedTypeText }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否必过" prop="IsMustPass" sortable>
+          <template slot-scope="scope">
+            <el-tag :style="{ color: scope.row.IsMustPass === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsMustPass === false ? '否' : '是' }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="是否打印" prop="IsPrint" sortable>
+          <template slot-scope="scope">
+            <el-tag :style="{ color: scope.row.IsPrint === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsPrint === false ? '否' : '是' }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="顺序" prop="OrderNum" sortable>
+          <template slot-scope="scope">
+            {{ scope.row.OrderNum }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.Description }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -280,9 +420,10 @@ import i18n from '@/lang'
 // import moment from 'moment'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary } from '@/api/BasicData'
+import { GetDictionary, bomDetailList, baseDetailList } from '@/api/BasicData'
 import { orderList, orderStatus } from '@/api/ProductionPlan'
 const fixHeight = 260
+const fixHeightBox = 350
 
 export default {
   name: 'OrderSend',
@@ -299,21 +440,27 @@ export default {
       dialogTypeTitle: null,
       PlanTypeNameData: [], // 工单类型下拉框
       StatusNameData: [], // 工单状态下拉框
-
+      bomData: [], // BOM弹窗
+      lineData: [], // 工艺路线弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
         importDate: [],
         OrderNum: undefined,
-        ProductCode: undefined,
+        ProductNum: undefined,
         ProductName: undefined,
         CustomerName: undefined,
         OrderType: undefined,
         PrevStatus: undefined
       },
       listLoading: false, // 主列表
+      bomBoxLoading: false, // bom弹窗loading
+      lineBoxLoading: false, // 工艺路线弹窗loading
       total: 10,
+      bomFormVisible: false, // BOM弹窗
+      lineFormVisible: false, // 工艺路线弹窗
       tableHeight: window.innerHeight - fixHeight, // 表格高度
+      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
         shortcuts: [
           {
@@ -368,6 +515,16 @@ export default {
         }, 400)
       }
     },
+    tableBoxHeight(val) {
+      if (!this.timer) {
+        this.tableBoxHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
+      }
+    },
 
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
@@ -390,6 +547,7 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
 
@@ -409,7 +567,6 @@ export default {
     this.getList()
   },
   methods: {
-
     // 分页
     table_index(index) {
       return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
@@ -480,6 +637,44 @@ export default {
       return app
     },
 
+    // BOM
+    handleBOM(row) {
+      const params = {
+        BomCode: row.BomCode
+      }
+      if (row.BomCode === null) {
+        this.$message('暂无数据！')
+      } else {
+        bomDetailList(params).then(res => {
+          if (res.IsPass === true) {
+            this.bomFormVisible = true
+            this.bomBoxLoading = true
+            this.bomData = res.Obj
+          }
+          this.bomBoxLoading = false
+        })
+      }
+    },
+
+    // 查看工艺路线
+    handleLine(row) {
+      const params = {
+        ProcessRouteCode: row.RouteCode
+      }
+      if (row.RouteCode === null) {
+        this.$message('暂无数据！')
+      } else {
+        baseDetailList(params).then(res => {
+          if (res.IsPass === true) {
+            this.lineFormVisible = true
+            this.lineBoxLoading = true
+            this.lineData = res.Obj
+          }
+          this.lineBoxLoading = false
+        })
+      }
+    },
+
     // 工单发布
     orderSend(row) {
       this.$confirm(this.$t('permission.sendInfo'), this.$t('permission.errorTitle'), {
@@ -548,7 +743,6 @@ export default {
           })
         })
     }
-
   }
 }
 </script>

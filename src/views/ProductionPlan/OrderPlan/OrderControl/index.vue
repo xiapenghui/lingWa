@@ -12,7 +12,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="成品编号" placement="top-start"><label class="radio-label">成品编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ProductCode" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProductNum" clearable /></el-col>
         </el-col>
         <el-col :span="5">
           <el-col :span="8">
@@ -253,7 +253,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
         <template slot-scope="scope">
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="计划冻结" placement="top-start">
@@ -266,10 +266,6 @@
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="强制完工" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-success" plain @click="forceOver(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" :enterable="false" content="作废" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-error" plain @click="handleVoid(scope.row)" />
           </el-tooltip>
 
         </template>
@@ -291,7 +287,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import { GetDictionary } from '@/api/BasicData'
 import { orderList, orderFreeze, orderStatus } from '@/api/ProductionPlan'
 const fixHeight = 260
-
+const fixHeightBox = 350
 export default {
   name: 'OrderControl',
   components: { Pagination },
@@ -306,21 +302,25 @@ export default {
       CreateTime: null,
       PlanTypeNameData: [], // 工单类型下拉框
       StatusNameData: [], // 工单状态下拉框
+      bomData: [], // BOM弹窗
+      lineData: [], // 工艺路线弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
         importDate: [],
         OrderNum: undefined,
-        ProductCode: undefined,
+        ProductNum: undefined,
         ProductName: undefined,
         CustomerName: undefined,
         OrderType: undefined,
         PrevStatus: undefined
       },
       listLoading: false, // 主列表
-      editLoading: false, // 编辑loading
+
       total: 10,
+
       tableHeight: window.innerHeight - fixHeight, // 表格高度
+      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
         shortcuts: [
           {
@@ -375,7 +375,16 @@ export default {
         }, 400)
       }
     },
-
+    tableBoxHeight(val) {
+      if (!this.timer) {
+        this.tableBoxHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
+      }
+    },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       this.parentMsg = this.$t('permission.importCompany')
@@ -397,6 +406,7 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
 
@@ -566,41 +576,6 @@ export default {
           const params = {
             OrderCode: row.OrderCode,
             Status: 4
-          }
-          orderStatus(params).then(res => {
-            if (res.IsPass === true) {
-              this.$message({
-                type: 'success',
-                message: res.MSG
-              })
-              this.getList()
-            } else {
-              this.$message({
-                type: 'error',
-                message: res.MSG
-              })
-            }
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: this.$t('table.cancelSuccess')
-          })
-        })
-    },
-
-    // 作废
-    handleVoid(row) {
-      this.$confirm(this.$t('permission.VoidInfo'), this.$t('permission.errorTitle'), {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      })
-        .then(() => {
-          const params = {
-            OrderCode: row.OrderCode,
-            Status: 5
           }
           orderStatus(params).then(res => {
             if (res.IsPass === true) {

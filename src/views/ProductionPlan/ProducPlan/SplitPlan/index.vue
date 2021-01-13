@@ -156,6 +156,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label=" 工艺路线名称" width="150" prop="RouteName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.RouteName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.SaleNum')" width="150" prop="SaleNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SaleNum }}
@@ -273,22 +279,16 @@
             <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
           </div>
           <div class="boxRight">
-            <el-form-item v-if="!isActive" label="成品名称" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.ProductName" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
-            </el-form-item>
 
-            <el-form-item v-if="isActive" label="成品名称">
-              <span style="color: red;position: absolute;left:-77px;z-index: 9;">*</span>
-              <el-input v-model="ruleForm.ProductName" disabled />
+            <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
+              <el-input v-model="ruleForm.ProductName" placeholder="请选择" disabled />
             </el-form-item>
 
             <el-form-item v-if="planAdd" label="BOM版本"><el-input v-model="ruleForm.BomVersion" placeholder="BOM版本" :disabled="true" /></el-form-item>
 
-            <el-form-item v-if="!isActive" :label="$t('permission.CustomerName')" prop="CustomerName">
-              <el-input v-model="ruleForm.CustomerName" readonly placeholder="请选择" class="disActive" @focus="userBox" />
-            </el-form-item>
+            <el-form-item label="客户名称"><el-input v-model="ruleForm.CustomerName" disabled /></el-form-item>
 
-            <el-form-item v-if="isActive" label="客户名称"><el-input v-model="ruleForm.CustomerName" disabled /></el-form-item>
+            <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" disabled /></el-form-item>
 
             <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
               <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%" clearable @change="changeLine">
@@ -323,29 +323,6 @@
       </div>
     </el-dialog>
 
-    <!-- 成品名称对应弹窗 -->
-    <FinshName
-      :fish-show="finshFormVisible"
-      :list-box-loading="listBoxLoading"
-      :table-box-height="tableBoxHeight"
-      :finsh-data="finshData"
-      :pagination-search="paginationSearch"
-      @fishClose="fishClose"
-      @fishClick="fishClick"
-      @handleSearchBox="handleSearchBox"
-    />
-
-    <!-- 新增加页面客户名称聚焦弹窗 -->
-    <CustomerName
-      :user-show="userFormVisible"
-      :user-box-loading="userBoxLoading"
-      :table-box-height="tableBoxHeight"
-      :user-data="userData"
-      :pagination-user="paginationUser"
-      @userClose="userClose"
-      @userClick="userClick"
-      @handleUserBox="handleUserBox"
-    />
   </div>
 </template>
 
@@ -355,9 +332,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import FinshName from '@/components/FinshName' // 成品名称弹窗
-import CustomerName from '@/components/CustomerName' // 客户名称弹窗
-import { GetDictionary, GetMaterialList, GetCustomerList, GetLine, GetBomVersion } from '@/api/BasicData'
+import { GetDictionary, GetLine } from '@/api/BasicData'
 import {
   productionList,
   SplitQuery,
@@ -369,7 +344,7 @@ const fixHeightBox = 350
 
 export default {
   name: 'SplitPlan',
-  components: { Pagination, FinshName, CustomerName },
+  components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -377,12 +352,10 @@ export default {
         ProductName: '',
         CustomerName: ''
       }, // 编辑弹窗
-
       CreateTime: null,
       isDisabled: false, // 拆分弹窗默认不能修改
       planShow: true, // 拆分弹窗默认可见字段
       planAdd: false, // 新增编辑弹窗默认可见字段
-
       splitShow: true, // 继续拆分仅拆分可见
       isAlarmItem: true, // 必填项可见不可见
       isAlarmItemOther: true, // 必填项可见不可见
@@ -390,7 +363,6 @@ export default {
       StatusNameData: [], // 计划状态下拉框
       finshData: [], // 成品弹窗数组
       userData: [], // 客户名称弹窗数组
-
       isGive: [], // 弹窗计划类型radio数组
       PriorityList: [], // 优先级下拉列表
       ProductList: [], // 计划投入产线
@@ -407,36 +379,17 @@ export default {
         PlanTypeName: undefined,
         StatusName: undefined
       },
-      // 成品聚焦搜索条件
-      paginationSearch: {
-        PageIndex: 1,
-        PageSize: 10000,
-        MaterialType: 1,
-        MaterialNum: undefined,
-        Name: undefined,
-        ShowBanned: false
-      },
-      // 客户聚焦搜索条件
-      paginationUser: {
-        PageIndex: 1,
-        PageSize: 10000,
-        CustomerNum: undefined,
-        FullName: undefined,
-        ShowBanned: false
-      },
+
       listLoading: false, // 主列表
-      listBoxLoading: false, // 成品名称搜索loading
-      userBoxLoading: false, // 客户名称搜索loading
+
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
-      finshFormVisible: false, // input产品名称弹窗
-      userFormVisible: false, // input客户名称弹窗
+
       dialogTypeTitle: null,
       newLine: null, // 获取计划下拉产线
       newPriority: null, // 获取下拉优先级
       newBOMCode: null, // BOM版本
-      isActive: false, // 客户成品名称样式区分
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
@@ -710,81 +663,14 @@ export default {
       this.splitShow = true
       this.isAlarmItem = true
       this.isAlarmItemOther = false
-      this.isActive = true
       SplitQuery({ PlanCode: row.PlanCode }).then(res => {
         if (res.IsPass === true) {
           this.ruleForm = res.Obj
+          this.ruleForm.RouteName = row.RouteName
         }
       })
-    },
-
-    // 聚焦事件成品弹窗
-    finshBox() {
-      this.finshFormVisible = true
-      this.listBoxLoading = true
-      GetMaterialList(this.paginationSearch).then(res => {
-        if (res.IsPass === true) {
-          this.finshData = res.Obj
-          this.listBoxLoading = false
-        }
-      })
-    },
-    // 产成品弹窗搜索
-    handleSearchBox() {
-      this.paginationSearch.PageIndex = 1
-      this.finshBox()
-    },
-    // 增加成品名称双击事件获取当前行的值
-    fishClick(row) {
-      // this.ruleForm.ProductName = row.Name
-      this.$set(this.ruleForm, 'ProductName', row.Name)
-      this.ruleForm.ProductCode = row.MaterialCode
-      GetBomVersion({ MaterialCode: row.MaterialCode, MaterialType: '1' }).then(res => {
-        if (res.IsPass === true) {
-          this.$nextTick(function() {
-            this.newBOMCode = res.Obj.Code
-            this.ruleForm.BomVersion = res.Obj.Version
-          })
-        }
-      })
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-      this.finshFormVisible = false
-    },
-    // 关闭成品名称查询弹窗
-    fishClose() {
-      this.finshFormVisible = false
-    },
-    // 聚焦事件客户弹窗
-    userBox() {
-      this.userFormVisible = true
-      this.usBoxLoading = true
-      GetCustomerList(this.paginationUser).then(res => {
-        if (res.IsPass === true) {
-          this.userData = res.Obj
-          this.usBoxLoading = false
-        }
-      })
-    },
-    handleUserBox() {
-      this.paginationUser.PageIndex = 1
-      this.userBox()
-    },
-    // 增加客户名称双击事件获取当前行的值
-    userClick(row) {
-      // this.ruleForm.CustomerName = row.FullName
-      this.$set(this.ruleForm, 'CustomerName', row.FullName)
-      this.ruleForm.CustomerCode = row.CustomerCode
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-      this.userFormVisible = false
-    },
-    // 关闭客户名称查询弹窗
-    userClose() {
-      this.userFormVisible = false
     }
+
   }
 }
 </script>
