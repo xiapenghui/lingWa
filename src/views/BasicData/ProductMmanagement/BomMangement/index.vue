@@ -70,6 +70,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="BOM类型" width="150" prop="BomTypeText" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.BomTypeText }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="状态" width="100" prop="Status" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
@@ -137,15 +143,25 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 编辑弹窗 -->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
+    <el-dialog
+      v-dialogDrag
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
+    >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-
         <el-form-item label="成品编号" prop="ProductNum">
           <el-input v-model.trim="ruleForm.ProductNum" readonly placeholder="请选择" class="disActive" @focus="finshBox" />
         </el-form-item>
 
         <el-form-item label="成品名称"><el-input v-model.trim="ruleForm.ProductName" placeholder="成品名称" :disabled="true" /></el-form-item>
         <el-form-item label="BOM版本" prop="Version"><el-input v-model.trim="ruleForm.Version" placeholder="BOM版本" clearable /></el-form-item>
+
+        <el-form-item label="BOM类型" prop="BomType">
+          <el-select v-model="ruleForm.BomType" placeholder="BOM类型" style="width: 100%" clearable>
+            <el-option v-for="item in BomData" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
+        </el-form-item>
 
         <!--  <el-form-item label="工艺路线" prop="ProcessRouteName">
           <el-input v-model="ruleForm.ProcessRouteName" readonly placeholder="请选择" class="disActive" @focus="lineBox" />
@@ -202,7 +218,7 @@
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, baseRouteList, bomCopy } from '@/api/BasicData'
+import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, baseRouteList, bomCopy, GetDictionary } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import FinshName from '@/components/FinshName' // 成品名称
 import LineName from '@/components/LineName' // 工艺路线名称
@@ -254,6 +270,7 @@ export default {
       dialogType: 'new',
       lineData: [], // 工艺路线数组
       finshData: [], // 成品编号
+      BomData: [], // 新增Bom下拉类型
       expireTimeOption: {
         disabledDate(date) {
           return date.getTime() <= Date.now() - 8.64e7
@@ -264,6 +281,7 @@ export default {
       rules: {
         ProductNum: [{ required: true, message: '请输入成品编号', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入BOM版本', trigger: 'blur' }],
+        BomType: [{ required: true, message: '请选择入BOM类型', trigger: 'change' }],
         ProcessRouteName: [{ required: true, message: '请选择工艺路线', trigger: 'change' }],
         EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blur' }]
       }
@@ -323,6 +341,14 @@ export default {
         that.tableHeight = window.innerHeight - fixHeight
       })()
     }
+
+    // 新增Bom类型下拉
+    GetDictionary({ code: '0030' }).then(res => {
+      if (res.IsPass === true) {
+        this.BomData = res.Obj
+      }
+    })
+
     this.getList()
     this.setFormRules()
   },
@@ -336,6 +362,7 @@ export default {
       this.rules = {
         ProductNum: [{ required: true, message: '请输入成品编号', trigger: 'blur' }],
         Version: [{ required: true, message: '请输入BOM版本', trigger: 'blur' }],
+        BomType: [{ required: true, message: '请选择入BOM类型', trigger: 'change' }],
         ProcessRouteName: [{ required: true, message: '请选择工艺路线', trigger: 'change' }],
         EffectiveDate: [{ required: true, message: '请选择生效日期', trigger: 'blur' }]
       }

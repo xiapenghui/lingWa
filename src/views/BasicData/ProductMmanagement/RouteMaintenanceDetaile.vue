@@ -39,43 +39,44 @@
           {{ scope.row.ProcessNum }}
         </template>
       </el-table-column>
+
       <el-table-column align="center" label="工序名称" width="200" prop="ProcessName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ProcessName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否检验" prop="IsChecked" sortable>
+      <el-table-column align="center" label="是否检验" width="150" prop="IsChecked" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsChecked === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsChecked === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验方式" prop="CheckedTypeText" sortable>
+      <el-table-column align="center" label="检验方式" width="150" prop="CheckedTypeText" sortable>
         <template slot-scope="scope">
           {{ scope.row.CheckedTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否必过" prop="IsMustPass" sortable>
+      <el-table-column align="center" label="是否必过" width="150" prop="IsMustPass" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsMustPass === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsMustPass === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否打印" prop="IsPrint" sortable>
+      <el-table-column align="center" label="是否打印" width="150" prop="IsPrint" sortable>
         <template slot-scope="scope">
           <el-tag :style="{ color: scope.row.IsPrint === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsPrint === false ? '否' : '是' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="顺序" prop="OrderNum" sortable>
+      <el-table-column align="center" label="顺序" width="150" prop="OrderNum" sortable>
         <template slot-scope="scope">
           {{ scope.row.OrderNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="描述" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="描述" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Description }}
         </template>
@@ -87,7 +88,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="100">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon="el-icon-edit" plain @click="handleEdit(scope.row)" />
@@ -104,7 +105,6 @@
     <!-- 编辑弹窗 -->
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-
         <el-form-item label="工序编号" prop="ProcessNum">
           <el-input v-model="ruleForm.ProcessNum" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
         </el-form-item>

@@ -76,6 +76,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="单位" width="150" prop="MaterialUnitText" sortable>
+        <template slot-scope="scope">
+          {{ scope.row.MaterialUnitText }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="替代原料编号" width="170" prop="SubMaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.SubMaterialNum }}
@@ -88,7 +94,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Remark }}
         </template>
@@ -108,7 +114,12 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
     <!-- 编辑弹窗 -->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')">
+    <el-dialog
+      v-dialogDrag
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
+    >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
         <el-form-item label="工序" prop="WorkingProcedureName">
           <el-input v-model="ruleForm.WorkingProcedureName" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
@@ -282,6 +293,7 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
     this.getList()

@@ -214,7 +214,7 @@
 
           <el-table-column align="center" label="是否必填" prop="IsRequired" sortable :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              <el-tag :style="{ color: scope.row.IsRequired === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsRequired === false ? '否' : '是' }}</el-tag>
+              <el-tag :style="{ color: scope.row.IsRequired === true ? '#FF5757' : '#13ce66' }">{{ scope.row.IsRequired === true ? '是' : '否' }}</el-tag>
             </template>
           </el-table-column>
 

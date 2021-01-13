@@ -144,6 +144,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="报废数量" width="150" prop="ScrapQuantity" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.ScrapQuantity }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" :label="$t('permission.CustomerName')" width="150" prop="CustomerName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.CustomerName }}
@@ -203,12 +209,12 @@
           {{ scope.row.RealEndDate | substringTime }}
         </template>
       </el-table-column>
-	  
-	  <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
-	    <template slot-scope="scope">
-	      {{ scope.row.Remark }}
-	    </template>
-	  </el-table-column>
+
+      <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
+        </template>
+      </el-table-column>
 
       <el-table-column align="center" label="维护者" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
