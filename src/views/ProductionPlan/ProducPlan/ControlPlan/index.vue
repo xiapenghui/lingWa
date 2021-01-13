@@ -293,7 +293,7 @@ export default {
       ProductList: [], // 计划投入产线
       pagination: {
         PageIndex: 1,
-        PageSize: 10,
+        PageSize: 30,
         importDate: [],
         PlanNum: undefined,
         ProductNum: undefined,

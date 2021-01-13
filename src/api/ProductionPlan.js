@@ -148,3 +148,22 @@ export function orderStatus(data) {
     data
   })
 }
+
+// 生产计划排单
+export function PlanScheduleList(data) {
+  return request({
+    url: '/api/PlanWorkOrder/PlanScheduleList',
+    method: 'post',
+    data
+  })
+}
+
+// 生产排单保存
+export function ModifyPlanSchedule(data) {
+  return request({
+    url: '/api/PlanWorkOrder/ModifyPlanSchedule',
+    method: 'post',
+    data
+  })
+}
+

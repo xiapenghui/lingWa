@@ -730,7 +730,7 @@ export default {
       MaterialCode: null, // Bom版本值
       pagination: {
         PageIndex: 1,
-        PageSize: 10,
+        PageSize: 30,
         importDate: [],
         PlanNum: undefined,
         ProductNum: undefined,
@@ -757,7 +757,7 @@ export default {
         ShowBanned: false
       },
 
-      // 搜索条件
+      // 搜索工艺路线条件
       paginationSearchLine: {
         Name: undefined,
         PageIndex: 1,

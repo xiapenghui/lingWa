@@ -39,7 +39,6 @@
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
           </el-col>
         </el-col>
-
       </el-row>
 
       <el-row :gutter="20" style="margin-top: 10px;">
@@ -259,7 +258,7 @@
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="80">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="排单" placement="top-start">
-            <el-button type="warning" size="small" icon="el-icon-scissors" plain @click="planOpen(scope.row)" />
+            <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="planOpen(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -267,84 +266,44 @@
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogTypeTitle">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" title="排单信息表">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" label-width="120px" label-position="left" class="demo-ruleForm">
-        <div class="bigUpBox">
-          <div class="boxLeft">
-            <el-form-item label="生产计划单号" prop="PlanNum" :rules="[{ required: isAlarmItem, message: '请输入生产计划单号', trigger: 'blur' }]">
-              <el-input v-model.trim="ruleForm.PlanNum" placeholder="生产计划单号" :disabled="isDisabled" />
-            </el-form-item>
+        <el-form-item :label="$t('permission.PlanStartDate')" prop="PlanStartDate" :rules="[{ required: true, message: '请输入计划开始日期', trigger: 'blur' }]">
+          <el-date-picker v-model="ruleForm.PlanStartDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%" />
+        </el-form-item>
 
-            <el-form-item :label="$t('permission.PlanTypeName')" prop="PlanType" :rules="[{ required: isAlarmItem, message: '请选择生产计划类型', trigger: 'change' }]">
-              <el-radio-group v-model="ruleForm.PlanType" @change="changeRadio">
-                <el-radio v-for="item in isGive" :key="item.value" :label="item.value" :value="item.value">{{ item.text }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
+        <el-form-item :label="$t('permission.PlanEndDate')" prop="PlanEndDate" :rules="[{ required: true, message: '请输入计划完成日期', trigger: 'blur' }]">
+          <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%" />
+        </el-form-item>
 
-            <el-form-item :label="$t('permission.PlanQuantity')" prop="PlanQuantity" :rules="[{ required: isAlarmItem, message: '请输入计划数量', trigger: 'blur' }]">
-              <el-input v-model.trim="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" :disabled="isDisabled" />
-            </el-form-item>
+        <el-form-item label="工艺路线" prop="RouteName" :rules="[{ required: true, message: '请选择工艺路线', trigger: 'change' }]">
+          <el-input v-model="ruleForm.RouteName" readonly placeholder="请选择" class="disActive" @focus="lineBox" />
+        </el-form-item>
 
-            <el-form-item v-if="planShow" :label="$t('permission.SchedulingQuantityOther')" prop="SchedulingQuantityOther">
-              <el-input v-model="ruleForm.RemainingQuantity" :placeholder="$t('permission.SchedulingQuantityOther')" :disabled="isDisabled" />
-            </el-form-item>
+        <el-form-item :label="$t('permission.Priority')" prop="Priority" :rules="[{ required: true, message: '请选择优先级', trigger: 'blur' }]">
+          <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable @change="changePriority">
+            <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
+        </el-form-item>
 
-            <el-form-item v-if="planShow" label="拆分数量" prop="SplitQuantity" :rules="[{ required: isAlarmItem, message: '请输入拆分数量', trigger: 'blur' }]">
-              <el-input-number v-model.trim="ruleForm.SplitQuantity" placeholder="拆分数量" :min="0" clearable style="width: 100%" />
-            </el-form-item>
-
-            <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable /></el-form-item>
-
-            <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')">
-              <el-input v-model.trim="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" clearable />
-            </el-form-item>
-            <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
-          </div>
-          <div class="boxRight">
-
-            <el-form-item label="成品名称" prop="ProductName" :rules="[{ required: isAlarmItem, message: '请输入成品名称', trigger: 'blur' }]">
-              <el-input v-model="ruleForm.ProductName" placeholder="请选择" disabled />
-            </el-form-item>
-
-            <el-form-item v-if="planAdd" label="BOM版本"><el-input v-model="ruleForm.BomVersion" placeholder="BOM版本" :disabled="true" /></el-form-item>
-
-            <el-form-item label="客户名称"><el-input v-model="ruleForm.CustomerName" disabled /></el-form-item>
-
-            <el-form-item label="工艺路线"><el-input v-model="ruleForm.RouteName" disabled /></el-form-item>
-
-            <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
-              <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%" clearable @change="changeLine">
-                <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
-              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable @change="changePriority">
-                <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
-              <el-date-picker v-model="ruleForm.PlanDeliveryDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
-            </el-form-item>
-            <el-form-item :label="$t('permission.PlanStartDate')" prop="PlanStartDate" :rules="[{ required: isAlarmItemOther, message: '请输入计划开始日期', trigger: 'blur' }]">
-              <el-date-picker v-model="ruleForm.PlanStartDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
-            </el-form-item>
-
-            <el-form-item :label="$t('permission.PlanEndDate')" prop="PlanEndDate" :rules="[{ required: isAlarmItemOther, message: '请输入计划完成日期', trigger: 'blur' }]">
-              <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
-            </el-form-item>
-          </div>
-        </div>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-
-        <el-button v-if="splitShow" type="primary" @click="submitSplit">{{ $t('permission.continueSplit') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
 
+    <!-- 新增加页面工艺路线聚焦弹窗 -->
+    <LineName
+      :line-show="lineFormVisible"
+      :line-loading="lineLoading"
+      :table-box-height="tableBoxHeight"
+      :line-data="lineData"
+      :pagination-search-line="paginationSearchLine"
+      @lineClick="lineClick"
+      @lineClose="lineClose"
+      @lineBox="lineBox"
+    />
   </div>
 </template>
 
@@ -354,45 +313,27 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, GetLine } from '@/api/BasicData'
-import {
-  productionList,
-  SplitQuery,
-  productionSplit
-
-} from '@/api/ProductionPlan'
+import LineName from '@/components/LineName' // 工艺路线弹
+import { GetDictionary, baseRouteList } from '@/api/BasicData'
+import { PlanScheduleList, ModifyPlanSchedule } from '@/api/ProductionPlan'
 const fixHeight = 260
 const fixHeightBox = 350
 
 export default {
   name: 'SplitPlan',
-  components: { Pagination },
+  components: { Pagination, LineName },
   data() {
     return {
       tableData: [],
-      ruleForm: {
-        ProductName: '',
-        CustomerName: ''
-      }, // 编辑弹窗
+      ruleForm: {}, // 编辑弹窗
       CreateTime: null,
-      isDisabled: false, // 拆分弹窗默认不能修改
-      planShow: true, // 拆分弹窗默认可见字段
-      planAdd: false, // 新增编辑弹窗默认可见字段
-      splitShow: true, // 继续拆分仅拆分可见
-      isAlarmItem: true, // 必填项可见不可见
-      isAlarmItemOther: true, // 必填项可见不可见
       PlanTypeNameData: [], // 计划类型下拉框
       StatusNameData: [], // 计划状态下拉框
-      finshData: [], // 成品弹窗数组
-      userData: [], // 客户名称弹窗数组
-      isGive: [], // 弹窗计划类型radio数组
       PriorityList: [], // 优先级下拉列表
-      ProductList: [], // 计划投入产线
-      typeCode: null, // 计划类型code值
-      MaterialCode: null, // Bom版本值
+      lineData: [], // 工艺路线封装Loading
       pagination: {
         PageIndex: 1,
-        PageSize: 10,
+        PageSize: 30,
         importDate: [],
         PlanNum: undefined,
         ProductNum: undefined,
@@ -401,17 +342,20 @@ export default {
         PlanTypeName: undefined,
         StatusName: undefined
       },
-
+      // 搜索工艺路线条件
+      paginationSearchLine: {
+        Name: undefined,
+        PageIndex: 1,
+        PageSize: 10000,
+        ShowBanned: false
+      },
       listLoading: false, // 主列表
-
       editLoading: false, // 编辑loading
+      lineLoading: false, // 工艺路线封装loading
       total: 10,
+      lineFormVisible: false, // 工艺路线封装弹窗
       dialogFormVisible: false, // 编辑弹出框
-
-      dialogTypeTitle: null,
-      newLine: null, // 获取计划下拉产线
       newPriority: null, // 获取下拉优先级
-      newBOMCode: null, // BOM版本
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
@@ -520,12 +464,7 @@ export default {
         this.PriorityList = res.Obj
       }
     })
-    // 拆分生产计划产线下拉
-    GetLine().then(res => {
-      if (res.IsPass === true) {
-        this.ProductList = res.Obj
-      }
-    })
+
     // Mock: get all routes and roles list from server
     this.getList()
   },
@@ -556,19 +495,9 @@ export default {
       this.getList()
     },
 
-    // 获取计划下拉产线
-    changeLine(val) {
-      this.newLine = val
-    },
-
     // 获取下拉优先级
     changePriority(val) {
       this.newPriority = val
-    },
-
-    // 新增获取单选value的值
-    changeRadio(val) {
-      this.typeCode = val
     },
 
     // 导出用户
@@ -596,7 +525,7 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      productionList(this.pagination).then(res => {
+      PlanScheduleList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -619,16 +548,11 @@ export default {
       this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
-          productionSplit(this.ruleForm).then(res => {
+          ModifyPlanSchedule(this.ruleForm).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
-                message: this.$t('table.SplitSuc')
-              })
-              SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
-                if (res.IsPass === true) {
-                  this.ruleForm = res.Obj
-                }
+                message: '排单成功'
               })
               this.getList()
               this.dialogFormVisible = false
@@ -651,48 +575,45 @@ export default {
       })
     },
 
-    // 继续拆分
-    submitSplit() {
-      productionSplit(this.ruleForm).then(res => {
-        if (res.IsPass === true) {
-          this.$message({
-            type: 'success',
-            message: this.$t('table.SplitSuc')
-          })
-          SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
-            if (res.IsPass === true) {
-              this.ruleForm = res.Obj
-            }
-          })
-          this.getList()
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.MSG
-          })
-        }
-        this.editLoading = false
+    // 排单
+    planOpen(row) {
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
       })
+      this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
-    // 计划拆分
-    planOpen(row) {
-      this.dialogTypeTitle = this.$t('permission.splitProductiony')
-      this.dialogFormVisible = true
-      this.planAdd = false
-      this.planShow = true
-      this.isDisabled = true
-      this.splitShow = true
-      this.isAlarmItem = true
-      this.isAlarmItemOther = false
-      SplitQuery({ PlanCode: row.PlanCode }).then(res => {
+    // 聚焦事件工艺路线弹窗
+    lineBox() {
+      this.lineFormVisible = true
+      this.lineLoading = true
+      baseRouteList(this.paginationSearchLine).then(res => {
         if (res.IsPass === true) {
-          this.ruleForm = res.Obj
-          this.ruleForm.RouteName = row.RouteName
+          this.lineData = res.Obj
+          this.lineLoading = false
         }
       })
+    },
+    // 工艺路线弹窗搜索
+    LineBox() {
+      this.paginationSearchLine.PageIndex = 1
+      this.lineBox()
+    },
+    // 增加工艺路线双击事件获取当前行的值
+    lineClick(row) {
+      // this.ruleForm.RouteName = row.Name
+      this.$set(this.ruleForm, 'RouteName', row.Name)
+      this.ruleForm.RouteCode = row.ProcessRouteCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
+      this.lineFormVisible = false
+    },
+    // 关闭工艺路线查询弹窗
+    lineClose() {
+      this.lineFormVisible = false
     }
-
   }
 }
 </script>
