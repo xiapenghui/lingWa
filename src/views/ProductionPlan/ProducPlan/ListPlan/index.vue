@@ -54,7 +54,7 @@
             </el-select>
           </el-col>
         </el-col>
-        <el-col :span="5">
+        <!-- <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" :content="content7" placement="top-start">
               <label class="radio-label">{{ $t('permission.StatusName') }}:</label>
@@ -65,7 +65,7 @@
               <el-option v-for="item in StatusNameData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
-        </el-col>
+        </el-col> -->
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" :content="content4" placement="top-start">
@@ -111,6 +111,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="计划类型" width="150" prop="PlanTypeText" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.PlanTypeText }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="生产工单号" width="150" prop="OrderNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrderNum }}
@@ -129,21 +135,20 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工单数量" width="150" prop="PlanQuantity" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="客户名称" width="150" prop="CustomerName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.PlanQuantity }}
+          {{ scope.row.CustomerName }}
         </template>
       </el-table-column>
-
       <el-table-column align="center" label="工单类型" width="150" prop="OrderTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrderTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="客户名称" width="150" prop="CustomerName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工单数量" width="150" prop="PlanQuantity" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.CustomerName }}
+          {{ scope.row.PlanQuantity }}
         </template>
       </el-table-column>
 
@@ -258,7 +263,7 @@
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="80">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="排单" placement="top-start">
-            <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="planOpen(scope.row)" />
+            <el-button type="warning" size="small" icon="el-icon-document" plain @click="planOpen(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>

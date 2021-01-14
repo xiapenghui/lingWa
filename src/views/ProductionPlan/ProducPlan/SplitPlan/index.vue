@@ -301,7 +301,7 @@
                 <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
-
+            <!--
             <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
               <el-date-picker v-model="ruleForm.PlanDeliveryDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
@@ -311,7 +311,7 @@
 
             <el-form-item :label="$t('permission.PlanEndDate')" prop="PlanEndDate" :rules="[{ required: isAlarmItemOther, message: '请输入计划完成日期', trigger: 'blur' }]">
               <el-date-picker v-model="ruleForm.PlanEndDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
-            </el-form-item>
+            </el-form-item> -->
           </div>
         </div>
       </el-form>
@@ -381,11 +381,9 @@ export default {
       },
 
       listLoading: false, // 主列表
-
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
-
       dialogTypeTitle: null,
       newLine: null, // 获取计划下拉产线
       newPriority: null, // 获取下拉优先级
@@ -631,6 +629,7 @@ export default {
 
     // 继续拆分
     submitSplit() {
+      this.editLoading = true
       productionSplit(this.ruleForm).then(res => {
         if (res.IsPass === true) {
           this.$message({
@@ -663,6 +662,9 @@ export default {
       this.splitShow = true
       this.isAlarmItem = true
       this.isAlarmItemOther = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
       SplitQuery({ PlanCode: row.PlanCode }).then(res => {
         if (res.IsPass === true) {
           this.ruleForm = res.Obj

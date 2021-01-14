@@ -203,52 +203,51 @@ export const asyncRoutes = [
           title: 'ProductMmanagement'
         },
         redirect: '/BasicData/ProductMmanagement/ProcessMaintenance',
-        children: [
-          {
-            path: 'ProcessMaintenance',
-            component: () => import('@/views/BasicData/ProductMmanagement/ProcessMaintenance'),
-            name: 'ProcessMaintenance',
-            meta: {
-              title: 'ProcessMaintenance'
-            }
-          },
-
-          {
-            path: 'BomMangement',
-            component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
-            name: 'BomMangement',
-            meta: {
-              title: 'BomMangement'
-
-            }
-          },
-          {
-            path: 'BomMangementDetaile',
-            component: () => import('@/views/BasicData/ProductMmanagement/BomMangementDetaile'),
-            name: 'BomMangementDetaile',
-            hidden: true,
-            meta: {
-              title: 'BomMangementDetaile'
-            }
-          },
-
-          {
-            path: 'RouteMaintenance',
-            component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
-            name: 'RouteMaintenance',
-            meta: {
-              title: 'RouteMaintenance'
-            }
-          },
-          {
-            path: 'RouteMaintenanceDetaile',
-            component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenanceDetaile'),
-            name: 'RouteMaintenanceDetaile',
-            hidden: true,
-            meta: {
-              title: 'RouteMaintenanceDetaile'
-            }
+        children: [{
+          path: 'ProcessMaintenance',
+          component: () => import('@/views/BasicData/ProductMmanagement/ProcessMaintenance'),
+          name: 'ProcessMaintenance',
+          meta: {
+            title: 'ProcessMaintenance'
           }
+        },
+
+        {
+          path: 'BomMangement',
+          component: () => import('@/views/BasicData/ProductMmanagement/BomMangement'),
+          name: 'BomMangement',
+          meta: {
+            title: 'BomMangement'
+
+          }
+        },
+        {
+          path: 'BomMangementDetaile',
+          component: () => import('@/views/BasicData/ProductMmanagement/BomMangementDetaile'),
+          name: 'BomMangementDetaile',
+          hidden: true,
+          meta: {
+            title: 'BomMangementDetaile'
+          }
+        },
+
+        {
+          path: 'RouteMaintenance',
+          component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenance'),
+          name: 'RouteMaintenance',
+          meta: {
+            title: 'RouteMaintenance'
+          }
+        },
+        {
+          path: 'RouteMaintenanceDetaile',
+          component: () => import('@/views/BasicData/ProductMmanagement/RouteMaintenanceDetaile'),
+          name: 'RouteMaintenanceDetaile',
+          hidden: true,
+          meta: {
+            title: 'RouteMaintenanceDetaile'
+          }
+        }
 
         ]
       },
@@ -372,6 +371,112 @@ export const asyncRoutes = [
       meta: {
         title: 'PdaAdministra'
       }
+    }
+    ]
+  },
+
+  // 生产计划
+  {
+    path: '/ProductionPlan',
+    component: Layout,
+    redirect: '/ProductionPlan/ProducPlan',
+    name: 'ProductionPlan',
+    meta: {
+      title: 'ProductionPlan',
+      icon: 'tab'
+    },
+    children: [{
+      path: 'ProducPlan',
+      component: () => import('@/views/ProductionPlan/ProducPlan/ImprotPlan'),
+      name: 'ProducPlan',
+      meta: {
+        title: 'ProducPlan'
+      },
+      redirect: '/ProductionPlan/ProducPlan/ImprotPlan',
+      children: [{
+        path: 'ImprotPlan',
+        component: () => import('@/views/ProductionPlan/ProducPlan/ImprotPlan'),
+        name: 'ImprotPlan',
+        meta: {
+          title: 'ImprotPlan'
+        }
+      },
+
+      {
+        path: 'ControlPlan',
+        component: () => import('@/views/ProductionPlan/ProducPlan/ControlPlan'),
+        name: 'ControlPlan',
+        meta: {
+          title: 'ControlPlan'
+        }
+      },
+      {
+        path: 'SplitPlan',
+        component: () => import('@/views/ProductionPlan/ProducPlan/SplitPlan'),
+        name: 'SplitPlan',
+        meta: {
+          title: 'SplitPlan'
+        }
+      },
+
+      {
+        path: 'ListPlan',
+        component: () => import('@/views/ProductionPlan/ProducPlan/ListPlan'),
+        name: 'ListPlan',
+        meta: {
+          title: 'ListPlan'
+        }
+      }
+      ]
+    },
+
+    // 生产工单
+    {
+      path: 'OrderPlan',
+      component: () => import('@/views/ProductionPlan/OrderPlan'),
+      name: 'OrderPlan',
+      meta: {
+        title: 'OrderPlan'
+      },
+      redirect: '/ProductionPlan/OrderPlan/OrderQuery',
+      children: [
+
+        {
+          path: 'OrderSend',
+          component: () => import('@/views/ProductionPlan/OrderPlan/OrderSend'),
+          name: 'OrderSend',
+          meta: {
+            title: 'OrderSend'
+          }
+        },
+
+        {
+          path: 'OrderMaintain',
+          component: () => import('@/views/ProductionPlan/OrderPlan/OrderMaintain'),
+          name: 'OrderMaintain',
+          meta: {
+            title: 'OrderMaintain'
+          }
+        },
+
+        {
+          path: 'OrderControl',
+          component: () => import('@/views/ProductionPlan/OrderPlan/OrderControl'),
+          name: 'OrderControl',
+          meta: {
+            title: 'OrderControl'
+          }
+        },
+
+        {
+          path: 'OrderQuery',
+          component: () => import('@/views/ProductionPlan/OrderPlan/OrderQuery'),
+          name: 'OrderQuery',
+          meta: {
+            title: 'OrderQuery'
+          }
+        }
+      ]
     }
     ]
   },
@@ -502,105 +607,51 @@ export const asyncRoutes = [
     ]
   },
 
-  // 生产计划
+  // 设备管理
   {
-    path: '/ProductionPlan',
+    path: '/DeviceManage',
     component: Layout,
-    redirect: '/ProductionPlan/ProducPlan',
-    name: 'ProductionPlan',
+    redirect: '/DeviceManage/BasicData',
+    name: 'DeviceManage',
     meta: {
-      title: 'ProductionPlan',
+      title: 'DeviceManage',
       icon: 'tab'
     },
     children: [{
-      path: 'ProducPlan',
-      component: () => import('@/views/ProductionPlan/ProducPlan/index'),
-      name: 'ProducPlan',
+      path: 'BasicData',
+      component: () => import('@/views/DeviceManage/BasicData/index'),
+      name: 'BasicData',
       meta: {
-        title: 'ProducPlan'
+        title: 'BasicData'
       },
-      redirect: '/ProductionPlan/ProducPlan/ImprotPlan',
-      children: [{
-        path: 'ImprotPlan',
-        component: () => import('@/views/ProductionPlan/ProducPlan/ImprotPlan'),
-        name: 'ImprotPlan',
-        meta: {
-          title: 'ImprotPlan'
+      redirect: '/DeviceManage/BasicData/DeviceType',
+      children: [
+        {
+          path: 'DeviceType',
+          component: () => import('@/views/DeviceManage/BasicData/DeviceType'),
+          name: 'DeviceType',
+          meta: {
+            title: 'DeviceType'
+          }
+        },
+        {
+          path: 'DeviceMaintain',
+          component: () => import('@/views/DeviceManage/BasicData/DeviceMaintain'),
+          name: 'DeviceMaintain',
+          meta: {
+            title: 'DeviceMaintain'
+          }
+        },
+        {
+          path: 'DeviceBill',
+          component: () => import('@/views/DeviceManage/BasicData/DeviceBill'),
+          name: 'DeviceBill',
+          meta: {
+            title: 'DeviceBill'
+          }
         }
-      },
-
-      {
-        path: 'ControlPlan',
-        component: () => import('@/views/ProductionPlan/ProducPlan/ControlPlan'),
-        name: 'ControlPlan',
-        meta: {
-          title: 'ControlPlan'
-        }
-      },
-      {
-        path: 'SplitPlan',
-        component: () => import('@/views/ProductionPlan/ProducPlan/SplitPlan'),
-        name: 'SplitPlan',
-        meta: {
-          title: 'SplitPlan'
-        }
-      },
-
-      {
-        path: 'ListPlan',
-        component: () => import('@/views/ProductionPlan/ProducPlan/ListPlan'),
-        name: 'ListPlan',
-        meta: {
-          title: 'ListPlan'
-        }
-      }
       ]
-    },
-
-    // 生产工单
-    {
-      path: 'OrderPlan',
-      component: () => import('@/views/ProductionPlan/OrderPlan'),
-      name: 'OrderPlan',
-      meta: {
-        title: 'OrderPlan'
-      },
-      redirect: '/ProductionPlan/OrderPlan/OrderQuery',
-      children: [{
-        path: 'OrderQuery',
-        component: () => import('@/views/ProductionPlan/OrderPlan/OrderQuery'),
-        name: 'OrderQuery',
-        meta: {
-          title: 'OrderQuery'
-        }
-      },
-      {
-        path: 'OrderMaintain',
-        component: () => import('@/views/ProductionPlan/OrderPlan/OrderMaintain'),
-        name: 'OrderMaintain',
-        meta: {
-          title: 'OrderMaintain'
-        }
-      },
-      {
-        path: 'OrderSend',
-        component: () => import('@/views/ProductionPlan/OrderPlan/OrderSend'),
-        name: 'OrderSend',
-        meta: {
-          title: 'OrderSend'
-        }
-      },
-      {
-        path: 'OrderControl',
-        component: () => import('@/views/ProductionPlan/OrderPlan/OrderControl'),
-        name: 'OrderControl',
-        meta: {
-          title: 'OrderControl'
-        }
-      }
-      ]
-    }
-    ]
+    }]
   },
 
   // {

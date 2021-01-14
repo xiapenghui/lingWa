@@ -149,6 +149,7 @@ import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import { baseRouteList, baseRouteDelete, baseRouteAdd, baseRouteModify, baseRouteStatus, baseRouteCopy } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
@@ -299,6 +300,7 @@ export default {
           Version: row.Version
         }
       })
+      Bus.$emit('getList')
     },
     // 查询
     handleSearch() {

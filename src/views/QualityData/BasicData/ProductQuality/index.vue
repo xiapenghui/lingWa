@@ -151,7 +151,7 @@
         <el-form-item label="规格"><el-input v-model="ruleForm.MaterialSpec" placeholder="规格" :disabled="true" /></el-form-item>
 
         <el-form-item label="检验类型" prop="InspectType">
-          <el-select v-model="ruleForm.InspectType" placeholder="请选择" clearable @change="changeType">
+          <el-select v-model="ruleForm.InspectType" placeholder="请选择" clearable>
             <el-option v-for="item in InspectTypeData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -199,6 +199,7 @@ import { GetDictionary, GetMaterialList } from '@/api/BasicData'
 import { QuaIpqcList, QuaIpqcAdd, QuaIpqcModify, QuaIpqcModifyStatus, QuaIpqcDelete, QuaIpqcCopy } from '@/api/QualityData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import FinshName from '@/components/FinshName' // 成品名称弹窗
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
@@ -232,7 +233,6 @@ export default {
       addShow: true, // 继续新增
       total: 10,
       finshData: [], // 成品弹窗数组
-      newInspectVal: null, // 判断下拉检验类型
       InspectTypeData: [], // 判断下拉检验类型数组
       dialogFormVisible: false, // 编辑弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
@@ -373,11 +373,6 @@ export default {
       })
     },
 
-    // 新增下拉检验类型
-    changeType(val) {
-      this.newInspectVal = val
-    },
-
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
@@ -414,6 +409,7 @@ export default {
           MaterialName: row.MaterialName
         }
       })
+      Bus.$emit('getList')
     },
 
     // 增加

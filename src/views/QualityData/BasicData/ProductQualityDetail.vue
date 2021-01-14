@@ -197,6 +197,7 @@ import { GetDictionary, BaseProList } from '@/api/BasicData'
 import { QuaIpqcIDeList, QuaIpqcIDeAdd, QuaIpqcIDeModify, QuaIpqcIDeDelete } from '@/api/QualityData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WorkingName from '@/components/WorkingName' // 工序名称
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
@@ -211,11 +212,11 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        ItemCode: this.$route.query.ItemCode,
         InspectItemName: undefined,
         ProcessName: undefined,
         JudgmentWay: undefined
       },
+      ItemCode: this.$route.query.ItemCode,
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
@@ -320,6 +321,12 @@ export default {
 
     this.getList()
     this.setFormRules()
+
+    // 监听详情页getList事件
+    const self = this
+    Bus.$on('getList', function() {
+      self.getList()
+    })
   },
   methods: {
     // 分页
@@ -356,7 +363,15 @@ export default {
 
     getList() {
       this.listLoading = true
-      QuaIpqcIDeList(this.pagination).then(res => {
+      const params = {
+        PageIndex: this.pagination.PageIndex,
+        PageSize: this.pagination.PageSize,
+        InspectItemName: this.pagination.InspectItemName,
+        ProcessName: this.pagination.ProcessName,
+        JudgmentWay: this.$route.query.JudgmentWay,
+        ItemCode: this.$route.query.ItemCode
+      }
+      QuaIpqcIDeList(params).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false

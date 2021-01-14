@@ -1,5 +1,15 @@
 // 通用产品缺陷
 import request from '@/utils/request'
+
+// 设备管理 - 基础数据 - 通用设备类型下拉
+export function GetValuePair(data) {
+  return request({
+    url: '/api/Common/GetEquTypeTextValuePair',
+    method: 'post',
+    data
+  })
+}
+
 // 设备管理 - 基础数据 - 设备类型列表
 export function EquBaseList(data) {
   return request({
@@ -44,3 +54,48 @@ export function EquBaseModifyStatus(data) {
     data
   })
 }
+
+// 设备管理 - 基础数据 - 设备保养项目列表
+export function EquMtItemsList(data) {
+  return request({
+    url: '/api/EquMtItems/List',
+    method: 'post',
+    data
+  })
+}
+// 设备管理 - 基础数据 - 设备保养项目增加
+export function EquMtItemsAdd(data) {
+  return request({
+    url: '/api/EquMtItems/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 设备保养项目删除
+export function EquMtItemsDelete(data) {
+  return request({
+    url: '/api/EquMtItems/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 设备保养项目编辑
+export function EquMtItemsModify(data) {
+  return request({
+    url: '/api/EquMtItems/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 设备保养项目编辑
+export function EquModifyStatus(data) {
+  return request({
+    url: '/api/EquMtItems/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+

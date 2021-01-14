@@ -121,8 +121,8 @@
       :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
     >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工序" prop="WorkingProcedureName">
-          <el-input v-model="ruleForm.WorkingProcedureName" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
+        <el-form-item label="工序" prop="ProcessCodeName">
+          <el-input v-model="ruleForm.ProcessCodeName" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
         </el-form-item>
 
         <el-form-item label="原料名称" prop="MaterialName">
@@ -177,6 +177,7 @@ import { bomDetailList, bomDetailDelete, bomDetailAdd, bomDetailModify, Material
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WorkingName from '@/components/WorkingName' // 工序名称
 import MaterialName from '@/components/MaterialName' // 物料名称
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
@@ -187,19 +188,19 @@ export default {
       materialActiveIndex: 1,
       tableData: [],
       ruleForm: {
-        WorkingProcedureName: '',
+        ProcessCodeName: '',
         MaterialName: '',
         SubMaterialName: ''
       }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        BomCode: this.$route.query.BomCode,
-        ProductCode: this.$route.query.ProductCode,
-        ProcessRouteCode: this.$route.query.ProcessRouteCode,
         MaterialNum: undefined,
         MaterialName: undefined
       },
+      BomCode: this.$route.query.BomCode,
+      ProductCode: this.$route.query.ProductCode,
+      ProcessRouteCode: this.$route.query.ProcessRouteCode,
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
@@ -218,6 +219,7 @@ export default {
         Name: undefined,
         ShowBanned: false
       },
+
       ProductNum: this.$route.query.ProductNum,
       ProductName: this.$route.query.ProductName,
       Version: this.$route.query.Version,
@@ -235,7 +237,7 @@ export default {
       materialData: [], // 原料数组
       workingData: [], // 工序数组
       rules: {
-        WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'blur' }],
+        ProcessCodeName: [{ required: true, message: '请选择工序', trigger: 'blur' }],
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'blur' }],
         Usage: [{ required: true, message: '请输入用量', trigger: 'blur' }]
       }
@@ -273,6 +275,7 @@ export default {
         }, 400)
       }
     },
+
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.content1 = this.$t('permission.userName')
@@ -298,7 +301,13 @@ export default {
     }
     this.getList()
     this.setFormRules()
+    // 监听详情页getList事件
+    const self = this
+    Bus.$on('getList', function() {
+      self.getList()
+    })
   },
+
   methods: {
     // 分页
     table_index(index) {
@@ -308,7 +317,7 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        WorkingProcedureName: [{ required: true, message: '请选择工序', trigger: 'blur' }],
+        ProcessCodeName: [{ required: true, message: '请选择工序', trigger: 'blur' }],
         MaterialName: [{ required: true, message: '请选择原料名称', trigger: 'blur' }],
         Usage: [{ required: true, message: '请输入用量', trigger: 'blur' }]
       }
@@ -322,7 +331,16 @@ export default {
 
     getList() {
       this.listLoading = true
-      bomDetailList(this.pagination).then(res => {
+      const params = {
+        PageIndex: this.pagination.PageIndex,
+        PageSize: this.pagination.PageSize,
+        MaterialNum: this.pagination.MaterialNum,
+        MaterialName: this.pagination.MaterialName,
+        BomCode: this.$route.query.BomCode,
+        ProductCode: this.$route.query.ProductCode,
+        ProcessRouteCode: this.$route.query.ProcessRouteCode
+      }
+      bomDetailList(params).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -515,7 +533,7 @@ export default {
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
       // this.ruleForm.WorkingProcedureName = row.Name
-      this.$set(this.ruleForm, 'WorkingProcedureName', row.Name)
+      this.$set(this.ruleForm, 'ProcessCodeName', row.Name)
       this.ruleForm.ProcessCode = row.ProcessCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()

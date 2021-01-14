@@ -178,8 +178,8 @@ import i18n from '@/lang'
 import { GetDictionary } from '@/api/BasicData'
 import { QuaIqDetList, QuaIqDetAdd, QuaIqDetDelete, QuaIqDetModify } from '@/api/QualityData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Bus from '@/api/bus.js'
 const fixHeight = 260
-
 export default {
   name: 'MaterialInspDetail',
   components: { Pagination },
@@ -190,10 +190,10 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        ItemCode: this.$route.query.ItemCode,
         InspectItemName: undefined,
         JudgmentWay: undefined
       },
+      ItemCode: this.$route.query.ItemCode,
       MaterialNum: this.$route.query.MaterialNum,
       MaterialName: this.$route.query.MaterialName,
       listLoading: false,
@@ -287,6 +287,12 @@ export default {
 
     this.getList()
     this.setFormRules()
+
+    // 监听详情页getList事件
+    const self = this
+    Bus.$on('getList', function() {
+      self.getList()
+    })
   },
   methods: {
     // 分页
@@ -323,7 +329,15 @@ export default {
 
     getList() {
       this.listLoading = true
-      QuaIqDetList(this.pagination).then(res => {
+
+      const params = {
+        PageIndex: this.pagination.PageIndex,
+        PageSize: this.pagination.PageSize,
+        InspectItemName: this.pagination.InspectItemName,
+        JudgmentWay: this.pagination.JudgmentWay,
+        ItemCode: this.$route.query.ItemCode
+      }
+      QuaIqDetList(params).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false

@@ -70,6 +70,10 @@ export default {
     OrderMaintain: '生产工单维护',
     OrderSend: '生产工单发布',
     OrderControl: '生产工单控制',
+    DeviceManage: '设备管理',
+    DeviceType: '设备类型',
+    DeviceMaintain: '设备保养',
+    DeviceBill: '设备台账',
 
     // 截止
 

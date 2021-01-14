@@ -222,6 +222,7 @@ import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import FinshName from '@/components/FinshName' // 成品名称
 import LineName from '@/components/LineName' // 工艺路线名称
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
@@ -420,6 +421,7 @@ export default {
           Version: row.Version
         }
       })
+      Bus.$emit('getList')
     },
     // 查询
     handleSearch() {

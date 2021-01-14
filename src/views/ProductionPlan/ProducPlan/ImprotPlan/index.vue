@@ -323,7 +323,7 @@
 
             <el-form-item v-if="isActive" label="客户名称"><el-input v-model="ruleForm.CustomerName" disabled /></el-form-item>
 
-            <el-form-item v-if="!isActive" label="工艺路线" prop="RouteName">
+            <el-form-item v-if="!isActive" label="工艺路线" prop="RouteName" :rules="[{ required: isAlarmItem, message: '请选择工艺路线', trigger: 'blur' }]">
               <el-input v-model="ruleForm.RouteName" readonly placeholder="请选择" class="disActive" @focus="lineBox" />
             </el-form-item>
 

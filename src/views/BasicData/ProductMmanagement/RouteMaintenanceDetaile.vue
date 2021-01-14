@@ -164,6 +164,7 @@ import i18n from '@/lang'
 import { baseDetailList, baseDetailAdd, baseDetailDelete, baseDetailModify, GetDictionary, BaseProList } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WorkingName from '@/components/WorkingName' // 工序名称
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
@@ -178,9 +179,9 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        ProcessRouteCode: this.$route.query.ProcessRouteCode,
         ProcessName: undefined
       },
+      ProcessRouteCode: this.$route.query.ProcessRouteCode,
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
@@ -273,6 +274,11 @@ export default {
     })
     this.getList()
     this.setFormRules()
+    // 监听详情页getList事件
+    const self = this
+    Bus.$on('getList', function() {
+      self.getList()
+    })
   },
   methods: {
     // 分页
@@ -299,7 +305,13 @@ export default {
 
     getList() {
       this.listLoading = true
-      baseDetailList(this.pagination).then(res => {
+      const params = {
+        PageIndex: this.pagination.PageIndex,
+        PageSize: this.pagination.PageSize,
+        ProcessName: this.pagination.ProcessName,
+        ProcessRouteCode: this.$route.query.ProcessRouteCode
+      }
+      baseDetailList(params).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false

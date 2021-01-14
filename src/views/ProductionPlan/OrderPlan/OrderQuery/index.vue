@@ -94,6 +94,7 @@
     </div>
 
     <div class="rightBtn">
+      <el-button type="primary" icon="el-icon-upload2" @click="handleExport">导入</el-button>
       <el-button type="primary" icon="el-icon-upload2" @click="handleExport">导出</el-button>
     </div>
 

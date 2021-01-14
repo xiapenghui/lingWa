@@ -237,6 +237,7 @@ import { QuaIqcInList, QuaIqcInDelete, QuaIqcInAdd, QuaIqcInModify, QuaIqcInStat
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import MaterialName from '@/components/MaterialName' // 原料名称
 import IncomingName from '@/components/IncomingName' // 来料检验规则
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
@@ -453,6 +454,7 @@ export default {
           MaterialName: row.MaterialName
         }
       })
+      Bus.$emit('getList')
     },
     // 查询
     handleSearch() {
