@@ -2,7 +2,6 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="设备类型" placement="top-start"><label class="radio-label">设备类型:</label></el-tooltip>
@@ -75,13 +74,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养工具" prop="MtTool" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养工具" width="200" prop="MtTool" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MtTool }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养方法" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养方法" width="250" prop="MtMethod" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MtMethod }}
         </template>
@@ -135,7 +134,6 @@
       :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')"
     >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-
         <el-form-item label="设备类型" prop="EquTypeCode">
           <el-select v-model="ruleForm.EquTypeCode" placeholder="请选择" clearable>
             <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
@@ -495,6 +493,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

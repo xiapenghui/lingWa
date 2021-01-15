@@ -317,7 +317,6 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-
         <el-button v-if="splitShow" type="primary" @click="submitSplit">{{ $t('permission.continueSplit') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
@@ -368,6 +367,7 @@ export default {
       ProductList: [], // 计划投入产线
       typeCode: null, // 计划类型code值
       MaterialCode: null, // Bom版本值
+      gongLineName: null, // 工艺路线
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -639,6 +639,7 @@ export default {
           SplitQuery({ PlanCode: this.ruleForm.PlanCode }).then(res => {
             if (res.IsPass === true) {
               this.ruleForm = res.Obj
+              this.ruleForm.RouteName = this.gongLineName
             }
           })
           this.getList()
@@ -669,6 +670,7 @@ export default {
         if (res.IsPass === true) {
           this.ruleForm = res.Obj
           this.ruleForm.RouteName = row.RouteName
+          this.gongLineName = row.RouteName
         }
       })
     }

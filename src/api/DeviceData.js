@@ -99,3 +99,47 @@ export function EquModifyStatus(data) {
   })
 }
 
+// 设备管理 - 设备台账管理列表
+export function EquDataList(data) {
+  return request({
+    url: '/api/EquData/List',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备台账管理增加
+export function EquDataAdd(data) {
+  return request({
+    url: '/api/EquData/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备台账管理编辑
+export function EquDataModify(data) {
+  return request({
+    url: '/api/EquData/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备台账管理删除
+export function EquDataDelete(data) {
+  return request({
+    url: '/api/EquData/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备台账管理状态
+export function EquDataModifyStatus(data) {
+  return request({
+    url: '/api/EquData/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
