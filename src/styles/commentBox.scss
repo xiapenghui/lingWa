@@ -1,25 +1,25 @@
 #app {
   .el-dialog__body {
-    .searchBox{
-       .radio-label{
-         padding: 0;
-         line-height: 30px;
-       }
+    .searchBox {
+      .radio-label {
+        padding: 0;
+        line-height: 30px;
+      }
     }
-    .el-input .el-input__inner{
-       width: 100%;
-       text-align: left;
+    .el-input .el-input__inner {
+      width: 100%;
+      text-align: left;
     }
-    .disActive{
-      .el-input__inner{
-         background: transparent;
-         cursor :pointer;
-         color: #333;
+    .disActive {
+      .el-input__inner {
+        background: transparent;
+        cursor: pointer;
+        color: #333;
       }
     }
 
-    .el-input.is-disabled .el-input__inner{
-        color: #333;
+    .el-input.is-disabled .el-input__inner {
+      color: #333;
     }
     padding: 20px;
     .el-upload__tip {
@@ -50,10 +50,10 @@
       width: 100%;
     }
   }
-  .el-menu{
-     .el-submenu__title i{
-       color: #FFFFFF;
-     }
+  .el-menu {
+    .el-submenu__title i {
+      color: #ffffff;
+    }
   }
 }
 .app-container {
@@ -81,7 +81,7 @@
     }
     .el-col-3,
     .el-col-4,
-    .el-col-5{
+    .el-col-5 {
       line-height: 30px;
       text-align: center;
       padding-left: 0 !important;
@@ -108,6 +108,49 @@
       color: #1890ff;
     }
   }
+  .heartSearch {
+    width: 100%;
+    border: 1px solid #dfe6ec;
+    padding: 15px 20px 0px 0px;
+    border-radius: 5px;
+    .demo-ruleForm {
+      .bigUpBox {
+        display: flex;
+        justify-content: space-between;
+
+        .boxLeft,
+        .boxRight {
+          width: 46%;
+          .el-date-editor.el-input {
+            width: 100%;
+          }
+          .leftIpt {
+            width: 100%;
+            .leftNum {
+              width: 70%;
+              float: left;
+            }
+            .el-button{
+              display: block;
+              float: right;
+            }
+          }
+        }
+        .el-form-item__label {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      .bigDownBox {
+        width: 100%;
+      }
+    }
+    .el-select {
+      width: 100%;
+    }
+  }
+
   .el-dialog {
     border-radius: 5px;
     .el-dialog__header {

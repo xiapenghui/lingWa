@@ -74,6 +74,8 @@ export default {
     DeviceType: '设备类型',
     DeviceMaintain: '设备保养',
     DeviceBill: '设备台账',
+    MainManage: '设备维修管理',
+    MainDetail: '维修历史记录',
 
     // 截止
 

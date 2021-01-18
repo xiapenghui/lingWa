@@ -625,33 +625,50 @@ export const asyncRoutes = [
         title: 'BasicData'
       },
       redirect: '/DeviceManage/BasicData/DeviceType',
-      children: [
-        {
-          path: 'DeviceType',
-          component: () => import('@/views/DeviceManage/BasicData/DeviceType'),
-          name: 'DeviceType',
-          meta: {
-            title: 'DeviceType'
-          }
-        },
-        {
-          path: 'DeviceMaintain',
-          component: () => import('@/views/DeviceManage/BasicData/DeviceMaintain'),
-          name: 'DeviceMaintain',
-          meta: {
-            title: 'DeviceMaintain'
-          }
-        },
-        {
-          path: 'DeviceBill',
-          component: () => import('@/views/DeviceManage/BasicData/DeviceBill'),
-          name: 'DeviceBill',
-          meta: {
-            title: 'DeviceBill'
-          }
+      children: [{
+        path: 'DeviceType',
+        component: () => import('@/views/DeviceManage/BasicData/DeviceType'),
+        name: 'DeviceType',
+        meta: {
+          title: 'DeviceType'
         }
+      },
+      {
+        path: 'DeviceMaintain',
+        component: () => import('@/views/DeviceManage/BasicData/DeviceMaintain'),
+        name: 'DeviceMaintain',
+        meta: {
+          title: 'DeviceMaintain'
+        }
+      },
+      {
+        path: 'DeviceBill',
+        component: () => import('@/views/DeviceManage/BasicData/DeviceBill'),
+        name: 'DeviceBill',
+        meta: {
+          title: 'DeviceBill'
+        }
+      }
       ]
-    }]
+    },
+    {
+      path: 'MainManage',
+      component: () => import('@/views/DeviceManage/MainManage'),
+      name: 'MainManage',
+      meta: {
+        title: 'MainManage'
+      }
+    },
+    {
+      path: 'MainDetail',
+      component: () => import('@/views/DeviceManage/MainDetail'),
+      name: 'MainDetail',
+      meta: {
+        title: 'MainDetail'
+      }
+    }
+    ]
+
   },
 
   // {
