@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 生产工单
 export function productionList(data) {
   return request({
-    url: '/api/PlanSchedule/List',
+    url: '/api/PlanSchedule/SplitList',
     method: 'post',
     data
   })

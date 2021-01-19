@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div v-loading="formLoading" class="app-container">
     <div class="heartSearch">
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px" label-position="left" class="demo-ruleForm">
         <div class="bigUpBox">
@@ -7,18 +7,31 @@
             <div class="leftIpt">
               <el-form-item label="设备编号" prop="EquNum">
                 <el-input v-model="ruleForm.EquNum" placeholder="请选择设备编号" readonly class="leftNum disActive" @focus="equBox" />
-                <el-button type="primary" icon="el-icon-search" @click="handleAdd">维修历史</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="handleHistory">维修历史</el-button>
               </el-form-item>
             </div>
 
-            <el-form-item label="故障类型" prop="FaultCode"><el-input v-model="ruleForm.FaultCode" placeholder="故障类型" /></el-form-item>
+            <el-form-item label="故障类型" prop="FaultCode">
+              <el-select v-model="ruleForm.FaultCode" placeholder="故障类型" clearable style="width: 100%">
+                <el-option v-for="item in FaultData" :key="item.value" :label="item.text" :value="item.value" />
+              </el-select>
+            </el-form-item>
+
             <el-form-item label="故障描述" prop="Description">
               <el-input v-model.trim="ruleForm.Description" placeholder="故障描述" type="textarea" resize="none" clearable />
             </el-form-item>
           </div>
           <div class="boxRight">
-            <el-form-item label="维修时间" prop="RepairDate"><el-input v-model="ruleForm.RepairDate" placeholder="维修时间" /></el-form-item>
-            <el-form-item label="维修人员" prop="RepairUser"><el-input v-model="ruleForm.RepairUser" placeholder="维修人员" /></el-form-item>
+            <el-form-item label="维修时间" prop="RepairDate">
+              <el-date-picker v-model="ruleForm.RepairDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
+            </el-form-item>
+
+            <el-form-item label="维修人员" prop="RepairUser">
+              <el-select v-model="ruleForm.RepairUser" placeholder="维修人员" clearable style="width: 100%">
+                <el-option v-for="item in RepairUserData" :key="item.value" :label="item.text" :value="item.value" />
+              </el-select>
+            </el-form-item>
+
             <el-form-item label="维修方法" prop="RepairMethod">
               <el-input v-model.trim="ruleForm.RepairMethod" placeholder="维修方法" type="textarea" resize="none" clearable />
             </el-form-item>
@@ -39,32 +52,41 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
-
-      <el-table-column align="center" label="备件编号" width="200" prop="CustomerNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="行号" width="50">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.EquCode" />
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="备件名称" width="200" prop="FullName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareName" />
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备件数量" width="150" prop="Name" sortable :show-overflow-tooltip="true">
+      <!-- <el-table-column align="center" label="备件编号" width="200" prop="RowCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareQty" />
+          {{ scope.row.RowCode }}
+        </template>
+      </el-table-column> -->
+
+      <el-table-column align="center" label="备件名称" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.SpareName" sortable />
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="单位" width="150" prop="Contact" sortable>
+      <el-table-column align="center" label="备件数量" width="150" prop="SpareQty" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareUnit" />
+          <el-input v-model="scope.row.SpareQty" sortable />
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" prop="Email" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="单位" width="150" prop="SpareUnit" sortable>
+        <template slot-scope="scope">
+          <!-- <el-input v-model="scope.row.SpareUnit" /> -->
+          <el-select v-model="scope.row.SpareUnit" clearable>
+            <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
+
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <el-input v-model="scope.row.Remark" />
         </template>
@@ -73,7 +95,7 @@
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="80">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.index,scope.row)" />
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.index, scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -95,8 +117,6 @@
       @handleSearchEqu="handleSearchEqu"
     />
   </div>
-
-  </div>
 </template>
 
 <script>
@@ -105,16 +125,27 @@ import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import EquNum from '@/components/EquNum' // 工序名称
-import { GetValuePair, EquDataList } from '@/api/DeviceData'
+import { GetDictionary } from '@/api/BasicData'
+// import { GetValuePair, EquDataList, EquRpAdd, EquRpAdd2 } from '@/api/DeviceData'
+import { GetValuePair, EquDataList, Add_Union } from '@/api/DeviceData'
+import Bus from '@/api/bus.js'
 const fixHeight = 380
 const fixHeightBox = 350
 export default {
-  name: 'CustomerInformation',
+  name: 'MainManage',
   components: { Pagination, EquNum },
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        EquNum: '',
+        FaultCode: '',
+        RepairUser: '123',
+        Description: '',
+        RepairDate: '',
+        RepairMethod: ''
+      },
+      // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30
@@ -123,7 +154,12 @@ export default {
       equData: [], // 设备编号数组
       equFormVisible: false, // input设备编号弹窗
       equBoxLoading: false, // 设备编号loading
+      formLoading: false, // form表单loading
       EquTypeCodeData: [], // 设备类型数组
+      FaultData: [], // 故障类型数组
+      RepairUserData: [], // 维修人员数组
+      newEquCode: null, // 获取设备编号回传Code
+      UnitTextList: [], // 获取新增页面单位下拉
       paginationSearchEqu: {
         PageIndex: 1,
         PageSize: 10000,
@@ -210,20 +246,32 @@ export default {
       })()
     }
     // Mock: get all routes and roles list from server
+
     // 设备类型下拉
     GetValuePair().then(res => {
       if (res.IsPass === true) {
         this.EquTypeCodeData = res.Obj
       }
     })
+
+    // 故障类型下拉
+    GetDictionary({ code: '0031' }).then(res => {
+      if (res.IsPass === true) {
+        this.FaultData = res.Obj
+      }
+    })
+
+    // 单位下拉
+    GetDictionary({ code: '0021' }).then(res => {
+      if (res.IsPass === true) {
+        this.UnitTextList = res.Obj
+      }
+    })
+
     this.setFormRules()
   },
   mounted() {},
   methods: {
-    // 分页
-    table_index(index) {
-      return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
-    },
     // 输入框禁止输入中文
     filterInput(val) {
       if (val === '') {
@@ -250,25 +298,97 @@ export default {
     handleAdd() {
       // 添加行数
       var newValue = {
-        EquCode: '',
+        EquCode: this.newEquCode,
+        TaskNum: '00',
         SpareName: '',
         SpareUnit: '',
         SpareQty: '',
         Remark: ''
       }
-
       // 添加新的行数
       this.tableData.push(newValue)
     },
 
     // 编辑成功
+    // submitForm(formName) {
+    //   this.$refs[formName].validate(valid => {
+    //     if (valid) {
+    //       const params = this.ruleForm
+    //       params.EquCode = this.newEquCode
+    //       EquRpAdd(params).then(res => {
+    //         this.formLoading = true
+    //         if (res.IsPass === true) {
+    //           this.$message({
+    //             type: 'success',
+    //             message: '新增设备成功'
+    //           })
+    //         } else {
+    //           this.$message({
+    //             type: 'error',
+    //             message: res.MSG
+    //           })
+    //         }
+    //         this.formLoading = false
+    //       })
+    //       const self = this
+    //       if (self.tableData.length <= 0) {
+    //         return
+    //       } else {
+    //         EquRpAdd2(this.tableData).then(res => {
+    //           this.tableLoading = true
+    //           if (res.IsPass === true) {
+    //             const self = this
+    //             setTimeout(function() {
+    //               self.$message({
+    //                 type: 'success',
+    //                 message: '新增零件成功'
+    //               })
+    //             }, 2000)
+    //           } else {
+    //             const self = this
+    //             setTimeout(function() {
+    //               self.$message({
+    //                 type: 'error',
+    //                 message: res.MSG
+    //               })
+    //             }, 2000)
+    //           }
+    //           this.tableLoading = false
+    //         })
+    //       }
+    //     } else {
+    //       this.$message({
+    //         type: 'error',
+    //         message: '必填项不能为空'
+    //       })
+    //       return false
+    //     }
+    //   })
+    // },
+
+    // 编辑成功
     submitForm(formName) {
-      this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
-          debugger
+          const params = this.ruleForm
+          params.EquCode = this.newEquCode
+          params.Li = this.tableData
+          Add_Union(params).then(res => {
+            this.formLoading = true
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: '新增成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+            this.formLoading = false
+          })
         } else {
-          this.editLoading = false
           this.$message({
             type: 'error',
             message: '必填项不能为空'
@@ -287,6 +407,24 @@ export default {
         return route
       })
       return app
+    },
+
+    handleHistory() {
+      if (this.ruleForm.EquNum === '') {
+        this.$message({
+          message: '请选择设备编号！',
+          type: 'warning'
+        })
+      } else {
+        this.$router.push({
+          path: '/DeviceManage/MainDetail',
+          query: {
+            EquCode: this.newEquCode,
+            EquNum: this.ruleForm.EquNum
+          }
+        })
+        Bus.$emit('mainList')
+      }
     },
 
     // 删除
@@ -316,9 +454,9 @@ export default {
     },
     // 设备编号双击事件获取当前行的值
     equClick(row) {
-      debugger
       this.$set(this.ruleForm, 'EquNum', row.EquNum)
       this.ruleForm.EquNum = row.EquNum
+      this.newEquCode = row.EquCode
       this.equFormVisible = false
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
@@ -328,7 +466,6 @@ export default {
     equClose() {
       this.equFormVisible = false
     }
-
   }
 }
 </script>

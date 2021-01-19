@@ -52,7 +52,11 @@
       @row-dblclick="equClick"
     >
 
-      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
+      <el-table-column align="center" label="行号" width="50">
+        <template slot-scope="scope">
+          {{ scope.$index+1 }}
+        </template>
+      </el-table-column>
 
       <el-table-column align="center" label="设备编号" width="150" prop="EquNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">

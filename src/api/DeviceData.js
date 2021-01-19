@@ -143,3 +143,49 @@ export function EquDataModifyStatus(data) {
     data
   })
 }
+
+// 设备管理 - 设备维修管理---设备维修新增
+export function EquRpAdd(data) {
+  return request({
+    url: '/api/EquRp/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备维修管理---设备维修新增
+export function EquRpAdd2(data) {
+  return request({
+    url: '/api/EquRp/Add_EquRpRepList',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备维修管理---设备维修结果3
+export function Add_Union(data) {
+  return request({
+    url: '/api/EquRp/Add_Union',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备维修管理---设备维修结果
+export function EquRpList(data) {
+  return request({
+    url: '/api/EquRpResults/List',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备维修管理---设备维修结果2
+export function EquRpList2(data) {
+  return request({
+    url: '/api/EquRpResults/List2',
+    method: 'post',
+    data
+  })
+}
+

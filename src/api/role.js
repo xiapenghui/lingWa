@@ -144,3 +144,30 @@ export function UpdatePassword(data) {
     data
   })
 }
+
+// 用户与公司关系  --列表分页
+export function UserCompany(data) {
+  return request({
+    url: '/api/UserOrganization/List',
+    method: 'post',
+    data
+  })
+}
+
+// 用户与公司关系  --列表选中
+export function OrgRangeList(data) {
+  return request({
+    url: '/api/UserOrganization/OrgRangeList',
+    method: 'post',
+    data
+  })
+}
+
+// 用户与公司关系  --列表选中
+export function OrgRangeModify(data) {
+  return request({
+    url: '/api/UserOrganization/Modify',
+    method: 'post',
+    data
+  })
+}
