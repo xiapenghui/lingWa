@@ -770,6 +770,14 @@ export const asyncRoutes = [
       meta: {
         title: 'userMangement'
       }
+    },
+    {
+      path: 'userCompany',
+      component: () => import('@/views/SystemManagement/userCompany'),
+      name: 'userCompany',
+      meta: {
+        title: 'userCompany'
+      }
     }
     ]
   },

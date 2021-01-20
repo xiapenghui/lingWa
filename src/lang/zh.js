@@ -74,13 +74,14 @@ export default {
     DeviceType: '设备类型',
     DeviceMaintain: '设备保养',
     DeviceBill: '设备台账',
-    MainManage: '设备维修管理',
+    MainManage: '设备维修作业',
     MainDetail: '维修历史记录',
     DeviceInfo: '设备信息管理',
     DeviceWarning: '设备保养预警',
     DevicePlan: '设备保养计划',
     DeviceStart: '执行设备保养',
     DeviceResult: '设备保养结果',
+    userCompany: '员工与公司关系',
 
     // 截止
 

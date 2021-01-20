@@ -189,3 +189,12 @@ export function EquRpList2(data) {
   })
 }
 
+// 设备管理 - 设备维修管理---设备保养预警列表
+export function EquMainList(data) {
+  return request({
+    url: '/api/EquMaintenance/List',
+    method: 'post',
+    data
+  })
+}
+

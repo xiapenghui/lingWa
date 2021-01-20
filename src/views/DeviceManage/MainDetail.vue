@@ -61,9 +61,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="故障类型" width="150" prop="FaultCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="故障类型" width="150" prop="FaultName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.FaultCode }}
+          {{ scope.row.FaultName }}
         </template>
       </el-table-column>
 
@@ -79,15 +79,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="维修人员" width="150" prop="RepairUser" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="维修人员" width="150" prop="RepairUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RepairUser }}
+          {{ scope.row.RepairUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="记录人员" width="150" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="记录人员" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtMethod }}
+          {{ scope.row.ModifyUserName }}
         </template>
       </el-table-column>
 
