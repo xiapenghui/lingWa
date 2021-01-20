@@ -78,7 +78,6 @@
 
       <el-table-column align="center" label="单位" width="150" prop="SpareUnit" sortable>
         <template slot-scope="scope">
-          <!-- <el-input v-model="scope.row.SpareUnit" /> -->
           <el-select v-model="scope.row.SpareUnit" clearable>
             <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
@@ -125,7 +124,7 @@ import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import EquNum from '@/components/EquNum' // 工序名称
-import { GetDictionary } from '@/api/BasicData'
+import { GetDictionary, GetSysUserTextValuePair } from '@/api/BasicData'
 // import { GetValuePair, EquDataList, EquRpAdd, EquRpAdd2 } from '@/api/DeviceData'
 import { GetValuePair, EquDataList, Add_Union } from '@/api/DeviceData'
 import Bus from '@/api/bus.js'
@@ -140,7 +139,7 @@ export default {
       ruleForm: {
         EquNum: '',
         FaultCode: '',
-        RepairUser: '123',
+        RepairUser: '',
         Description: '',
         RepairDate: '',
         RepairMethod: ''
@@ -265,6 +264,13 @@ export default {
     GetDictionary({ code: '0021' }).then(res => {
       if (res.IsPass === true) {
         this.UnitTextList = res.Obj
+      }
+    })
+
+    // 维修人员
+    GetSysUserTextValuePair().then(res => {
+      if (res.IsPass === true) {
+        this.RepairUserData = res.Obj
       }
     })
 

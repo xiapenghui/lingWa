@@ -21,7 +21,7 @@
 
       <el-table-column align="center" label="维修日期" width="150" prop="RepairDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RepairDate }}
+          {{ scope.row.RepairDate | substringTime }}
         </template>
       </el-table-column>
 

@@ -53,6 +53,15 @@ export function GetAuthOrganizationRange(data) {
   })
 }
 
+// 通用获取人眼信息
+export function GetSysUserTextValuePair(data) {
+  return request({
+    url: '/api/Common/GetSysUserTextValuePair',
+    method: 'post',
+    data
+  })
+}
+
 // 通用产线接口
 export function GetLine(data) {
   return request({

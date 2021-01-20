@@ -611,62 +611,108 @@ export const asyncRoutes = [
   {
     path: '/DeviceManage',
     component: Layout,
-    redirect: '/DeviceManage/BasicData',
+    redirect: '/DeviceManage/DeviceInfo',
     name: 'DeviceManage',
     meta: {
       title: 'DeviceManage',
       icon: 'tab'
     },
-    children: [{
-      path: 'BasicData',
-      component: () => import('@/views/DeviceManage/BasicData/index'),
-      name: 'BasicData',
-      meta: {
-        title: 'BasicData'
-      },
-      redirect: '/DeviceManage/BasicData/DeviceType',
-      children: [{
-        path: 'DeviceType',
-        component: () => import('@/views/DeviceManage/BasicData/DeviceType'),
-        name: 'DeviceType',
+    children: [
+      {
+        path: 'DeviceInfo',
+        component: () => import('@/views/DeviceManage/DeviceInfo/index'),
+        name: 'DeviceInfo',
         meta: {
-          title: 'DeviceType'
+          title: 'DeviceInfo'
+        },
+        redirect: '/DeviceManage/DeviceInfo/DeviceType',
+        children: [{
+          path: 'DeviceType',
+          component: () => import('@/views/DeviceManage/DeviceInfo/DeviceType'),
+          name: 'DeviceType',
+          meta: {
+            title: 'DeviceType'
+          }
+        },
+        {
+          path: 'DeviceMaintain',
+          component: () => import('@/views/DeviceManage/DeviceInfo/DeviceMaintain'),
+          name: 'DeviceMaintain',
+          meta: {
+            title: 'DeviceMaintain'
+          }
+        },
+        {
+          path: 'DeviceBill',
+          component: () => import('@/views/DeviceManage/DeviceInfo/DeviceBill'),
+          name: 'DeviceBill',
+          meta: {
+            title: 'DeviceBill'
+          }
+        }
+        ]
+      },
+      // 设备保养管理
+      {
+        path: 'DeviceRepair',
+        component: () => import('@/views/DeviceManage/DeviceRepair/index'),
+        name: 'DeviceRepair',
+        meta: {
+          title: 'DeviceRepair'
+        },
+        redirect: '/DeviceManage/DeviceRepair/DeviceWarning',
+        children: [
+          {
+            path: 'DeviceWarning',
+            component: () => import('@/views/DeviceManage/DeviceRepair/DeviceWarning'),
+            name: 'DeviceWarning',
+            meta: {
+              title: 'DeviceWarning'
+            }
+          },
+          {
+            path: 'DevicePlan',
+            component: () => import('@/views/DeviceManage/DeviceRepair/DevicePlan'),
+            name: 'DevicePlan',
+            meta: {
+              title: 'DevicePlan'
+            }
+          },
+          {
+            path: 'DeviceStart',
+            component: () => import('@/views/DeviceManage/DeviceRepair/DeviceStart'),
+            name: 'DeviceStart',
+            meta: {
+              title: 'DeviceStart'
+            }
+          },
+          {
+            path: 'DeviceResult',
+            component: () => import('@/views/DeviceManage/DeviceRepair/DeviceResult'),
+            name: 'DeviceResult',
+            meta: {
+              title: 'DeviceResult'
+            }
+          }
+        ]
+      },
+
+      {
+        path: 'MainManage',
+        component: () => import('@/views/DeviceManage/MainManage'),
+        name: 'MainManage',
+        meta: {
+          title: 'MainManage'
         }
       },
       {
-        path: 'DeviceMaintain',
-        component: () => import('@/views/DeviceManage/BasicData/DeviceMaintain'),
-        name: 'DeviceMaintain',
+        path: 'MainDetail',
+        component: () => import('@/views/DeviceManage/MainDetail'),
+        name: 'MainDetail',
         meta: {
-          title: 'DeviceMaintain'
-        }
-      },
-      {
-        path: 'DeviceBill',
-        component: () => import('@/views/DeviceManage/BasicData/DeviceBill'),
-        name: 'DeviceBill',
-        meta: {
-          title: 'DeviceBill'
+          title: 'MainDetail'
         }
       }
-      ]
-    },
-    {
-      path: 'MainManage',
-      component: () => import('@/views/DeviceManage/MainManage'),
-      name: 'MainManage',
-      meta: {
-        title: 'MainManage'
-      }
-    },
-    {
-      path: 'MainDetail',
-      component: () => import('@/views/DeviceManage/MainDetail'),
-      name: 'MainDetail',
-      meta: {
-        title: 'MainDetail'
-      }
-    }
     ]
 
   },

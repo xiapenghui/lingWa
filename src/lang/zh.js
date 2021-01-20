@@ -76,6 +76,11 @@ export default {
     DeviceBill: '设备台账',
     MainManage: '设备维修管理',
     MainDetail: '维修历史记录',
+    DeviceInfo: '设备信息管理',
+    DeviceWarning: '设备保养预警',
+    DevicePlan: '设备保养计划',
+    DeviceStart: '执行设备保养',
+    DeviceResult: '设备保养结果',
 
     // 截止
 
