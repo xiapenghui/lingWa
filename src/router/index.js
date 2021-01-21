@@ -617,102 +617,136 @@ export const asyncRoutes = [
       title: 'DeviceManage',
       icon: 'tab'
     },
-    children: [
-      {
-        path: 'DeviceInfo',
-        component: () => import('@/views/DeviceManage/DeviceInfo/index'),
-        name: 'DeviceInfo',
+    children: [{
+      path: 'DeviceInfo',
+      component: () => import('@/views/DeviceManage/DeviceInfo/index'),
+      name: 'DeviceInfo',
+      meta: {
+        title: 'DeviceInfo'
+      },
+      redirect: '/DeviceManage/DeviceInfo/DeviceType',
+      children: [{
+        path: 'DeviceType',
+        component: () => import('@/views/DeviceManage/DeviceInfo/DeviceType'),
+        name: 'DeviceType',
         meta: {
-          title: 'DeviceInfo'
-        },
-        redirect: '/DeviceManage/DeviceInfo/DeviceType',
-        children: [{
-          path: 'DeviceType',
-          component: () => import('@/views/DeviceManage/DeviceInfo/DeviceType'),
-          name: 'DeviceType',
-          meta: {
-            title: 'DeviceType'
-          }
-        },
-        {
-          path: 'DeviceMaintain',
-          component: () => import('@/views/DeviceManage/DeviceInfo/DeviceMaintain'),
-          name: 'DeviceMaintain',
-          meta: {
-            title: 'DeviceMaintain'
-          }
-        },
-        {
-          path: 'DeviceBill',
-          component: () => import('@/views/DeviceManage/DeviceInfo/DeviceBill'),
-          name: 'DeviceBill',
-          meta: {
-            title: 'DeviceBill'
-          }
+          title: 'DeviceType'
         }
-        ]
       },
-      // 设备保养管理
       {
-        path: 'DeviceRepair',
-        component: () => import('@/views/DeviceManage/DeviceRepair/index'),
-        name: 'DeviceRepair',
+        path: 'DeviceMaintain',
+        component: () => import('@/views/DeviceManage/DeviceInfo/DeviceMaintain'),
+        name: 'DeviceMaintain',
         meta: {
-          title: 'DeviceRepair'
-        },
-        redirect: '/DeviceManage/DeviceRepair/DeviceWarning',
-        children: [
-          {
-            path: 'DeviceWarning',
-            component: () => import('@/views/DeviceManage/DeviceRepair/DeviceWarning'),
-            name: 'DeviceWarning',
-            meta: {
-              title: 'DeviceWarning'
-            }
-          },
-          {
-            path: 'DevicePlan',
-            component: () => import('@/views/DeviceManage/DeviceRepair/DevicePlan'),
-            name: 'DevicePlan',
-            meta: {
-              title: 'DevicePlan'
-            }
-          },
-          {
-            path: 'DeviceStart',
-            component: () => import('@/views/DeviceManage/DeviceRepair/DeviceStart'),
-            name: 'DeviceStart',
-            meta: {
-              title: 'DeviceStart'
-            }
-          },
-          {
-            path: 'DeviceResult',
-            component: () => import('@/views/DeviceManage/DeviceRepair/DeviceResult'),
-            name: 'DeviceResult',
-            meta: {
-              title: 'DeviceResult'
-            }
-          }
-        ]
+          title: 'DeviceMaintain'
+        }
       },
+      {
+        path: 'DeviceBill',
+        component: () => import('@/views/DeviceManage/DeviceInfo/DeviceBill'),
+        name: 'DeviceBill',
+        meta: {
+          title: 'DeviceBill'
+        }
+      }
+      ]
+    },
+    // 设备保养管理
+    {
+      path: 'DeviceRepair',
+      component: () => import('@/views/DeviceManage/DeviceRepair/index'),
+      name: 'DeviceRepair',
+      meta: {
+        title: 'DeviceRepair'
+      },
+      redirect: '/DeviceManage/DeviceRepair/DeviceWarning',
+      children: [{
+        path: 'DeviceWarning',
+        component: () => import('@/views/DeviceManage/DeviceRepair/DeviceWarning'),
+        name: 'DeviceWarning',
+        meta: {
+          title: 'DeviceWarning'
+        }
+      },
+      {
+        path: 'DevicePlan',
+        component: () => import('@/views/DeviceManage/DeviceRepair/DevicePlan'),
+        name: 'DevicePlan',
+        meta: {
+          title: 'DevicePlan'
+        }
+      },
+      {
+        path: 'DeviceStart',
+        component: () => import('@/views/DeviceManage/DeviceRepair/DeviceStart'),
+        name: 'DeviceStart',
+        meta: {
+          title: 'DeviceStart'
+        }
+      },
+      {
+        path: 'DeviceResult',
+        component: () => import('@/views/DeviceManage/DeviceRepair/DeviceResult'),
+        name: 'DeviceResult',
+        meta: {
+          title: 'DeviceResult'
+        }
+      }
+      ]
+    },
 
-      {
-        path: 'MainManage',
-        component: () => import('@/views/DeviceManage/MainManage'),
-        name: 'MainManage',
+    // 设备维修管理
+    {
+      path: 'MainManage',
+      component: () => import('@/views/DeviceManage/MainManage/index'),
+      name: 'MainManage',
+      meta: {
+        title: 'MainManage'
+      },
+      redirect: '/DeviceManage/MainManage/MainMange',
+      children: [{
+        path: 'MainMange',
+        component: () => import('@/views/DeviceManage/MainManage/MainMange'),
+        name: 'MainMange',
         meta: {
-          title: 'MainManage'
+          title: 'MainMange'
+        }
+      },
+      {
+        path: 'AllDetail',
+        component: () => import('@/views/DeviceManage/MainManage/AllDetail'),
+        name: 'AllDetail',
+        meta: {
+          title: 'AllDetail'
         }
       },
       {
         path: 'MainDetail',
-        component: () => import('@/views/DeviceManage/MainDetail'),
+        component: () => import('@/views/DeviceManage/MainManage/MainDetail'),
         name: 'MainDetail',
         meta: {
           title: 'MainDetail'
         }
       }
+      ]
+    }
+
+      // {
+      //   path: 'MainManage',
+      //   component: () => import('@/views/DeviceManage/MainManage'),
+      //   name: 'MainManage',
+      //   meta: {
+      //     title: 'MainManage'
+      //   }
+      // },
+      // {
+      //   path: 'MainDetail',
+      //   component: () => import('@/views/DeviceManage/MainDetail'),
+      //   name: 'MainDetail',
+      //   meta: {
+      //     title: 'MainDetail'
+      //   }
+      // }
     ]
 
   },

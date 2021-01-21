@@ -37,9 +37,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备类型" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备类型" width="150" prop="FaultName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeText }}
+          {{ scope.row.FaultName }}
         </template>
       </el-table-column>
 
@@ -106,7 +106,7 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
+    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" />
 
     <!-- 维修记录明细弹窗 -->
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="mainFormVisible" title="维修明细表" width="70%" height="50%">
@@ -164,13 +164,13 @@
 </template>
 
 <script>
-import '../../styles/scrollbar.css'
-import '../../styles/commentBox.scss'
+import '../../../styles/scrollbar.css'
+import '../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary } from '@/api/BasicData'
-import { GetValuePair, EquDataList, EquRpList, EquRpList2 } from '@/api/DeviceData'
+import { GetValuePair, EquRpList, EquRpList2 } from '@/api/DeviceData'
 import Bus from '@/api/bus.js'
 const fixHeight = 150
 const fixHeightBox = 350
@@ -182,8 +182,6 @@ export default {
       tableData: [],
       ruleForm: {}, // 编辑弹窗
       CreateTime: null,
-      btnShow: true, // 互斥按钮
-      showSearch: false, // 折叠显示隐藏
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -267,15 +265,6 @@ export default {
       }
     },
 
-    // input禁止输入中文
-    'ruleForm.EquNum': function(val) {
-      if (val === '' || val === undefined) {
-        return
-      } else {
-        this.ruleForm.EquNum = this.filterInput(val)
-      }
-    },
-
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.parentMsg = this.$t('permission.importCompany')
@@ -329,8 +318,8 @@ export default {
       this.listLoading = true
       const self = this
       const params = {
-        PageIndex: 0,
-        PageSize: 0,
+        PageIndex: 1,
+        PageSize: 10000,
         EquNum: self.$route.query.EquNum
       }
       EquRpList(params).then(res => {
@@ -347,17 +336,7 @@ export default {
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
-      this.getList()
-    },
-
-    // 获取列表
-    getList() {
-      this.listLoading = true
-      EquDataList(this.pagination).then(res => {
-        this.tableData = res.Obj
-        this.total = res.TotalRowCount
-        this.listLoading = false
-      })
+      this.mainList()
     },
 
     // 查看维修详情
@@ -367,7 +346,7 @@ export default {
       const params = {
         TaskNum: row.TaskNum,
         ShowBanned: false,
-        PageIndex: 0,
+        PageIndex: 1,
         PageSize: 10000
       }
       EquRpList2(params).then(res => {
