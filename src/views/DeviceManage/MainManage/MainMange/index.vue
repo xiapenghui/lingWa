@@ -66,13 +66,13 @@
 
       <el-table-column align="center" label="备件名称" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareName" sortable />
+          <el-input v-model="scope.row.SpareName" clearable />
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="备件数量" width="150" prop="SpareQty" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareQty" sortable />
+          <el-input v-model="scope.row.SpareQty" clearable type="number" />
         </template>
       </el-table-column>
 
@@ -277,8 +277,7 @@ export default {
         RepairDate: [{ required: true, message: '请选择维修时间', trigger: 'blur' }],
         RepairUser: [{ required: true, message: '请选择维修人员', trigger: 'blur' }],
         Description: [{ required: true, message: '请输入故障描述', trigger: 'blur' }],
-        RepairMethod: [{ required: true, message: '请输入维修方法', trigger: 'blur' }],
-        FullName: [{ required: true, message: '请输入客户名称', trigger: 'blur' }]
+        RepairMethod: [{ required: true, message: '请输入维修方法', trigger: 'blur' }]
       }
     },
 
@@ -317,7 +316,12 @@ export default {
                 message: res.MSG
               })
             }
-            this.formLoading = false
+            const self = this
+            setTimeout(function() {
+              self.formLoading = false
+              self.tableData = []
+              self.ruleForm = {}
+            }, 1000)
           })
         } else {
           this.$message({

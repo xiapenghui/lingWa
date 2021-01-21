@@ -390,3 +390,13 @@ export function QuaDetaiSubmit(data) {
     data
   })
 }
+
+// QuaBaseIqcRule质量管理 - 原材料检验参数 - 抽检比例参数列表
+export function QuaBaseList(data) {
+  return request({
+    url: '/api/QuaBaseIqcRule/List',
+    method: 'post',
+    data
+  })
+}
+

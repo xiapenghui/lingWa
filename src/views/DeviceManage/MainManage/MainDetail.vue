@@ -330,7 +330,10 @@ export default {
       Bus.$on('mainList', function() {
         self.mainList()
       })
-      this.listLoading = false
+      // 延时取消loading
+      setTimeout(function() {
+        self.listLoading = false
+      }, 1000)
     },
 
     // 查询

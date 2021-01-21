@@ -3,6 +3,15 @@ import request from '@/utils/request'
 // 生产工单
 export function productionList(data) {
   return request({
+    url: '/api/PlanSchedule/List',
+    method: 'post',
+    data
+  })
+}
+
+// 生产工单---仅仅拆分使用
+export function proList(data) {
+  return request({
     url: '/api/PlanSchedule/SplitList',
     method: 'post',
     data

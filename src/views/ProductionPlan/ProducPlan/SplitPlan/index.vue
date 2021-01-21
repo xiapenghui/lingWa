@@ -333,7 +333,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary, GetLine } from '@/api/BasicData'
 import {
-  productionList,
+  proList,
   SplitQuery,
   productionSplit
 
@@ -572,7 +572,7 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      productionList(this.pagination).then(res => {
+      proList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false

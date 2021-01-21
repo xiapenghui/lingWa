@@ -102,8 +102,12 @@
         <el-form-item label="姓名" prop="NameCN"><el-input v-model.trim="ruleForm.NameCN" disabled /></el-form-item>
 
         <el-form-item label="公司列表">
-          <el-checkbox-group v-if="companyTree.length==0" v-model="ruleForm.OrgCodes">
+          <!-- <el-checkbox-group v-if="companyTree.length==0" v-model="ruleForm.OrgCodes">
             <el-checkbox v-for="item in companyTree" :key="item.value" :label="item.text" :value="item.value"> {{ item }}</el-checkbox>
+          </el-checkbox-group> -->
+
+          <el-checkbox-group v-model="ruleForm.OrgCodes">
+            <el-checkbox v-for="item in companyTree" :key="item.value" :label="item.text" :value="item.value">{{ item.text }}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
 
@@ -123,7 +127,6 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { companyList, OrgRangeList, UserCompany, UserUpdate } from '@/api/role'
 const fixHeight = 220
-const cityOptions = []
 export default {
   name: 'UserCompany',
   components: { Pagination },
@@ -149,7 +152,7 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
       companyData: [], // 获取搜索框公司列表
-      companyTree: cityOptions, // 公司下拉菜单树
+      companyTree: [], // 公司下拉菜单树
       rules: {
         NameCN: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
         AccountName: [{ required: true, message: '请输入用户名', trigger: 'blur' }]
@@ -266,7 +269,6 @@ export default {
       OrgRangeList({ UserCode: row.UserCode }).then(res => {
         const self = this
         if (res.IsPass === true) {
-          debugger
           self.companyTree = res.Obj
         }
       })
@@ -299,9 +301,12 @@ export default {
         }
       })
     }
-
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-dialog__body .el-checkbox {
+  display: block;
+}
+</style>
