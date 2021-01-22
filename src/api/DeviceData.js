@@ -198,3 +198,57 @@ export function EquMainList(data) {
   })
 }
 
+// 设备管理 - 设备维修管理---设备保养计划列表
+export function EquPlanList(data) {
+  return request({
+    url: '/api/EquFormulateMaintenance/List',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备维修管理---设备生产保养计划保存
+export function FormulatePlan(data) {
+  return request({
+    url: '/api/EquFormulateMaintenance/FormulatePlan',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备维修管理 - 设备维修结果
+export function ResultList(data) {
+  return request({
+    url: '/api/EquMaintenanceResults/List',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备维修管理 - 设备维修结果
+export function ResultListDetail(data) {
+  return request({
+    url: '/api/EquMaintenanceResults/list_EquMtItems',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备保养管理 - 执行设备保养主列表
+export function StartPlanList(data) {
+  return request({
+    url: '/api/EquExecuteMaintenance/List',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 设备保养管理 - 执行设备保养明细列表
+export function StartPlanDetailList(data) {
+  return request({
+    url: '/api/EquExecuteMaintenance/list_EquMtItems',
+    method: 'post',
+    data
+  })
+}
+

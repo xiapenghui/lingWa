@@ -43,78 +43,91 @@
       element-loading-text="拼命加载中"
       fit
       highlight-current-row
+      @selection-change="handleSelectionChange"
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="是否保养" width="120" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="是否保养" width="120" prop="checked" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <el-checkbox v-model="scope.row.checked" />
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划保养日期" width="200" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划保养日期" width="200" prop="PlanDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-date-picker v-model="scope.row.PlanDeliveryDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 80%" />
+          <el-date-picker v-model="scope.row.PlanDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 80%" />
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="计划保养人员" width="200" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-select v-model="scope.row.SpareUnit" clearable>
-            <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" style="width: 80%" />
+          <el-select v-model="scope.row.PlanUserCode" placeholder="维修人员" clearable style="width: 80%">
+            <el-option v-for="item in RepairUserData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备编号" width="180" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划保养描述" width="250" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtItemsNum }}
+          <el-input v-model="scope.row.Description" placeholder="计划保养描述" style="width: 95%" clearable />
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备名称" width="180" prop="MtItemsName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备编号" width="150" prop="EquNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtItemsName }}
+          {{ scope.row.EquNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备类型" width="180" prop="EquTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备名称" width="150" prop="EquName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.EquName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="设备型号" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Spec }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="设备类型" width="150" prop="EquTypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EquTypeName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养周期" width="180" prop="MtTool" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养周期" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtTool }}
+          {{ scope.row.MaintainDays }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警产量" width="180" prop="MtTool" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警产量" width="180" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtTool }}
+          {{ scope.row.PreAlertTimes }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="购入日期" width="180" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="购入日期" width="150" prop="GetData" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.GetData }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="上次保养日期" width="150" prop="LastMtDate" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.LastMtDate }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="实际产量" width="150" prop="MtMethod" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MtMethod }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="上次保养日期" width="180" prop="MtMethod" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.MtMethod }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="实际产量" width="180" prop="MtMethod" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.MtMethod }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="预警状态" width="180" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警状态" width="150" prop="MtMethod" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MtMethod }}
         </template>
@@ -122,7 +135,7 @@
 
     </el-table>
 
-    <el-button icon="el-icon-s-tools" type="primary" style="float: left;margin-top: 15px;">生产保养计划</el-button>
+    <el-button icon="el-icon-s-tools" type="primary" style="float: left;margin-top: 15px;" @click="heandSave()">生产保养计划</el-button>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
   </div>
@@ -134,7 +147,8 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetValuePair, EquMtItemsList } from '@/api/DeviceData'
+import { GetSysUserTextValuePair } from '@/api/BasicData'
+import { GetValuePair, EquPlanList, FormulatePlan } from '@/api/DeviceData'
 const fixHeight = 220
 export default {
   name: 'IncomingInsp',
@@ -153,7 +167,7 @@ export default {
       listLoading: false,
       total: 10,
       EquTypeCodeData: [], // 设备类型下拉
-      UnitTextList: [], // 计划保养人员
+      RepairUserData: [], // 计划保养人员
       tableHeight: window.innerHeight - fixHeight // 表格高度
     }
   },
@@ -168,15 +182,6 @@ export default {
         setTimeout(function() {
           that.timer = false
         }, 400)
-      }
-    },
-
-    // input禁止输入中文
-    'ruleForm.MtItemsNum': function(val) {
-      if (val === '' || val === undefined) {
-        return
-      } else {
-        this.ruleForm.MtItemsNum = this.filterInput(val)
       }
     }
 
@@ -194,6 +199,13 @@ export default {
     GetValuePair().then(res => {
       if (res.IsPass === true) {
         this.EquTypeCodeData = res.Obj
+      }
+    })
+
+    // 维修人员
+    GetSysUserTextValuePair().then(res => {
+      if (res.IsPass === true) {
+        this.RepairUserData = res.Obj
       }
     })
 
@@ -233,9 +245,32 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      EquMtItemsList(this.pagination).then(res => {
+      EquPlanList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
+        this.listLoading = false
+      })
+    },
+
+    handleSelectionChange(val) {
+
+    },
+
+    // 保存保养计划
+    heandSave() {
+      this.listLoading = true
+      FormulatePlan(this.tableData).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            message: res.MSG,
+            type: 'success'
+          })
+        } else {
+          this.$message({
+            message: res.MSG,
+            type: 'error'
+          })
+        }
         this.listLoading = false
       })
     },

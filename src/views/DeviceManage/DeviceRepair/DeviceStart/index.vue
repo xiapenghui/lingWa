@@ -32,7 +32,7 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="保养计划单号" placement="top-start"><label class="radio-label">保养计划单号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.EquName" placeholder="保养计划单号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.PlanNum" placeholder="保养计划单号" clearable /></el-col>
         </el-col>
 
         <el-col :span="3">
@@ -85,27 +85,27 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="保养计划单号" width="150" prop="RowCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养计划单号" width="150" prop="PlanNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RowCode }}
+          {{ scope.row.PlanNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划保养日期" width="150" prop="RepairDate" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划保养日期" width="150" prop="PlanDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RepairDate }}
+          {{ scope.row.PlanDate }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划保养人员" width="150" prop="EquNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划保养人员" width="150" prop="PlanUserCode" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.PlanUserCode }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="设备编号" width="150" prop="EquNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EquNum }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="设备编号" width="150" prop="EquName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.EquName }}
         </template>
       </el-table-column>
 
@@ -115,39 +115,39 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备类型" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备类型" width="150" prop="EquTypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeText }}
+          {{ scope.row.EquTypeName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养周期" width="150" prop="SupplierName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养周期" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.SupplierName }}
+          {{ scope.row.MaintainDays }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警产量" width="150" prop="GetDate" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警产量" width="150" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.GetDate }}
+          {{ scope.row.PreAlertTimes }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="上次保养日期" width="150" prop="Tel" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="上次保养日期" width="150" prop="LastMtDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Tel }}
+          {{ scope.row.LastMtDate }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="实际产量" width="150" prop="Description" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="实际产量" width="150" prop="Actual" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Description }}
+          {{ scope.row.Actual }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="购入日期" width="150" prop="RepairMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="购入日期" width="150" prop="GetData" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RepairMethod }}
+          {{ scope.row.GetData }}
         </template>
       </el-table-column>
 
@@ -220,9 +220,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary } from '@/api/BasicData'
-import { GetValuePair, EquDataList, EquRpList, EquRpList2 } from '@/api/DeviceData'
-import Bus from '@/api/bus.js'
+import { GetValuePair, StartPlanList, StartPlanDetailList } from '@/api/DeviceData'
 const fixHeight = 220
 const fixHeightBox = 350
 export default {
@@ -241,14 +239,14 @@ export default {
         EquNum: undefined,
         EquName: undefined,
         EquTypeCode: undefined,
-        FaultCode: undefined,
+        PlanNum: undefined,
         importDate: [],
         ShowBanned: false
       },
       listLoading: false,
       detailLoading: false, // 详情loading
       detailData: [], // 详情数组
-      FaultData: [], // 故障类型
+
       mainFormVisible: false, // 维修记录详情
       total: 10,
       EquTypeCodeData: [], // 设备类型下拉
@@ -322,15 +320,6 @@ export default {
       }
     },
 
-    // input禁止输入中文
-    'ruleForm.EquNum': function(val) {
-      if (val === '' || val === undefined) {
-        return
-      } else {
-        this.ruleForm.EquNum = this.filterInput(val)
-      }
-    },
-
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.parentMsg = this.$t('permission.importCompany')
@@ -361,15 +350,8 @@ export default {
       }
     })
 
-    // 故障类型下拉
-    GetDictionary({ code: '0031' }).then(res => {
-      if (res.IsPass === true) {
-        this.FaultData = res.Obj
-      }
-    })
-
     // 默认携带设备编号跳转
-    this.mainList()
+    this.getList()
 
     // Mock: get all routes and roles list from server
   },
@@ -384,14 +366,14 @@ export default {
       if (val === null) {
         this.$nextTick(function() {
           this.pagination.importDate = []
-          this.pagination.RepairDateStart = ''
-          this.pagination.RepairDateEnd = ''
+          this.pagination.PlanDateStart = ''
+          this.pagination.PlanDateEnd = ''
         })
       } else {
         this.pagination.importDate[0] = val[0]
         this.pagination.importDate[1] = val[1]
-        this.pagination.RepairDateStart = this.pagination.importDate[0]
-        this.pagination.RepairDateEnd = this.pagination.importDate[1]
+        this.pagination.PlanDateStart = this.pagination.importDate[0]
+        this.pagination.PlanDateEnd = this.pagination.importDate[1]
       }
     },
 
@@ -415,26 +397,6 @@ export default {
       this.showSearch = !this.showSearch
     },
 
-    // 默认携带设备编号跳转
-    mainList() {
-      this.listLoading = true
-      const self = this
-      const params = {
-        PageIndex: 0,
-        PageSize: 0,
-        EquNum: self.$route.query.EquNum
-      }
-      EquRpList(params).then(res => {
-        this.tableData = res.Obj
-        this.total = res.TotalRowCount
-      })
-      // 监听详情页mainList事件
-      Bus.$on('mainList', function() {
-        self.mainList()
-      })
-      this.listLoading = false
-    },
-
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
@@ -444,7 +406,7 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      EquDataList(this.pagination).then(res => {
+      StartPlanList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -456,12 +418,12 @@ export default {
       this.detailLoading = true
       this.mainFormVisible = true
       const params = {
-        RowCode: row.RowCode,
+        EquTypeCode: row.EquTypeCode,
         ShowBanned: false,
         PageIndex: 0,
         PageSize: 10000
       }
-      EquRpList2(params).then(res => {
+      StartPlanDetailList(params).then(res => {
         if (res.IsPass === true) {
           this.detailData = res.Obj
           this.total = res.TotalRowCount

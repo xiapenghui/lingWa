@@ -19,6 +19,13 @@
 
         <el-col :span="5">
           <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="保养计划单号" placement="top-start"><label class="radio-label">保养计划单号:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.PlanNum" placeholder="保养计划单号" clearable /></el-col>
+        </el-col>
+
+        <el-col :span="5">
+          <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="设备类型" placement="top-start"><label class="radio-label">设备类型:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
@@ -26,13 +33,6 @@
               <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
-        </el-col>
-
-        <el-col :span="5">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="保养计划单号" placement="top-start"><label class="radio-label">保养计划单号:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.EquName" placeholder="保养计划单号" clearable /></el-col>
         </el-col>
 
         <el-col :span="3">
@@ -103,15 +103,27 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="保养日期" width="150" prop="EquName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.EquName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="设备编号" width="150" prop="EquName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EquName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备名称" width="150" prop="EquName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备名称" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquName }}
+          {{ scope.row.EquTypeText }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="设备型号" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.EquTypeText }}
         </template>
       </el-table-column>
 
@@ -121,33 +133,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养周期" width="150" prop="SupplierName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="上次保养日期" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.SupplierName }}
+          {{ scope.row.EquTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警产量" width="150" prop="GetDate" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="购入日期" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.GetDate }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="上次保养日期" width="150" prop="Tel" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.Tel }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="实际产量" width="150" prop="Description" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="购入日期" width="150" prop="RepairMethod" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.RepairMethod }}
+          {{ scope.row.EquTypeText }}
         </template>
       </el-table-column>
 
@@ -177,38 +171,44 @@
       >
         <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-        <el-table-column align="center" label="设备保养编号" width="200" prop="RowCode" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="保养计划单号" width="200" prop="RowCode" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.RowCode }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="设备保养名称" width="200" prop="EquNum" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="设备保养项编号" width="200" prop="EquNum" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.EquNum }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="设备保养工具" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="设备保养项名称" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.SpareName }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="是否执行保养" width="150">
+        <el-table-column align="center" label="保养工具" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.checked" />
+            {{ scope.row.SpareName }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+        <el-table-column align="center" label="是否执行保养" width="150" sortable>
           <template slot-scope="scope">
-            {{ scope.row.Remark }}
+            {{ scope.row.SpareName }}
           </template>
         </el-table-column>
+
+        <el-table-column align="center" label="保养方法" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            {{ scope.row.SpareName }}
+          </template>
+        </el-table-column>
+
       </el-table>
 
-      <el-button icon="el-icon-s-tools" type="primary" style="margin-top: 15px;">保养完成</el-button>
     </el-dialog>
 
   </div>
@@ -220,9 +220,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary } from '@/api/BasicData'
-import { GetValuePair, EquDataList, EquRpList, EquRpList2 } from '@/api/DeviceData'
-import Bus from '@/api/bus.js'
+import { GetValuePair, ResultList, ResultListDetail } from '@/api/DeviceData'
 const fixHeight = 220
 const fixHeightBox = 350
 export default {
@@ -241,14 +239,13 @@ export default {
         EquNum: undefined,
         EquName: undefined,
         EquTypeCode: undefined,
-        FaultCode: undefined,
+        PlanNum: undefined,
         importDate: [],
         ShowBanned: false
       },
       listLoading: false,
       detailLoading: false, // 详情loading
       detailData: [], // 详情数组
-      FaultData: [], // 故障类型
       mainFormVisible: false, // 维修记录详情
       total: 10,
       EquTypeCodeData: [], // 设备类型下拉
@@ -361,15 +358,8 @@ export default {
       }
     })
 
-    // 故障类型下拉
-    GetDictionary({ code: '0031' }).then(res => {
-      if (res.IsPass === true) {
-        this.FaultData = res.Obj
-      }
-    })
-
     // 默认携带设备编号跳转
-    this.mainList()
+    this.getList()
 
     // Mock: get all routes and roles list from server
   },
@@ -384,14 +374,14 @@ export default {
       if (val === null) {
         this.$nextTick(function() {
           this.pagination.importDate = []
-          this.pagination.RepairDateStart = ''
-          this.pagination.RepairDateEnd = ''
+          this.pagination.PlanDateStart = ''
+          this.pagination.PlanDateEnd = ''
         })
       } else {
         this.pagination.importDate[0] = val[0]
         this.pagination.importDate[1] = val[1]
-        this.pagination.RepairDateStart = this.pagination.importDate[0]
-        this.pagination.RepairDateEnd = this.pagination.importDate[1]
+        this.pagination.PlanDateStart = this.pagination.importDate[0]
+        this.pagination.PlanDateEnd = this.pagination.importDate[1]
       }
     },
 
@@ -415,26 +405,6 @@ export default {
       this.showSearch = !this.showSearch
     },
 
-    // 默认携带设备编号跳转
-    mainList() {
-      this.listLoading = true
-      const self = this
-      const params = {
-        PageIndex: 0,
-        PageSize: 0,
-        EquNum: self.$route.query.EquNum
-      }
-      EquRpList(params).then(res => {
-        this.tableData = res.Obj
-        this.total = res.TotalRowCount
-      })
-      // 监听详情页mainList事件
-      Bus.$on('mainList', function() {
-        self.mainList()
-      })
-      this.listLoading = false
-    },
-
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
@@ -444,7 +414,7 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      EquDataList(this.pagination).then(res => {
+      ResultList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -456,12 +426,13 @@ export default {
       this.detailLoading = true
       this.mainFormVisible = true
       const params = {
-        RowCode: row.RowCode,
+        TaskNum: row.TaskNum,
+        EquTCode: row.EquTCode,
         ShowBanned: false,
         PageIndex: 0,
         PageSize: 10000
       }
-      EquRpList2(params).then(res => {
+      ResultListDetail(params).then(res => {
         if (res.IsPass === true) {
           this.detailData = res.Obj
           this.total = res.TotalRowCount
