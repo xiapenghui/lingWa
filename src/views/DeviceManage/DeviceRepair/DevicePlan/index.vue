@@ -43,7 +43,6 @@
       element-loading-text="拼命加载中"
       fit
       highlight-current-row
-      @selection-change="handleSelectionChange"
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
@@ -53,15 +52,21 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划保养日期" width="200" prop="PlanDate" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养计划单号" width="150" prop="checked" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-date-picker v-model="scope.row.PlanDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 80%" />
+          <el-input v-model="scope.row.PlanNum" placeholder="保养计划单号" clearable />
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划保养人员" width="200" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划保养日期" width="150" prop="PlanDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-select v-model="scope.row.PlanUserCode" placeholder="维修人员" clearable style="width: 80%">
+          <el-date-picker v-model="scope.row.PlanDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%" />
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="计划保养人员" width="150" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <el-select v-model="scope.row.PlanUserCode" placeholder="维修人员" clearable style="width: 100%">
             <el-option v-for="item in RepairUserData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </template>
@@ -250,10 +255,6 @@ export default {
         this.total = res.TotalRowCount
         this.listLoading = false
       })
-    },
-
-    handleSelectionChange(val) {
-
     },
 
     // 保存保养计划

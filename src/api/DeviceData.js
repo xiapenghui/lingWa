@@ -252,3 +252,12 @@ export function StartPlanDetailList(data) {
   })
 }
 
+// 设备管理 - 设备保养管理 - 执行设备保养明细列表
+export function ExeMaintenance(data) {
+  return request({
+    url: '/api/EquExecuteMaintenance/ExeMaintenance',
+    method: 'post',
+    data
+  })
+}
+

@@ -157,7 +157,7 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 维修记录明细弹窗 -->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="mainFormVisible" title="维修明细表" width="70%" height="50%">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="mainFormVisible" title="设备保养结果明细表" width="70%" height="50%">
       <el-table
         v-loading="detailLoading"
         :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"

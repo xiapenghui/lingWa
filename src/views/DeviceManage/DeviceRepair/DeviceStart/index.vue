@@ -2,7 +2,6 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="设备编号" placement="top-start"><label class="radio-label">设备编号:</label></el-tooltip>
@@ -147,7 +146,7 @@
 
       <el-table-column align="center" label="购入日期" width="150" prop="GetData" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.GetData }}
+          {{ scope.row.GetData | substringTime }}
         </template>
       </el-table-column>
 
@@ -163,7 +162,7 @@
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <!-- 维修记录明细弹窗 -->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="mainFormVisible" title="维修明细表" width="70%" height="50%">
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="mainFormVisible" title="设备保养明细" width="70%" height="50%">
       <el-table
         v-loading="detailLoading"
         :header-cell-style="{ background: ' #1890ff ', color: '#ffffff' }"
@@ -174,30 +173,33 @@
         element-loading-text="拼命加载中"
         fit
         highlight-current-row
+        @selection-change="handleSelectionChange"
       >
         <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-        <el-table-column align="center" label="设备保养编号" width="200" prop="RowCode" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" type="selection" width="150" />
+
+        <el-table-column align="center" label="设备保养编号" width="200" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.RowCode }}
+            {{ scope.row.MtItemsNum }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="设备保养名称" width="200" prop="EquNum" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="设备保养名称" width="200" prop="MtItemsName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.EquNum }}
+            {{ scope.row.MtItemsName }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="设备保养工具" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="保养工具" width="200" prop="MtTool" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.SpareName }}
+            {{ scope.row.MtTool }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="是否执行保养" width="150">
+        <el-table-column align="center" label="保养方法" width="200" prop="MtMethod" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.checked" />
+            {{ scope.row.MtMethod }}
           </template>
         </el-table-column>
 
@@ -208,9 +210,8 @@
         </el-table-column>
       </el-table>
 
-      <el-button icon="el-icon-s-tools" type="primary" style="margin-top: 15px;">保养完成</el-button>
+      <el-button icon="el-icon-s-tools" type="primary" style="margin-top: 15px;" @click="SaveFinish()">保养完成</el-button>
     </el-dialog>
-
   </div>
 </template>
 
@@ -220,7 +221,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetValuePair, StartPlanList, StartPlanDetailList } from '@/api/DeviceData'
+import { GetValuePair, StartPlanList, StartPlanDetailList, ExeMaintenance } from '@/api/DeviceData'
 const fixHeight = 220
 const fixHeightBox = 350
 export default {
@@ -246,10 +247,13 @@ export default {
       listLoading: false,
       detailLoading: false, // 详情loading
       detailData: [], // 详情数组
-
+      multipleSelection: [], // 多选
       mainFormVisible: false, // 维修记录详情
       total: 10,
       EquTypeCodeData: [], // 设备类型下拉
+      newTaskNum: null, // 取明细
+      newEquCode: null,
+      newMtItemsCode: null,
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
@@ -397,6 +401,11 @@ export default {
       this.showSearch = !this.showSearch
     },
 
+    // 多选
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
@@ -407,6 +416,7 @@ export default {
     getList() {
       this.listLoading = true
       StartPlanList(this.pagination).then(res => {
+        debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -417,6 +427,11 @@ export default {
     handleDetail(row) {
       this.detailLoading = true
       this.mainFormVisible = true
+
+      this.newTaskNum = row.TaskNum
+      this.newEquCode = row.EquCode
+      this.newMtItemsCode = row.MtItemsCode
+
       const params = {
         EquTypeCode: row.EquTypeCode,
         ShowBanned: false,
@@ -424,13 +439,53 @@ export default {
         PageSize: 10000
       }
       StartPlanDetailList(params).then(res => {
+        debugger
         if (res.IsPass === true) {
-          this.detailData = res.Obj
+          // this.detailData = res.Obj
+          // this.detailData.map(item => {
+
+          // })
+
           this.total = res.TotalRowCount
         }
         this.detailLoading = false
       })
     },
+
+    // 设备执行保养完成
+    SaveFinish() {
+      if (this.detailData.length > 0) {
+        this.detailLoading = true
+        this.mainFormVisible = true
+
+        // const idList = []
+        // this.detailData.map(item => {
+        //   const newFeatid = item.id
+        //   idList.push(newFeatid)
+
+        ExeMaintenance(this.detailData).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              message: res.MSG,
+              type: 'success'
+            })
+            this.mainFormVisible = false
+          } else {
+            this.$message({
+              message: res.MSG,
+              type: 'error'
+            })
+          }
+          this.detailLoading = false
+        })
+      } else {
+        this.$message({
+          message: '请勾选保养项',
+          type: 'error'
+        })
+      }
+    },
+
     i18n(routes) {
       const app = routes.map(route => {
         route.title = i18n.t(`route.${route.title}`)
@@ -456,5 +511,11 @@ export default {
     background: transparent;
     cursor: pointer;
   }
+}
+
+::v-deep .el-table__header-wrapper .el-checkbox__input::after {
+  content: '是否执行保养';
+  color: #ffffff;
+  margin: 0 5px;
 }
 </style>
