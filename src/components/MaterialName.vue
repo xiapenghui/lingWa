@@ -52,11 +52,19 @@
           {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
+
       <el-table-column align="center" label="原料名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
+
+      <el-table-column align="center" label="物料类型" width="150" prop="MaterialTypeName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.MaterialTypeName }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="原料规格" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Spec }}

@@ -155,7 +155,6 @@
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
         <el-form-item label="原料名称" prop="MaterialName">
-
           <el-input v-model="ruleForm.MaterialName" readonly placeholder="请选择" class="disActive" @focus="materialBox" />
         </el-form-item>
 

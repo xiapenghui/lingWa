@@ -400,3 +400,173 @@ export function QuaBaseList(data) {
   })
 }
 
+// 质量管理 - 原材料检验参数 - 抽检比例参数列表
+export function QuaList(data) {
+  return request({
+    url: '/api/QuaBaseIqcRule/List',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 抽检比例参数列表新增
+export function QuaAdd(data) {
+  return request({
+    url: '/api/QuaBaseIqcRule/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 抽检比例参数列表修改
+export function QuaModify(data) {
+  return request({
+    url: '/api/QuaBaseIqcRule/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 抽检比例参数列表删除
+export function QuaDelete(data) {
+  return request({
+    url: '/api/QuaBaseIqcRule/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 抽检比例参数列表状态
+export function QuaModifyStatus(data) {
+  return request({
+    url: '/api/QuaBaseIqcRule/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 抽检比例参数列表状态
+export function QuaQuery(data) {
+  return request({
+    url: '/api/QuaBaseIqcRule/Query',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 抽检比例参数明细列表
+export function QuaDetailAdd(data) {
+  return request({
+    url: '/api/QuaBaseIqcRuleDetail/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 抽检比例参数明细删除
+export function QuaDetailDelete(data) {
+  return request({
+    url: '/api/QuaBaseIqcRuleDetail/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 抽检比例参数明修改
+export function QuaDetailModify(data) {
+  return request({
+    url: '/api/QuaBaseIqcRuleDetail/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 抽检比例参数明细状态
+export function QuaDetailModifyStatus(data) {
+  return request({
+    url: '/api/QuaBaseIqcRuleDetail/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 基础数据 - 产品缺陷类型列表
+export function productList(data) {
+  return request({
+    url: '/api/QuaBaseIqcDefect/List',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 基础数据 - 产品缺陷类型列表删除
+export function productDelete(data) {
+  return request({
+    url: '/api/QuaBaseIqcDefect/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 基础数据 - 产品缺陷类型列表修改
+export function productModify(data) {
+  return request({
+    url: '/api/QuaBaseIqcDefect/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 基础数据 - 产品缺陷类型列表增加
+export function productAdd(data) {
+  return request({
+    url: '/api/QuaBaseIqcDefect/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 基础数据 - 产品缺陷类型列表增加
+export function productModifyStatus(data) {
+  return request({
+    url: '/api/QuaBaseIqcDefect/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 来料检验项列表
+export function IncomingList(data) {
+  return request({
+    url: '/api/QuaBaseIqcItem/List',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 来料检验项增加
+export function IncomingAdd(data) {
+  return request({
+    url: '/api/QuaBaseIqcItem/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 来料检验项删除
+export function IncomingDelete(data) {
+  return request({
+    url: '/api/QuaBaseIqcItem/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 原材料检验参数 - 来料检验项修改
+export function IncomingModify(data) {
+  return request({
+    url: '/api/QuaBaseIqcItem/Modify',
+    method: 'post',
+    data
+  })
+}

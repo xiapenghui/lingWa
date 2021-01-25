@@ -329,7 +329,6 @@ export default {
 
     getList() {
       this.listLoading = true
-
       const params = {
         PageIndex: this.pagination.PageIndex,
         PageSize: this.pagination.PageSize,

@@ -251,9 +251,6 @@ export default {
       mainFormVisible: false, // 维修记录详情
       total: 10,
       EquTypeCodeData: [], // 设备类型下拉
-      newTaskNum: null, // 取明细
-      newEquCode: null,
-      newMtItemsCode: null,
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
@@ -416,7 +413,6 @@ export default {
     getList() {
       this.listLoading = true
       StartPlanList(this.pagination).then(res => {
-        debugger
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -427,11 +423,6 @@ export default {
     handleDetail(row) {
       this.detailLoading = true
       this.mainFormVisible = true
-
-      this.newTaskNum = row.TaskNum
-      this.newEquCode = row.EquCode
-      this.newMtItemsCode = row.MtItemsCode
-
       const params = {
         EquTypeCode: row.EquTypeCode,
         ShowBanned: false,
@@ -439,13 +430,8 @@ export default {
         PageSize: 10000
       }
       StartPlanDetailList(params).then(res => {
-        debugger
         if (res.IsPass === true) {
-          // this.detailData = res.Obj
-          // this.detailData.map(item => {
-
-          // })
-
+          this.detailData = res.Obj
           this.total = res.TotalRowCount
         }
         this.detailLoading = false
@@ -457,11 +443,6 @@ export default {
       if (this.detailData.length > 0) {
         this.detailLoading = true
         this.mainFormVisible = true
-
-        // const idList = []
-        // this.detailData.map(item => {
-        //   const newFeatid = item.id
-        //   idList.push(newFeatid)
 
         ExeMaintenance(this.detailData).then(res => {
           if (res.IsPass === true) {

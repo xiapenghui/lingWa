@@ -1,3 +1,4 @@
+
 <template>
   <div class="dashboard-editor-container"><div class="center">欢迎您登录上海灵娃MES系统</div></div>
 </template>
