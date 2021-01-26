@@ -251,8 +251,6 @@ export default {
       mainFormVisible: false, // 维修记录详情
       total: 10,
       EquTypeCodeData: [], // 设备类型下拉
-      newTaskNum: null,
-      newEquCode: null,
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       pickerOptions: {
@@ -425,8 +423,6 @@ export default {
     handleDetail(row) {
       this.detailLoading = true
       this.mainFormVisible = true
-      this.newTaskNum = row.TaskNum
-      this.newEquCode = row.EquCode
       const params = {
         EquTypeCode: row.EquTypeCode,
         ShowBanned: false,
@@ -435,15 +431,12 @@ export default {
       }
       StartPlanDetailList(params).then(res => {
         if (res.IsPass === true) {
-          // debugger
-          // const newArr = res.Obj.map(item => {
-          //   this.newEquCode
-          //   this.newName
-          // })
-
-          debugger
-          console.log('this.detailData', this.detailData)
-          // this.detailData = res.Obj
+          res.Obj.map(item=>{
+            item.TaskNum = row.TaskNum
+            item.EquCode = row.EquCode
+          })
+          this.detailData = res.Obj
+          console.log(this.detailData)
           this.total = res.TotalRowCount
         }
         this.detailLoading = false
