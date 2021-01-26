@@ -481,128 +481,212 @@ export const asyncRoutes = [
     ]
   },
 
+  // 旧的--质量管理
+  // {
+  //   path: '/QualityData',
+  //   component: Layout,
+  //   redirect: '/QualityData/BasicData',
+  //   name: 'QualityData',
+  //   meta: {
+  //     title: 'QualityData',
+  //     icon: 'tab'
+  //   },
+  //   children: [{
+  //     path: 'BasicData',
+  //     component: () => import('@/views/QualityData/BasicData/index'),
+  //     name: 'BasicData',
+  //     meta: {
+  //       title: 'BasicData'
+  //     },
+  //     redirect: '/QualityData/BasicData/MaterialDefects',
+  //     children: [{
+  //       path: 'MaterialDefects',
+  //       component: () => import('@/views/QualityData/BasicData/MaterialDefects'),
+  //       name: 'MaterialDefects',
+  //       meta: {
+  //         title: 'MaterialDefects'
+  //       }
+  //     },
+  //     {
+  //       path: 'IncomingInsp',
+  //       component: () => import('@/views/QualityData/BasicData/IncomingInsp'),
+  //       name: 'IncomingInsp',
+  //       meta: {
+  //         title: 'IncomingInsp'
+  //       }
+  //     },
+  //     {
+  //       path: 'MaterialInsp',
+  //       component: () => import('@/views/QualityData/BasicData/MaterialInsp'),
+  //       name: 'MaterialInsp',
+  //       meta: {
+  //         title: 'MaterialInsp'
+  //       }
+  //     },
+  //     {
+  //       path: 'MaterialInspDetail',
+  //       component: () => import('@/views/QualityData/BasicData/MaterialInspDetail'),
+  //       name: 'MaterialInspDetail',
+  //       meta: {
+  //         title: 'MaterialInspDetail'
+  //       }
+  //     },
+
+  //     {
+  //       path: 'ProductDefects',
+  //       component: () => import('@/views/QualityData/BasicData/ProductDefects'),
+  //       name: 'ProductDefects',
+  //       meta: {
+  //         title: 'ProductDefects'
+  //       }
+  //     },
+
+  //     {
+  //       path: 'ProductsLack',
+  //       component: () => import('@/views/QualityData/BasicData/ProductsLack'),
+  //       name: 'ProductsLack',
+  //       meta: {
+  //         title: 'ProductsLack'
+  //       }
+  //     },
+
+  //     {
+  //       path: 'ProductQuality',
+  //       component: () => import('@/views/QualityData/BasicData/ProductQuality'),
+  //       name: 'ProductQuality',
+  //       meta: {
+  //         title: 'ProductQuality'
+  //       }
+  //     },
+
+  //     {
+  //       path: 'ProductQualityDetail',
+  //       component: () => import('@/views/QualityData/BasicData/ProductQualityDetail'),
+  //       name: 'ProductQualityDetail',
+  //       meta: {
+  //         title: 'ProductQualityDetail'
+  //       }
+  //     }
+
+  //     ]
+  //   },
+  //   {
+  //     path: 'InspectionTask',
+  //     component: () => import('@/views/QualityData/InspectionTask'),
+  //     name: 'InspectionTask',
+  //     meta: {
+  //       title: 'InspectionTask'
+  //     },
+  //     redirect: '/QualityData/InspectionTask/ProcessInspec',
+  //     children: [{
+  //       path: 'ProcessInspec',
+  //       component: () => import('@/views/QualityData/InspectionTask/ProcessInspec'),
+  //       name: 'ProcessInspec',
+  //       meta: {
+  //         title: 'ProcessInspec'
+  //       }
+  //     },
+  //     {
+  //       path: 'FinishedInspec',
+  //       component: () => import('@/views/QualityData/InspectionTask/FinishedInspec'),
+  //       name: 'FinishedInspec',
+  //       meta: {
+  //         title: 'FinishedInspec'
+  //       }
+  //     }
+  //     ]
+  //   },
+  //   {
+  //     path: 'MobileInspection',
+  //     component: () => import('@/views/QualityData/MobileInspection'),
+  //     name: 'MobileInspection',
+  //     meta: {
+  //       title: 'MobileInspection'
+  //     }
+  //   }
+  //   ]
+  // },
+
   // 质量管理
   {
     path: '/QualityData',
     component: Layout,
-    redirect: '/QualityData/BasicData',
+    redirect: '/QualityData/MaterialParameter',
     name: 'QualityData',
     meta: {
       title: 'QualityData',
       icon: 'tab'
     },
     children: [{
-      path: 'BasicData',
-      component: () => import('@/views/QualityData/BasicData/index'),
-      name: 'BasicData',
+      path: 'MaterialParameter',
+      component: () => import('@/views/QualityData/MaterialParameter/index'),
+      name: 'MaterialParameter',
       meta: {
-        title: 'BasicData'
+        title: 'MaterialParameter'
       },
-      redirect: '/QualityData/BasicData/MaterialDefects',
+      redirect: '/QualityData/MaterialParameter/SamplingParam',
+      // 抽检比例参数
       children: [{
-        path: 'MaterialDefects',
-        component: () => import('@/views/QualityData/BasicData/MaterialDefects'),
-        name: 'MaterialDefects',
+        path: 'SamplingParam',
+        component: () => import('@/views/QualityData/MaterialParameter/SamplingParam'),
+        name: 'SamplingParam',
         meta: {
-          title: 'MaterialDefects'
+          title: 'SamplingParam'
         }
       },
       {
-        path: 'IncomingInsp',
-        component: () => import('@/views/QualityData/BasicData/IncomingInsp'),
-        name: 'IncomingInsp',
+        path: 'IncomingParam',
+        component: () => import('@/views/QualityData/MaterialParameter/IncomingParam'),
+        name: 'IncomingParam',
         meta: {
-          title: 'IncomingInsp'
+          title: 'IncomingParam'
         }
       },
       {
-        path: 'MaterialInsp',
-        component: () => import('@/views/QualityData/BasicData/MaterialInsp'),
-        name: 'MaterialInsp',
+        path: 'DefectParam',
+        component: () => import('@/views/QualityData/MaterialParameter/DefectParam'),
+        name: 'DefectParam',
         meta: {
-          title: 'MaterialInsp'
+          title: 'DefectParam'
         }
       },
       {
-        path: 'MaterialInspDetail',
-        component: () => import('@/views/QualityData/BasicData/MaterialInspDetail'),
-        name: 'MaterialInspDetail',
+        path: 'DefectParamDetail',
+        component: () => import('@/views/QualityData/MaterialParameter/DefectParamDetail'),
+        name: 'DefectParamDetail',
         meta: {
-          title: 'MaterialInspDetail'
-        }
-      },
-
-      {
-        path: 'ProductDefects',
-        component: () => import('@/views/QualityData/BasicData/ProductDefects'),
-        name: 'ProductDefects',
-        meta: {
-          title: 'ProductDefects'
-        }
-      },
-
-      {
-        path: 'ProductsLack',
-        component: () => import('@/views/QualityData/BasicData/ProductsLack'),
-        name: 'ProductsLack',
-        meta: {
-          title: 'ProductsLack'
-        }
-      },
-
-      {
-        path: 'ProductQuality',
-        component: () => import('@/views/QualityData/BasicData/ProductQuality'),
-        name: 'ProductQuality',
-        meta: {
-          title: 'ProductQuality'
-        }
-      },
-
-      {
-        path: 'ProductQualityDetail',
-        component: () => import('@/views/QualityData/BasicData/ProductQualityDetail'),
-        name: 'ProductQualityDetail',
-        meta: {
-          title: 'ProductQualityDetail'
+          title: 'DefectParamDetail'
         }
       }
 
       ]
     },
+
     {
-      path: 'InspectionTask',
-      component: () => import('@/views/QualityData/InspectionTask'),
-      name: 'InspectionTask',
+      path: 'ProcessParam',
+      component: () => import('@/views/QualityData/ProcessParam'),
+      name: 'ProcessParam',
       meta: {
-        title: 'InspectionTask'
+        title: 'ProcessParam'
       },
-      redirect: '/QualityData/InspectionTask/ProcessInspec',
+      redirect: '/QualityData/ProcessParam/ProcessInspec',
       children: [{
         path: 'ProcessInspec',
-        component: () => import('@/views/QualityData/InspectionTask/ProcessInspec'),
+        component: () => import('@/views/QualityData/ProcessParam/ProcessInspec'),
         name: 'ProcessInspec',
         meta: {
           title: 'ProcessInspec'
         }
       },
       {
-        path: 'FinishedInspec',
-        component: () => import('@/views/QualityData/InspectionTask/FinishedInspec'),
-        name: 'FinishedInspec',
+        path: 'ProcessDefect',
+        component: () => import('@/views/QualityData/ProcessParam/ProcessDefect'),
+        name: 'ProcessDefect',
         meta: {
-          title: 'FinishedInspec'
+          title: 'ProcessDefect'
         }
       }
       ]
-    },
-    {
-      path: 'MobileInspection',
-      component: () => import('@/views/QualityData/MobileInspection'),
-      name: 'MobileInspection',
-      meta: {
-        title: 'MobileInspection'
-      }
     }
     ]
   },

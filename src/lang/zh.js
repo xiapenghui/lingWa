@@ -60,7 +60,6 @@ export default {
     LocationRule: '库位规则',
     InventoryReport: '库存报表',
     PdaAdministra: 'PDA管理',
-    ProcessInspec: '过程检验任务',
     FinishedInspec: '成品检验任务',
     ImprotPlan: '生产计划导入',
     ControlPlan: '生产计划控制',
@@ -84,6 +83,14 @@ export default {
     DeviceResult: '设备保养结果',
     userCompany: '员工与公司关系',
     AllDetail: '全部维修历史',
+    MaterialParameter: '原材料检验参数',
+    SamplingParam: '抽检比例参数',
+    IncomingParam: '来料检验项',
+    DefectParam: '来料检缺陷项',
+    ProcessParam: '制程检验参数',
+    ProcessInspec: '制程检验项',
+    ProcessDefect: '制程检缺陷项',
+    DefectParamDetail: '抽检比例参数明细',
 
     // 截止
 

@@ -98,6 +98,15 @@ export function GetMaterial(data) {
   })
 }
 
+// 通用物料类型
+export function GetMaterialTypeTextValuePair(data) {
+  return request({
+    url: '/api/Common/GetMaterialTypeTextValuePair',
+    method: 'post',
+    data
+  })
+}
+
 // 公司信息管理列表
 export function OrganList(data) {
   return request({

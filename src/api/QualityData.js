@@ -570,3 +570,93 @@ export function IncomingModify(data) {
     data
   })
 }
+
+// 质量管理 - 制程检验参数 - 制程检验项列表
+export function QuaMakeList(data) {
+  return request({
+    url: '/api/QuaMakeInspect/List',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 制程检验参数 - 制程检验项增加
+export function QuaMakeAdd(data) {
+  return request({
+    url: '/api/QuaMakeInspect/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 制程检验参数 - 制程检验项删除
+export function QuaMakeDelete(data) {
+  return request({
+    url: '/api/QuaMakeInspect/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 制程检验参数 - 制程检验项编辑
+export function QuaMakeModify(data) {
+  return request({
+    url: '/api/QuaMakeInspect/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 制程检验参数 - 制程检验项状态
+export function QuaMakeModifyStatus(data) {
+  return request({
+    url: '/api/QuaMakeInspect/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 制程检验参数 - 制程检缺陷项列表
+export function QuaDefectList(data) {
+  return request({
+    url: '/api/QuaMakeInspectDefect/List',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 制程检验参数 - 制程检缺陷项增加
+export function QuaDefectAdd(data) {
+  return request({
+    url: '/api/QuaMakeInspectDefect/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 制程检验参数 - 制程检缺陷项删除
+export function QuaDefectDetele(data) {
+  return request({
+    url: '/api/QuaMakeInspectDefect/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 制程检验参数 - 制程检缺陷项修改
+export function QuaDefectModify(data) {
+  return request({
+    url: '/api/QuaMakeInspectDefect/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 制程检验参数 - 制程检缺陷项修改
+export function QuaDefectModifyStatus(data) {
+  return request({
+    url: '/api/QuaMakeInspectDefect/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
