@@ -43,40 +43,11 @@
       element-loading-text="拼命加载中"
       fit
       highlight-current-row
+      @selection-change="handleSelectionChange"
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="是否保养" width="120" prop="checked" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <el-checkbox v-model="scope.row.checked" />
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="保养计划单号" width="150" prop="checked" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.PlanNum" placeholder="保养计划单号" clearable />
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="计划保养日期" width="150" prop="PlanDate" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <el-date-picker v-model="scope.row.PlanDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%" />
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="计划保养人员" width="150" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <el-select v-model="scope.row.PlanUserCode" placeholder="维修人员" clearable style="width: 100%">
-            <el-option v-for="item in RepairUserData" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="计划保养描述" width="250" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.Description" placeholder="计划保养描述" style="width: 95%" clearable />
-        </template>
-      </el-table-column>
+      <el-table-column align="center" type="selection" width="150" />
 
       <el-table-column align="center" label="设备编号" width="150" prop="EquNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -104,25 +75,25 @@
 
       <el-table-column align="center" label="保养周期" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MaintainDays }}
+          {{ scope.row.MaintainDays +'  (天)' }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="预警产量" width="180" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.PreAlertTimes }}
+          {{ scope.row.PreAlertTimes +' (个)' }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="购入日期" width="150" prop="GetData" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.GetData }}
+          {{ scope.row.GetData | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="上次保养日期" width="150" prop="LastMtDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.LastMtDate }}
+          {{ scope.row.LastMtDate | substringTime }}
         </template>
       </el-table-column>
 
@@ -135,6 +106,20 @@
       <el-table-column align="center" label="预警状态" width="150" prop="MtMethod" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MtMethod }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="计划保养日期" width="150" prop="PlanDate" sortable :show-overflow-tooltip="true" fixed="right">
+        <template slot-scope="scope">
+          <el-date-picker v-model="scope.row.PlanDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%" />
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="计划保养人员" width="150" prop="MtItemsNum" sortable :show-overflow-tooltip="true" fixed="right">
+        <template slot-scope="scope">
+          <el-select v-model="scope.row.PlanUserCode" placeholder="维修人员" clearable style="width: 100%">
+            <el-option v-for="item in RepairUserData" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
         </template>
       </el-table-column>
 
@@ -223,6 +208,11 @@ export default {
       return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
     },
 
+    // 多选
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+
     // 查询
     handleSearch() {
       this.pagination.PageIndex = 1
@@ -259,21 +249,29 @@ export default {
 
     // 保存保养计划
     heandSave() {
-      this.listLoading = true
-      FormulatePlan(this.tableData).then(res => {
-        if (res.IsPass === true) {
-          this.$message({
-            message: res.MSG,
-            type: 'success'
-          })
-        } else {
-          this.$message({
-            message: res.MSG,
-            type: 'error'
-          })
-        }
-        this.listLoading = false
-      })
+      debugger
+      if (this.multipleSelection.length > 0) {
+        this.listLoading = true
+        FormulatePlan(this.multipleSelection).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              message: res.MSG,
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: res.MSG,
+              type: 'error'
+            })
+          }
+          this.listLoading = false
+        })
+      } else {
+        this.$message({
+          message: '请勾选保养项',
+          type: 'error'
+        })
+      }
     },
 
     i18n(routes) {
@@ -291,4 +289,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+  ::v-deep .el-table__header-wrapper .el-checkbox__input::after {
+    content: '是否保养';
+    color: #ffffff;
+    margin: 0 5px;
+  }
+</style>
