@@ -130,7 +130,7 @@
 
         <el-form-item label="抽检方案名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="抽检方案名称" clearable /></el-form-item>
 
-        <el-form-item label="方案描述" prop="Description"><el-input v-model.trim="ruleForm.Description" placeholder="方案描述" clearable /></el-form-item>
+        <el-form-item label="方案描述" prop="Description"><el-input v-model.trim="ruleForm.Description" placeholder="方案描述" type="textarea" /></el-form-item>
 
       </el-form>
       <div style="text-align:right;">
@@ -152,7 +152,7 @@ import { QuaList, QuaAdd, QuaDelete, QuaModify, QuaModifyStatus } from '@/api/Qu
 import Bus from '@/api/bus.js'
 const fixHeight = 260
 export default {
-  name: 'IncomingInsp',
+  name: 'SamplingParam',
   components: { Pagination },
   data() {
     return {
@@ -470,7 +470,7 @@ export default {
     // 查看检验项明细
     handleLook(row) {
       this.$router.push({
-        path: '/QualityData/BasicData/IncomingInsp',
+        path: '/QualityData/MaterialParameter/DefectParamDetail',
         query: {
           RuleCode: row.RuleCode
         }

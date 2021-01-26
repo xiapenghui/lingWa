@@ -56,9 +56,16 @@
           {{ scope.row.Name }}
         </template>
       </el-table-column>
+
       <el-table-column align="center" label="原料规格" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Spec }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="物料类型" width="150" prop="TypeCodeText" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.TypeCodeText }}
         </template>
       </el-table-column>
 
@@ -150,10 +157,17 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item label="物料类型">
+          <el-select v-model="ruleForm.TypeCode" placeholder="请选择" style="width: 100%" clearable>
+            <el-option v-for="item in BelongingData" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="是否免检">
           <el-radio v-model="ruleForm.IsInspection" :label="true">是</el-radio>
           <el-radio v-model="ruleForm.IsInspection" :label="false">否</el-radio>
         </el-form-item>
+
         <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
@@ -170,7 +184,7 @@ import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary } from '@/api/BasicData'
+import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, GetMaterialTypeTextValuePair } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'MaterialInformation',
@@ -195,6 +209,7 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
       UnitTextList: [], // 获取新增页面单位下拉
+      BelongingData: [], // 物料类型下拉
       newUnit: null,
       rules: {
         MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
@@ -259,6 +274,20 @@ export default {
     GetDictionary({ code: '0021' }).then(res => {
       if (res.IsPass === true) {
         this.UnitTextList = res.Obj
+      }
+    })
+
+    // 物料类型下拉
+    GetDictionary({ code: '0024' }).then(res => {
+      if (res.IsPass === true) {
+        this.TypeCodeList = res.Obj
+      }
+    })
+
+    // 所属大类下拉
+    GetMaterialTypeTextValuePair().then(res => {
+      if (res.IsPass === true) {
+        this.BelongingData = res.Obj
       }
     })
 

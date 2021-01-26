@@ -52,27 +52,27 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="所属工序" width="150" prop="DefectNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="所属工序" width="150" prop="ProcessName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.DefectNum }}
+          {{ scope.row.ProcessName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="物料编号" width="150" prop="Name" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="物料编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Name }}
+          {{ scope.row.MaterialNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="物料名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="物料名称" width="150" prop="MaterialName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Name }}
+          {{ scope.row.MaterialName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验项名称" width="150" prop="DefectLevelText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验项名称" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.DefectLevelText }}
+          {{ scope.row.InspectItemName }}
         </template>
       </el-table-column>
 
@@ -100,82 +100,82 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验类别" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验类别" width="150" prop="JudgmentWay" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.JudgmentWay }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="检验类型" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.InspectItemName }}
         </template>
       </el-table-column>
 
-      <el-tolumn align="center" label="检验类型" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验方法及器具" width="150" prop="MethodOrTools" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.InspectItemName }}
+          {{ scope.row.MethodOrTools }}
         </template>
-        </el-table-column>
+      </el-table-column>
 
-        <el-table-calign="center" label="检验方法及器具" width="150" prop="MethodOrTools" sortable :show-overflow-tooltip="true">
-          <template slot-scope="scope">
-            {{ scope.row.MethodOrTools }}
-          </template>
-          </el-table-column>
+      <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
+        </template>
+      </el-table-column>
 
-          <el-table-column align="center" label="备注" width="200" :show-overflow-tooltip="true">
-            <template slot-scope="scope">
-              {{ scope.row.Remark }}
-            </template>
-          </el-table-column>
+      <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
+        <template slot-scope="scope">
+          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+        </template>
+      </el-table-column>
 
-          <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
-            <template slot-scope="scope">
-              <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
-            </template>
-          </el-table-column>
+      <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.ModifyUserName }}
+        </template>
+      </el-table-column>
 
-          <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
-            <template slot-scope="scope">
-              {{ scope.row.ModifyUserName }}
-            </template>
-          </el-table-column>
+      <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.ModifyTime | substringTime }}
+        </template>
+      </el-table-column>
 
-          <el-table-column align="center" label="维护时间" width="150" prop="ModifyTime" sortable :show-overflow-tooltip="true">
-            <template slot-scope="scope">
-              {{ scope.row.ModifyTime | substringTime }}
-            </template>
-          </el-table-column>
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
+            <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
+          </el-tooltip>
 
-          <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
-            <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
-                <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
-              </el-tooltip>
+          <el-tooltip v-if="scope.row.Status == true" class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
 
-              <el-tooltip v-if="scope.row.Status == true" class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
-                <el-button type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
-              </el-tooltip>
+          <el-tooltip v-if="scope.row.Status == false" class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
+            <el-button type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
 
-              <el-tooltip v-if="scope.row.Status == false" class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
-                <el-button type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
-              </el-tooltip>
-
-              <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
-                <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
-              </el-tooltip>
-            </template>
-          </el-table-column>
-        </el-table-calign="center"></el-tolumn></el-table>
+          <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
+        </template>
+      </el-table-column>
+    </el-table>
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="所属工序" prop="ProcessName"><el-input v-model.trim="ruleForm.ProcessName" readonly placeholder="请选择" class="disActive" @focus="workingBox" /></el-form-item>
+        <el-form-item label="所属工序" prop="ProcessName">
+          <el-input v-model.trim="ruleForm.ProcessName" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
+        </el-form-item>
 
-        <el-form-item label="物料编码"><el-input v-model.trim="ruleForm.Name" placeholder="缺陷名称" clearable /></el-form-item>
+        <el-form-item label="物料编码"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="缺陷名称" clearable /></el-form-item>
 
-        <el-form-item label="物料名称"><el-input v-model.trim="ruleForm.Name" placeholder="物料名称" clearable /></el-form-item>
+        <el-form-item label="物料名称"><el-input v-model.trim="ruleForm.MaterialName" placeholder="物料名称" clearable /></el-form-item>
 
-        <el-form-item label="检验项名称"><el-input v-model.trim="ruleForm.InspectItemName" placeholder="检验项名称" clearable /></el-form-item>
-
-        <el-form-item label="物料类型" prop="TypeCodeText"><el-input v-model.trim="ruleForm.TypeCodeText" placeholder="物料类型" clearable /></el-form-item>
+        <el-form-item label="检验项名称" prop="InspectItemName"><el-input v-model.trim="ruleForm.InspectItemName" placeholder="检验项名称" clearable /></el-form-item>
 
         <el-form-item label="检验类别" prop="JudgmentWay">
           <el-select v-model="ruleForm.JudgmentWay" placeholder="检验类别" style="width: 100%" clearable>
@@ -183,15 +183,13 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="检验类型" prop="DefectLevel">
-          <el-select v-model="ruleForm.DefectLevel" placeholder="检验类型" style="width: 100%" clearable>
+        <el-form-item label="检验类型" prop="InspectType">
+          <el-select v-model="ruleForm.InspectType" placeholder="检验类型" style="width: 100%" clearable>
             <el-option v-for="item in DefectGradeData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="检验目标值">
-          <el-input-number v-model="ruleForm.StandardValue" placeholder="检验目标值" :min="0" style="width: 100%" />
-        </el-form-item>
+        <el-form-item label="检验目标值"><el-input-number v-model="ruleForm.StandardValue" placeholder="检验目标值" :min="0" style="width: 100%" /></el-form-item>
 
         <el-form-item label="规范值">
           <el-input-number v-model="ruleForm.LowerLimit" :min="0" placeholder="规范下限" style="width: 48%" />
@@ -228,8 +226,6 @@
       @handleSearchWorking="handleSearchWorking"
     />
   </div>
-
-  </div>
 </template>
 
 <script>
@@ -244,7 +240,7 @@ import WorkingName from '@/components/WorkingName' // 工序名称
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
-  name: 'ProductsLack',
+  name: 'ProcessInspec',
   components: { Pagination, WorkingName },
   data() {
     return {
@@ -274,15 +270,16 @@ export default {
       workingBoxLoading: false, // 工序搜索loading
       workingFormVisible: false, // input工序名称弹窗
       InspectWayData: [], // 检验类别
+      DefectGradeData: [], // 检验类型
       UnitTextList: [], // 单位下拉
       dialogType: 'new',
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       rules: {
-        DefectNum: [{ required: true, message: '请输入缺陷编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入缺陷名称', trigger: 'blur' }],
-        InspectItemName: [{ required: true, message: '请输入检验项', trigger: 'blur' }],
-        TypeCodeText: [{ required: true, message: '请选择物料类型', trigger: 'blur' }]
+        ProcessName: [{ required: true, message: '请选择所属工序', trigger: 'blur' }],
+        InspectItemName: [{ required: true, message: '请输入检验项名称', trigger: 'blur' }],
+        JudgmentWay: [{ required: true, message: '请选择检验类别', trigger: 'change' }],
+        InspectType: [{ required: true, message: '请选择检验类型', trigger: 'change' }]
       },
       parentMsg: this.$t('permission.importCompany')
       // content1: this.$t('permission.companyNo'),
@@ -308,11 +305,11 @@ export default {
         }, 400)
       }
     },
-    'ruleForm.DefectNum': function(val) {
+    'ruleForm.MaterialNum': function(val) {
       if (val === '' || val === undefined) {
         return
       } else {
-        this.ruleForm.DefectNum = this.filterInput(val)
+        this.ruleForm.MaterialNum = this.filterInput(val)
       }
     },
     // 监听data属性中英文切换问题
@@ -345,6 +342,13 @@ export default {
       }
     })
 
+    // 检验类型
+    GetDictionary({ code: '0024' }).then(res => {
+      if (res.IsPass === true) {
+        this.DefectGradeData = res.Obj
+      }
+    })
+
     // 单位下拉
     GetDictionary({ code: '0021' }).then(res => {
       if (res.IsPass === true) {
@@ -372,10 +376,10 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        DefectNum: [{ required: true, message: '请输入缺陷编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入缺陷名称', trigger: 'blur' }],
-        InspectItemName: [{ required: true, message: '请输入检验项', trigger: 'blur' }],
-        TypeCodeText: [{ required: true, message: '请选择物料类型', trigger: 'blur' }]
+        ProcessName: [{ required: true, message: '请选择所属工序', trigger: 'blur' }],
+        InspectItemName: [{ required: true, message: '请输入检验项名称', trigger: 'blur' }],
+        JudgmentWay: [{ required: true, message: '请选择检验类别', trigger: 'change' }],
+        InspectType: [{ required: true, message: '请选择检验类型', trigger: 'change' }]
       }
     },
 

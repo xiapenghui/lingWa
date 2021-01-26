@@ -731,3 +731,49 @@ export function stationStatus(data) {
     data
   })
 }
+
+// 基础数据 - 物料信息管理 - 物料类型列表
+export function MaterialTypeList(data) {
+  return request({
+    url: '/api/BaseMaterialType/List',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 物料信息管理 - 物料类型新增
+export function MaterialTypeAdd(data) {
+  return request({
+    url: '/api/BaseMaterialType/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 物料信息管理 - 物料类型删除
+export function MaterialTypeDelete(data) {
+  return request({
+    url: '/api/BaseMaterialType/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 物料信息管理 - 物料类型编辑
+export function MaterialTypeModify(data) {
+  return request({
+    url: '/api/BaseMaterialType/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 物料信息管理 - 物料类型状态
+export function MaterialTypeModifyStatus(data) {
+  return request({
+    url: '/api/BaseMaterialType/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+

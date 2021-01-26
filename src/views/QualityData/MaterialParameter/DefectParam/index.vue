@@ -193,7 +193,7 @@ import MaterialName from '@/components/MaterialName' // 原料名称
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
-  name: 'ProductsLack',
+  name: 'DefectParam',
   components: { Pagination, MaterialName },
   data() {
     return {

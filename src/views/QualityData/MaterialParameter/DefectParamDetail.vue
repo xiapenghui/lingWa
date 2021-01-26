@@ -60,15 +60,11 @@
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="抽检方案编号" width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.RuleNum }}
-        </template>
+        {{ this.newNumber }}
       </el-table-column>
 
       <el-table-column align="center" label="抽检方案名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.Name }}
-        </template>
+        {{ this.newName }}
       </el-table-column>
 
       <el-table-column align="center" label="批量范围从" width="150" prop="StartQty" sortable :show-overflow-tooltip="true">
@@ -173,7 +169,7 @@ import { QuaQuery, QuaDetailAdd, QuaDetailDelete, QuaDetailModify, QuaDetailModi
 import Bus from '@/api/bus.js'
 const fixHeight = 260
 export default {
-  name: 'IncomingInsp',
+  name: 'DefectParamDetail',
   components: { Pagination },
   data() {
     return {
@@ -191,6 +187,8 @@ export default {
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
+      newNumber: null,
+      newName: null,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
       addShow: true, // 继续新增
@@ -343,6 +341,8 @@ export default {
       }
       QuaQuery(params).then(res => {
         this.tableData = res.Obj.DetailList
+        this.newNumber = res.Obj.RuleNum
+        this.newName = res.Obj.Name
         this.total = res.TotalRowCount
         this.listLoading = false
       })

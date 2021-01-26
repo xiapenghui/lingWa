@@ -234,7 +234,7 @@ import TestName from '@/components/TestName' // 原料名称
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
-  name: 'ProductsLack',
+  name: 'IncomingParam',
   components: { Pagination, MaterialName, TestName },
   data() {
     return {
