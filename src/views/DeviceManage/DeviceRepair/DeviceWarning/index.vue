@@ -28,7 +28,7 @@
           </el-col>
         </el-col>
 
-        <el-col :span="5">
+        <!--   <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="预警状态" placement="top-start"><label class="radio-label">预警状态:</label></el-tooltip>
           </el-col>
@@ -37,7 +37,7 @@
               <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
-        </el-col>
+        </el-col> -->
 
         <el-col :span="4">
           <el-col :span="24">
@@ -92,13 +92,13 @@
 
       <el-table-column align="center" label="购入日期" width="180" prop="GetData" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.GetData }}
+          {{ scope.row.GetData | substringTime }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="上次保养日期" width="180" prop="LastMtDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.LastMtDate }}
+          {{ scope.row.LastMtDate | substringTime }}
         </template>
       </el-table-column>
 

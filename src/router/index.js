@@ -260,24 +260,35 @@ export const asyncRoutes = [
           title: 'MaterialManagement'
 
         },
-        redirect: '/BasicData/MaterialManagement/MaterialInformation',
-        children: [{
-          path: 'MaterialInformation',
-          component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
-          name: 'MaterialInformation',
-          meta: {
-            title: 'MaterialInformation'
+        redirect: '/BasicData/MaterialManagement/MaterialType',
+        children: [
+          {
+            path: 'MaterialType',
+            component: () => import('@/views/BasicData/MaterialManagement/MaterialType'),
+            name: 'MaterialType',
+            meta: {
+              title: 'MaterialType'
 
+            }
+          },
+
+          {
+            path: 'MaterialInformation',
+            component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
+            name: 'MaterialInformation',
+            meta: {
+              title: 'MaterialInformation'
+
+            }
+          },
+          {
+            path: 'ProductMaintenance',
+            component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
+            name: 'ProductMaintenance',
+            meta: {
+              title: 'ProductMaintenance'
+            }
           }
-        },
-        {
-          path: 'ProductMaintenance',
-          component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
-          name: 'ProductMaintenance',
-          meta: {
-            title: 'ProductMaintenance'
-          }
-        }
         ]
       },
 

@@ -76,9 +76,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="物料类型" width="150" prop="TypeCodeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="物料类型" width="150" prop="TypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.TypeCodeText }}
+          {{ scope.row.TypeName }}
         </template>
       </el-table-column>
 
@@ -143,7 +143,7 @@
 
         <el-form-item label="检验项" prop="InspectItemName"><el-input v-model.trim="ruleForm.InspectItemName" placeholder="检验项" clearable /></el-form-item>
 
-        <el-form-item label="物料类型" prop="TypeCodeText"><el-input v-model.trim="ruleForm.TypeCodeText" readonly placeholder="请选择" class="disActive" @focus="materialBox" /></el-form-item>
+        <el-form-item label="物料类型" prop="TypeName"><el-input v-model.trim="ruleForm.TypeName" readonly placeholder="请选择" class="disActive" @focus="materialBox" /></el-form-item>
 
         <el-form-item label="缺陷类型" prop="DefectType">
           <el-select v-model="ruleForm.DefectType" placeholder="缺陷类型" style="width: 100%" clearable>
@@ -234,7 +234,7 @@ export default {
         DefectNum: [{ required: true, message: '请输入缺陷编号', trigger: 'blur' }],
         Name: [{ required: true, message: '请输入缺陷名称', trigger: 'blur' }],
         InspectItemName: [{ required: true, message: '请输入检验项', trigger: 'blur' }],
-        TypeCodeText: [{ required: true, message: '请选择物料类型', trigger: 'blur' }]
+        TypeName: [{ required: true, message: '请选择物料类型', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
       // content1: this.$t('permission.companyNo'),
@@ -327,7 +327,7 @@ export default {
         DefectNum: [{ required: true, message: '请输入缺陷编号', trigger: 'blur' }],
         Name: [{ required: true, message: '请输入缺陷名称', trigger: 'blur' }],
         InspectItemName: [{ required: true, message: '请输入检验项', trigger: 'blur' }],
-        TypeCodeText: [{ required: true, message: '请选择物料类型', trigger: 'blur' }]
+        TypeName: [{ required: true, message: '请选择物料类型', trigger: 'blur' }]
       }
     },
 
@@ -560,8 +560,7 @@ export default {
     },
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
-      debugger
-      this.$set(this.ruleForm, 'TypeCodeText', row.TypeCodeText)
+      this.$set(this.ruleForm, 'TypeName', row.TypeName)
       this.ruleForm.TypeCode = row.TypeCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()

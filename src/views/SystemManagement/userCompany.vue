@@ -50,26 +50,20 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" :label="$t('permission.userName')" width="150" prop="AccountName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.userName')" width="200" prop="AccountName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.AccountName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('permission.fullName')" width="150" prop="NameCN" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.fullName')" width="200" prop="NameCN" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.NameCN }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.company')" width="250" prop="OrgFullName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.company')" prop="OrgFullName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.OrgFullName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" :label="$t('permission.description')" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
         </template>
       </el-table-column>
 
@@ -115,12 +109,12 @@
 </template>
 
 <script>
-import '../../styles/commentBox.scss';
-import '../../styles/scrollbar.css';
-import i18n from '@/lang';
-import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
-import { companyList, OrgRangeList, UserCompany, OrgRangeModify } from '@/api/role';
-const fixHeight = 220;
+import '../../styles/commentBox.scss'
+import '../../styles/scrollbar.css'
+import i18n from '@/lang'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { companyList, OrgRangeList, UserCompany, OrgRangeModify } from '@/api/role'
+const fixHeight = 220
 export default {
   name: 'UserCompany',
   components: { Pagination },
@@ -164,19 +158,19 @@ export default {
       content7: this.$t('permission.passwords'),
       content8: this.$t('permission.roleUser'),
       content9: this.$t('permission.description')
-    };
+    }
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
     OrgCodes(val) {
@@ -184,42 +178,42 @@ export default {
     },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
-      this.content1 = this.$t('permission.userName');
-      this.content2 = this.$t('permission.fullName');
-      this.content3 = this.$t('permission.containInfo');
-      this.content4 = this.$t('permission.company');
-      this.content5 = this.$t('permission.department');
-      this.content6 = this.$t('permission.password');
-      this.content7 = this.$t('permission.passwords');
-      this.content8 = this.$t('permission.roleUser');
-      this.content9 = this.$t('permission.description');
-      this.setFormRules();
+      this.content1 = this.$t('permission.userName')
+      this.content2 = this.$t('permission.fullName')
+      this.content3 = this.$t('permission.containInfo')
+      this.content4 = this.$t('permission.company')
+      this.content5 = this.$t('permission.department')
+      this.content6 = this.$t('permission.password')
+      this.content7 = this.$t('permission.passwords')
+      this.content8 = this.$t('permission.roleUser')
+      this.content9 = this.$t('permission.description')
+      this.setFormRules()
     }
   },
   created() {
     // 监听表格高度
-    const that = this;
+    const that = this
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight;
-      })();
-    };
+        that.tableHeight = window.innerHeight - fixHeight
+      })()
+    }
     // Mock: get all routes and roles list from server
-    this.getList();
-    this.setFormRules();
+    this.getList()
+    this.setFormRules()
   },
   mounted() {
     // 获取公司部门的信息
     companyList().then(res => {
       if (res.IsPass === true) {
-        this.companyData = res.Obj.OrgList;
+        this.companyData = res.Obj.OrgList
       }
-    });
+    })
   },
   methods: {
     // 分页
     table_index(index) {
-      return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1;
+      return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
     },
 
     // 表单验证切换中英文
@@ -228,96 +222,94 @@ export default {
         NameCN: [{ required: true, message: this.$t('permission.userNameInfo'), trigger: 'blur' }],
         AccountName: [{ required: true, message: this.$t('permission.fullNamesInfo'), trigger: 'blur' }],
         OrgCodes: [{ required: true, message: '请选择公司', trigger: 'change' }]
-      };
+      }
     },
 
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1;
-      this.getList();
+      this.pagination.PageIndex = 1
+      this.getList()
     },
 
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       UserCompany(this.pagination).then(res => {
-        this.tableData = res.Obj;
-        this.total = res.TotalRowCount;
-        this.listLoading = false;
-      });
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`);
+        route.title = i18n.t(`route.${route.title}`)
         if (route.children) {
-          route.children = this.i18n(route.children);
+          route.children = this.i18n(route.children)
         }
-        return route;
-      });
-      return app;
+        return route
+      })
+      return app
     },
 
     // 编辑角色
     handleEdit(row) {
-      this.dialogType = 'edit';
-      this.isPassword = false;
-      this.dialogFormVisible = true;
+      this.dialogType = 'edit'
+      this.isPassword = false
+      this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate();
-      });
-      this.ruleForm = JSON.parse(JSON.stringify(row));
+        this.$refs.ruleForm.clearValidate()
+      })
+      this.ruleForm = JSON.parse(JSON.stringify(row))
       // 编辑获取设置公司
       OrgRangeList({ UserCode: row.UserCode }).then(res => {
-        const self = this;
+        const self = this
         if (res.IsPass === true) {
-          self.OrgCodes = [];
-          self.companyTree = res.Obj;
+          self.OrgCodes = []
+          self.companyTree = res.Obj
           res.Obj.map(item => {
             if (item.checked) {
-              self.OrgCodes.push(item.value);
+              self.OrgCodes.push(item.value)
             }
-          });
+          })
         }
-      });
+      })
     },
 
     // 编辑成功
     submitForm(formName) {
-
       this.$refs[formName].validate(valid => {
         if (valid) {
-
           if (this.dialogType === 'edit') {
-            this.editLoading = true;
+            this.editLoading = true
             OrgRangeModify(this.ruleForm).then(res => {
-              debugger;
+              debugger
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
-                });
-                this.getList();
+                })
+                this.getList()
               } else {
                 this.$message({
                   type: 'error',
                   message: res.MSG
-                });
+                })
               }
-              this.editLoading = false;
-              this.dialogFormVisible = false;
-            });
+              this.editLoading = false
+              this.dialogFormVisible = false
+            })
           }
         } else {
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          });
-          return false;
+          })
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

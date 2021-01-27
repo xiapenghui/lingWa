@@ -134,7 +134,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
@@ -520,7 +520,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          IncomingDelete({ DefectCode: row.DefectCode }).then(res => {
+          IncomingDelete({ ItemCode: row.ItemCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',

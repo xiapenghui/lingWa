@@ -19,13 +19,6 @@
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="保养计划单号" placement="top-start"><label class="radio-label">保养计划单号:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.PlanNum" placeholder="保养计划单号" clearable /></el-col>
-        </el-col>
-
-        <el-col :span="5">
-          <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="设备类型" placement="top-start"><label class="radio-label">设备类型:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
@@ -35,19 +28,6 @@
           </el-col>
         </el-col>
 
-        <el-col :span="3">
-          <el-col :span="24">
-            <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
-          </el-col>
-        </el-col>
-
-        <el-col :span="1">
-          <el-button v-if="btnShow" class="btnSearchUP" type="primary" size="mini" icon="el-icon-d-arrow-left" circle @click="toggle('0')" />
-          <el-button v-else class="btnSearchDown" type="primary" size="mini" icon="el-icon-d-arrow-left" circle @click="toggle('1')" />
-        </el-col>
-      </el-row>
-
-      <el-row v-show="showSearch" :gutter="20" style="margin-top: 10px;">
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="保养时间" placement="top-start"><label class="radio-label">保养时间:</label></el-tooltip>
@@ -69,6 +49,13 @@
             />
           </el-col>
         </el-col>
+
+        <el-col :span="4">
+          <el-col :span="24">
+            <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+          </el-col>
+        </el-col>
+
       </el-row>
     </div>
 
@@ -231,15 +218,12 @@ export default {
       tableData: [],
       ruleForm: {}, // 编辑弹窗
       CreateTime: null,
-      btnShow: true, // 互斥按钮
-      showSearch: false, // 折叠显示隐藏
       pagination: {
         PageIndex: 1,
         PageSize: 30,
         EquNum: undefined,
         EquName: undefined,
         EquTypeCode: undefined,
-        PlanNum: undefined,
         importDate: [],
         ShowBanned: false
       },
@@ -383,26 +367,6 @@ export default {
         this.pagination.PlanDateStart = this.pagination.importDate[0]
         this.pagination.PlanDateEnd = this.pagination.importDate[1]
       }
-    },
-
-    // 折叠按钮互斥
-    toggle(status) {
-      if (status === '0') {
-        if (window.innerHeight < 800) {
-          this.tableHeight = '65vh'
-        } else {
-          this.tableHeight = '72vh'
-        }
-      }
-      if (status === '1') {
-        if (window.innerHeight < 800) {
-          this.tableHeight = '69vh'
-        } else {
-          this.tableHeight = '76vh'
-        }
-      }
-      this.btnShow = !this.btnShow
-      this.showSearch = !this.showSearch
     },
 
     // 查询

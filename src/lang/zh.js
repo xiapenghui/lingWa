@@ -91,6 +91,7 @@ export default {
     ProcessInspec: '制程检验项',
     ProcessDefect: '制程检缺陷项',
     DefectParamDetail: '抽检比例参数明细',
+    MaterialType: '物料类型',
 
     // 截止
 

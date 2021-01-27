@@ -2,6 +2,14 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
+
+        <el-col :span="6">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="设备保养编号" placement="top-start"><label class="radio-label">设备保养编号:</label></el-tooltip>
+          </el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.MtItemsNum" placeholder="设备保养编号" clearable /></el-col>
+        </el-col>
+
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="设备类型" placement="top-start"><label class="radio-label">设备类型:</label></el-tooltip>
@@ -11,13 +19,6 @@
               <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
-        </el-col>
-
-        <el-col :span="6">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="设备保养编号" placement="top-start"><label class="radio-label">设备保养编号:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.MtItemsNum" placeholder="设备保养编号" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
