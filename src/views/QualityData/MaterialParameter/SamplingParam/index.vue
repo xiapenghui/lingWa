@@ -66,9 +66,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="抽检方案名称" width="200" prop="RuleNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="抽检方案名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RuleNum }}
+          {{ scope.row.Name }}
         </template>
       </el-table-column>
 
@@ -469,6 +469,7 @@ export default {
 
     // 查看检验项明细
     handleLook(row) {
+      debugger
       this.$router.push({
         path: '/QualityData/MaterialParameter/DefectParamDetail',
         query: {

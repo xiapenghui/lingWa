@@ -448,7 +448,7 @@ export function QuaModifyStatus(data) {
 // 质量管理 - 原材料检验参数 - 抽检比例参数列表状态
 export function QuaQuery(data) {
   return request({
-    url: '/api/QuaBaseIqcRule/Query',
+    url: '/api/QuaBaseIqcRuleDetail/List',
     method: 'post',
     data
   })

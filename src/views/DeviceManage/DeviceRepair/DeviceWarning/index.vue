@@ -78,13 +78,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养周期" width="180" prop="MaintainDays" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养周期 (天)" width="180" prop="MaintainDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaintainDays }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警产量" width="180" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警产量 (个)" width="180" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PreAlertTimes }}
         </template>
@@ -102,7 +102,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="实际产量" width="180" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="实际产量 (个)" width="180" prop="MtMethod" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MtMethod }}
         </template>

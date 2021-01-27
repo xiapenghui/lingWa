@@ -73,15 +73,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养周期" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养周期 (天)" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MaintainDays +'  (天)' }}
+          {{ scope.row.MaintainDays }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警产量" width="180" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警产量 (个)" width="180" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.PreAlertTimes +' (个)' }}
+          {{ scope.row.PreAlertTimes }}
         </template>
       </el-table-column>
 
@@ -140,6 +140,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import { GetSysUserTextValuePair } from '@/api/BasicData'
 import { GetValuePair, EquPlanList, FormulatePlan } from '@/api/DeviceData'
 const fixHeight = 220
+import Bus from '@/api/bus.js'
 export default {
   name: 'IncomingInsp',
   components: { Pagination },
@@ -249,7 +250,6 @@ export default {
 
     // 保存保养计划
     heandSave() {
-      debugger
       if (this.multipleSelection.length > 0) {
         this.listLoading = true
         FormulatePlan(this.multipleSelection).then(res => {
@@ -272,6 +272,7 @@ export default {
           type: 'error'
         })
       }
+      Bus.$emit('getList')
     },
 
     i18n(routes) {

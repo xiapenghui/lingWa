@@ -101,13 +101,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养周期" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养周期  (天)" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaintainDays }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警产量" width="150" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警产量  (个)" width="150" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PreAlertTimes }}
         </template>
@@ -115,11 +115,11 @@
 
       <el-table-column align="center" label="上次保养日期" width="150" prop="LastMtDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.LastMtDate }}
+          {{ scope.row.LastMtDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="实际产量" width="150" prop="Actual" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="实际产量   (个)" width="150" prop="Actual" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Actual }}
         </template>
@@ -203,6 +203,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetValuePair, StartPlanList, StartPlanDetailList, ExeMaintenance } from '@/api/DeviceData'
+import Bus from '@/api/bus.js'
 const fixHeight = 220
 const fixHeightBox = 350
 export default {
@@ -331,6 +332,11 @@ export default {
 
     // 默认携带设备编号跳转
     this.getList()
+
+    const self = this
+    Bus.$on('getList', function() {
+      self.getList()
+    })
 
     // Mock: get all routes and roles list from server
   },

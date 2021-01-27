@@ -59,9 +59,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="物料类型" width="150" prop="MaterialTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="物料类型" width="150" prop="TypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MaterialTypeName }}
+          {{ scope.row.TypeName }}
         </template>
       </el-table-column>
 

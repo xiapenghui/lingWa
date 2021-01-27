@@ -1,26 +1,20 @@
 <template>
   <div class="app-container">
-    <div class="search">
+    <!-- <div class="search">
       <el-row :gutter="20">
+
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="抽检编号" placement="top-start"><label class="radio-label">抽检编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.RuleNum" placeholder="抽检编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.RuleNum" placeholder="抽检编号" disabled /></el-col>
         </el-col>
 
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="抽检名称" placement="top-start"><label class="radio-label">抽检名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="抽检名称" clearable /></el-col>
-        </el-col>
-
-        <el-col :span="5">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="方案描述" placement="top-start"><label class="radio-label">方案描述:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.Description" placeholder="方案描述" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="抽检名称" disabled /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -37,7 +31,7 @@
           </el-col>
         </el-col>
       </el-row>
-    </div>
+    </div> -->
 
     <div class="rightBtn">
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增</el-button>
@@ -59,12 +53,16 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="抽检方案编号" width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
-        {{ this.newNumber }}
+      <el-table-column align="center" label="抽检方案编号" min-width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.RuleNum }}
+        </template>
       </el-table-column>
 
-      <el-table-column align="center" label="抽检方案名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
-        {{ this.newName }}
+      <el-table-column align="center" label="抽检方案名称" min-width="150" prop="Name" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Name }}
+        </template>
       </el-table-column>
 
       <el-table-column align="center" label="批量范围从" width="150" prop="StartQty" sortable :show-overflow-tooltip="true">
@@ -72,11 +70,13 @@
           {{ scope.row.StartQty }}
         </template>
       </el-table-column>
+
       <el-table-column align="center" label="批量范围至" width="150" prop="EndQty" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EndQty }}
         </template>
       </el-table-column>
+
       <el-table-column align="center" label="采样数量" width="150" prop="SampleQty" sortable>
         <template slot-scope="scope">
           {{ scope.row.SampleQty }}
@@ -95,12 +95,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="抽检方案描述" width="200" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" :label="$t('permission.user')" width="150" prop="ModifyUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ModifyUserName }}
@@ -113,19 +107,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
-
+          <!--
           <el-tooltip v-if="scope.row.Status == true" class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip v-if="scope.row.Status == false" class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
             <el-button type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
-          </el-tooltip>
+          </el-tooltip> -->
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
@@ -136,9 +130,13 @@
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')">
+    <el-dialog
+      v-dialogDrag
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')"
+    >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-
         <el-form-item label="批量范围" prop="StartQty">
           <el-input-number v-model="ruleForm.StartQty" :min="0" placeholder="批量范围从" style="width: 48%" />
           -----
@@ -148,7 +146,6 @@
         <el-form-item label="采样数量" prop="SampleQty"><el-input-number v-model="ruleForm.SampleQty" placeholder="采样数量" :min="0" style="width: 100%" /></el-form-item>
 
         <el-form-item label="拒绝数量" prop="RejQty"><el-input-number v-model="ruleForm.RejQty" placeholder="拒绝数量" :min="0" style="width: 100%" /></el-form-item>
-
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -167,7 +164,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { QuaQuery, QuaDetailAdd, QuaDetailDelete, QuaDetailModify, QuaDetailModifyStatus } from '@/api/QualityData'
 import Bus from '@/api/bus.js'
-const fixHeight = 260
+const fixHeight = 190
 export default {
   name: 'DefectParamDetail',
   components: { Pagination },
@@ -177,18 +174,15 @@ export default {
       ruleForm: {}, // 编辑弹窗
       pagination: {
         PageIndex: 1,
-        PageSize: 30,
-        RuleNum: undefined,
-        Name: undefined,
-        Description: undefined,
-        ShowBanned: false
+        PageSize: 30
+        // RuleNum: undefined,
+        // Name: undefined,
+        // ShowBanned: false
       },
       RuleCode: this.$route.query.RuleCode,
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
-      newNumber: null,
-      newName: null,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
       addShow: true, // 继续新增
@@ -340,9 +334,7 @@ export default {
         RuleCode: this.$route.query.RuleCode
       }
       QuaQuery(params).then(res => {
-        this.tableData = res.Obj.DetailList
-        this.newNumber = res.Obj.RuleNum
-        this.newName = res.Obj.Name
+        this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
       })

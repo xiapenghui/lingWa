@@ -72,21 +72,15 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="保养计划单号" width="150" prop="RowCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划保养日期" width="150" prop="PlanDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RowCode }}
+          {{ scope.row.PlanDate | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划保养日期" width="150" prop="RepairDate" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划保养人员" width="150" prop="PlanUserCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RepairDate }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="计划保养人员" width="150" prop="EquNum" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.EquNum }}
+          {{ scope.row.PlanUserCode }}
         </template>
       </el-table-column>
 
@@ -96,39 +90,39 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备编号" width="150" prop="EquName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备编号" width="180" prop="EquNum" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.EquNum }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="设备名称" width="180" prop="EquName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EquName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备名称" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备型号" min-width="180" prop="EquTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EquTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备型号" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备类型" min-width="180" prop="EquTypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeText }}
+          {{ scope.row.EquTypeName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备类型" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="上次保养日期" width="150" prop="LastMtDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeText }}
+          {{ scope.row.LastMtDate |substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="上次保养日期" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="购入日期" width="150" prop="GetData" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeText }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="购入日期" width="150" prop="EquTypeText" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.EquTypeText }}
+          {{ scope.row.GetData | substringTime }}
         </template>
       </el-table-column>
 
