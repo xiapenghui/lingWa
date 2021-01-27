@@ -77,9 +77,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划保养人员" width="150" prop="PlanUserCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划保养人员" width="150" prop="PlanUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.PlanUserCode }}
+          {{ scope.row.PlanUserName }}
         </template>
       </el-table-column>
 

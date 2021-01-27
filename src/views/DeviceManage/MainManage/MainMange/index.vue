@@ -310,6 +310,11 @@ export default {
                 type: 'success',
                 message: '新增成功'
               })
+              const self = this
+              setTimeout(function() {
+                self.tableData = []
+                self.ruleForm = {}
+              }, 1000)
             } else {
               this.$message({
                 type: 'error',
@@ -319,8 +324,6 @@ export default {
             const self = this
             setTimeout(function() {
               self.formLoading = false
-              self.tableData = []
-              self.ruleForm = {}
             }, 1000)
           })
         } else {

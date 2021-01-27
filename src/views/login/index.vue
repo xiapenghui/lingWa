@@ -316,6 +316,16 @@ $light_gray: #ffffff;
     right: 0;
     bottom: 6px;
   }
+ .login-form  ::v-deep input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
+      -webkit-text-fill-color: #ededed !important;
+      -webkit-box-shadow: 0 0 0px 1000px transparent  inset !important;
+      background-color:transparent;
+      background-image: none;
+      transition: background-color 50000s ease-in-out 0s;
+  }
+   .login-form  ::v-deep input {
+      background-color:transparent;
+  }
 
   @media only screen and (max-width: 470px) {
     .thirdparty-button {

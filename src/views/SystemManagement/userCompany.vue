@@ -114,6 +114,7 @@ import '../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { companyList, OrgRangeList, UserCompany, OrgRangeModify } from '@/api/role'
+import Bus from '@/api/bus.js'
 const fixHeight = 220
 export default {
   name: 'UserCompany',
@@ -271,6 +272,7 @@ export default {
               self.OrgCodes.push(item.value)
             }
           })
+          Bus.$emit('companyList')
         }
       })
     },

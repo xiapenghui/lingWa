@@ -2,7 +2,6 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-
         <el-col :span="5">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="设备编号" placement="top-start"><label class="radio-label">设备编号:</label></el-tooltip>
@@ -55,7 +54,6 @@
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
           </el-col>
         </el-col>
-
       </el-row>
     </div>
 
@@ -78,15 +76,21 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="计划保养人员" width="150" prop="PlanUserCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="计划保养人员" width="150" prop="PlanUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.PlanUserCode }}
+          {{ scope.row.PlanUserName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养日期" width="150" prop="EquName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养人员" width="150" prop="ActMtUserName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquName }}
+          {{ scope.row.ActMtUserName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="保养日期" width="150" prop="ActMtDate" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.ActMtDate | substringTime }}
         </template>
       </el-table-column>
 
@@ -102,9 +106,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备型号" min-width="180" prop="EquTypeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备型号" min-width="180" prop="Spec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeText }}
+          {{ scope.row.Spec }}
         </template>
       </el-table-column>
 
@@ -116,7 +120,7 @@
 
       <el-table-column align="center" label="上次保养日期" width="150" prop="LastMtDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.LastMtDate |substringTime }}
+          {{ scope.row.LastMtDate | substringTime }}
         </template>
       </el-table-column>
 
@@ -152,46 +156,38 @@
       >
         <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-        <el-table-column align="center" label="保养计划单号" width="200" prop="RowCode" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="设备保养项编号" width="200" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.RowCode }}
+            {{ scope.row.MtItemsNum }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="设备保养项编号" width="200" prop="EquNum" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="设备保养项名称" width="200" prop="MtItemsName" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.EquNum }}
+            {{ scope.row.MtItemsName }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="设备保养项名称" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="保养工具" width="200" prop="MtMethod" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.SpareName }}
+            {{ scope.row.MtMethod }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="保养工具" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="保养方法" width="200" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.SpareName }}
+            {{ scope.row.MtTool }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="是否执行保养" width="150" sortable>
+        <el-table-column align="center" label="备注" min-width="200" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.SpareName }}
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="保养方法" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
-            {{ scope.row.SpareName }}
+            {{ scope.row.Remark }}
           </template>
         </el-table-column>
 
       </el-table>
-
     </el-dialog>
-
   </div>
 </template>
 
@@ -379,13 +375,14 @@ export default {
       })
     },
 
-    // 查看维修详情
+    // 查看保养详情
     handleDetail(row) {
+      debugger
       this.detailLoading = true
       this.mainFormVisible = true
       const params = {
         TaskNum: row.TaskNum,
-        EquTCode: row.EquTCode,
+        EquCode: row.EquCode,
         ShowBanned: false,
         PageIndex: 0,
         PageSize: 10000

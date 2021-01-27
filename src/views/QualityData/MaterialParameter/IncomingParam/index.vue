@@ -228,7 +228,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary, MaterialList } from '@/api/BasicData'
-import { IncomingList, IncomingAdd, IncomingDelete, IncomingModify, QuaList } from '@/api/QualityData'
+import { IncomingList, IncomingAdd, IncomingDelete, IncomingModify, QuaQuery } from '@/api/QualityData'
 import MaterialName from '@/components/MaterialName' // 原料名称
 import TestName from '@/components/TestName' // 原料名称
 const fixHeight = 260
@@ -580,7 +580,7 @@ export default {
     testBox() {
       this.testFormVisible = true
       this.testBoxLoading = true
-      QuaList(this.paginationSearchTest).then(res => {
+      QuaQuery(this.paginationSearchTest).then(res => {
         if (res.IsPass === true) {
           this.testData = res.Obj
           this.testBoxLoading = false

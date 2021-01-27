@@ -19,8 +19,8 @@
             <el-tooltip class="item" effect="dark" :enterable="false" content="预警状态" placement="top-start"><label class="radio-label">预警状态:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.EquTypeCode" clearable style="width: 100%">
-              <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
+            <el-select v-model="pagination.WarningType" clearable style="width: 100%">
+              <el-option v-for="item in WarningTypeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
         </el-col>
@@ -111,7 +111,7 @@
 
       <el-table-column align="center" label="计划保养日期" width="150" prop="PlanDate" sortable :show-overflow-tooltip="true" fixed="right">
         <template slot-scope="scope">
-          <el-date-picker v-model="scope.row.PlanDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%" />
+          <el-date-picker v-model="scope.row.PlanDate" :picker-options="expireTimeOption" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 100%" />
         </template>
       </el-table-column>
 
@@ -157,8 +157,14 @@ export default {
       },
       listLoading: false,
       total: 10,
+      expireTimeOption: {
+        disabledDate(date) {
+          return date.getTime() <= Date.now() - 8.64e7
+        }
+      },
       EquTypeCodeData: [], // 设备类型下拉
       RepairUserData: [], // 计划保养人员
+      WarningTypeData: [], // 预警状态
       tableHeight: window.innerHeight - fixHeight // 表格高度
     }
   },

@@ -94,25 +94,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="单位" width="150" prop="Unit" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="单位" width="150" prop="UnitText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Unit }}
+          {{ scope.row.UnitText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验类别" width="150" prop="JudgmentWay" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验类别" width="150" prop="JudgmentWayText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.JudgmentWay }}
+          {{ scope.row.JudgmentWayText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验类型" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验类型" width="150" prop="InspectTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.InspectItemName }}
+          {{ scope.row.InspectTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验方法及器具" width="150" prop="MethodOrTools" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验方法及器具" width="200" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MethodOrTools }}
         </template>

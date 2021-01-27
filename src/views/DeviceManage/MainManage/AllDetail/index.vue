@@ -112,9 +112,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备类型" width="150" prop="FaultName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备类型" width="150" prop="EquTypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.FaultName }}
+          {{ scope.row.EquTypeName }}
         </template>
       </el-table-column>
 
@@ -124,15 +124,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="购入日期" width="150" prop="GetDate" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="购入日期" width="150" prop="GetData" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.GetDate }}
+          {{ scope.row.GetData | substringTime }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="上次保养日期" width="150" prop="Tel" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="上次保养日期" width="150" prop="LastMtDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Tel }}
+          {{ scope.row.LastMtDate | substringTime }}
         </template>
       </el-table-column>
 
@@ -142,9 +142,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="故障描述" width="150" prop="Description" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="故障描述" width="150" prop="FaultDescription" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Description }}
+          {{ scope.row.FaultDescription }}
         </template>
       </el-table-column>
 
