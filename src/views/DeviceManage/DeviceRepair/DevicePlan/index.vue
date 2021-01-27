@@ -2,7 +2,6 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-
         <el-col :span="6">
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="设备类型" placement="top-start"><label class="radio-label">设备类型:</label></el-tooltip>
@@ -122,12 +121,10 @@
           </el-select>
         </template>
       </el-table-column>
-
     </el-table>
 
     <el-button icon="el-icon-s-tools" type="primary" style="float: left;margin-top: 15px;" @click="heandSave()">生产保养计划</el-button>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
-
   </div>
 </template>
 
@@ -181,7 +178,6 @@ export default {
         }, 400)
       }
     }
-
   },
   created() {
     // 监听表格高度
@@ -291,16 +287,24 @@ export default {
       })
       return app
     }
-
   }
 }
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-table__header-wrapper .el-checkbox__input::after {
+  content: '是否保养';
+  color: #ffffff;
+  margin: 0 5px;
+}
 
-  ::v-deep .el-table__header-wrapper .el-checkbox__input::after {
-    content: '是否保养';
-    color: #ffffff;
-    margin: 0 5px;
-  }
+::v-deep .el-checkbox   .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color:  #17da17;
+  border:1px solid #17da17 ;
+}
+
+::v-deep .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner{
+  background-color: #17da17;
+  border:1px solid #17da17 ;
+}
 </style>

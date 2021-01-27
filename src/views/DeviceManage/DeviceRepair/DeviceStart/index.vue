@@ -95,7 +95,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备类型" width="150" prop="EquTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="设备类型" min-width="150" prop="EquTypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.EquTypeName }}
         </template>
@@ -467,5 +467,15 @@ export default {
   content: '是否执行保养';
   color: #ffffff;
   margin: 0 5px;
+}
+
+::v-deep .el-checkbox   .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color:  #17da17;
+  border:1px solid #17da17 ;
+}
+
+::v-deep .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner{
+  background-color: #17da17;
+  border:1px solid #17da17 ;
 }
 </style>
