@@ -240,7 +240,8 @@ export default {
       })()
     }
     // Mock: get all routes and roles list from server
-    // this.getList()
+
+    this.getList()
     this.setFormRules()
 
     // 监听详情页getList事件

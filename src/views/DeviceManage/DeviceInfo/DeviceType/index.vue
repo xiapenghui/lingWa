@@ -64,7 +64,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养周期" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养周期 (天)" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaintainDays }}
         </template>

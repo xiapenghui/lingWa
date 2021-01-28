@@ -231,7 +231,7 @@
 
             <el-form-item label="供应商名称"><el-input v-model.trim="ruleForm.SupplierName" placeholder="供应商名称" clearable /></el-form-item>
 
-            <el-form-item label="购入日期">
+            <el-form-item label="购入日期" prop="GetData">
               <el-date-picker v-model="ruleForm.GetData" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
 
@@ -334,7 +334,8 @@ export default {
       rules: {
         EquNum: [{ required: true, message: '请输入设备编号', trigger: 'blur' }],
         EquName: [{ required: true, message: '请输入设备名称', trigger: 'blur' }],
-        EquTypeCode: [{ required: true, message: '请选择设备类型', trigger: 'blur' }]
+        EquTypeCode: [{ required: true, message: '请选择设备类型', trigger: 'blur' }],
+        GetData: [{ required: true, message: '请选择购入日期', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
       // content1: this.$t('permission.companyNo'),
@@ -479,7 +480,8 @@ export default {
       this.rules = {
         EquNum: [{ required: true, message: '请输入设备编号', trigger: 'blur' }],
         EquName: [{ required: true, message: '请输入设备名称', trigger: 'blur' }],
-        EquTypeCode: [{ required: true, message: '请选择设备类型', trigger: 'blur' }]
+        EquTypeCode: [{ required: true, message: '请选择设备类型', trigger: 'blur' }],
+        GetData: [{ required: true, message: '请选择购入日期', trigger: 'blur' }]
       }
     },
 

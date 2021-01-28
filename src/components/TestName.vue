@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="testShow" :before-close="testClose" title="抽检方案信息表" width="70%" height="50%">
+  <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="testShow" :before-close="testClose" title="抽检比例参数表" width="70%" height="50%">
     <div class="searchBox" style="margin-bottom: 20px;">
       <el-row :gutter="20">
         <el-col :span="7">
@@ -50,13 +50,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="抽检方案编号" width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="抽检方案编号" width="250" prop="RuleNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.RuleNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="抽检方案名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="抽检方案名称" width="250" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>

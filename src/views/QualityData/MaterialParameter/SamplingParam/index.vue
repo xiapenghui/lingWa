@@ -174,8 +174,8 @@ export default {
       addShow: true, // 继续新增
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       rules: {
-        RuleNum: [{ required: true, message: '请输入检验规则编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入检验规则名称', trigger: 'blur' }],
+        RuleNum: [{ required: true, message: '请输入抽检方案编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入抽检方案名称', trigger: 'blur' }],
         Description: [{ required: true, message: '请输入方案描述', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
@@ -253,8 +253,8 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        RuleNum: [{ required: true, message: '请输入检验规则编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入检验规则名称', trigger: 'blur' }],
+        RuleNum: [{ required: true, message: '请输入抽检方案编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入抽检方案名称', trigger: 'blur' }],
         Description: [{ required: true, message: '请输入方案描述', trigger: 'blur' }]
       }
     },

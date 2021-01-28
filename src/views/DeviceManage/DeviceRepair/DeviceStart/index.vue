@@ -29,7 +29,7 @@
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="保养时间" placement="top-start"><label class="radio-label">保养时间:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="计划保养时间" placement="top-start"><label class="radio-label">计划保养时间:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
             <el-date-picker

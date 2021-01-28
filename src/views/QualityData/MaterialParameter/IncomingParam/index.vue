@@ -98,9 +98,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验类别" width="150" prop="InspectWayText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验类别" width="150" prop="JudgmentWayText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.InspectWayText }}
+          {{ scope.row.JudgmentWayText }}
         </template>
       </el-table-column>
 
@@ -161,8 +161,8 @@
 
         <el-form-item label="检验项名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="检验项" clearable /></el-form-item>
 
-        <el-form-item label="检验类别" prop="InspectWay">
-          <el-select v-model="ruleForm.InspectWay" placeholder="检验类别" style="width: 100%" clearable>
+        <el-form-item label="检验类别" prop="JudgmentWay">
+          <el-select v-model="ruleForm.JudgmentWay" placeholder="检验类别" style="width: 100%" clearable>
             <el-option v-for="item in InspectWayData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -286,7 +286,7 @@ export default {
       rules: {
         MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
         Name: [{ required: true, message: '请输入检验项名称', trigger: 'blur' }],
-        InspectWay: [{ required: true, message: '请选择检验类别', trigger: 'change' }],
+        JudgmentWay: [{ required: true, message: '请选择检验类别', trigger: 'change' }],
         IqcRuleName: [{ required: true, message: '请选择检验方案', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
@@ -366,7 +366,7 @@ export default {
       this.rules = {
         MaterialNum: [{ required: true, message: '请输入原原料编号', trigger: 'blur' }],
         Name: [{ required: true, message: '请输入检验项名称', trigger: 'blur' }],
-        InspectWay: [{ required: true, message: '请选择检验类别', trigger: 'change' }],
+        JudgmentWay: [{ required: true, message: '请选择检验类别', trigger: 'change' }],
         IqcRuleName: [{ required: true, message: '请选择检验方案', trigger: 'blur' }]
       }
     },
