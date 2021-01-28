@@ -12,7 +12,7 @@
         </el-tooltip>
         <el-tooltip :content="$t('navbar.Chinese')" effect="dark" :enterable="false" placement="bottom"><lang-select class="right-menu-item hover-effect" /></el-tooltip>
       </template>
-      <el-select v-model="companyVal" placeholder="请选择" style="bottom: 7px; width: auto; ">
+      <el-select v-model="companyVal" placeholder="请选择" style="bottom: 7px; width: auto; " @change="changeCompany">
         <el-option v-for="item in options" :key="item.value" :label="item.text" :value="item.value" />
       </el-select>
 
@@ -55,7 +55,7 @@ import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 // import Search from '@/components/HeaderSearch'
 import { UpdatePassword } from '@/api/role'
-import { ListMenu, Logout } from '@/api/user'
+import { GetAuthOrganizationRange, ChangeOrganization, Logout } from '@/api/user'
 import Bus from '@/api/bus.js'
 export default {
   components: {
@@ -114,15 +114,44 @@ export default {
     Bus.$on('companyList', function() {
       self.companyList()
     })
+
+    // Bus.$on('changeCompanyList', function() {
+    //   self.changeCompanyList()
+    // })
   },
 
   methods: {
     // 获取导航公司下拉
     companyList() {
-      ListMenu().then(res => {
+      GetAuthOrganizationRange().then(res => {
         if (res.IsPass === true) {
-          this.options = res.Obj.orglist
-          this.companyVal = res.Obj.orglist[0].text
+          this.options = res.Obj
+          this.companyVal = res.Obj[0].text
+        }
+      })
+    },
+
+    // // 获取当前用户授权公司列表
+    // changeCompanyList() {
+    //   GetAuthOrganizationRange().then(res => {
+    //     if (res.IsPass === true) {
+    //       this.options = res.Obj
+    //     }
+    //   })
+    // },
+
+    // 主页面切换公司
+    changeCompany(val) {
+      const params = {
+        UserCode: this.$store.state.permission.userCode,
+        OrgCode: val
+      }
+      ChangeOrganization(params).then(res => {
+        if (res.IsPass === true) {
+          this.$message({
+            type: 'success',
+            message: res.MSG
+          })
         }
       })
     },

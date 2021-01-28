@@ -284,7 +284,6 @@ export default {
           if (this.dialogType === 'edit') {
             this.editLoading = true
             OrgRangeModify(this.ruleForm).then(res => {
-              debugger
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
