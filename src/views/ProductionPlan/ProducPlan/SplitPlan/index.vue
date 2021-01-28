@@ -332,6 +332,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary, GetLine } from '@/api/BasicData'
+import Bus from '@/api/bus.js'
 import {
   proList,
   SplitQuery,
@@ -607,6 +608,7 @@ export default {
                 }
               })
               this.getList()
+              Bus.$emit('getList')
               this.dialogFormVisible = false
             } else {
               this.$message({
@@ -643,6 +645,7 @@ export default {
             }
           })
           this.getList()
+          Bus.$emit('getList')
         } else {
           this.$message({
             type: 'error',

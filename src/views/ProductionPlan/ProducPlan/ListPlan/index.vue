@@ -321,6 +321,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import LineName from '@/components/LineName' // 工艺路线弹
 import { GetDictionary, baseRouteList } from '@/api/BasicData'
 import { PlanScheduleList, ModifyPlanSchedule } from '@/api/ProductionPlan'
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 
@@ -472,6 +473,12 @@ export default {
 
     // Mock: get all routes and roles list from server
     this.getList()
+
+    // 监听详情页getList事件
+    const self = this
+    Bus.$on('getList', function() {
+      self.getList()
+    })
   },
   methods: {
     // 分页
@@ -560,6 +567,7 @@ export default {
                 message: '排单成功'
               })
               this.getList()
+              Bus.$emit('getPaiDanList')
               this.dialogFormVisible = false
             } else {
               this.$message({

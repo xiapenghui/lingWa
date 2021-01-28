@@ -332,5 +332,24 @@ $light_gray: #ffffff;
       display: none;
     }
   }
+
+  @media screen and (min-width:1601px) and (max-width:1900px){
+    .login-form {
+      margin: -600px auto;
+    }
+  }
+
+ @media screen and (min-width:1350px) and (max-width:1600px){
+   .login-form {
+     margin: -580px auto;
+   }
+ }
+
+ @media screen and (min-width:1000px) and (max-width:1349px){
+   .login-form {
+     margin: -450px auto;
+   }
+ }
+
 }
 </style>

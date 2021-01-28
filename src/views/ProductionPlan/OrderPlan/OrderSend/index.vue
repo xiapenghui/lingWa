@@ -422,6 +422,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary, bomDetailList, baseDetailList } from '@/api/BasicData'
 import { orderList, orderStatus } from '@/api/ProductionPlan'
+import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 
@@ -565,6 +566,12 @@ export default {
     })
     // Mock: get all routes and roles list from server
     this.getList()
+
+    // 监听详情页getList事件
+    const self = this
+    Bus.$on('getPaiDanList', function() {
+      self.getList()
+    })
   },
   methods: {
     // 分页
