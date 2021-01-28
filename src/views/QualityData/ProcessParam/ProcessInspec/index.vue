@@ -189,7 +189,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="检验目标值"><el-input-number v-model="ruleForm.StandardValue" placeholder="检验目标值" :min="0" style="width: 100%" /></el-form-item>
+        <el-form-item label="检验目标值"><el-input v-model="ruleForm.StandardValue" placeholder="检验目标值" /></el-form-item>
 
         <el-form-item label="规范值">
           <el-input-number v-model="ruleForm.LowerLimit" :min="0" placeholder="规范下限" style="width: 48%" />

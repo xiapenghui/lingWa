@@ -82,7 +82,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="检验项" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="检验项名称" width="150" prop="InspectItemName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.InspectItemName }}
         </template>
@@ -141,9 +141,9 @@
 
         <el-form-item label="缺陷名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="缺陷名称" clearable /></el-form-item>
 
-        <el-form-item label="检验项" prop="InspectItemName"><el-input v-model.trim="ruleForm.InspectItemName" placeholder="检验项" clearable /></el-form-item>
+        <el-form-item label="检验项名称" prop="InspectItemName"><el-input v-model.trim="ruleForm.InspectItemName" placeholder="检验项名称" clearable /></el-form-item>
 
-        <el-form-item label="物料类型" prop="TypeName"><el-input v-model.trim="ruleForm.TypeName" readonly placeholder="请选择" class="disActive" @focus="materialBox" /></el-form-item>
+        <el-form-item label="物料类型" prop="TypeName"><el-input v-model.trim="ruleForm.TypeName" readonly placeholder="请选择" class="disActive" @focus="materBox" /></el-form-item>
 
         <el-form-item label="缺陷类型" prop="DefectType">
           <el-select v-model="ruleForm.DefectType" placeholder="缺陷类型" style="width: 100%" clearable>
@@ -166,16 +166,16 @@
       </div>
     </el-dialog>
 
-    <!-- 原料名称对应弹窗 -->
-    <material-name
-      :material-show="materialFormVisible"
-      :material-box-loading="materialBoxLoading"
+    <!-- 物料类型对应弹窗 -->
+    <mater-type
+      :mater-show="materFormVisible"
+      :mater-box-loading="materBoxLoading"
       :table-box-height="tableBoxHeight"
-      :material-data="materialData"
-      :pagination-search-material="paginationSearchMaterial"
-      @materialClose="materialClose"
-      @materialClick="materialClick"
-      @handleSearchMaterial="handleSearchMaterial"
+      :mater-data="materData"
+      :pagination-search-mater="paginationSearchMater"
+      @materClose="materClose"
+      @materClick="materClick"
+      @handleSearchMater="handleSearchMater"
     />
 
   </div>
@@ -187,14 +187,14 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary, MaterialList } from '@/api/BasicData'
+import { GetDictionary, MaterialTypeList } from '@/api/BasicData'
 import { productList, productAdd, productDelete, productModify, productModifyStatus } from '@/api/QualityData'
-import MaterialName from '@/components/MaterialName' // 原料名称
+import MaterType from '@/components/MaterType' // 原料名称
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'DefectParam',
-  components: { Pagination, MaterialName },
+  components: { Pagination, MaterType },
   data() {
     return {
       tableData: [],
@@ -206,13 +206,12 @@ export default {
         Name: undefined,
         ShowBanned: false
       },
-      // 原料搜索条件
-      paginationSearchMaterial: {
+      // 物料类型
+      paginationSearchMater: {
         PageIndex: 1,
         PageSize: 10000,
-        MaterialType: 0,
-        MaterialNum: undefined,
-        MaterialName: undefined,
+        TypeNum: undefined,
+        Name: undefined,
         ShowBanned: false
       },
       listLoading: false,
@@ -220,9 +219,9 @@ export default {
       addShow: false,
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
-      materialBoxLoading: false, // 原料名称loading
-      materialFormVisible: false, // input原料弹窗
-      materialData: [], // 原料数组
+      materBoxLoading: false, // 物料类型loading
+      materFormVisible: false, // input物料类型弹窗
+      materData: [], // 物料类型数组
       GradeVal: null, // 缺陷等级
       DefectGradeData: [], // 缺陷等级
       DefectData: [], // 缺陷类型
@@ -543,33 +542,34 @@ export default {
     },
 
     // 原料聚焦事件原料弹窗
-    materialBox() {
-      this.materialFormVisible = true
-      this.materialBoxLoading = true
-      MaterialList(this.paginationSearchMaterial).then(res => {
+    materBox() {
+      this.materFormVisible = true
+      this.materBoxLoading = true
+      MaterialTypeList(this.paginationSearchMater).then(res => {
         if (res.IsPass === true) {
-          this.materialData = res.Obj
-          this.materialBoxLoading = false
+          this.materData = res.Obj
+          this.materBoxLoading = false
         }
       })
     },
     // 原料弹窗搜索
-    handleSearchMaterial() {
-      this.paginationSearchMaterial.PageIndex = 1
-      this.materialBox()
+    handleSearchMater() {
+      this.paginationSearchMater.PageIndex = 1
+      this.materBox()
     },
     // 增加原料名称双击事件获取当前行的值
-    materialClick(row) {
-      this.$set(this.ruleForm, 'TypeName', row.TypeName)
+    materClick(row) {
+      debugger
+      this.$set(this.ruleForm, 'TypeName', row.Name)
       this.ruleForm.TypeCode = row.TypeCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
-      this.materialFormVisible = false
+      this.materFormVisible = false
     },
     // 关闭原料名称查询弹窗
-    materialClose() {
-      this.materialFormVisible = false
+    materClose() {
+      this.materFormVisible = false
     }
   }
 }

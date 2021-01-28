@@ -56,9 +56,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="物料类型" width="150" prop="MaterialTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="物料类型" width="150" prop="TypeName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MaterialTypeName }}
+          {{ scope.row.TypeName }}
         </template>
       </el-table-column>
 
@@ -155,8 +155,9 @@
           <el-input v-model.trim="ruleForm.MaterialNum" readonly placeholder="请选择" class="disActive" @focus="materialBox" />
         </el-form-item>
 
-        <el-form-item label="原料名称"><el-input v-model.trim="ruleForm.Name" placeholder="原料名称" disabled /></el-form-item>
-        <el-form-item label="物料类型"><el-input v-model.trim="ruleForm.MaterialTypeName" placeholder="物料类型" disabled /></el-form-item>
+        <el-form-item label="原料名称"><el-input v-model.trim="ruleForm.MaterialName" placeholder="原料名称" disabled /></el-form-item>
+
+        <el-form-item label="物料类型"><el-input v-model.trim="ruleForm.TypeName" placeholder="物料类型" disabled /></el-form-item>
 
         <el-form-item label="检验项名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="检验项" clearable /></el-form-item>
 
@@ -170,7 +171,7 @@
           <el-input v-model.trim="ruleForm.IqcRuleName" readonly placeholder="请选择" class="disActive" @focus="testBox" />
         </el-form-item>
 
-        <el-form-item label="检验目标值"><el-input-number v-model="ruleForm.StandardValue" placeholder="检验目标值" :min="0" style="width: 100%" /></el-form-item>
+        <el-form-item label="检验目标值"><el-input v-model="ruleForm.StandardValue" placeholder="检验目标值" clearable /></el-form-item>
 
         <el-form-item label="规范值">
           <el-input-number v-model="ruleForm.LowerLimit" :min="0" placeholder="规范下限" style="width: 48%" />
@@ -228,7 +229,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary, MaterialList } from '@/api/BasicData'
-import { IncomingList, IncomingAdd, IncomingDelete, IncomingModify, QuaQuery } from '@/api/QualityData'
+import { IncomingList, IncomingAdd, IncomingDelete, IncomingModify, QuaList } from '@/api/QualityData'
 import MaterialName from '@/components/MaterialName' // 原料名称
 import TestName from '@/components/TestName' // 原料名称
 const fixHeight = 260
@@ -563,8 +564,8 @@ export default {
     materialClick(row) {
       debugger
       this.$set(this.ruleForm, 'MaterialNum', row.MaterialNum)
-      this.$set(this.ruleForm, 'Name', row.Name)
-      this.$set(this.ruleForm, 'MaterialTypeName', row.MaterialTypeName)
+      this.$set(this.ruleForm, 'MaterialName', row.Name)
+      this.$set(this.ruleForm, 'TypeName', row.TypeName)
       this.ruleForm.MaterialCode = row.MaterialCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
@@ -580,7 +581,7 @@ export default {
     testBox() {
       this.testFormVisible = true
       this.testBoxLoading = true
-      QuaQuery(this.paginationSearchTest).then(res => {
+      QuaList(this.paginationSearchTest).then(res => {
         if (res.IsPass === true) {
           this.testData = res.Obj
           this.testBoxLoading = false
@@ -594,7 +595,6 @@ export default {
     },
     // 增加检验方案双击事件获取当前行的值
     testClick(row) {
-      debugger
       this.$set(this.ruleForm, 'IqcRuleName', row.Name)
       this.ruleForm.IqcRuleCode = row.RuleCode
       this.$nextTick(() => {

@@ -6,16 +6,15 @@
           <el-col :span="6">
             <el-tooltip class="item" effect="dark" :enterable="false" content="抽检编号" placement="top-start"><label class="radio-label">抽检编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="paginationSearchTest.RuleNum"  clearable/></el-col>
+          <el-col :span="16"><el-input v-model.trim="paginationSearchTest.RuleNum" clearable /></el-col>
         </el-col>
 
         <el-col :span="7">
           <el-col :span="6">
-              <el-tooltip class="item" effect="dark" :enterable="false" content="抽检名称" placement="top-start"><label class="radio-label">抽检名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="抽检名称" placement="top-start"><label class="radio-label">抽检名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="paginationSearchTest.Name" clearable/></el-col>
+          <el-col :span="16"><el-input v-model.trim="paginationSearchTest.Name" clearable /></el-col>
         </el-col>
-
 
         <el-col :span="7">
           <el-col :span="6">
@@ -51,45 +50,23 @@
         </template>
       </el-table-column>
 
-       <el-table-column align="center" label="抽检方案编号" width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
-         <template slot-scope="scope">
-           {{ scope.row.RuleNum }}
-         </template>
-       </el-table-column>
+      <el-table-column align="center" label="抽检方案编号" width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.RuleNum }}
+        </template>
+      </el-table-column>
 
-       <el-table-column align="center" label="抽检方案名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
-         <template slot-scope="scope">
-           {{ scope.row.Name }}
-         </template>
-       </el-table-column>
+      <el-table-column align="center" label="抽检方案名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Name }}
+        </template>
+      </el-table-column>
 
-       <el-table-column align="center" label="批量范围从" width="150" prop="StartQty" sortable :show-overflow-tooltip="true">
-         <template slot-scope="scope">
-           {{ scope.row.StartQty }}
-         </template>
-       </el-table-column>
-       <el-table-column align="center" label="批量范围至" width="150" prop="EndQty" sortable :show-overflow-tooltip="true">
-         <template slot-scope="scope">
-           {{ scope.row.EndQty }}
-         </template>
-       </el-table-column>
-       <el-table-column align="center" label="采样数量" width="150" prop="SampleQty" sortable>
-         <template slot-scope="scope">
-           {{ scope.row.SampleQty }}
-         </template>
-       </el-table-column>
-
-       <el-table-column align="center" label="拒绝数量" width="150" prop="RejQty" sortable>
-         <template slot-scope="scope">
-           {{ scope.row.RejQty }}
-         </template>
-       </el-table-column>
-
-       <el-table-column align="center" label="抽检方案描述" min-width="200" :show-overflow-tooltip="true">
-         <template slot-scope="scope">
-           {{ scope.row.Description }}
-         </template>
-       </el-table-column>
+      <el-table-column align="center" label="抽检方案描述" min-width="200" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Description }}
+        </template>
+      </el-table-column>
 
     </el-table>
   </el-dialog>
@@ -130,7 +107,7 @@ export default {
   },
   methods: {
     // 客户名称弹窗关闭
-   testClose() {
+    testClose() {
       this.$emit('testClose')
     },
     //  客户名称双击确认
@@ -145,7 +122,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
   .el-dialog__body {
