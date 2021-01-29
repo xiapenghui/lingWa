@@ -34,7 +34,7 @@
           <el-col :span="16">
             <el-date-picker
               v-model="pagination.importDate"
-              style="width: 250px;"
+              class="pickerCss"
               type="daterange"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
@@ -185,7 +185,6 @@
             {{ scope.row.Remark }}
           </template>
         </el-table-column>
-
       </el-table>
     </el-dialog>
   </div>
@@ -419,6 +418,28 @@ export default {
   .el-input__inner {
     background: transparent;
     cursor: pointer;
+  }
+}
+
+.search .pickerCss {
+  width: 250px;
+}
+
+@media screen and (min-width: 1601px) and (max-width: 1800px) {
+  .search .pickerCss {
+    width: 220px;
+  }
+}
+
+@media screen and (min-width: 1350px) and (max-width: 1600px) {
+  .search .pickerCss {
+    width: 200px;
+  }
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1349px) {
+  .search .pickerCss {
+    width: 150px;
   }
 }
 </style>

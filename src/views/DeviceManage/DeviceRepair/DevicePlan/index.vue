@@ -123,7 +123,7 @@
       </el-table-column>
     </el-table>
 
-    <el-button icon="el-icon-s-tools" type="primary" style="float: left;margin-top: 15px;" @click="heandSave(val)">生成保养计划</el-button>
+    <el-button icon="el-icon-s-tools" type="primary" style="float: left;margin-top: 15px;" @click="heandSave()">生成保养计划</el-button>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
   </div>
 </template>
@@ -159,6 +159,7 @@ export default {
           return date.getTime() <= Date.now() - 8.64e7
         }
       },
+      multipleSelection: [], // 多选
       EquTypeCodeData: [], // 设备类型下拉
       RepairUserData: [], // 计划保养人员
       WarningTypeData: [], // 预警状态
@@ -251,7 +252,8 @@ export default {
     },
 
     // 保存保养计划
-    heandSave(val) {
+    heandSave() {
+      debugger
       if (this.multipleSelection.length > 0) {
         this.listLoading = true
         FormulatePlan(this.multipleSelection).then(res => {

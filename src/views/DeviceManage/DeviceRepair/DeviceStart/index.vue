@@ -34,7 +34,7 @@
           <el-col :span="16">
             <el-date-picker
               v-model="pagination.importDate"
-              style="width: 250px;"
+              class="pickerCss"
               type="daterange"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
@@ -55,7 +55,6 @@
           </el-col>
         </el-col>
       </el-row>
-
     </div>
 
     <el-table
@@ -134,7 +133,7 @@
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="80">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="执行保养" placement="top-start">
-            <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="handleDetail(scope.row)" />
+            <el-button type="primary" size="small" icon="el-icon-s-tools" plain @click="handleDetail(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -409,6 +408,7 @@ export default {
 
     // 设备执行保养完成
     SaveFinish() {
+      debugger
       if (this.multipleSelection.length > 0) {
         this.detailLoading = true
         this.mainFormVisible = true
@@ -469,13 +469,35 @@ export default {
   margin: 0 5px;
 }
 
-::v-deep .el-checkbox   .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-  background-color:  #17da17;
-  border:1px solid #17da17 ;
+::v-deep .el-checkbox .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #17da17;
+  border: 1px solid #17da17;
 }
 
-::v-deep .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner{
+::v-deep .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner {
   background-color: #17da17;
-  border:1px solid #17da17 ;
+  border: 1px solid #17da17;
+}
+
+.search .pickerCss {
+  width: 250px;
+}
+
+@media screen and (min-width: 1601px) and (max-width: 1800px) {
+  .search .pickerCss {
+    width: 220px;
+  }
+}
+
+@media screen and (min-width: 1350px) and (max-width: 1600px) {
+ .search .pickerCss {
+   width: 200px;
+ }
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1349px) {
+  .search .pickerCss {
+    width: 150px;
+  }
 }
 </style>

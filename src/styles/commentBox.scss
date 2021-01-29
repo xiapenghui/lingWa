@@ -21,7 +21,7 @@
     .el-input.is-disabled .el-input__inner {
       color: #333;
     }
-    padding: 20px;
+    padding: 10px 20px;
     .el-upload__tip {
       margin-top: 10px;
     }
@@ -52,8 +52,11 @@
   }
   .el-menu {
     .el-submenu__title i {
-      color: #ffffff;
+      color: #ffffff !important;
     }
+  }
+  .el-icon-arrow-down:before{
+     color: #ffffff !important;
   }
 }
 .app-container {
@@ -130,7 +133,7 @@
               width: 70%;
               float: left;
             }
-            .el-button{
+            .el-button {
               display: block;
               float: right;
             }

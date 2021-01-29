@@ -539,8 +539,6 @@ export default {
         if (valid) {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
-            // params.ProductCode = this.finshCode
-            // params.ProcessRouteCode = this.lineCode
             bomModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -559,8 +557,6 @@ export default {
             })
           } else {
             const params = this.ruleForm
-            // params.ProductCode = this.finshCode
-            // params.ProcessRouteCode = this.lineCode
             bomAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
