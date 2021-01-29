@@ -152,9 +152,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="上次保养日期" width="150" prop="GetData" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="上次保养日期" width="150" prop="LastMtDate" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.GetData | substringTime }}
+          {{ scope.row.LastMtDate | substringTime }}
         </template>
       </el-table-column>
 
