@@ -54,9 +54,9 @@
           {{ scope.row.WarehouseName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="仓库类型" width="150" prop="WarehouseType" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="仓库类型" width="150" prop="WarehouseTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.WarehouseType }}
+          {{ scope.row.WarehouseTypeText }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="是否FIFO" width="150" prop="IsFIFO" sortable>
