@@ -116,7 +116,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="保养周期" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="保养周期(天)" width="150" prop="MaintainDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaintainDays }}
         </template>
@@ -146,13 +146,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="固定资产编号" width="150" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="固定资产编号" width="150" prop="assetNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtMethod }}
+          {{ scope.row.AssetNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="上次保养日期" width="150" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="上次保养日期" width="150" prop="GetData" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.GetData | substringTime }}
         </template>
@@ -164,9 +164,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" width="200" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="备注" width="200" prop="Remark" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtMethod }}
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 
@@ -247,7 +247,7 @@
 
             <el-form-item label="预警产量"><el-input v-model.trim="ruleForm.PreAlertTimes" placeholder="预警产量" clearable /></el-form-item>
             <el-form-item label="供应商电话"><el-input v-model.trim="ruleForm.Tel" placeholder="供应商电话" clearable /></el-form-item>
-            <el-form-item label="固定资产编号"><el-input v-model.trim="ruleForm.MtItemsNum" placeholder="固定资产编号" clearable /></el-form-item>
+            <el-form-item label="固定资产编号"><el-input v-model.trim="ruleForm.AssetNum" placeholder="固定资产编号" clearable /></el-form-item>
           </div>
         </div>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>

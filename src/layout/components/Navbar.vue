@@ -126,7 +126,11 @@ export default {
       GetAuthOrganizationRange().then(res => {
         if (res.IsPass === true) {
           this.options = res.Obj
-          this.companyVal = res.Obj[0].text
+          res.Obj.map(item => {
+            if (item.checked === true) {
+              this.companyVal = item.text
+            }
+          })
         }
       })
     },
