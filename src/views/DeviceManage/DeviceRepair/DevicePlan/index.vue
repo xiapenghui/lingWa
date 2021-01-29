@@ -116,7 +116,7 @@
 
       <el-table-column align="center" label="计划保养人员" width="150" prop="MtItemsNum" sortable :show-overflow-tooltip="true" fixed="right">
         <template slot-scope="scope">
-          <el-select v-model="scope.row.PlanUserCode" placeholder="维修人员" clearable style="width: 100%">
+          <el-select v-model="scope.row.PlanUserCode" placeholder="计划保养人员" clearable style="width: 100%">
             <el-option v-for="item in RepairUserData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </template>
