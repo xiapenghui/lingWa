@@ -132,7 +132,7 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="80">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :enterable="false" content="维修详情" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="保养详情" placement="top-start">
             <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="handleDetail(scope.row)" />
           </el-tooltip>
         </template>
@@ -168,15 +168,15 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="保养工具" width="200" prop="MtMethod" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="保养工具" width="200" prop="MtTool" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.MtMethod }}
+            {{ scope.row.MtTool }}
           </template>
         </el-table-column>
 
         <el-table-column align="center" label="保养方法" width="200" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.MtTool }}
+            {{ scope.row.MtMethod }}
           </template>
         </el-table-column>
 

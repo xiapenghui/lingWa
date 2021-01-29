@@ -133,7 +133,7 @@
 
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="80">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :enterable="false" content="维修详情" placement="top-start">
+          <el-tooltip class="item" effect="dark" :enterable="false" content="执行保养" placement="top-start">
             <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="handleDetail(scope.row)" />
           </el-tooltip>
         </template>

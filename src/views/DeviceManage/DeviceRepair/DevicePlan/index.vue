@@ -123,7 +123,7 @@
       </el-table-column>
     </el-table>
 
-    <el-button icon="el-icon-s-tools" type="primary" style="float: left;margin-top: 15px;" @click="heandSave()">生产保养计划</el-button>
+    <el-button icon="el-icon-s-tools" type="primary" style="float: left;margin-top: 15px;" @click="heandSave(val)">生成保养计划</el-button>
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
   </div>
 </template>
@@ -251,7 +251,7 @@ export default {
     },
 
     // 保存保养计划
-    heandSave() {
+    heandSave(val) {
       if (this.multipleSelection.length > 0) {
         this.listLoading = true
         FormulatePlan(this.multipleSelection).then(res => {
