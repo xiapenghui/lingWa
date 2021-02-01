@@ -413,9 +413,9 @@ export default {
             }
             this.editLoading = false
           })
+          this.handleAdd()
         }
       })
-      this.handleAdd()
     },
 
     // 删除

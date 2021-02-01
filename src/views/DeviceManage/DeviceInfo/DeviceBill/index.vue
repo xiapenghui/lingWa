@@ -122,7 +122,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警产量" width="150" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警产量 (个)" width="150" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.PreAlertTimes }}
         </template>
@@ -146,7 +146,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="固定资产编号" width="150" prop="assetNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="固定资产编号" width="150" prop="AssetNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.AssetNum }}
         </template>
@@ -158,9 +158,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="实际产量" width="150" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="实际产量 (个)" width="150" prop="ActTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtMethod }}
+          {{ scope.row.ActTimes }}
         </template>
       </el-table-column>
 

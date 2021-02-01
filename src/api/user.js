@@ -47,3 +47,12 @@ export function ChangeOrganization(data) {
     data
   })
 }
+
+// 获取全部部门信息
+export function GetDepartmentTextValuePair(data) {
+  return request({
+    url: '/api/Common/GetDepartmentTextValuePair',
+    method: 'post',
+    data
+  })
+}

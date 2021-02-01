@@ -777,3 +777,84 @@ export function MaterialTypeModifyStatus(data) {
   })
 }
 
+// 基础数据 - 组织架构维护 - 部门信息列表
+export function DepartmentList(data) {
+  return request({
+    url: '/api/BaseOrganizationDept/List',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 组织架构维护 - 部门信息列表增加
+export function DepartmentAdd(data) {
+  return request({
+    url: '/api/BaseOrganizationDept/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 组织架构维护 - 部门信息列表删除
+export function DepartmentDelete(data) {
+  return request({
+    url: '/api/BaseOrganizationDept/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 组织架构维护 - 部门信息列表修改
+export function DepartmentModify(data) {
+  return request({
+    url: '/api/BaseOrganizationDept/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 组织架构维护 - 部门信息列表修改
+export function DepartmentModifyStatus(data) {
+  return request({
+    url: '/api/BaseOrganizationDept/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 组织架构管理 - 人员信息列表
+export function PerList(data) {
+  return request({
+    url: '/api/BaseOrganizationStaff/List',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 组织架构管理 - 人员信息增加
+export function PerAdd(data) {
+  return request({
+    url: '/api/BaseOrganizationStaff/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 组织架构管理 - 人员信息删除
+export function PerDelete(data) {
+  return request({
+    url: '/api/BaseOrganizationStaff/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 基础数据 - 组织架构管理 - 人员信息修改
+export function PerModify(data) {
+  return request({
+    url: '/api/BaseOrganizationStaff/Modify',
+    method: 'post',
+    data
+  })
+}
+

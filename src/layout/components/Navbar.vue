@@ -107,6 +107,26 @@ export default {
       return this.$store.state.settings.theme
     }
   },
+  watch: {
+
+    // 密码
+    'ruleForm.AccountPwd': function(val) {
+      if (val === '' || val === undefined) {
+        return
+      } else {
+        this.ruleForm.AccountPwd = this.filterInput(val)
+      }
+    },
+
+    // 重复密码
+    'ruleForm.checkPass': function(val) {
+      if (val === '' || val === undefined) {
+        return
+      } else {
+        this.ruleForm.checkPass = this.filterInput(val)
+      }
+    }
+  },
 
   created() {
     this.companyList()
@@ -121,6 +141,16 @@ export default {
   },
 
   methods: {
+
+    // 输入框禁止输入中文
+    filterInput(val) {
+      if (val === '') {
+        return val
+      } else {
+        return val.replace(/[\u4e00-\u9fa5\s]/gi, '')
+      }
+    },
+
     // 获取导航公司下拉
     companyList() {
       GetAuthOrganizationRange().then(res => {

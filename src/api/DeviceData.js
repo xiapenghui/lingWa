@@ -261,3 +261,47 @@ export function ExeMaintenance(data) {
   })
 }
 
+// 设备管理 - 基础数据 - 预警类型管理列表
+export function warningList(data) {
+  return request({
+    url: '/api/EquPreWarnType/List',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 预警类型管理增加
+export function warningAdd(data) {
+  return request({
+    url: '/api/EquPreWarnType/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 预警类型管理删除
+export function warningDetele(data) {
+  return request({
+    url: '/api/EquPreWarnType/Detele',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 预警类型管理修改
+export function warningModify(data) {
+  return request({
+    url: '/api/EquPreWarnType/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 预警类型管理状态
+export function warningModifyStatus(data) {
+  return request({
+    url: '/api/EquPreWarnType/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
