@@ -2,31 +2,18 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-
-        <el-col :span="6">
+        <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="预警级别" placement="top-start"><label class="radio-label">预警级别:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="员工编号" placement="top-start"><label class="radio-label">员工编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="预警级别" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.JobNum" placeholder="员工编号" clearable /></el-col>
         </el-col>
 
-        <el-col :span="6">
+        <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="设备类型" placement="top-start"><label class="radio-label">设备类型:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="员工名称" placement="top-start"><label class="radio-label">员工名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16">
-            <el-select v-model="pagination.EquTypeCode" clearable style="width: 100%">
-              <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
-            </el-select>
-          </el-col>
-        </el-col>
-
-        <el-col :span="4">
-          <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
-            </el-tooltip>
-          </el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.NameCN" placeholder="员工名称" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -57,45 +44,51 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="预警级别编号" width="200" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="员工编号" width="150" prop="JobNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtItemsNum }}
+          {{ scope.row.JobNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警级别" width="200" prop="MtItemsName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="员工名称" width="150" prop="NameCN" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtItemsName }}
+          {{ scope.row.NameCN }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备类型" width="200" prop="EquTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="性别" width="150" prop="Gender" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeName }}
+          <el-tag :style="{ color: scope.row.Gender === true ? '#FF5757' : '#13ce66' }">{{ scope.row.Gender === true ? '男' : '女' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警产量" width="200" prop="EquTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="部门" width="150" prop="DeptName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeName }}
+          {{ scope.row.DeptName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警天数(天)" width="200" prop="EquTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="职务" width="150" prop="JobName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeName }}
+          {{ scope.row.JobName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" min-width="200" prop="EquTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="是否在职" width="150" prop="OnJob" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeName }}
+          <el-tag :style="{ color: scope.row.OnJob === true ? '#13ce66': '#FF5757' }">{{ scope.row.OnJob === true ? '是' : '否' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
+      <el-table-column align="center" label="移动端密码" width="150" prop="MobilePwd" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
+          {{ scope.row.MobilePwd }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="备注" min-width="200" prop="Remark" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 
@@ -111,18 +104,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip v-if="scope.row.Status == true" class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip v-if="scope.row.Status == false" class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
-            <el-button type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
@@ -134,35 +119,35 @@
 
     <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" @pagination="getList" />
 
-    <el-dialog
-      v-dialogDrag
-      :close-on-click-modal="false"
-      :visible.sync="dialogFormVisible"
-      :title="dialogType === 'edit' ? $t('permission.EditCompany') : $t('permission.addCompany')"
-    >
+    <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
 
-        <el-form-item label="预警类型编号" prop="PreWarnNum"><el-input v-model.trim="ruleForm.PreWarnNum" placeholder="预警类型编号" clearable /></el-form-item>
+        <el-form-item label="员工编号" prop="JobNum"><el-input v-model.trim="ruleForm.JobNum" placeholder="员工编号" /></el-form-item>
+        <el-form-item label="员工姓名" prop="NameCN"><el-input v-model.trim="ruleForm.NameCN" placeholder="员工姓名" /></el-form-item>
 
-        <el-form-item label="预警类型级别" prop="EquTypeCode">
-          <el-select v-model="ruleForm.EquTypeCode" placeholder="请选择" clearable>
-            <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
+        <el-form-item label="性别" prop="Gender">
+          <el-radio v-model="ruleForm.Gender" :label="true">男</el-radio>
+          <el-radio v-model="ruleForm.Gender" :label="false">女</el-radio>
+        </el-form-item>
+
+        <el-form-item label="部门" prop="DeptCode">
+          <el-select v-model="ruleForm.DeptCode" placeholder="部门" style="width: 100%" clearable>
+            <el-option v-for="item in departmentData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="设备类型" prop="EquTypeCode">
-          <el-select v-model="ruleForm.EquTypeCode" placeholder="请选择" clearable>
-            <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
+        <el-form-item label="职务">
+          <el-select v-model="ruleForm.JobCode" placeholder="职务" style="width: 100%" clearable>
+            <el-option v-for="item in JobData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="预警产能(个)"><el-input v-model.trim="ruleForm.PreAlertTimes" placeholder="预警产能" clearable /></el-form-item>
-
-        <el-form-item label="预警周期(天)">
-          <el-select v-model="ruleForm.MaintainDays" placeholder="预警周期" style="width: 100%" clearable>
-            <el-option v-for="item in MaintainData" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
+        <el-form-item label="是否在职">
+          <el-radio v-model="ruleForm.OnJob" :label="true">是</el-radio>
+          <el-radio v-model="ruleForm.OnJob" :label="false">否</el-radio>
         </el-form-item>
+
+        <el-form-item label="移动端密码"><el-input v-model.trim="ruleForm.MobilePwd" placeholder="移动端密码" type="password" :show-password="true" /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>
@@ -172,45 +157,49 @@
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
 <script>
-import '../../../styles/scrollbar.css'
-import '../../../styles/commentBox.scss'
+import '../../../../styles/scrollbar.css'
+import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetDictionary } from '@/api/BasicData'
-import { GetValuePair, warningList, warningAdd, warningDetele, warningModify, warningModifyStatus } from '@/api/DeviceData'
+import { GetDictionary, PerList, PerAdd, PerDelete, PerModify } from '@/api/BasicData'
+import { GetDepartmentTextValuePair } from '@/api/user'
 const fixHeight = 260
 export default {
-  name: 'IncomingInsp',
+  name: 'ProductsLack',
   components: { Pagination },
   data() {
     return {
       tableData: [],
-      ruleForm: {}, // 编辑弹窗
+      ruleForm: {
+        Gender: true,
+        OnJob: true
+      }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        Name: undefined,
-        EquTypeCode: undefined,
-        ShowBanned: false
+        JobNum: undefined,
+        NameCN: undefined
       },
+      total: 10,
+      addShow: false,
       listLoading: false,
       editLoading: false, // 编辑loading
-      total: 10,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
-      addShow: true, // 继续新增
-      MaintainData: [], // 预警周期
-      EquTypeCodeData: [], // 设备类型下拉
+      departmentData: [], // 获取下拉部门列表
+      JobData: [], // 职务下拉
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       rules: {
-        PreWarnNum: [{ required: true, message: '请输入预警类型编号', trigger: 'blur' }],
-        MtItemsNum: [{ required: true, message: '请输入设备保养编号', trigger: 'blur' }],
-        EquTypeCode: [{ required: true, message: '请选择设备保养型', trigger: 'blur' }]
+        JobNum: [{ required: true, message: '请输入员工编号', trigger: 'blur' }],
+        NameCN: [{ required: true, message: '请输入员工姓名', trigger: 'blur' }],
+        Gender: [{ required: true, message: '请选择性别', trigger: 'change' }],
+        DeptCode: [{ required: true, message: '请选择部门', trigger: 'change' }]
       },
       parentMsg: this.$t('permission.importCompany')
       // content1: this.$t('permission.companyNo'),
@@ -237,12 +226,21 @@ export default {
       }
     },
 
-    // input禁止输入中文
-    'ruleForm.PreWarnNum': function(val) {
+    // 员工编号
+    'ruleForm.JobNum': function(val) {
       if (val === '' || val === undefined) {
         return
       } else {
-        this.ruleForm.PreWarnNum = this.filterInput(val)
+        this.ruleForm.JobNum = this.filterInput(val)
+      }
+    },
+
+    // 移动端密码
+    'ruleForm.MobilePwd': function(val) {
+      if (val === '' || val === undefined) {
+        return
+      } else {
+        this.ruleForm.MobilePwd = this.filterInput(val)
       }
     },
 
@@ -269,17 +267,17 @@ export default {
       })()
     }
 
-    // 检验类型下拉
-    GetValuePair().then(res => {
+    // 获取部门下拉
+    GetDepartmentTextValuePair({}).then(res => {
       if (res.IsPass === true) {
-        this.EquTypeCodeData = res.Obj
+        this.departmentData = res.Obj
       }
     })
 
-    // 预警周期
-    GetDictionary({ code: '0015' }).then(res => {
+    // 职务下拉
+    GetDictionary({ code: '0004' }).then(res => {
       if (res.IsPass === true) {
-        this.MaintainData = res.Obj
+        this.JobData = res.Obj
       }
     })
 
@@ -301,50 +299,14 @@ export default {
         return val.replace(/[\u4e00-\u9fa5\s]/gi, '')
       }
     },
-
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        PreWarnNum: [{ required: true, message: '请输入预警类型编号', trigger: 'blur' }],
-        MtItemsNum: [{ required: true, message: '请输入设备保养编号', trigger: 'blur' }],
-        EquTypeCode: [{ required: true, message: '请选择设备保养型', trigger: 'blur' }]
+        JobNum: [{ required: true, message: '请输入员工编号', trigger: 'blur' }],
+        NameCN: [{ required: true, message: '请输入员工姓名', trigger: 'blur' }],
+        Gender: [{ required: true, message: '请选择性别', trigger: 'change' }],
+        DeptCode: [{ required: true, message: '请选择部门', trigger: 'change' }]
       }
-    },
-
-    // 禁用，启用权限
-    handleBan(row) {
-      let status, statusTitle
-      if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle')
-        statusTitle = this.$t('permission.jingyongInfo')
-      } else {
-        status = this.$t('permission.qiyongTitle')
-        statusTitle = this.$t('permission.qiyongInfo')
-      }
-      this.$confirm(statusTitle, status, {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      }).then(() => {
-        const params = {
-          Status: (row.Status = row.Status !== true),
-          PreWarnCode: row.PreWarnCode
-        }
-        warningModifyStatus(params).then(res => {
-          if (res.IsPass === true) {
-            this.$message({
-              type: 'success',
-              message: res.MSG
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.MSG
-            })
-          }
-          this.getList()
-        })
-      })
     },
 
     // 查询
@@ -374,7 +336,7 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      warningList(this.pagination).then(res => {
+      PerList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -419,7 +381,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            warningModify(this.ruleForm).then(res => {
+            const params = this.ruleForm
+            // params.JobCode =
+            PerModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -436,7 +400,7 @@ export default {
               this.editLoading = false
             })
           } else {
-            warningAdd(this.ruleForm).then(res => {
+            PerAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -468,7 +432,7 @@ export default {
     submitAdd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          warningAdd(this.ruleForm).then(res => {
+          PerAdd(this.ruleForm).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -488,7 +452,7 @@ export default {
       })
     },
 
-    // 删除
+    // 删除角色
     handleDelete(row) {
       this.$confirm(this.$t('permission.errorInfo'), this.$t('permission.errorTitle'), {
         confirmButtonText: this.$t('permission.Confirm'),
@@ -496,7 +460,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          warningDetele({ PreWarnCode: row.PreWarnCode }).then(res => {
+          PerDelete({ UserCode: row.UserCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -518,8 +482,15 @@ export default {
           })
         })
     }
+
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.app-container .pagination-container {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+</style>

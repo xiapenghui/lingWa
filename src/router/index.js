@@ -140,6 +140,14 @@ export const asyncRoutes = [
             title: 'DepartmentMaintenance'
 
           }
+        },
+        {
+          path: 'Personnelinfor',
+          component: () => import('@/views/BasicData/OrganizationalManagement/Personnelinfor'),
+          name: 'Personnelinfor',
+          meta: {
+            title: 'Personnelinfor'
+          }
         }
         ]
       },
@@ -742,6 +750,14 @@ export const asyncRoutes = [
         name: 'DeviceBill',
         meta: {
           title: 'DeviceBill'
+        }
+      },
+      {
+        path: 'DeviceGrade',
+        component: () => import('@/views/DeviceManage/DeviceInfo/DeviceGrade'),
+        name: 'DeviceGrade',
+        meta: {
+          title: 'DeviceGrade'
         }
       }
       ]

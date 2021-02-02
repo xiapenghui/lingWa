@@ -92,6 +92,8 @@ export default {
     ProcessDefect: '制程检缺陷项',
     DefectParamDetail: '抽检比例参数明细',
     MaterialType: '物料类型',
+    Personnelinfor: '人员信息',
+    DeviceGrade: '预警级别管理',
 
     // 截止
 
