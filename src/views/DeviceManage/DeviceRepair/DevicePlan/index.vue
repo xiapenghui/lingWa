@@ -7,7 +7,7 @@
             <el-tooltip class="item" effect="dark" :enterable="false" content="设备类型" placement="top-start"><label class="radio-label">设备类型:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.EquTypeCode" clearable style="width: 100%">
+            <el-select v-model="pagination.quTypeCode" clearable style="width: 100%">
               <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
@@ -15,11 +15,11 @@
 
         <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="预警状态" placement="top-start"><label class="radio-label">预警状态:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="预警级别" placement="top-start"><label class="radio-label">预警级别:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.WarningType" clearable style="width: 100%">
-              <el-option v-for="item in WarningTypeData" :key="item.value" :label="item.text" :value="item.value" />
+            <el-select v-model="pagination.Name" clearable style="width: 100%">
+              <el-option v-for="item in DeviceGradeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
         </el-col>
@@ -102,9 +102,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警状态" width="150" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警级别" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtMethod }}
+          {{ scope.row.Name }}
         </template>
       </el-table-column>
 
@@ -134,7 +134,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-import { GetSysUserTextValuePair } from '@/api/BasicData'
+import { GetSysUserTextValuePair, GetDictionary } from '@/api/BasicData'
 import { GetValuePair, EquPlanList, FormulatePlan } from '@/api/DeviceData'
 const fixHeight = 220
 import Bus from '@/api/bus.js'
@@ -149,7 +149,7 @@ export default {
         PageIndex: 1,
         PageSize: 30,
         EquTypeCode: undefined,
-        MtItemsNum: undefined,
+        Name: undefined,
         ShowBanned: false
       },
       listLoading: false,
@@ -162,7 +162,7 @@ export default {
       multipleSelection: [], // 多选
       EquTypeCodeData: [], // 设备类型下拉
       RepairUserData: [], // 计划保养人员
-      WarningTypeData: [], // 预警状态
+      DeviceGradeData: [], // 预警级别
       tableHeight: window.innerHeight - fixHeight // 表格高度
     }
   },
@@ -200,6 +200,13 @@ export default {
     GetSysUserTextValuePair().then(res => {
       if (res.IsPass === true) {
         this.RepairUserData = res.Obj
+      }
+    })
+
+    // 预警级别
+    GetDictionary({ code: '0034' }).then(res => {
+      if (res.IsPass === true) {
+        this.DeviceGradeData = res.Obj
       }
     })
 

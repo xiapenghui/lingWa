@@ -8,8 +8,8 @@
             <el-tooltip class="item" effect="dark" :enterable="false" content="预警级别" placement="top-start"><label class="radio-label">预警级别:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.EquTypeCode" clearable style="width: 100%">
-              <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
+            <el-select v-model="pagination.Name" clearable style="width: 100%">
+              <el-option v-for="item in DeviceGradeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
         </el-col>
@@ -61,15 +61,15 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="预警级别编号" width="200" prop="MtItemsNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警级别编号" width="200" prop="PreWarnNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtItemsNum }}
+          {{ scope.row.PreWarnNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警级别" width="200" prop="MtItemsName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警级别" width="200" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtItemsName }}
+          {{ scope.row.Name }}
         </template>
       </el-table-column>
 
@@ -79,21 +79,21 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警产量" width="200" prop="EquTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警产量" width="200" prop="PreAlertTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeName }}
+          {{ scope.row.PreAlertTimes }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警天数(天)" width="200" prop="EquTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警天数(天)" width="200" prop="PreAlertDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeName }}
+          {{ scope.row.PreAlertDays }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" min-width="200" prop="EquTypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="备注" min-width="200" prop="Remark" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.EquTypeName }}
+          {{ scope.row.Remark }}
         </template>
       </el-table-column>
 
@@ -148,9 +148,9 @@
 
         <el-form-item label="预警类型编号" prop="PreWarnNum"><el-input v-model.trim="ruleForm.PreWarnNum" placeholder="预警类型编号" clearable /></el-form-item>
 
-        <el-form-item label="预警类型级别" prop="EquTypeCode">
-          <el-select v-model="ruleForm.EquTypeCode" placeholder="请选择" clearable>
-            <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
+        <el-form-item label="预警级别" prop="Name">
+          <el-select v-model="ruleForm.Name" placeholder="请选择" clearable>
+            <el-option v-for="item in DeviceGradeData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
 
@@ -163,7 +163,7 @@
         <el-form-item label="预警产能(个)"><el-input v-model.trim="ruleForm.PreAlertTimes" placeholder="预警产能" clearable /></el-form-item>
 
         <el-form-item label="预警周期(天)">
-          <el-select v-model="ruleForm.MaintainDays" placeholder="预警周期" style="width: 100%" clearable>
+          <el-select v-model="ruleForm.PreAlertDays" placeholder="预警周期" style="width: 100%" clearable>
             <el-option v-for="item in MaintainData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -210,10 +210,11 @@ export default {
       addShow: true, // 继续新增
       MaintainData: [], // 预警周期
       EquTypeCodeData: [], // 设备类型下拉
+      DeviceGradeData: [], // 预警级别
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       rules: {
         PreWarnNum: [{ required: true, message: '请输入预警类型编号', trigger: 'blur' }],
-        MtItemsNum: [{ required: true, message: '请输入设备保养编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
         EquTypeCode: [{ required: true, message: '请选择设备保养型', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
@@ -287,6 +288,13 @@ export default {
       }
     })
 
+    // 预警级别
+    GetDictionary({ code: '0034' }).then(res => {
+      if (res.IsPass === true) {
+        this.DeviceGradeData = res.Obj
+      }
+    })
+
     // Mock: get all routes and roles list from server
     this.getList()
     this.setFormRules()
@@ -310,7 +318,7 @@ export default {
     setFormRules: function() {
       this.rules = {
         PreWarnNum: [{ required: true, message: '请输入预警类型编号', trigger: 'blur' }],
-        MtItemsNum: [{ required: true, message: '请输入设备保养编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
         EquTypeCode: [{ required: true, message: '请选择设备保养型', trigger: 'blur' }]
       }
     },

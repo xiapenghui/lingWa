@@ -28,16 +28,16 @@
           </el-col>
         </el-col>
 
-        <!--   <el-col :span="5">
+        <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="预警状态" placement="top-start"><label class="radio-label">预警状态:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="预警级别" placement="top-start"><label class="radio-label">预警级别:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.EquTypeCode" clearable style="width: 100%">
-              <el-option v-for="item in EquTypeCodeData" :key="item.value" :label="item.text" :value="item.value" />
+            <el-select v-model="pagination.Name" clearable style="width: 100%">
+              <el-option v-for="item in DeviceGradeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
-        </el-col> -->
+        </el-col>
 
         <el-col :span="4">
           <el-col :span="24">
@@ -108,9 +108,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警状态" width="180" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警级别" width="180" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtMethod }}
+          {{ scope.row.Name }}
         </template>
       </el-table-column>
 
@@ -127,6 +127,7 @@ import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
+import { GetDictionary } from '@/api/BasicData'
 import { GetValuePair, EquMainList } from '@/api/DeviceData'
 const fixHeight = 220
 export default {
@@ -146,6 +147,7 @@ export default {
       listLoading: false,
       total: 10,
       EquTypeCodeData: [], // 设备类型下拉
+      DeviceGradeData: [], // 预警级别
       tableHeight: window.innerHeight - fixHeight // 表格高度
     }
   },
@@ -186,6 +188,13 @@ export default {
     GetValuePair().then(res => {
       if (res.IsPass === true) {
         this.EquTypeCodeData = res.Obj
+      }
+    })
+
+    // 预警级别
+    GetDictionary({ code: '0034' }).then(res => {
+      if (res.IsPass === true) {
+        this.DeviceGradeData = res.Obj
       }
     })
 

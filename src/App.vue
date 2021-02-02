@@ -1,14 +1,10 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <div id="app"><router-view /></div>
 </template>
 
 <script>
-
 export default {
   name: 'App'
-
 }
 </script>
 <style>
@@ -16,4 +12,7 @@ export default {
   text-align: right !important;
 }
 
+.el-menu .el-submenu__title i {
+  color: #FFFFFF;
+}
 </style>
