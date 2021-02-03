@@ -8,7 +8,7 @@
             <el-tooltip class="item" effect="dark" :enterable="false" content="预警级别" placement="top-start"><label class="radio-label">预警级别:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.Name" clearable style="width: 100%">
+            <el-select v-model="pagination.PreWarn" clearable style="width: 100%">
               <el-option v-for="item in DeviceGradeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
@@ -67,9 +67,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警级别" width="200" prop="Name" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警级别" width="200" prop="PreWarn" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Name }}
+          {{ scope.row.PreWarn }}
         </template>
       </el-table-column>
 
@@ -148,8 +148,8 @@
 
         <el-form-item label="预警类型编号" prop="PreWarnNum"><el-input v-model.trim="ruleForm.PreWarnNum" placeholder="预警类型编号" clearable /></el-form-item>
 
-        <el-form-item label="预警级别" prop="Name">
-          <el-select v-model="ruleForm.Name" placeholder="请选择" clearable>
+        <el-form-item label="预警级别" prop="PreWarn">
+          <el-select v-model="ruleForm.PreWarn" placeholder="请选择" clearable>
             <el-option v-for="item in DeviceGradeData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -186,7 +186,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { GetDictionary } from '@/api/BasicData'
-import { GetValuePair, warningList, warningAdd, warningDetele, warningModify, warningModifyStatus } from '@/api/DeviceData'
+import { GetValuePair, warningList, warningAdd, warningDelete, warningModify, warningModifyStatus } from '@/api/DeviceData'
 const fixHeight = 260
 export default {
   name: 'IncomingInsp',
@@ -198,7 +198,7 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        Name: undefined,
+        PreWarn: undefined,
         EquTypeCode: undefined,
         ShowBanned: false
       },
@@ -214,7 +214,7 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       rules: {
         PreWarnNum: [{ required: true, message: '请输入预警类型编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
+        PreWarn: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
         EquTypeCode: [{ required: true, message: '请选择设备保养型', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
@@ -318,7 +318,7 @@ export default {
     setFormRules: function() {
       this.rules = {
         PreWarnNum: [{ required: true, message: '请输入预警类型编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
+        PreWarnCode: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
         EquTypeCode: [{ required: true, message: '请选择设备保养型', trigger: 'blur' }]
       }
     },
@@ -508,7 +508,8 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          warningDetele({ PreWarnCode: row.PreWarnCode }).then(res => {
+          warningDelete({ PreWarnCode: row.PreWarnCode }).then(res => {
+            debugger
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',

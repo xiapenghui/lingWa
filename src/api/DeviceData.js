@@ -280,9 +280,9 @@ export function warningAdd(data) {
 }
 
 // 设备管理 - 基础数据 - 预警类型管理删除
-export function warningDetele(data) {
+export function warningDelete(data) {
   return request({
-    url: '/api/EquPreWarnType/Detele',
+    url: '/api/EquPreWarnType/Delete',
     method: 'post',
     data
   })
@@ -305,3 +305,4 @@ export function warningModifyStatus(data) {
     data
   })
 }
+ 

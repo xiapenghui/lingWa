@@ -18,7 +18,7 @@
             <el-tooltip class="item" effect="dark" :enterable="false" content="预警级别" placement="top-start"><label class="radio-label">预警级别:</label></el-tooltip>
           </el-col>
           <el-col :span="16">
-            <el-select v-model="pagination.Name" clearable style="width: 100%">
+            <el-select v-model="pagination.PreWarn" clearable style="width: 100%">
               <el-option v-for="item in DeviceGradeData" :key="item.value" :label="item.text" :value="item.value" />
             </el-select>
           </el-col>
@@ -96,15 +96,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="实际产量" width="150" prop="MtMethod" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="实际产量" width="150" prop="ActTimes" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MtMethod }}
+          {{ scope.row.ActTimes }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警级别" width="150" prop="Name" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="预警级别" width="150" prop="PreWarn" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Name }}
+          {{ scope.row.PreWarn }}
         </template>
       </el-table-column>
 
@@ -148,8 +148,8 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
+        PreWarn: undefined,
         EquTypeCode: undefined,
-        Name: undefined,
         ShowBanned: false
       },
       listLoading: false,
