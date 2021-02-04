@@ -148,8 +148,8 @@
 
         <el-form-item label="预警类型编号" prop="PreWarnNum"><el-input v-model.trim="ruleForm.PreWarnNum" placeholder="预警类型编号" clearable /></el-form-item>
 
-        <el-form-item label="预警级别" prop="PreWarn">
-          <el-select v-model="ruleForm.PreWarn" placeholder="请选择" clearable>
+        <el-form-item label="预警级别" prop="Code">
+          <el-select v-model="ruleForm.Code" placeholder="请选择" clearable>
             <el-option v-for="item in DeviceGradeData" :key="item.value" :label="item.text" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -214,7 +214,7 @@ export default {
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       rules: {
         PreWarnNum: [{ required: true, message: '请输入预警类型编号', trigger: 'blur' }],
-        PreWarn: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
+        Code: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
         EquTypeCode: [{ required: true, message: '请选择设备保养型', trigger: 'blur' }]
       },
       parentMsg: this.$t('permission.importCompany')
@@ -318,7 +318,7 @@ export default {
     setFormRules: function() {
       this.rules = {
         PreWarnNum: [{ required: true, message: '请输入预警类型编号', trigger: 'blur' }],
-        PreWarnCode: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
+        Code: [{ required: true, message: '请选择预警级别', trigger: 'blur' }],
         EquTypeCode: [{ required: true, message: '请选择设备保养型', trigger: 'blur' }]
       }
     },
