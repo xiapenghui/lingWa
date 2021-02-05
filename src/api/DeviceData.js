@@ -305,4 +305,48 @@ export function warningModifyStatus(data) {
     data
   })
 }
- 
+
+// 设备管理 - 基础数据 - 备品备件管理列表
+export function EquSpareList(data) {
+  return request({
+    url: '/api/EquSpare/List',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 备品备件管理增加
+export function EquSpareAdd(data) {
+  return request({
+    url: '/api/EquSpare/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 备品备件管理删除
+export function EquSpareDelete(data) {
+  return request({
+    url: '/api/EquSpare/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 备品备件管理修改
+export function EquSpareModify(data) {
+  return request({
+    url: '/api/EquSpare/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 设备管理 - 基础数据 - 备品备件管理状态
+export function EquSpareModifyStatus(data) {
+  return request({
+    url: '/api/EquSpare/ModifyStatus',
+    method: 'post',
+    data
+  })
+}

@@ -78,6 +78,14 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="预警级别" width="180" prop="PreWarn" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.PreWarn==='绿色'" effect="dark" type="success">{{ scope.row.PreWarn }}</el-tag>
+          <el-tag v-else-if="scope.row.PreWarn==='黄色'" effect="dark" type="warning"> {{ scope.row.PreWarn }}</el-tag>
+          <el-tag v-else effect="dark" type="danger">{{ scope.row.PreWarn }}</el-tag>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="保养周期 (天)" width="180" prop="MaintainDays" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.MaintainDays }}
@@ -108,10 +116,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预警级别" width="180" prop="PreWarn" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.PreWarn }}
-        </template>
       </el-table-column>
 
     </el-table>

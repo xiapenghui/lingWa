@@ -58,21 +58,21 @@
         </template>
       </el-table-column>
 
-      <!-- <el-table-column align="center" label="备件编号" width="200" prop="RowCode" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="备件编号" width="200" prop="RowCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.RowCode }}
+          <el-input v-model="scope.row.SpareNum" clearable placeholder="请选择备件编号" @focus="spareBox" />
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
       <el-table-column align="center" label="备件名称" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareName" clearable />
+          <el-input v-model="scope.row.SpareName" disabled />
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="备件数量" width="150" prop="SpareQty" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareQty" clearable type="number" />
+          <el-input v-model="scope.row.SpareQty" clearable type="number" :min="0" placeholder="请输入数量" />
         </template>
       </el-table-column>
 
@@ -101,7 +101,6 @@
     </el-table>
 
     <el-button icon="el-icon-s-tools" type="primary" style="float: left;margin-top: 20px;" @click="submitForm('ruleForm')">提交</el-button>
-    <pagination v-show="total > 0" :total="total" :current.sync="pagination.PageIndex" :size.sync="pagination.PageSize" />
 
     <!-- 设备编号弹窗 -->
     <equ-num
@@ -115,6 +114,20 @@
       @equClick="equClick"
       @handleSearchEqu="handleSearchEqu"
     />
+
+    <!-- 备品备件弹窗 -->
+    <spare-part
+      :spare-show="spareFormVisible"
+      :spare-box-loading="spareBoxLoading"
+      :tae-box-height="tableBoxHeight"
+      :spare-data="spareData"
+      :panation-search-spare="paginationSearchSpare"
+      :spare-type-code-data="SpareTypeCodeData"
+      @spareClose="spareClose"
+      @spareClick="spareClick"
+      @handleSearchSpare="handleSearchSpare"
+    />
+
   </div>
 </template>
 
@@ -122,16 +135,16 @@
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import EquNum from '@/components/EquNum' // 工序名称
+import SparePart from '@/components/SparePart' // 工序名称
 import { GetDictionary, GetSysUserTextValuePair } from '@/api/BasicData'
-import { GetValuePair, EquDataList, Add_Union } from '@/api/DeviceData'
+import { GetValuePair, EquDataList, Add_Union, EquSpareList } from '@/api/DeviceData'
 import Bus from '@/api/bus.js'
 const fixHeight = 380
 const fixHeightBox = 350
 export default {
   name: 'MainManage',
-  components: { Pagination, EquNum },
+  components: { EquNum, SparePart },
   data() {
     return {
       tableData: [],
@@ -143,21 +156,8 @@ export default {
         RepairDate: '',
         RepairMethod: ''
       },
-      // 编辑弹窗
-      pagination: {
-        PageIndex: 1,
-        PageSize: 30
-      },
-      total: 10,
-      equData: [], // 设备编号数组
-      equFormVisible: false, // input设备编号弹窗
-      equBoxLoading: false, // 设备编号loading
-      formLoading: false, // form表单loading
-      EquTypeCodeData: [], // 设备类型数组
-      FaultData: [], // 故障类型数组
-      RepairUserData: [], // 维修人员数组
-      newEquCode: null, // 获取设备编号回传Code
-      UnitTextList: [], // 获取新增页面单位下拉
+
+      // 设备编号查询
       paginationSearchEqu: {
         PageIndex: 1,
         PageSize: 10000,
@@ -166,6 +166,29 @@ export default {
         EquTypeCode: undefined,
         ShowBanned: false
       },
+
+      // 备品备件查询
+      paginationSearchSpare: {
+        PageIndex: 1,
+        PageSize: 10000,
+        SpareNum: undefined,
+        name: undefined,
+        ShowBanned: false
+      },
+      equData: [], // 设备编号数组
+      equFormVisible: false, // input设备编号弹窗
+      spareFormVisible: false, // 备品备件弹窗
+      equBoxLoading: false, // 设备编号loading
+      spareBoxLoading: false, //  备品备件loading
+      formLoading: false, // form表单loading
+      EquTypeCodeData: [], // 设备类型数组
+      SpareTypeCodeData: [], // 备品备件数组
+      spareData: [], // 备品备件数组
+      FaultData: [], // 故障类型数组
+      RepairUserData: [], // 维修人员数组
+      newEquCode: null, // 获取设备编号回传Code
+      UnitTextList: [], // 获取新增页面单位下拉
+      newSpareCode: null,
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       rules: {
@@ -285,9 +308,6 @@ export default {
     handleAdd() {
       // 添加行数
       var newValue = {
-        EquCode: this.newEquCode,
-        TaskNum: '00',
-        SpareName: '',
         SpareUnit: '',
         SpareQty: '',
         Remark: ''
@@ -300,28 +320,32 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          const params = this.ruleForm
-          params.EquCode = this.newEquCode
-          params.Li = this.tableData
+          debugger
+          const self = this
+          const params = self.ruleForm
+          params.TaskNum = '00'
+          params.EquCode = self.newEquCode
+          self.tableData.map(item => {
+            item.SpareCode = self.newSpareCode
+          })
+          params.Li = self.tableData
           Add_Union(params).then(res => {
-            this.formLoading = true
+            self.formLoading = true
             if (res.IsPass === true) {
-              this.$message({
+              self.$message({
                 type: 'success',
                 message: '新增成功'
               })
-              const self = this
               setTimeout(function() {
                 self.tableData = []
                 self.ruleForm = {}
               }, 1000)
             } else {
-              this.$message({
+              self.$message({
                 type: 'error',
                 message: res.MSG
               })
             }
-            const self = this
             setTimeout(function() {
               self.formLoading = false
             }, 1000)
@@ -403,7 +427,40 @@ export default {
     // 关闭设备编号查询弹窗
     equClose() {
       this.equFormVisible = false
+    },
+
+    // 备品备件弹窗
+    spareBox() {
+      this.spareFormVisible = true
+      this.spareBoxLoading = true
+      EquSpareList(this.paginationSearchSpare).then(res => {
+        if (res.IsPass === true) {
+          this.spareData = res.Obj
+          this.spareBoxLoading = false
+        }
+      })
+    },
+    //  备品备件弹窗搜索
+    handleSearchSpare() {
+      this.paginationSearchSpare.PageIndex = 1
+      this.spareBox()
+    },
+    //  备品备件双击事件获取当前行的值
+    spareClick(row) {
+      debugger
+      this.$set(this.tableData, 'SpareNum', row.SpareNum)
+      this.$set(this.tableData, 'SpareName', row.Name)
+      this.newSpareCode = row.SpareCode
+      this.spareFormVisible = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
+    },
+    // 关闭备品备件查询弹窗
+    spareClose() {
+      this.spareFormVisible = false
     }
+
   }
 }
 </script>

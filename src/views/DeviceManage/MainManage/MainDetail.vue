@@ -129,9 +129,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="备件编号" width="200" prop="EquNum" sortable :show-overflow-tooltip="true">
+        <el-table-column align="center" label="备件编号" width="200" prop="SpareNum" sortable :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            {{ scope.row.EquNum }}
+            {{ scope.row.SpareNum }}
           </template>
         </el-table-column>
 
