@@ -41,7 +41,6 @@
     </div>
 
     <div class="rightBtn"><el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">新增零件</el-button></div>
-
     <el-table
       :header-cell-style="{ background: '#1890ff ', color: '#ffffff' }"
       :data="tableData"
@@ -60,13 +59,13 @@
 
       <el-table-column align="center" label="备件编号" width="200" prop="RowCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareNum" clearable placeholder="请选择备件编号" @focus="spareBox" />
+          <el-input v-model="scope.row.no" clearable placeholder="请选择备件编号" @focus="spareBox(scope.$index)" />
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="备件名称" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareName" disabled />
+          <el-input v-model="scope.row.name" disabled />
         </template>
       </el-table-column>
 
@@ -76,12 +75,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="单位" width="150" prop="SpareUnit" sortable>
+      <el-table-column align="center" label="单位" width="150" prop="SpareUnitName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-select v-model="scope.row.SpareUnit" clearable>
-            <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-
+          <el-input v-model="scope.row.SpareUnitName" clearable disabled />
         </template>
       </el-table-column>
 
@@ -147,6 +143,7 @@ export default {
   components: { EquNum, SparePart },
   data() {
     return {
+      spareActiveIndex: 0,
       tableData: [],
       ruleForm: {
         EquNum: '',
@@ -175,6 +172,7 @@ export default {
         name: undefined,
         ShowBanned: false
       },
+
       equData: [], // 设备编号数组
       equFormVisible: false, // input设备编号弹窗
       spareFormVisible: false, // 备品备件弹窗
@@ -187,7 +185,7 @@ export default {
       FaultData: [], // 故障类型数组
       RepairUserData: [], // 维修人员数组
       newEquCode: null, // 获取设备编号回传Code
-      UnitTextList: [], // 获取新增页面单位下拉
+      // UnitTextList: [], // 获取新增页面单位下拉
       newSpareCode: null,
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
@@ -273,13 +271,6 @@ export default {
       }
     })
 
-    // 单位下拉
-    GetDictionary({ code: '0021' }).then(res => {
-      if (res.IsPass === true) {
-        this.UnitTextList = res.Obj
-      }
-    })
-
     // 维修人员
     GetSysUserTextValuePair().then(res => {
       if (res.IsPass === true) {
@@ -308,7 +299,10 @@ export default {
     handleAdd() {
       // 添加行数
       var newValue = {
+        no: '',
+        name: '',
         SpareUnit: '',
+        SpareUnitName: '',
         SpareQty: '',
         Remark: ''
       }
@@ -320,7 +314,6 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          debugger
           const self = this
           const params = self.ruleForm
           params.TaskNum = '00'
@@ -430,7 +423,8 @@ export default {
     },
 
     // 备品备件弹窗
-    spareBox() {
+    spareBox(index) {
+      this.spareActiveIndex = index
       this.spareFormVisible = true
       this.spareBoxLoading = true
       EquSpareList(this.paginationSearchSpare).then(res => {
@@ -447,9 +441,10 @@ export default {
     },
     //  备品备件双击事件获取当前行的值
     spareClick(row) {
-      debugger
-      this.$set(this.tableData, 'SpareNum', row.SpareNum)
-      this.$set(this.tableData, 'SpareName', row.Name)
+      this.tableData[this.spareActiveIndex].no = row.SpareNum
+      this.tableData[this.spareActiveIndex].name = row.Name
+      this.tableData[this.spareActiveIndex].SpareUnitName = row.SpareUnitName
+      this.tableData[this.spareActiveIndex].SpareUnit = row.SpareUnit
       this.newSpareCode = row.SpareCode
       this.spareFormVisible = false
       this.$nextTick(() => {

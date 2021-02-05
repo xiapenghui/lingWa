@@ -228,7 +228,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
+        <el-table-column align="center" label="备注" min-width="200" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.Remark }}
           </template>

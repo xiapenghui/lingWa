@@ -71,7 +71,8 @@
         <template slot-scope="scope">
           <el-tag v-if="scope.row.PreWarn==='绿色'" effect="dark" type="success">{{ scope.row.PreWarn }}</el-tag>
           <el-tag v-else-if="scope.row.PreWarn==='黄色'" effect="dark" type="warning"> {{ scope.row.PreWarn }}</el-tag>
-          <el-tag v-else effect="dark" type="danger">{{ scope.row.PreWarn }}</el-tag>
+          <el-tag v-else-if="scope.row.PreWarn==='红色'" effect="dark" type="danger">{{ scope.row.PreWarn }}</el-tag>
+          <span v-else />
         </template>
       </el-table-column>
 
