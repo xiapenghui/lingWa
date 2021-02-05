@@ -840,55 +840,29 @@ export const asyncRoutes = [
         }
       }
       ]
+    },
+
+    // 设备备品备件
+    {
+      path: 'DeviceSpare',
+      component: () => import('@/views/DeviceManage/DeviceSpare/index'),
+      name: 'DeviceSpare',
+      meta: {
+        title: 'DeviceSpare'
+      },
+      redirect: '/DeviceManage/DeviceSpare/DevicePart',
+      children: [{
+        path: 'DevicePart',
+        component: () => import('@/views/DeviceManage/DeviceSpare/DevicePart'),
+        name: 'DevicePart',
+        meta: {
+          title: 'DevicePart'
+        }
+      }
+      ]
     }
-
-      // {
-      //   path: 'MainManage',
-      //   component: () => import('@/views/DeviceManage/MainManage'),
-      //   name: 'MainManage',
-      //   meta: {
-      //     title: 'MainManage'
-      //   }
-      // },
-      // {
-      //   path: 'MainDetail',
-      //   component: () => import('@/views/DeviceManage/MainDetail'),
-      //   name: 'MainDetail',
-      //   meta: {
-      //     title: 'MainDetail'
-      //   }
-      // }
     ]
-
   },
-
-  // {
-  //   path: '/ProductionPlan',
-  //   component: Layout,
-  //   redirect: '/ProductionPlan/producPlan',
-  //   name: 'ProductionPlan',
-  //   meta: {
-  //     title: 'ProductionPlan',
-  //     icon: 'lock'
-  //   },
-  //   children: [{
-  //     path: 'producPlan',
-  //     component: () => import('@/views/ProductionPlan/producPlan'),
-  //     name: 'producPlan',
-  //     meta: {
-  //       title: 'producPlan'
-  //     }
-  //   },
-  //   {
-  //     path: 'orderPlan',
-  //     component: () => import('@/views/ProductionPlan/orderPlan'),
-  //     name: 'orderPlan',
-  //     meta: {
-  //       title: 'orderPlan'
-  //     }
-  //   }
-  //   ]
-  // },
 
   // 系统管理
   {

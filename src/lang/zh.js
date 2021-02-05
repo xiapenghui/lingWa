@@ -94,6 +94,8 @@ export default {
     MaterialType: '物料类型',
     Personnelinfor: '人员信息',
     DeviceGrade: '预警级别管理',
+    DeviceSpare: '备品备件管理',
+    DevicePart: '设备备品备件',
 
     // 截止
 
