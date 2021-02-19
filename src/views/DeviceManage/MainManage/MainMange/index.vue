@@ -115,9 +115,9 @@
     <spare-part
       :spare-show="spareFormVisible"
       :spare-box-loading="spareBoxLoading"
-      :tae-box-height="tableBoxHeight"
+      :table-box-height="tableBoxHeight"
       :spare-data="spareData"
-      :panation-search-spare="paginationSearchSpare"
+      :pagination-search-spare="paginationSearchSpare"
       :spare-type-code-data="SpareTypeCodeData"
       @spareClose="spareClose"
       @spareClick="spareClick"

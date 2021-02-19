@@ -42,7 +42,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="物料类型编码" width="200" prop="TypeNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="物料类型编号" width="200" prop="TypeNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.TypeNum }}
         </template>

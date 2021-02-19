@@ -171,7 +171,7 @@
           <el-input v-model.trim="ruleForm.ProcessName" readonly placeholder="请选择" class="disActive" @focus="workingBox" />
         </el-form-item>
 
-        <el-form-item label="物料编码"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="缺陷名称" clearable /></el-form-item>
+        <el-form-item label="物料编号"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="物料编号" clearable /></el-form-item>
 
         <el-form-item label="物料名称"><el-input v-model.trim="ruleForm.MaterialName" placeholder="物料名称" clearable /></el-form-item>
 
