@@ -86,6 +86,36 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="邮件地址" width="150" prop="MobilePwd" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.MobilePwd }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="腕表地址" width="150" prop="MobilePwd" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.MobilePwd }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="微信号" width="150" prop="MobilePwd" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.MobilePwd }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="手机号" width="150" prop="MobilePwd" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.MobilePwd }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="Mwssage" width="150" prop="MobilePwd" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.MobilePwd }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="备注" min-width="200" prop="Remark" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Remark }}
@@ -148,6 +178,15 @@
         </el-form-item>
 
         <el-form-item label="移动端密码"><el-input v-model.trim="ruleForm.MobilePwd" placeholder="移动端密码" type="password" :show-password="true" /></el-form-item>
+        <el-form-item label="邮件地址" prop="NameCN"><el-input v-model.trim="ruleForm.NameCN" placeholder="邮件地址" /></el-form-item>
+        <el-form-item label="腕表地址" prop="NameCN"><el-input v-model.trim="ruleForm.NameCN" placeholder="腕表地址" /></el-form-item>
+        <el-form-item label="微信号" prop="NameCN"><el-input v-model.trim="ruleForm.NameCN" placeholder="微信号" /></el-form-item>
+        <el-form-item label="手机号" prop="NameCN"><el-input v-model.trim="ruleForm.NameCN" placeholder="手机号" /></el-form-item>
+
+        <el-form-item label="Message">
+          <el-radio v-model="ruleForm.OnJob" :label="true">是</el-radio>
+          <el-radio v-model="ruleForm.OnJob" :label="false">否</el-radio>
+        </el-form-item>
 
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
       </el-form>

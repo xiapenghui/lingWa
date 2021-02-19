@@ -191,7 +191,8 @@ export default {
         ProcessCodeName: '',
         MaterialName: '',
         SubMaterialName: ''
-      }, // 编辑弹窗
+      },
+      // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,

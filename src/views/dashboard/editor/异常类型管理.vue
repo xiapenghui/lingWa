@@ -2,31 +2,18 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="5">
+        <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="异常编号" placement="top-start"><label class="radio-label">异常编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="异常类型编号" placement="top-start"><label class="radio-label">异常类型编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ExceptNum" placeholder="异常编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ExceptNum" placeholder="异常类型编号" clearable /></el-col>
         </el-col>
-
-        <el-col :span="5">
+        <el-col :span="6">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="异常名称" placement="top-start"><label class="radio-label">异常名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="异常类型名称" placement="top-start"><label class="radio-label">异常类型名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ExceptName" placeholder="异常名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ExceptName" placeholder="异常类型名称" clearable /></el-col>
         </el-col>
-
-        <el-col :span="5">
-          <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="异常类型" placement="top-start"><label class="radio-label">异常类型:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16">
-            <el-select v-model="pagination.ExceptType" placeholder="异常类型" clearable style="width: 100%">
-              <el-option v-for="item in ExceptTypeData" :key="item.value" :label="item.text" :value="item.value" />
-            </el-select>
-          </el-col>
-        </el-col>
-
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
@@ -59,33 +46,14 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="异常编号" width="150" prop="ExceptNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="异常类型编号" width="150" prop="ExceptNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ExceptNum }}
         </template>
       </el-table-column>
-
-      <el-table-column align="center" label="异常名称" width="150" prop="ExceptName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="异常类型名称" width="150" prop="ExceptName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.ExceptName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="异常类型" width="150" prop="ExceptTypeText" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.ExceptTypeText }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="异常部门" width="150" prop="DeptName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.DeptName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="是否Andon" width="150" prop="IsAndonText" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.IsAndonText === '否' ? '#FF5757' : '#13ce66' }">{{ scope.row.IsAndonText }}</el-tag>
         </template>
       </el-table-column>
 
@@ -142,31 +110,13 @@
       :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
     >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="异常编号" prop="ExceptNum"><el-input v-model.trim="ruleForm.ExceptNum" placeholder="异常编号" clearable /></el-form-item>
-        <el-form-item label="异常名称" prop="ExceptName"><el-input v-model.trim="ruleForm.ExceptName" placeholder="异常名称" clearable /></el-form-item>
-
-        <el-form-item label="异常类型" prop="ExceptType">
-          <el-select v-model="ruleForm.ExceptType" placeholder="异常类型" clearable style="width: 100%">
-            <el-option v-for="item in ExceptTypeData" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="异常部门" prop="DeptCode">
-          <el-select v-model="ruleForm.DeptCode" placeholder="异常部门" clearable style="width: 100%">
-            <el-option v-for="item in departmentData" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="是否Andon" prop="IsAndon">
-          <el-radio v-model="ruleForm.IsAndon" :label="true">是</el-radio>
-          <el-radio v-model="ruleForm.IsAndon" :label="false">否</el-radio>
-        </el-form-item>
+        <el-form-item label="异常类型编号" prop="ExceptNum"><el-input v-model.trim="ruleForm.ExceptNum" placeholder="异常类型编号" clearable /></el-form-item>
+        <el-form-item label="异常类型名称" prop="ExceptName"><el-input v-model.trim="ruleForm.ExceptName" placeholder="异常类型名称" clearable /></el-form-item>
 
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -178,9 +128,7 @@ import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { GetDictionary } from '@/api/BasicData'
-import { GetDepartmentTextValuePair } from '@/api/user'
-import { AnList, AnDelete, AnAdd, AnModify, AnStatus } from '@/api/Andon'
+import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetMaterialTypeTextValuePair } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'MaterialInformation',
@@ -194,25 +142,18 @@ export default {
         PageSize: 30,
         ExceptNum: undefined,
         ExceptName: undefined,
-        ExceptType: undefined,
         ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
-      ExceptTypeData: [], // 异常类型
-      departmentData: [], // 异常部门
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
-      addShow: true, // 继续新增
       rules: {
-        ExceptNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
-        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }],
-        ExceptType: [{ required: true, message: '请选择异常类型', trigger: 'change' }],
-        DeptCode: [{ required: true, message: '请选择异常部门', trigger: 'change' }],
-        IsAndon: [{ required: true, message: '请选择是否Andon', trigger: 'blur' }]
+        ExceptNum: [{ required: true, message: '请输入异常类型编号', trigger: 'blur' }],
+        ExceptName: [{ required: true, message: '请输入异常类型名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -269,17 +210,10 @@ export default {
       })()
     }
 
-    // 异常类型下拉
-    GetDictionary({ code: '0036' }).then(res => {
+    // 所属大类下拉
+    GetMaterialTypeTextValuePair().then(res => {
       if (res.IsPass === true) {
-        this.ExceptTypeData = res.Obj
-      }
-    })
-
-    // 获取部门下拉
-    GetDepartmentTextValuePair({}).then(res => {
-      if (res.IsPass === true) {
-        this.departmentData = res.Obj
+        this.BelongingData = res.Obj
       }
     })
 
@@ -302,11 +236,8 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        ExceptNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
-        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }],
-        ExceptType: [{ required: true, message: '请选择异常类型', trigger: 'change' }],
-        DeptCode: [{ required: true, message: '请选择异常部门', trigger: 'change' }],
-        IsAndon: [{ required: true, message: '请选择是否Andon', trigger: 'blur' }]
+        ExceptNum: [{ required: true, message: '请输入异常类型编号', trigger: 'blur' }],
+        ExceptName: [{ required: true, message: '请输入异常类型名称', trigger: 'blur' }]
       }
     },
 
@@ -327,9 +258,9 @@ export default {
       }).then(() => {
         const params = {
           Status: (row.Status = row.Status !== true),
-          ExceptCode: row.ExceptCode
+          MaterialCode: row.MaterialCode
         }
-        AnStatus(params).then(res => {
+        MaterialStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
@@ -354,7 +285,7 @@ export default {
 
     getList() {
       this.listLoading = true
-      AnList(this.pagination).then(res => {
+      MaterialList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -376,7 +307,6 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
-      this.addShow = true
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
@@ -385,7 +315,6 @@ export default {
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
-      this.addShow = false
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
@@ -400,7 +329,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          AnDelete({ ExceptCode: row.ExceptCode }).then(res => {
+          MaterialDelete({ MaterialCode: row.MaterialCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -429,7 +358,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            AnModify(this.ruleForm).then(res => {
+            MaterialModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -446,7 +375,7 @@ export default {
               this.editLoading = false
             })
           } else {
-            AnAdd(this.ruleForm).then(res => {
+            MaterialAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -472,32 +401,7 @@ export default {
           return false
         }
       })
-    },
-
-    // 继续新增
-    submitAdd(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          AnAdd(this.ruleForm).then(res => {
-            if (res.IsPass === true) {
-              this.$message({
-                type: 'success',
-                message: this.$t('table.addSuc')
-              })
-              this.getList()
-            } else {
-              this.$message({
-                type: 'error',
-                message: res.MSG
-              })
-            }
-            this.editLoading = false
-          })
-          this.handleAdd()
-        }
-      })
     }
-
   }
 }
 </script>
