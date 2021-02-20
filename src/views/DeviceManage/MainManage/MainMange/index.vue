@@ -186,7 +186,6 @@ export default {
       RepairUserData: [], // 维修人员数组
       newEquCode: null, // 获取设备编号回传Code
       // UnitTextList: [], // 获取新增页面单位下拉
-      newSpareCode: null,
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       rules: {
@@ -301,6 +300,7 @@ export default {
       var newValue = {
         no: '',
         name: '',
+        SpareCode: '',
         SpareUnit: '',
         SpareUnitName: '',
         SpareQty: '',
@@ -318,9 +318,6 @@ export default {
           const params = self.ruleForm
           params.TaskNum = '00'
           params.EquCode = self.newEquCode
-          self.tableData.map(item => {
-            item.SpareCode = self.newSpareCode
-          })
           params.Li = self.tableData
           Add_Union(params).then(res => {
             self.formLoading = true
@@ -384,6 +381,7 @@ export default {
 
     // 删除
     handleDelete(index, row) {
+      debugger
       this.tableData.splice(index, 1)
       this.$message({
         message: '删除成功！',
@@ -445,7 +443,7 @@ export default {
       this.tableData[this.spareActiveIndex].name = row.Name
       this.tableData[this.spareActiveIndex].SpareUnitName = row.SpareUnitName
       this.tableData[this.spareActiveIndex].SpareUnit = row.SpareUnit
-      this.newSpareCode = row.SpareCode
+      this.tableData[this.spareActiveIndex].SpareCode = row.SpareCode
       this.spareFormVisible = false
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()

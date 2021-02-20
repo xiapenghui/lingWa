@@ -4,13 +4,6 @@
       <el-row :gutter="20">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="异常编号" placement="top-start"><label class="radio-label">异常编号:</label></el-tooltip>
-          </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ExceptNum" placeholder="异常编号" clearable /></el-col>
-        </el-col>
-
-        <el-col :span="5">
-          <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="异常名称" placement="top-start"><label class="radio-label">异常名称:</label></el-tooltip>
           </el-col>
           <el-col :span="16"><el-input v-model.trim="pagination.ExceptName" placeholder="异常名称" clearable /></el-col>
@@ -18,13 +11,9 @@
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="异常类型" placement="top-start"><label class="radio-label">异常类型:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="分组名称" placement="top-start"><label class="radio-label">分组名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16">
-            <el-select v-model="pagination.ExceptType" placeholder="异常类型" clearable style="width: 100%">
-              <el-option v-for="item in ExceptTypeData" :key="item.value" :label="item.text" :value="item.value" />
-            </el-select>
-          </el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.GroupName" placeholder="分组名称" clearable /></el-col>
         </el-col>
 
         <el-col :span="4">
@@ -71,21 +60,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="异常类型" width="150" prop="ExceptTypeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="分组编号" width="150" prop="GroupNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ExceptTypeText }}
+          {{ scope.row.GroupNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="异常部门" width="150" prop="DeptName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="分组名称" width="150" prop="GroupName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.DeptName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="是否Andon" width="150" prop="IsAndonText" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.IsAndonText === '否' ? '#FF5757' : '#13ce66' }">{{ scope.row.IsAndonText }}</el-tag>
+          {{ scope.row.GroupName }}
         </template>
       </el-table-column>
 
@@ -142,26 +125,10 @@
       :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
     >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
-        <el-form-item label="异常编号" prop="ExceptNum"><el-input v-model.trim="ruleForm.ExceptNum" placeholder="异常编号" clearable /></el-form-item>
-        <el-form-item label="异常名称" prop="ExceptName"><el-input v-model.trim="ruleForm.ExceptName" placeholder="异常名称" clearable /></el-form-item>
-
-        <el-form-item label="异常类型" prop="ExceptType">
-          <el-select v-model="ruleForm.ExceptType" placeholder="异常类型" clearable style="width: 100%">
-            <el-option v-for="item in ExceptTypeData" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="异常部门" prop="DeptCode">
-          <el-select v-model="ruleForm.DeptCode" placeholder="异常部门" clearable style="width: 100%">
-            <el-option v-for="item in departmentData" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="是否Andon" prop="IsAndon">
-          <el-radio v-model="ruleForm.IsAndon" :label="true">是</el-radio>
-          <el-radio v-model="ruleForm.IsAndon" :label="false">否</el-radio>
-        </el-form-item>
-
+        <el-form-item label="分组编号" prop="GroupNum"><el-input v-model.trim="ruleForm.GroupNum" placeholder="分组编号" class="disActive" @focus="groupBox" /></el-form-item>
+        <el-form-item label="分组名称" prop="GroupName"><el-input v-model.trim="ruleForm.GroupName" placeholder="分组名称" :disabled="true" /></el-form-item>
+        <el-form-item label="异常编号" prop="ExceptNum"><el-input v-model.trim="ruleForm.ExceptNum" placeholder="异常编号" class="disActive" @focus="waringBox" /></el-form-item>
+        <el-form-item label="异常名称" prop="ExceptName"><el-input v-model.trim="ruleForm.ExceptName" placeholder="异常名称" :disabled="true" /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -170,6 +137,31 @@
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
+
+    <!-- 异常发送组弹窗 -->
+    <group-name
+      :group-show="groupFormVisible"
+      :group-box-loading="groupBoxLoading"
+      :table-box-height="tableBoxHeight"
+      :group-data="groupData"
+      :pagination-search-group="paginationSearchGroup"
+      @groupClose="groupClose"
+      @groupClick="groupClick"
+      @handleSearchGroup="handleSearchGroup"
+    />
+
+    <!-- 异常明细弹窗 -->
+    <waring-name
+      :waring-show="waringFormVisible"
+      :waring-box-loading="waringBoxLoading"
+      :except-type-data="ExceptTypeData"
+      :table-box-height="tableBoxHeight"
+      :waring-data="waringData"
+      :pagination-search-waring="paginationSearchWaring"
+      @waringClose="waringClose"
+      @waringClick="waringClick"
+      @handleSearchWaring="handleSearchWaring"
+    />
   </div>
 </template>
 
@@ -178,13 +170,15 @@ import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import GroupName from '@/components/GroupName' //  异常发送组
+import WaringName from '@/components/WaringName' //  异常发送组
 import { GetDictionary } from '@/api/BasicData'
-import { GetDepartmentTextValuePair } from '@/api/user'
-import { AnList, AnDelete, AnAdd, AnModify, AnStatus } from '@/api/Andon'
+import { AdnGroupList, AdnSendList, AnList, AdnSendDelete, AdnSendAdd, AdnSendModify, AdnSendModifyStatus } from '@/api/Andon'
 const fixHeight = 270
+const fixHeightBox = 350
 export default {
   name: 'MaterialInformation',
-  components: { Pagination },
+  components: { Pagination, GroupName, WaringName },
   data() {
     return {
       tableData: [],
@@ -192,27 +186,51 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
+        ExceptName: undefined,
+        GroupName: undefined,
+        ShowBanned: false
+      },
+
+      // 异常发送组搜索条件
+      paginationSearchGroup: {
+        PageIndex: 1,
+        PageSize: 10000,
+        GroupNum: undefined,
+        GroupName: undefined,
+        ShowBanned: false
+      },
+
+      // 异常明细搜索条件
+      paginationSearchWaring: {
+        PageIndex: 1,
+        PageSize: 10000,
         ExceptNum: undefined,
         ExceptName: undefined,
         ExceptType: undefined,
         ShowBanned: false
       },
+
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
-      ExceptTypeData: [], // 异常类型
-      departmentData: [], // 异常部门
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
+      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
       addShow: true, // 继续新增
+      groupData: [], // 异常分组数组
+      groupBoxLoading: false, // 异常分组搜索loading
+      groupFormVisible: false, // input异常分组名称弹窗
+      waringData: [], // 异常明细数组
+      waringBoxLoading: false, // 异常明细搜索loading
+      waringFormVisible: false, // input异常明细弹窗
+      ExceptTypeData: [], // 异常类型下拉
       rules: {
-        ExceptNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
-        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }],
-        ExceptType: [{ required: true, message: '请选择异常类型', trigger: 'change' }],
-        DeptCode: [{ required: true, message: '请选择异常部门', trigger: 'change' }],
-        IsAndon: [{ required: true, message: '请选择是否Andon', trigger: 'blur' }]
+        GroupNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
+        GroupName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }],
+        ExceptNum: [{ required: true, message: '请选择异常编号', trigger: 'blur' }],
+        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -238,11 +256,14 @@ export default {
         }, 400)
       }
     },
-    'ruleForm.ExceptNum': function(val) {
-      if (val === '' || val === undefined) {
-        return
-      } else {
-        this.ruleForm.ExceptNum = this.filterInput(val)
+    tableBoxHeight(val) {
+      if (!this.timer) {
+        this.tableBoxHeight = val
+        this.timer = true
+        const that = this
+        setTimeout(function() {
+          that.timer = false
+        }, 400)
       }
     },
 
@@ -266,6 +287,7 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
+        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
 
@@ -273,13 +295,6 @@ export default {
     GetDictionary({ code: '0036' }).then(res => {
       if (res.IsPass === true) {
         this.ExceptTypeData = res.Obj
-      }
-    })
-
-    // 获取部门下拉
-    GetDepartmentTextValuePair({}).then(res => {
-      if (res.IsPass === true) {
-        this.departmentData = res.Obj
       }
     })
 
@@ -291,22 +306,14 @@ export default {
     table_index(index) {
       return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
     },
-    // 输入框禁止输入中文
-    filterInput(val) {
-      if (val === '') {
-        return val
-      } else {
-        return val.replace(/[\u4e00-\u9fa5\s]/gi, '')
-      }
-    },
+
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        ExceptNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
-        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }],
-        ExceptType: [{ required: true, message: '请选择异常类型', trigger: 'change' }],
-        DeptCode: [{ required: true, message: '请选择异常部门', trigger: 'change' }],
-        IsAndon: [{ required: true, message: '请选择是否Andon', trigger: 'blur' }]
+        GroupNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
+        GroupName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }],
+        ExceptNum: [{ required: true, message: '请选择异常编号', trigger: 'blur' }],
+        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }]
       }
     },
 
@@ -327,9 +334,9 @@ export default {
       }).then(() => {
         const params = {
           Status: (row.Status = row.Status !== true),
-          ExceptCode: row.ExceptCode
+          RsCode: row.RsCode
         }
-        AnStatus(params).then(res => {
+        AdnSendModifyStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
@@ -354,7 +361,7 @@ export default {
 
     getList() {
       this.listLoading = true
-      AnList(this.pagination).then(res => {
+      AdnSendList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -400,7 +407,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          AnDelete({ ExceptCode: row.ExceptCode }).then(res => {
+          AdnSendDelete({ RsCode: row.RsCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -429,7 +436,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            AnModify(this.ruleForm).then(res => {
+            AdnSendModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -446,7 +453,7 @@ export default {
               this.editLoading = false
             })
           } else {
-            AnAdd(this.ruleForm).then(res => {
+            AdnSendAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -478,7 +485,7 @@ export default {
     submitAdd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          AnAdd(this.ruleForm).then(res => {
+          AdnSendAdd(this.ruleForm).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -496,8 +503,70 @@ export default {
           this.handleAdd()
         }
       })
-    }
+    },
 
+    // 异常发送组弹窗
+    groupBox() {
+      this.groupFormVisible = true
+      this.groupBoxLoading = true
+      AdnGroupList(this.paginationSearchGroup).then(res => {
+        if (res.IsPass === true) {
+          this.groupData = res.Obj
+          this.groupBoxLoading = false
+        }
+      })
+    },
+    // 异常发送组搜索
+    handleSearchGroup() {
+      this.paginationSearchGroup.PageIndex = 1
+      this.groupBox()
+    },
+    // 增加异常发送组双击事件获取当前行的值
+    groupClick(row) {
+      this.$set(this.ruleForm, 'GroupNum', row.GroupNum)
+      this.ruleForm.GroupName = row.GroupName
+      this.ruleForm.GroupCode = row.GroupCode
+      this.groupFormVisible = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
+    },
+    // 关闭异常发送组查询弹窗
+    groupClose() {
+      this.groupFormVisible = false
+    },
+
+    // 异常明细弹窗
+    waringBox() {
+      this.waringFormVisible = true
+      this.waringBoxLoading = true
+      AnList(this.paginationSearchWaring).then(res => {
+        if (res.IsPass === true) {
+          this.waringData = res.Obj
+          this.waringBoxLoading = false
+        }
+      })
+    },
+    // 异常明细搜索
+    handleSearchWaring() {
+      debugger
+      this.paginationSearchWaring.PageIndex = 1
+      this.waringBox()
+    },
+    // 增加异常明细双击事件获取当前行的值
+    waringClick(row) {
+      this.$set(this.ruleForm, 'ExceptNum', row.ExceptNum)
+      this.ruleForm.ExceptName = row.ExceptName
+      this.ruleForm.ExceptCode = row.ExceptCode
+      this.waringFormVisible = false
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
+    },
+    // 关闭异常明细查询弹窗
+    waringClose() {
+      this.waringFormVisible = false
+    }
   }
 }
 </script>

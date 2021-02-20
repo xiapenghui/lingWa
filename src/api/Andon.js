@@ -133,3 +133,48 @@ export function AdnGroupUserModify(data) {
     data
   })
 }
+
+// Adn异常管理 - 异常信息管理 - 异常与发送组关系管理列表
+export function AdnSendList(data) {
+  return request({
+    url: '/api/AdnExceptRelationGroup/List',
+    method: 'post',
+    data
+  })
+}
+
+// Adn异常管理 - 异常信息管理 - 异常与发送组关系管理增加
+export function AdnSendAdd(data) {
+  return request({
+    url: '/api/AdnExceptRelationGroup/Add',
+    method: 'post',
+    data
+  })
+}
+
+// Adn异常管理 - 异常信息管理 - 异常与发送组关系管理删除
+export function AdnSendDelete(data) {
+  return request({
+    url: '/api/AdnExceptRelationGroup/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// Adn异常管理 - 异常信息管理 - 异常与发送组关系管理修改
+export function AdnSendModify(data) {
+  return request({
+    url: '/api/AdnExceptRelationGroup/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// Adn异常管理 - 异常信息管理 - 异常与发送组关系管理修改
+export function AdnSendModifyStatus(data) {
+  return request({
+    url: '/api/AdnExceptRelationGroup/ModifyStatus',
+    method: 'post',
+    data
+  })
+}

@@ -178,7 +178,6 @@ export default {
         PageSize: 30,
         GroupNum: undefined,
         GroupName: undefined,
-        ExceptType: undefined,
         ShowBanned: false
       },
       listLoading: false,
