@@ -178,3 +178,48 @@ export function AdnSendModifyStatus(data) {
     data
   })
 }
+
+// Adn异常管理 - 异常信息管理 - 异常与工位关系管理列表
+export function AdnTerList(data) {
+  return request({
+    url: '/api/AdnExceptRelationTerminal/List',
+    method: 'post',
+    data
+  })
+}
+
+// Adn异常管理 - 异常信息管理 - 异常与工位关系管理增加
+export function AdnTerAdd(data) {
+  return request({
+    url: '/api/AdnExceptRelationTerminal/Add',
+    method: 'post',
+    data
+  })
+}
+
+// Adn异常管理 - 异常信息管理 - 异常与工位关系管理删除
+export function AdnTerDelete(data) {
+  return request({
+    url: '/api/AdnExceptRelationTerminal/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// Adn异常管理 - 异常信息管理 - 异常与工位关系管理编辑
+export function AdnTerModify(data) {
+  return request({
+    url: '/api/AdnExceptRelationTerminal/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// Adn异常管理 - 异常信息管理 - 异常与工位关系管理状态
+export function AdnTerModifyStatus(data) {
+  return request({
+    url: '/api/AdnExceptRelationTerminal/ModifyStatus',
+    method: 'post',
+    data
+  })
+}

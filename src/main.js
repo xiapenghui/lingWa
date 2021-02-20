@@ -21,6 +21,9 @@ import './permission' // permission control
 
 import * as filters from './filters' // global filters
 import moment from 'moment' // 导入文件
+import * as Printjs from "print-js";
+// Vue.use(Print)
+
 Vue.prototype.$moment = moment // 时间日期赋值使用
 /**
  * If you don't want to use mock-server
