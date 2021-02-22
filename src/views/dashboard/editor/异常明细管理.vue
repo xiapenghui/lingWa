@@ -380,6 +380,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
+      this.ruleForm = {}
     },
     // 编辑角色
     handleEdit(row) {

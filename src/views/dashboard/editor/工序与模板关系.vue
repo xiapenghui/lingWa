@@ -4,25 +4,18 @@
       <el-row :gutter="20">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="异常名称" placement="top-start"><label class="radio-label">异常名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="工序编号" placement="top-start"><label class="radio-label">工序编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ExceptName" placeholder="异常名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.ProcessNum" placeholder="工序编号" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="工位名称" placement="top-start"><label class="radio-label">工位名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="工序名称" placement="top-start"><label class="radio-label">工序名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.TerminalName" placeholder="工位名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.TerminalName" placeholder="工序名称" clearable /></el-col>
         </el-col>
 
-        <el-col :span="4">
-          <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
-            </el-tooltip>
-          </el-col>
-        </el-col>
         <el-col :span="4">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
@@ -48,27 +41,39 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="异常编号" width="150" prop="ExceptNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序编号" width="150" prop="ProcessNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ExceptNum }}
+          {{ scope.row.ProcessNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="异常名称" width="150" prop="ExceptName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="工序名称" width="150" prop="ProcessName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ExceptName }}
+          {{ scope.row.ProcessName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工位编号" width="150" prop="TerminalNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="模板编号" width="150" prop="TempNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.TerminalNum }}
+          {{ scope.row.TempNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工位名称" width="150" prop="TerminalName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="模板名称" width="150" prop="TempName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.TempName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="所属公司" width="150" prop="TerminalName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.TerminalName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="打印数量 (份)" width="150" prop="PrintCount" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.PrintCount }}
         </template>
       </el-table-column>
 
@@ -96,18 +101,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip v-if="scope.row.Status == true" class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip v-if="scope.row.Status == false" class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
-            <el-button type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
@@ -125,13 +122,12 @@
       :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
     >
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工位编号" prop="TerminalNum">
-          <el-input v-model.trim="ruleForm.TerminalNum" placeholder="工位编号" class="disActive" @focus="terminBox" />
-        </el-form-item>
-        <el-form-item label="工位名称" prop="TerminalName"><el-input v-model.trim="ruleForm.TerminalName" placeholder="工位名称" :disabled="true" /></el-form-item>
-        <el-form-item label="异常编号" prop="ExceptNum"><el-input v-model.trim="ruleForm.ExceptNum" placeholder="异常编号" class="disActive" @focus="waringBox" /></el-form-item>
-        <el-form-item label="异常名称" prop="ExceptName"><el-input v-model.trim="ruleForm.ExceptName" placeholder="异常名称" :disabled="true" /></el-form-item>
-        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
+        <el-form-item label="工序编号" prop="ProcessNum"><el-input v-model.trim="ruleForm.ProcessNum" placeholder="工位编号" class="disActive" @focus="workingBox" /></el-form-item>
+        <el-form-item label="工序名称" prop="ProcessName"><el-input v-model.trim="ruleForm.ProcessName" placeholder="工位名称" :disabled="true" /></el-form-item>
+        <el-form-item label="模板编号" prop="TempNum"><el-input v-model.trim="ruleForm.TempNum" placeholder="异常编号" class="disActive" @focus="tempBox" /></el-form-item>
+        <el-form-item label="模板名称" prop="TempName"><el-input v-model.trim="ruleForm.TempName" placeholder="模板名称" :disabled="true" /></el-form-item>
+        <el-form-item label="打印数量 (份)"><el-input v-model.trim="ruleForm.PrintCount" placeholder="打印数量" /></el-form-item>
+        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
@@ -140,29 +136,28 @@
       </div>
     </el-dialog>
 
-    <!-- 异常发送组弹窗 -->
-    <terminal-info
-      :termin-show="terminFormVisible"
-      :termin-box-loading="terminBoxLoading"
+    <!-- 工序对应弹窗 -->
+    <working-name
+      :working-show="workingFormVisible"
+      :working-box-loading="workingBoxLoading"
       :table-box-height="tableBoxHeight"
-      :termin-data="terminData"
-      :pagination-search-termin="paginationSearchTermin"
-      @terminClose="terminClose"
-      @terminClick="terminClick"
-      @handleSearchTermin="handleSearchTermin"
+      :working-data="workingData"
+      :pagination-search-working="paginationSearchWorking"
+      @workingClose="workingClose"
+      @workingClick="workingClick"
+      @handleSearchWorking="handleSearchWorking"
     />
 
-    <!-- 异常明细弹窗 -->
-    <waring-name
-      :waring-show="waringFormVisible"
-      :waring-box-loading="waringBoxLoading"
-      :except-type-data="ExceptTypeData"
+    <!--上传模板弹窗 -->
+    <temp-name
+      :temp-show="tempFormVisible"
+      :temp-box-loading="tempBoxLoading"
       :table-box-height="tableBoxHeight"
-      :waring-data="waringData"
-      :pagination-search-waring="paginationSearchWaring"
-      @waringClose="waringClose"
-      @waringClick="waringClick"
-      @handleSearchWaring="handleSearchWaring"
+      :temp-data="tempData"
+      :pagination-search-temp="paginationSearchTemp"
+      @tempClose="tempClose"
+      @tempClick="tempClick"
+      @handleSearchTemp="handleSearchTemp"
     />
   </div>
 </template>
@@ -172,15 +167,14 @@ import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import TerminalInfo from '@/components/TerminalInfo' //  工位信息
-import WaringName from '@/components/WaringName' //  异常发送组
-import { stationList } from '@/api/BasicData'
-import { AnList, AdnTerList, AdnTerDelete, AdnTerAdd, AdnTerModify, AdnTerModifyStatus } from '@/api/Andon'
+import WorkingName from '@/components/WorkingName' // 工序名称
+import TempName from '@/components/TempName' // 上传模板
+import { BaseProList, BarList, BarTempList, BarTempAdd, BarTempDelete, BarTempModify } from '@/api/BasicData'
 const fixHeight = 270
 const fixHeightBox = 350
 export default {
   name: 'MaterialInformation',
-  components: { Pagination, TerminalInfo, WaringName },
+  components: { Pagination, WorkingName, TempName },
   data() {
     return {
       tableData: [],
@@ -188,27 +182,25 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        ExceptName: undefined,
-        TerminalName: undefined,
+        ProcessNum: undefined,
+        TerminalName: undefined
+      },
+
+      // 工序搜索条件
+      paginationSearchWorking: {
+        PageIndex: 1,
+        PageSize: 10000,
+        ProcessNum: undefined,
+        Name: undefined,
         ShowBanned: false
       },
 
-      // 工位搜索条件
-      paginationSearchTermin: {
+      // 上传模板搜索条件
+      paginationSearchTemp: {
         PageIndex: 1,
         PageSize: 10000,
-        TerminalNum: undefined,
-        TerminalName: undefined,
-        ShowBanned: false
-      },
-
-      // 异常明细搜索条件
-      paginationSearchWaring: {
-        PageIndex: 1,
-        PageSize: 10000,
-        ExceptNum: undefined,
-        ExceptName: undefined,
-        ExceptType: undefined,
+        TempNum: undefined,
+        Name: undefined,
         ShowBanned: false
       },
 
@@ -221,18 +213,17 @@ export default {
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
       addShow: true, // 继续新增
-      terminData: [], // 工位数组
-      terminBoxLoading: false, // 工位搜索loading
-      terminFormVisible: false, // input工位名称弹窗
-      waringData: [], // 异常明细数组
-      waringBoxLoading: false, // 异常明细搜索loading
-      waringFormVisible: false, // input异常明细弹窗
-      ExceptTypeData: [], // 异常类型下拉
+      workingData: [], // 工序数组
+      workingBoxLoading: false, // 工序搜索loading
+      workingFormVisible: false, // input工序名称弹窗
+      tempData: [], // 上传模板数组
+      tempBoxLoading: false, // 上传模板搜索loading
+      tempFormVisible: false, // input上传模板弹窗
       rules: {
-        TerminalNum: [{ required: true, message: '请选择工位编号', trigger: 'blur' }],
-        TerminalName: [{ required: true, message: '请输入工位名称', trigger: 'blur' }],
-        ExceptNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
-        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }]
+        ProcessNum: [{ required: true, message: '请选择工序编号', trigger: 'blur' }],
+        ProcessName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }],
+        TempNum: [{ required: true, message: '请输入模板编号', trigger: 'blur' }],
+        TempName: [{ required: true, message: '请输入模板名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -305,47 +296,11 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        TerminalNum: [{ required: true, message: '请选择工位编号', trigger: 'blur' }],
-        TerminalName: [{ required: true, message: '请输入工位名称', trigger: 'blur' }],
-        ExceptNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
-        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }]
+        ProcessNum: [{ required: true, message: '请选择工序编号', trigger: 'blur' }],
+        ProcessName: [{ required: true, message: '请输入工序名称', trigger: 'blur' }],
+        TempNum: [{ required: true, message: '请输入模板编号', trigger: 'blur' }],
+        TempName: [{ required: true, message: '请输入模板名称', trigger: 'blur' }]
       }
-    },
-
-    // 禁用，启用权限
-    handleBan(row) {
-      let status, statusTitle
-      if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle')
-        statusTitle = this.$t('permission.jingyongInfo')
-      } else {
-        status = this.$t('permission.qiyongTitle')
-        statusTitle = this.$t('permission.qiyongInfo')
-      }
-      this.$confirm(statusTitle, status, {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      }).then(() => {
-        const params = {
-          Status: (row.Status = row.Status !== true),
-          RsCode: row.RsCode
-        }
-        AdnTerModifyStatus(params).then(res => {
-          if (res.IsPass === true) {
-            this.$message({
-              type: 'success',
-              message: res.MSG
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.MSG
-            })
-          }
-          this.getList()
-        })
-      })
     },
 
     // 查询
@@ -356,7 +311,7 @@ export default {
 
     getList() {
       this.listLoading = true
-      AdnTerList(this.pagination).then(res => {
+      BarTempList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -403,7 +358,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          AdnTerDelete({ RsCode: row.RsCode }).then(res => {
+          BarTempDelete({ ProTempCode: row.ProTempCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -432,7 +387,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            AdnTerModify(this.ruleForm).then(res => {
+            BarTempModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -449,7 +404,7 @@ export default {
               this.editLoading = false
             })
           } else {
-            AdnTerAdd(this.ruleForm).then(res => {
+            BarTempAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -481,7 +436,7 @@ export default {
     submitAdd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          AdnTerAdd(this.ruleForm).then(res => {
+          BarTempAdd(this.ruleForm).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -500,67 +455,66 @@ export default {
         }
       })
     },
-
-    // 异常发送组弹窗
-    terminBox() {
-      this.terminFormVisible = true
-      this.terminBoxLoading = true
-      stationList(this.paginationSearchTermin).then(res => {
+    // 工序聚焦事件原料弹窗
+    workingBox() {
+      this.workingFormVisible = true
+      this.workingBoxLoading = true
+      BaseProList(this.paginationSearchWorking).then(res => {
         if (res.IsPass === true) {
-          this.terminData = res.Obj
-          this.terminBoxLoading = false
+          this.workingData = res.Obj
+          this.workingBoxLoading = false
         }
       })
     },
-    // 异常发送组搜索
-    handleSearchTermin() {
-      this.paginationSearchTermin.PageIndex = 1
-      this.terminBox()
+    // 工序弹窗搜索
+    handleSearchWorking() {
+      this.paginationSearchWorking.PageIndex = 1
+      this.workingBox()
     },
-    // 增加异常发送组双击事件获取当前行的值
-    terminClick(row) {
-      this.$set(this.ruleForm, 'TerminalNum', row.TerminalNum)
-      this.ruleForm.TerminalName = row.TerminalName
-      this.ruleForm.TerminalCode = row.TerminalCode
-      this.terminFormVisible = false
+    // 增加工序名称双击事件获取当前行的值
+    workingClick(row) {
+      this.$set(this.ruleForm, 'ProcessNum', row.ProcessNum)
+      this.ruleForm.ProcessName = row.Name
+      this.ruleForm.ProcessCode = row.ProcessCode
+      this.$nextTick(() => {
+        this.$refs.ruleForm.clearValidate()
+      })
+      this.workingFormVisible = false
+    },
+    // 关闭工序名称查询弹窗
+    workingClose() {
+      this.workingFormVisible = false
+    },
+
+    // 上传模板弹窗
+    tempBox() {
+      this.tempFormVisible = true
+      this.tempBoxLoading = true
+      BarList(this.paginationSearchTemp).then(res => {
+        if (res.IsPass === true) {
+          this.tempData = res.Obj
+          this.tempBoxLoading = false
+        }
+      })
+    },
+    // 上传模板搜索
+    handleSearchTemp() {
+      this.paginationSearchTempg.PageIndex = 1
+      this.tempBox()
+    },
+    // 增加上传模板双击事件获取当前行的值
+    tempClick(row) {
+      this.$set(this.ruleForm, 'TempNum', row.TempNum)
+      this.ruleForm.TempName = row.Name
+      this.ruleForm.TempCode = row.TempCode
+      this.tempFormVisible = false
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
     },
-    // 关闭异常发送组查询弹窗
-    terminClose() {
-      this.terminFormVisible = false
-    },
-
-    // 异常明细弹窗
-    waringBox() {
-      this.waringFormVisible = true
-      this.waringBoxLoading = true
-      AnList(this.paginationSearchWaring).then(res => {
-        if (res.IsPass === true) {
-          this.waringData = res.Obj
-          this.waringBoxLoading = false
-        }
-      })
-    },
-    // 异常明细搜索
-    handleSearchWaring() {
-      this.paginationSearchWaring.PageIndex = 1
-      this.waringBox()
-    },
-    // 增加异常明细双击事件获取当前行的值
-    waringClick(row) {
-      this.$set(this.ruleForm, 'ExceptNum', row.ExceptNum)
-      this.ruleForm.ExceptName = row.ExceptName
-      this.ruleForm.ExceptCode = row.ExceptCode
-      this.waringFormVisible = false
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-    },
-    // 关闭异常明细查询弹窗
-    waringClose() {
-      this.waringFormVisible = false
+    // 关闭上传模板查询弹窗
+    tempClose() {
+      this.tempFormVisible = false
     }
   }
 }

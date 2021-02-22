@@ -4,25 +4,18 @@
       <el-row :gutter="20">
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="异常名称" placement="top-start"><label class="radio-label">异常名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="模板编号" placement="top-start"><label class="radio-label">模板编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.ExceptName" placeholder="异常名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.TempNum" placeholder="模板编号" clearable /></el-col>
         </el-col>
 
         <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="工位名称" placement="top-start"><label class="radio-label">工位名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="模板名称" placement="top-start"><label class="radio-label">模板名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.TerminalName" placeholder="工位名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="模板名称" clearable /></el-col>
         </el-col>
 
-        <el-col :span="4">
-          <el-col :span="24">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
-              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
-            </el-tooltip>
-          </el-col>
-        </el-col>
         <el-col :span="4">
           <el-col :span="24">
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
@@ -33,7 +26,6 @@
 
     <div class="rightBtn">
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addMaterial') }}</el-button>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="Toprint"> 打印</el-button>
     </div>
 
     <el-table
@@ -46,42 +38,40 @@
       element-loading-text="拼命加载中"
       fit
       highlight-current-row
-      @selection-change="handleSelectionChange"
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column
-        align="center"
-        type="selection"
-        width="55"
-        fixed
-      />
-
-      <el-table-column align="center" label="异常编号" width="150" prop="ExceptNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="模板编号" width="150" prop="TempNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ExceptNum }}
+          {{ scope.row.TempNum }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="异常名称" width="150" prop="ExceptName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="模板名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ExceptName }}
+          {{ scope.row.Name }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工位编号" width="150" prop="TerminalNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="模板路径" width="150" prop="Template" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.TerminalNum }}
+          {{ scope.row.Template }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="工位名称" width="150" prop="TerminalName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="模板类型" width="150" prop="DeptName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.TerminalName }}
+          {{ scope.row.DeptName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" min-width="200" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="所属公司" width="150" prop="DeptName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.DeptName }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="描述" min-width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Remark }}
         </template>
@@ -105,18 +95,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="150">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip v-if="scope.row.Status == true" class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
-          </el-tooltip>
-
-          <el-tooltip v-if="scope.row.Status == false" class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
-            <el-button type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
           </el-tooltip>
 
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
@@ -133,46 +115,40 @@
       :visible.sync="dialogFormVisible"
       :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
     >
-      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="工位编号" prop="TerminalNum">
-          <el-input v-model.trim="ruleForm.TerminalNum" placeholder="工位编号" class="disActive" @focus="terminBox" />
+      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
+        <el-form-item label="模板编号" prop="TempNum"><el-input v-model.trim="ruleForm.TempNum" placeholder="模板编号" clearable /></el-form-item>
+        <el-form-item label="模板名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="模板名称" clearable /></el-form-item>
+        <!-- <el-form-item label="模板路径" prop="Template"> -->
+        <!-- <el-input v-model.trim="ruleForm.Template" placeholder="模板路径" clearable /> -->
+
+        <el-form-item label="模板路径">
+          <el-upload
+            ref="uploadProduct"
+            class="upload-demo"
+            action="http://192.168.1.18:9000/WebAPI-Dev"
+            :auto-upload="false"
+            :limit="1"
+            :on-exceed="handleExceed"
+            :file-list="fileListProduct"
+            :on-success="onSuccess"
+            :on-error="onError"
+            :on-change="onChangeProduct"
+            :before-remove="handleRemoveProduct"
+            name="enterprise_product_file"
+          >
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          </el-upload>
         </el-form-item>
-        <el-form-item label="工位名称" prop="TerminalName"><el-input v-model.trim="ruleForm.TerminalName" placeholder="工位名称" :disabled="true" /></el-form-item>
-        <el-form-item label="异常编号" prop="ExceptNum"><el-input v-model.trim="ruleForm.ExceptNum" placeholder="异常编号" class="disActive" @focus="waringBox" /></el-form-item>
-        <el-form-item label="异常名称" prop="ExceptName"><el-input v-model.trim="ruleForm.ExceptName" placeholder="异常名称" :disabled="true" /></el-form-item>
+        <el-form-item label="模板类型"><el-input v-model.trim="ruleForm.TempType" placeholder="模板类型" clearable /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
+
+        <div style="text-align:right;">
+          <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+          <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
+        </div>
       </el-form>
-      <div style="text-align:right;">
-        <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
-      </div>
     </el-dialog>
-
-    <!-- 异常发送组弹窗 -->
-    <terminal-info
-      :termin-show="terminFormVisible"
-      :termin-box-loading="terminBoxLoading"
-      :table-box-height="tableBoxHeight"
-      :termin-data="terminData"
-      :pagination-search-termin="paginationSearchTermin"
-      @terminClose="terminClose"
-      @terminClick="terminClick"
-      @handleSearchTermin="handleSearchTermin"
-    />
-
-    <!-- 异常明细弹窗 -->
-    <waring-name
-      :waring-show="waringFormVisible"
-      :waring-box-loading="waringBoxLoading"
-      :except-type-data="ExceptTypeData"
-      :table-box-height="tableBoxHeight"
-      :waring-data="waringData"
-      :pagination-search-waring="paginationSearchWaring"
-      @waringClose="waringClose"
-      @waringClick="waringClick"
-      @handleSearchWaring="handleSearchWaring"
-    />
   </div>
 </template>
 
@@ -180,17 +156,12 @@
 import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import printJS from 'print-js' // 打印js
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import TerminalInfo from '@/components/TerminalInfo' //  工位信息
-import WaringName from '@/components/WaringName' //  异常发送组
-import { stationList } from '@/api/BasicData'
-import { AnList, AdnTerList, AdnTerDelete, AdnTerAdd, AdnTerModify, AdnTerModifyStatus } from '@/api/Andon'
+import { BarList, BarDelete, BarAdd, BarModify } from '@/api/BasicData'
 const fixHeight = 270
-const fixHeightBox = 350
 export default {
   name: 'MaterialInformation',
-  components: { Pagination, TerminalInfo, WaringName },
+  components: { Pagination },
   data() {
     return {
       tableData: [],
@@ -198,51 +169,23 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        ExceptName: undefined,
-        TerminalName: undefined,
+        TempNum: undefined,
+        Name: undefined,
         ShowBanned: false
       },
-
-      // 工位搜索条件
-      paginationSearchTermin: {
-        PageIndex: 1,
-        PageSize: 10000,
-        TerminalNum: undefined,
-        TerminalName: undefined,
-        ShowBanned: false
-      },
-
-      // 异常明细搜索条件
-      paginationSearchWaring: {
-        PageIndex: 1,
-        PageSize: 10000,
-        ExceptNum: undefined,
-        ExceptName: undefined,
-        ExceptType: undefined,
-        ShowBanned: false
-      },
-      multipleSelection: [], // 多选
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
-      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
       addShow: true, // 继续新增
-      terminData: [], // 工位数组
-      terminBoxLoading: false, // 工位搜索loading
-      terminFormVisible: false, // input工位名称弹窗
-      waringData: [], // 异常明细数组
-      waringBoxLoading: false, // 异常明细搜索loading
-      waringFormVisible: false, // input异常明细弹窗
-      ExceptTypeData: [], // 异常类型下拉
+      fileListProduct: [], // 上传附件
       rules: {
-        TerminalNum: [{ required: true, message: '请选择工位编号', trigger: 'blur' }],
-        TerminalName: [{ required: true, message: '请输入工位名称', trigger: 'blur' }],
-        ExceptNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
-        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }]
+        TempNum: [{ required: true, message: '请输入模板编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入模板名称', trigger: 'blur' }],
+        Template: [{ required: true, message: '请选择模板路径', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -268,14 +211,11 @@ export default {
         }, 400)
       }
     },
-    tableBoxHeight(val) {
-      if (!this.timer) {
-        this.tableBoxHeight = val
-        this.timer = true
-        const that = this
-        setTimeout(function() {
-          that.timer = false
-        }, 400)
+    'ruleForm.TempNum': function(val) {
+      if (val === '' || val === undefined) {
+        return
+      } else {
+        this.ruleForm.TempNum = this.filterInput(val)
       }
     },
 
@@ -299,7 +239,6 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
-        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
 
@@ -311,51 +250,21 @@ export default {
     table_index(index) {
       return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
     },
-
+    // 输入框禁止输入中文
+    filterInput(val) {
+      if (val === '') {
+        return val
+      } else {
+        return val.replace(/[\u4e00-\u9fa5\s]/gi, '')
+      }
+    },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        TerminalNum: [{ required: true, message: '请选择工位编号', trigger: 'blur' }],
-        TerminalName: [{ required: true, message: '请输入工位名称', trigger: 'blur' }],
-        ExceptNum: [{ required: true, message: '请输入异常编号', trigger: 'blur' }],
-        ExceptName: [{ required: true, message: '请输入异常名称', trigger: 'blur' }]
+        TempNum: [{ required: true, message: '请输入模板编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入模板名称', trigger: 'blur' }],
+        Template: [{ required: true, message: '请选择模板路径', trigger: 'blur' }]
       }
-    },
-
-    // 禁用，启用权限
-    handleBan(row) {
-      let status, statusTitle
-      if (row.Status === true) {
-        status = this.$t('permission.jingyongTitle')
-        statusTitle = this.$t('permission.jingyongInfo')
-      } else {
-        status = this.$t('permission.qiyongTitle')
-        statusTitle = this.$t('permission.qiyongInfo')
-      }
-      this.$confirm(statusTitle, status, {
-        confirmButtonText: this.$t('permission.Confirm'),
-        cancelButtonText: this.$t('permission.Cancel'),
-        type: 'warning'
-      }).then(() => {
-        const params = {
-          Status: (row.Status = row.Status !== true),
-          RsCode: row.RsCode
-        }
-        AdnTerModifyStatus(params).then(res => {
-          if (res.IsPass === true) {
-            this.$message({
-              type: 'success',
-              message: res.MSG
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.MSG
-            })
-          }
-          this.getList()
-        })
-      })
     },
 
     // 查询
@@ -366,7 +275,7 @@ export default {
 
     getList() {
       this.listLoading = true
-      AdnTerList(this.pagination).then(res => {
+      BarList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -392,6 +301,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
+      this.ruleForm = {}
     },
     // 编辑角色
     handleEdit(row) {
@@ -412,7 +322,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          AdnTerDelete({ RsCode: row.RsCode }).then(res => {
+          BarDelete({ TempCode: row.TempCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -441,7 +351,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            AdnTerModify(this.ruleForm).then(res => {
+            BarModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -455,10 +365,11 @@ export default {
                   message: res.MSG
                 })
               }
+              this.addEnterprise()
               this.editLoading = false
             })
           } else {
-            AdnTerAdd(this.ruleForm).then(res => {
+            BarAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -472,6 +383,7 @@ export default {
                   message: res.MSG
                 })
               }
+              this.addEnterprise()
               this.editLoading = false
             })
           }
@@ -490,7 +402,7 @@ export default {
     submitAdd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          AdnTerAdd(this.ruleForm).then(res => {
+          BarAdd(this.ruleForm).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -510,94 +422,110 @@ export default {
       })
     },
 
-    // 异常发送组弹窗
-    terminBox() {
-      this.terminFormVisible = true
-      this.terminBoxLoading = true
-      stationList(this.paginationSearchTermin).then(res => {
-        if (res.IsPass === true) {
-          this.terminData = res.Obj
-          this.terminBoxLoading = false
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    onSuccess(files, fileList) {
+      this.$parent.findAllEnterprise()
+      this.$message({
+        message: '成功',
+        type: 'success'
+      })
+      this.handlerClose()
+    },
+    onError() {
+      this.$message({
+        message: '网络错误',
+        type: 'warning'
+      })
+    },
+    handleRemoveProduct(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`).then(() => {
+        // this.isUploadFileProduct = false
+        this.fileListProduct.pop(file)
+      })
+    },
+    handlePreview(file) {
+      console.log(file)
+    },
+    onChangeProduct(file, fileList) {
+      debugger
+      // console.log(file)
+      if (/.(txt)$/.test(file.name)) {
+        this.$message({
+          message: '不允许上传以txt结尾的文件',
+          type: 'warning'
+        })
+        this.$refs.uploadProduct.clearFiles()
+        return
+      }
+      // 当选择好上传文件时，将这个文件的信息push到数组中去
+      this.fileListProduct.push(file)
+    },
+    // 新增
+    addEnterprise() {
+      debugger
+      // 将上传的文件附件转成二进制转给后台 this.form就是表单输入框的内容
+      const formData = new FormData()
+      Object.keys(this.ruleForm).forEach(key => {
+        if (key === 'enterprise_product_file') {
+          // 判断是否是产品概况的字段，是的话将刚刚push进fileListProduct转换成二进制给后台
+          // 注意，需要的是写到raw，否则传给后端就是"[object, object]"
+          formData.append(key, this.fileListProduct[0].raw)
+        } else {
+          // 若是表单中的字段，则直接append进去
+          formData.append(key, this.ruleForm[key])
         }
       })
+      // 调用vuex中的方法，将formData传给后端。此时上传的附件已经转换成二进制流
+      this.addEnterpriseCustomers(formData)
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '保存成功!'
+          })
+          this.$parent.findAllEnterprise()
+          this.handlerClose()
+        })
+        .catch(() => {
+          this.$message({
+            type: 'warning',
+            message: '网络异常'
+          })
+        })
     },
-    // 异常发送组搜索
-    handleSearchTermin() {
-      this.paginationSearchTermin.PageIndex = 1
-      this.terminBox()
-    },
-    // 增加异常发送组双击事件获取当前行的值
-    terminClick(row) {
-      this.$set(this.ruleForm, 'TerminalNum', row.TerminalNum)
-      this.ruleForm.TerminalName = row.TerminalName
-      this.ruleForm.TerminalCode = row.TerminalCode
-      this.terminFormVisible = false
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-    },
-    // 关闭异常发送组查询弹窗
-    terminClose() {
-      this.terminFormVisible = false
-    },
-
-    // 异常明细弹窗
-    waringBox() {
-      this.waringFormVisible = true
-      this.waringBoxLoading = true
-      AnList(this.paginationSearchWaring).then(res => {
-        if (res.IsPass === true) {
-          this.waringData = res.Obj
-          this.waringBoxLoading = false
+    // 修改
+    updateEnterprise() {
+      const formData = new FormData()
+      Object.keys(this.form).forEach(key => {
+        if (key === 'enterprise_product_file' && this.fileListProduct.length !== 0) {
+          formData.append(key, this.fileListProduct[0].raw)
+        } else if (key === 'enterprise_introduct_file' && this.fileListIndoc.length !== 0) {
+          formData.append(key, this.fileListIndoc[0].raw)
+        } else {
+          formData.append(key, this.form[key])
         }
       })
-    },
-    // 异常明细搜索
-    handleSearchWaring() {
-      this.paginationSearchWaring.PageIndex = 1
-      this.waringBox()
-    },
-    // 增加异常明细双击事件获取当前行的值
-    waringClick(row) {
-      this.$set(this.ruleForm, 'ExceptNum', row.ExceptNum)
-      this.ruleForm.ExceptName = row.ExceptName
-      this.ruleForm.ExceptCode = row.ExceptCode
-      this.waringFormVisible = false
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-    },
-    // 关闭异常明细查询弹窗
-    waringClose() {
-      this.waringFormVisible = false
-    },
-
-    // 多选
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-    },
-
-    // 打印
-    Toprint() {
-      this.$nextTick(() => {
-        this.tableData.forEach(item => {
-          item.ModifyTime = item.ModifyTime.substring(0, 10) // 金额格式处理
+      const params = {
+        id: this.form.enterprise_pk_id,
+        form: formData
+      }
+      // delete params.form.enterprise_pk_id
+      this.updateEnterpriseCustomers(params)
+        .then(() => {
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          })
+          this.handlerClose()
+          this.$parent.findAllEnterprise()
         })
-        printJS({
-          printable: this.multipleSelection,
-          properties: [
-            { field: 'index', displayName: '行号' },
-            { field: 'ExceptNum', displayName: '异常编号' },
-            { field: 'ExceptName', displayName: '异常名称' },
-            { field: 'TerminalNum', displayName: '工位编号' },
-            { field: 'TerminalName', displayName: '工位名称' },
-            { field: 'Status', displayName: '状态' },
-            { field: 'ModifyUserName', displayName: '维护者' },
-            { field: 'ModifyTime', displayName: '维护时间' }
-          ],
-          type: 'json'
+        .catch(() => {
+          this.$message({
+            message: '网络错误',
+            type: 'warning'
+          })
         })
-      })
     }
   }
 }

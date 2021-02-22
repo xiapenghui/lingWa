@@ -165,6 +165,7 @@ import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { AdnGroupList, AdnGroupDelete, AdnGroupAdd, AdnGroupModify, AdnGroupModifyStatus } from '@/api/Andon'
+import Bus from '@/api/bus.js'
 const fixHeight = 270
 export default {
   name: 'MaterialInformation',
@@ -319,7 +320,7 @@ export default {
           GroupCode: row.GroupCode
         }
       })
-      // Bus.$emit('getList')
+      Bus.$emit('getList')
     },
 
     // 查询
@@ -356,6 +357,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
+      this.ruleForm = {}
     },
     // 编辑角色
     handleEdit(row) {

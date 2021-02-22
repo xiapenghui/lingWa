@@ -65,7 +65,7 @@
 
       <el-table-column align="center" label="备件名称" width="200" prop="SpareName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.name" disabled />
+          <el-input v-model="scope.row.name" disabled placeholder="备件名称" />
         </template>
       </el-table-column>
 
@@ -77,7 +77,7 @@
 
       <el-table-column align="center" label="单位" width="150" prop="SpareUnitName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.SpareUnitName" clearable disabled />
+          <el-input v-model="scope.row.SpareUnitName" disabled placeholder="单位" />
         </template>
       </el-table-column>
 
@@ -90,7 +90,7 @@
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="80">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
-            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.index, scope.row)" />
+            <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.$index, scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -123,7 +123,6 @@
       @spareClick="spareClick"
       @handleSearchSpare="handleSearchSpare"
     />
-
   </div>
 </template>
 
@@ -281,7 +280,6 @@ export default {
   },
   mounted() {},
   methods: {
-
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
@@ -453,9 +451,10 @@ export default {
     spareClose() {
       this.spareFormVisible = false
     }
-
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

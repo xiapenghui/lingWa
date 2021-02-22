@@ -858,3 +858,74 @@ export function PerModify(data) {
   })
 }
 
+// 基础信息 - 打印模板管理 - 打印模板维护列表
+export function BarList(data) {
+  return request({
+    url: '/api/BarTemp/List',
+    method: 'post',
+    data
+  })
+}
+
+// 基础信息 - 打印模板管理 - 打印模板维护增加
+export function BarAdd(data) {
+  return request({
+    url: '/api/BarTemp/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 基础信息 - 打印模板管理 - 打印模板维护删除
+export function BarDelete(data) {
+  return request({
+    url: '/api/BarTemp/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 基础信息 - 打印模板管理 - 打印模板维护修改
+export function BarModify(data) {
+  return request({
+    url: '/api/BarTemp/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 基础信息 - 打印模板管理 - 工序与模板关系维护列表
+export function BarTempList(data) {
+  return request({
+    url: '/api/BarTempProcess/List',
+    method: 'post',
+    data
+  })
+}
+
+// 基础信息 - 打印模板管理 - 工序与模板关系维护增加
+export function BarTempAdd(data) {
+  return request({
+    url: '/api/BarTempProcess/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 基础信息 - 打印模板管理 - 工序与模板关系维护删除
+export function BarTempDelete(data) {
+  return request({
+    url: '/api/BarTempProcess/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 基础信息 - 打印模板管理 - 工序与模板关系维护修改
+export function BarTempModify(data) {
+  return request({
+    url: '/api/BarTempProcess/Modify',
+    method: 'post',
+    data
+  })
+}
