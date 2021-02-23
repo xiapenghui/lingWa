@@ -150,9 +150,11 @@
       :table-box-height="tableBoxHeight"
       :working-data="workingData"
       :pagination-search-working="paginationSearchWorking"
+      :log-total="logTotal"
       @workingClose="workingClose"
       @workingClick="workingClick"
       @handleSearchWorking="handleSearchWorking"
+      @pageChange="getLogList"
     />
   </div>
 </template>
@@ -185,7 +187,7 @@ export default {
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         ProcessNum: undefined,
         Name: undefined,
         ShowBanned: false
@@ -195,6 +197,7 @@ export default {
       listLoading: false,
       editLoading: false, // 编辑loading
       total: 10,
+      logTotal: 0,
       addShow: true, // 继续新增
       checkVal: null, // 选择检验方式
       checkData: [], // 新增编辑弹窗检验方式radio
@@ -389,7 +392,6 @@ export default {
           if (this.dialogType === 'edit') {
             const params = this.ruleForm
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-            // params.CheckedType = this.checkVal
             baseDetailModify(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -409,7 +411,6 @@ export default {
           } else {
             const params = this.ruleForm
             params.ProcessRouteCode = this.$route.query.ProcessRouteCode
-            // params.CheckedType = this.checkVal
             baseDetailAdd(params).then(res => {
               if (res.IsPass === true) {
                 this.$message({
@@ -472,6 +473,7 @@ export default {
       BaseProList(this.paginationSearchWorking).then(res => {
         if (res.IsPass === true) {
           this.workingData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.workingBoxLoading = false
         }
       })
@@ -484,7 +486,6 @@ export default {
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
       this.$set(this.ruleForm, 'ProcessNum', row.ProcessNum)
-      // this.ruleForm.ProcessNum = row.ProcessNum
       this.ruleForm.ProcessName = row.Name
       this.ruleForm.ProcessCode = row.ProcessCode
       this.workingFormVisible = false
@@ -492,6 +493,12 @@ export default {
         debugger
         this.$refs.ruleForm.clearValidate()
       })
+    },
+    // 工序弹窗分页
+    getLogList(val) {
+      this.paginationSearchWorking.PageIndex = val.current
+      this.paginationSearchWorking.PageSize = val.size
+      this.workingBox()
     },
     // 关闭工序名称查询弹窗
     workingClose() {

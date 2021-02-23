@@ -161,10 +161,12 @@
       :line-loading="lineLoading"
       :table-box-height="tableBoxHeight"
       :line-data="lineData"
+      :log-total="logTotal"
       :pagination-search-line="paginationSearchLine"
       @lineClick="lineClick"
       @lineClose="lineClose"
-      @lineBox="lineBox"
+      @handleSearchLine="handleSearchLine"
+      @pageChange="getLogList"
     />
   </div>
 </template>
@@ -199,7 +201,7 @@ export default {
       paginationSearchLine: {
         Name: undefined,
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         ShowBanned: false
       },
       lineData: [], // 工艺路线弹窗
@@ -207,7 +209,8 @@ export default {
       lineLoading: false, // 新增工艺路线搜索loading
       lineFormVisible: false, // 新增工艺路线弹窗
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
@@ -499,12 +502,13 @@ export default {
       baseRouteList(this.paginationSearchLine).then(res => {
         if (res.IsPass === true) {
           this.lineData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.lineLoading = false
         }
       })
     },
     // 工艺路线弹窗搜索
-    LineBox() {
+    handleSearchLine() {
       this.paginationSearchLine.PageIndex = 1
       this.lineBox()
     },
@@ -517,6 +521,12 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
       this.lineFormVisible = false
+    },
+    // 工艺路线弹窗分页
+    getLogList(val) {
+      this.paginationSearchLine.PageIndex = val.current
+      this.paginationSearchLine.PageSize = val.size
+      this.lineBox()
     },
     // 关闭工艺路线查询弹窗
     lineClose() {

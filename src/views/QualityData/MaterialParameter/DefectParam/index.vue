@@ -173,9 +173,11 @@
       :table-box-height="tableBoxHeight"
       :mater-data="materData"
       :pagination-search-mater="paginationSearchMater"
+      :log-total="logTotal"
       @materClose="materClose"
       @materClick="materClick"
       @handleSearchMater="handleSearchMater"
+      @pageChange="getLogList"
     />
 
   </div>
@@ -209,7 +211,7 @@ export default {
       // 物料类型
       paginationSearchMater: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         TypeNum: undefined,
         Name: undefined,
         ShowBanned: false
@@ -218,6 +220,7 @@ export default {
       editLoading: false, // 编辑loading
       addShow: false,
       total: 10,
+      logTotal: 0,
       dialogFormVisible: false, // 编辑弹出框
       materBoxLoading: false, // 物料类型loading
       materFormVisible: false, // input物料类型弹窗
@@ -548,6 +551,7 @@ export default {
       MaterialTypeList(this.paginationSearchMater).then(res => {
         if (res.IsPass === true) {
           this.materData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.materBoxLoading = false
         }
       })
@@ -559,13 +563,18 @@ export default {
     },
     // 增加原料名称双击事件获取当前行的值
     materClick(row) {
-      debugger
       this.$set(this.ruleForm, 'TypeName', row.Name)
       this.ruleForm.TypeCode = row.TypeCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
       this.materFormVisible = false
+    },
+    // 原料弹窗分页
+    getLogList(val) {
+      this.paginationSearchMater.PageIndex = val.current
+      this.paginationSearchMater.PageSize = val.size
+      this.materBox()
     },
     // 关闭原料名称查询弹窗
     materClose() {

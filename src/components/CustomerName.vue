@@ -41,11 +41,7 @@
       @row-dblclick="userClick"
     >
 
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index+1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="客户编号" width="150" prop="CustomerNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -82,13 +78,16 @@
       </el-table-column>
 
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationUser.PageIndex" :size.sync="paginationUser.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'CustomerName',
+  components: { Pagination },
   props: {
     userShow: {
       type: Boolean,
@@ -113,6 +112,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -130,6 +133,15 @@ export default {
     //  客户名称查询
     handleUserBox() {
       this.$emit('handleUserBox')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+
+    // 分页
+    table_index(index) {
+      return (this.paginationUser.PageIndex - 1) * this.paginationUser.PageSize + index + 1
     }
 
   }

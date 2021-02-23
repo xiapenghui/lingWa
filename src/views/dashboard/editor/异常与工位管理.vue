@@ -140,16 +140,18 @@
       </div>
     </el-dialog>
 
-    <!-- 异常发送组弹窗 -->
+    <!-- 工位发送组弹窗 -->
     <terminal-info
       :termin-show="terminFormVisible"
       :termin-box-loading="terminBoxLoading"
       :table-box-height="tableBoxHeight"
       :termin-data="terminData"
       :pagination-search-termin="paginationSearchTermin"
+      :log-total="logTotal"
       @terminClose="terminClose"
       @terminClick="terminClick"
       @handleSearchTermin="handleSearchTermin"
+      @pageChange="getLogList"
     />
 
     <!-- 异常明细弹窗 -->
@@ -160,9 +162,11 @@
       :table-box-height="tableBoxHeight"
       :waring-data="waringData"
       :pagination-search-waring="paginationSearchWaring"
+      :log-total="logTotal2"
       @waringClose="waringClose"
       @waringClick="waringClick"
       @handleSearchWaring="handleSearchWaring"
+      @pageChange="getLogList2"
     />
   </div>
 </template>
@@ -196,7 +200,7 @@ export default {
       // 工位搜索条件
       paginationSearchTermin: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         TerminalNum: undefined,
         TerminalName: undefined,
         ShowBanned: false
@@ -205,7 +209,7 @@ export default {
       // 异常明细搜索条件
       paginationSearchWaring: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         ExceptNum: undefined,
         ExceptName: undefined,
         ExceptType: undefined,
@@ -214,7 +218,9 @@ export default {
 
       listLoading: false,
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
+      logTotal2: 0,
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
@@ -501,23 +507,24 @@ export default {
       })
     },
 
-    // 异常发送组弹窗
+    // 工位弹窗
     terminBox() {
       this.terminFormVisible = true
       this.terminBoxLoading = true
       stationList(this.paginationSearchTermin).then(res => {
         if (res.IsPass === true) {
           this.terminData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.terminBoxLoading = false
         }
       })
     },
-    // 异常发送组搜索
+    // 工位搜索
     handleSearchTermin() {
       this.paginationSearchTermin.PageIndex = 1
       this.terminBox()
     },
-    // 增加异常发送组双击事件获取当前行的值
+    // 增加工位双击事件获取当前行的值
     terminClick(row) {
       this.$set(this.ruleForm, 'TerminalNum', row.TerminalNum)
       this.ruleForm.TerminalName = row.TerminalName
@@ -527,7 +534,15 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
     },
-    // 关闭异常发送组查询弹窗
+
+    // 工位弹窗分页
+    getLogList(val) {
+      this.paginationSearchTermin.PageIndex = val.current
+      this.paginationSearchTermin.PageSize = val.size
+      this.terminBox()
+    },
+
+    // 关闭工位弹窗
     terminClose() {
       this.terminFormVisible = false
     },
@@ -539,6 +554,7 @@ export default {
       AnList(this.paginationSearchWaring).then(res => {
         if (res.IsPass === true) {
           this.waringData = res.Obj
+          this.logTotal2 = res.TotalRowCount
           this.waringBoxLoading = false
         }
       })
@@ -557,6 +573,13 @@ export default {
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
+    },
+
+    // 异常明细分页
+    getLogList2(val) {
+      this.paginationSearchWaring.PageIndex = val.current
+      this.paginationSearchWaring.PageSize = val.size
+      this.waringBox()
     },
     // 关闭异常明细查询弹窗
     waringClose() {

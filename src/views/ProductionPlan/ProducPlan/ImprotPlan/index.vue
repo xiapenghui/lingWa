@@ -290,17 +290,9 @@
               <el-input v-model.trim="ruleForm.PlanQuantity" :placeholder="$t('permission.PlanQuantity')" :disabled="isDisabled" />
             </el-form-item>
 
-            <el-form-item v-if="planShow" :label="$t('permission.SchedulingQuantityOther')" prop="SchedulingQuantityOther">
-              <el-input v-model="ruleForm.RemainingQuantity" :placeholder="$t('permission.SchedulingQuantityOther')" :disabled="isDisabled" />
-            </el-form-item>
+            <el-form-item :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable /></el-form-item>
 
-            <el-form-item v-if="planShow" label="拆分数量" prop="SplitQuantity" :rules="[{ required: isAlarmItem, message: '请输入拆分数量', trigger: 'blur' }]">
-              <el-input-number v-model.trim="ruleForm.SplitQuantity" placeholder="拆分数量" :min="0" clearable style="width: 100%" />
-            </el-form-item>
-
-            <el-form-item v-if="planAdd" :label="$t('permission.SaleNum')"><el-input v-model="ruleForm.SaleNum" :placeholder="$t('permission.SaleNum')" clearable /></el-form-item>
-
-            <el-form-item v-if="planAdd" :label="$t('permission.SaleLineNum')">
+            <el-form-item :label="$t('permission.SaleLineNum')">
               <el-input v-model.trim="ruleForm.SaleLineNum" :placeholder="$t('permission.SaleLineNum')" clearable />
             </el-form-item>
             <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" /></el-form-item>
@@ -315,7 +307,7 @@
               <el-input v-model="ruleForm.ProductName" disabled />
             </el-form-item>
 
-            <el-form-item v-if="planAdd" label="BOM版本"><el-input v-model="ruleForm.BomVersion" placeholder="BOM版本" :disabled="true" /></el-form-item>
+            <el-form-item label="BOM版本"><el-input v-model="ruleForm.BomVersion" placeholder="BOM版本" :disabled="true" /></el-form-item>
 
             <el-form-item v-if="!isActive" :label="$t('permission.CustomerName')" prop="CustomerName">
               <el-input v-model="ruleForm.CustomerName" readonly placeholder="请选择" class="disActive" @focus="userBox" />
@@ -329,19 +321,7 @@
 
             <el-form-item v-if="isActive" label="工艺路线"><el-input v-model="ruleForm.RouteName" disabled /></el-form-item>
 
-            <el-form-item v-if="planShow" :label="$t('permission.ProductLineCode')" prop="ProductLineCode">
-              <el-select v-model="ruleForm.ProductLineCode" :placeholder="$t('permission.ProductLineCode')" style="width: 100%" clearable @change="changeLine">
-                <el-option v-for="item in ProductList" :key="item.value" :label="item.text" :value="item.value" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item v-if="planShow" :label="$t('permission.Priority')" prop="Priority">
-              <el-select v-model="ruleForm.Priority" :placeholder="$t('permission.Priority')" style="width: 100%" clearable @change="changePriority">
-                <el-option v-for="item in PriorityList" :key="item.value" :label="item.text" :value="item.value" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item v-if="planAdd" :label="$t('permission.PlanDeliveryDate')">
+            <el-form-item :label="$t('permission.PlanDeliveryDate')">
               <el-date-picker v-model="ruleForm.PlanDeliveryDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期" />
             </el-form-item>
             <el-form-item :label="$t('permission.PlanStartDate')" prop="PlanStartDate" :rules="[{ required: isAlarmItemOther, message: '请输入计划开始日期', trigger: 'blur' }]">
@@ -368,9 +348,11 @@
       :table-box-height="tableBoxHeight"
       :finsh-data="finshData"
       :pagination-search="paginationSearch"
+      :log-total="logTotal"
       @fishClose="fishClose"
       @fishClick="fishClick"
       @handleSearchBox="handleSearchBox"
+      @pageChange="getLogList"
     />
 
     <!-- 新增加页面客户名称聚焦弹窗 -->
@@ -380,9 +362,11 @@
       :table-box-height="tableBoxHeight"
       :user-data="userData"
       :pagination-user="paginationUser"
+      :log-total="logTotal2"
       @userClose="userClose"
       @userClick="userClick"
       @handleUserBox="handleUserBox"
+      @pageChange="getLogList2"
     />
 
     <!-- 新增加页面工艺路线聚焦弹窗 -->
@@ -392,9 +376,11 @@
       :table-box-height="tableBoxHeight"
       :line-data="lineData"
       :pagination-search-line="paginationSearchLine"
+      :log-total="logTotal3"
       @lineClick="lineClick"
       @lineClose="lineClose"
-      @lineBox="lineBox"
+      @handleSearchLine="handleSearchLine"
+      @pageChange="getLogList3"
     />
 
     <!-- 关联工单弹窗 -->
@@ -709,8 +695,6 @@ export default {
       btnShow: true, // 互斥按钮
       showSearch: false, // 隐藏搜素条件
       isDisabled: false, // 拆分弹窗默认不能修改
-      planShow: true, // 拆分弹窗默认可见字段
-      planAdd: false, // 新增编辑弹窗默认可见字段
       addShow: true, // 继续添加仅新增可见
       splitShow: true, // 继续拆分仅拆分可见
       isAlarmItem: true, // 必填项可见不可见
@@ -742,7 +726,7 @@ export default {
       // 成品聚焦搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         MaterialType: 1,
         MaterialNum: undefined,
         Name: undefined,
@@ -751,7 +735,7 @@ export default {
       // 客户聚焦搜索条件
       paginationUser: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         CustomerNum: undefined,
         FullName: undefined,
         ShowBanned: false
@@ -761,10 +745,9 @@ export default {
       paginationSearchLine: {
         Name: undefined,
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         ShowBanned: false
       },
-
       listLoading: false, // 主列表
       listBoxLoading: false, // 成品名称搜索loading
       userBoxLoading: false, // 客户名称搜索loading
@@ -773,7 +756,10 @@ export default {
       lineLoading: false, // 工艺路线封装loading
       lineBoxLoadingBig: false, // 工艺路线弹窗loading
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
+      logTotal2: 0,
+      logTotal3: 0,
       dialogFormVisible: false, // 编辑弹出框
       finshFormVisible: false, // input产品名称弹窗
       userFormVisible: false, // input客户名称弹窗
@@ -1016,8 +1002,6 @@ export default {
     handleAdd() {
       this.dialogTypeTitle = this.$t('permission.addProductiony')
       this.dialogFormVisible = true
-      this.planAdd = true
-      this.planShow = false
       this.isDisabled = false
       this.addShow = true
       this.splitShow = false
@@ -1042,8 +1026,6 @@ export default {
     handleEdit(row) {
       this.dialogTypeTitle = this.$t('permission.EditProduction')
       this.dialogFormVisible = true
-      this.planAdd = true
-      this.planShow = false
       this.isDisabled = false
       this.splitShow = false
       this.addShow = false
@@ -1236,6 +1218,7 @@ export default {
       GetMaterialList(this.paginationSearch).then(res => {
         if (res.IsPass === true) {
           this.finshData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.listBoxLoading = false
         }
       })
@@ -1247,7 +1230,6 @@ export default {
     },
     // 增加成品名称双击事件获取当前行的值
     fishClick(row) {
-      // this.ruleForm.ProductName = row.Name
       this.$set(this.ruleForm, 'ProductName', row.Name)
       this.ruleForm.ProductCode = row.MaterialCode
       GetBomVersion({ MaterialCode: row.MaterialCode, MaterialType: '1' }).then(res => {
@@ -1263,6 +1245,13 @@ export default {
       })
       this.finshFormVisible = false
     },
+    // 成品弹窗分页
+    getLogList(val) {
+      this.paginationSearch.PageIndex = val.current
+      this.paginationSearch.PageSize = val.size
+      this.finshBox()
+    },
+
     // 关闭成品名称查询弹窗
     fishClose() {
       this.finshFormVisible = false
@@ -1274,6 +1263,7 @@ export default {
       GetCustomerList(this.paginationUser).then(res => {
         if (res.IsPass === true) {
           this.userData = res.Obj
+          this.logTotal2 = res.TotalRowCount
           this.usBoxLoading = false
         }
       })
@@ -1284,13 +1274,19 @@ export default {
     },
     // 增加客户名称双击事件获取当前行的值
     userClick(row) {
-      // this.ruleForm.CustomerName = row.FullName
       this.$set(this.ruleForm, 'CustomerName', row.FullName)
       this.ruleForm.CustomerCode = row.CustomerCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
       this.userFormVisible = false
+    },
+
+    // 客户弹窗分页
+    getLogList2(val) {
+      this.paginationUser.PageIndex = val.current
+      this.paginationUser.PageSize = val.size
+      this.userBox()
     },
     // 关闭客户名称查询弹窗
     userClose() {
@@ -1304,25 +1300,31 @@ export default {
       baseRouteList(this.paginationSearchLine).then(res => {
         if (res.IsPass === true) {
           this.lineData = res.Obj
+          this.logTotal3 = res.TotalRowCount
           this.lineLoading = false
         }
       })
     },
     // 工艺路线弹窗搜索
-    LineBox() {
+    handleSearchLine() {
       this.paginationSearchLine.PageIndex = 1
       this.lineBox()
     },
     // 增加工艺路线双击事件获取当前行的值
     lineClick(row) {
-      debugger
-      // this.ruleForm.RouteName = row.Name
       this.$set(this.ruleForm, 'RouteName', row.Name)
       this.ruleForm.RouteCode = row.ProcessRouteCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
       this.lineFormVisible = false
+    },
+
+    // 工艺路线弹窗分页
+    getLogList3(val) {
+      this.paginationSearchLine.PageIndex = val.current
+      this.paginationSearchLine.PageSize = val.size
+      this.userBox()
     },
     // 关闭工艺路线查询弹窗
     lineClose() {

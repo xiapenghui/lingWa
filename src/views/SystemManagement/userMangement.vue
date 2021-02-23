@@ -100,9 +100,11 @@
       :table-box-height="tableBoxHeight"
       :person-data="personData"
       :pagination-search-person="paginationSearchPerson"
+      :log-total="logTotal"
       @personClose="personClose"
       @personClick="personClick"
       @handleSearchPerson="handleSearchPerson"
+      @pageChange="getLogList"
     />
   </div>
 </template>
@@ -136,7 +138,7 @@ export default {
       // 人员信息搜索条件
       paginationSearchPerson: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         JobNum: undefined,
         NameCN: undefined
       },
@@ -144,7 +146,8 @@ export default {
       GroupCode: this.$route.query.GroupCode,
       listLoading: false,
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
       personData: [], // 人员信息数组
@@ -386,6 +389,7 @@ export default {
       PerList(this.paginationSearchPerson).then(res => {
         if (res.IsPass === true) {
           this.personData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.personBoxLoading = false
         }
       })
@@ -404,6 +408,12 @@ export default {
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
+    },
+    // 人员弹窗分页
+    getLogList(val) {
+      this.paginationSearchPerson.PageIndex = val.current
+      this.paginationSearchPerson.PageSize = val.size
+      this.personBox()
     },
     // 关闭人员信息查询弹窗
     personClose() {

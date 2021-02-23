@@ -203,9 +203,11 @@
       :table-box-height="tableBoxHeight"
       :material-data="materialData"
       :pagination-search-material="paginationSearchMaterial"
+      :log-total="logTotal"
       @materialClose="materialClose"
       @materialClick="materialClick"
       @handleSearchMaterial="handleSearchMaterial"
+      @pageChange="getLogList"
     />
 
     <!-- 检验方案对应弹窗 -->
@@ -215,9 +217,11 @@
       :table-box-height="tableBoxHeight"
       :test-data="testData"
       :pagination-search-test="paginationSearchTest"
+      :log-total="logTotal2"
       @testClose="testClose"
       @testClick="testClick"
       @handleSearchTest="handleSearchTest"
+      @pageChange="getLogList2"
     />
   </div>
 </template>
@@ -250,7 +254,7 @@ export default {
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         MaterialType: 0,
         MaterialNum: undefined,
         MaterialName: undefined,
@@ -260,7 +264,7 @@ export default {
       // 检验方案查询
       paginationSearchTest: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         RuleNum: undefined,
         Name: undefined,
         Description: undefined,
@@ -270,7 +274,9 @@ export default {
       listLoading: false,
       editLoading: false, // 编辑loading
       addShow: false,
-      total: 10,
+      total: 0,
+      logTotal: 0,
+      logTotal2: 0,
       dialogFormVisible: false, // 编辑弹出框
       materialBoxLoading: false, // 原料名称loading
       testFormVisible: false, // 检验方案弹窗
@@ -551,6 +557,7 @@ export default {
       MaterialList(this.paginationSearchMaterial).then(res => {
         if (res.IsPass === true) {
           this.materialData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.materialBoxLoading = false
         }
       })
@@ -562,7 +569,6 @@ export default {
     },
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
-      debugger
       this.$set(this.ruleForm, 'MaterialNum', row.MaterialNum)
       this.$set(this.ruleForm, 'MaterialName', row.Name)
       this.$set(this.ruleForm, 'TypeName', row.TypeName)
@@ -572,6 +578,13 @@ export default {
       })
       this.materialFormVisible = false
     },
+    // 原料弹窗分页
+    getLogList(val) {
+      this.paginationSearchMaterial.PageIndex = val.current
+      this.paginationSearchMaterial.PageSize = val.size
+      this.materialBox()
+    },
+
     // 关闭原料名称查询弹窗
     materialClose() {
       this.materialFormVisible = false
@@ -584,6 +597,7 @@ export default {
       QuaList(this.paginationSearchTest).then(res => {
         if (res.IsPass === true) {
           this.testData = res.Obj
+          this.logTotal2 = res.TotalRowCount
           this.testBoxLoading = false
         }
       })
@@ -602,6 +616,14 @@ export default {
       })
       this.testFormVisible = false
     },
+
+    // 原料弹窗分页
+    getLogList2(val) {
+      this.paginationSearchTest.PageIndex = val.current
+      this.paginationSearchTest.PageSize = val.size
+      this.testBox()
+    },
+
     // 关闭检验方案查询弹窗
     testClose() {
       this.testFormVisible = false

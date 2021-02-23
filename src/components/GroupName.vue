@@ -37,11 +37,7 @@
       @row-dblclick="groupClick"
     >
 
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index+1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="分组编号" width="150" prop="GroupNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -86,13 +82,16 @@
       </el-table-column>
 
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearchGroup.PageIndex" :size.sync="paginationSearchGroup.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'GroupName',
+  components: { Pagination },
   props: {
     groupShow: {
       type: Boolean,
@@ -117,6 +116,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -134,6 +137,14 @@ export default {
     // 异常发送组查询
     handleSearchGroup() {
       this.$emit('handleSearchGroup')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchGroup.PageIndex - 1) * this.paginationSearchGroup.PageSize + index + 1
     }
 
   }

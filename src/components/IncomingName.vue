@@ -32,11 +32,7 @@
       @row-dblclick="incomingClick"
     >
 
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index+1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="检验规则编号" width="150" prop="RuleNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -72,13 +68,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearchIncoming.PageIndex" :size.sync="paginationSearchIncoming.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'IncomingName',
+  components: { Pagination },
   props: {
     incomingShow: {
       type: Boolean,
@@ -103,6 +102,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -120,6 +123,14 @@ export default {
     //  物料名称查询
     handleSearchIncoming() {
       this.$emit('handleSearchIncoming')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchIncoming.PageIndex - 1) * this.paginationSearchIncoming.PageSize + index + 1
     }
 
   }

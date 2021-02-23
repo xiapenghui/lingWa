@@ -37,11 +37,7 @@
       @row-dblclick="tempClick"
     >
 
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index+1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="模板编号" width="150" prop="TempNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -78,15 +74,17 @@
           {{ scope.row.Remark }}
         </template>
       </el-table-column>
-
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearch.PageIndex" :size.sync="paginationSearch.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'TempName',
+  components: { Pagination },
   props: {
     tempShow: {
       type: Boolean,
@@ -112,6 +110,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -129,6 +131,14 @@ export default {
     // 异常发送组查询
     handleSearchTemp() {
       this.$emit('handleSearchTemp')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchTemp.PageIndex - 1) * this.paginationSearchTemp.PageSize + index + 1
     }
 
   }

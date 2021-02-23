@@ -40,11 +40,8 @@
       highlight-current-row
       @row-dblclick="fishClick"
     >
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column>
+
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="成品编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -88,13 +85,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearch.PageIndex" :size.sync="paginationSearch.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'FinshName',
+  components: { Pagination },
   props: {
     fishShow: {
       type: Boolean,
@@ -119,7 +119,12 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
+
   },
   data() {
     return {}
@@ -136,7 +141,15 @@ export default {
     // 成品名称查询
     handleSearchBox() {
       this.$emit('handleSearchBox')
+    },
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearch.PageIndex - 1) * this.paginationSearch.PageSize + index + 1
     }
+
   }
 }
 </script>

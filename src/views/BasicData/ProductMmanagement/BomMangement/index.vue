@@ -195,46 +195,37 @@
       :table-box-height="tableBoxHeight"
       :finsh-data="finshData"
       :pagination-search="paginationSearch"
+      :log-total="logTotal"
       @fishClose="fishClose"
       @fishClick="fishClick"
       @handleSearchBox="handleSearchBox"
+      @pageChange="getLogList"
     />
 
-    <!-- 新增加页面工艺路线聚焦弹窗 -->
-    <line-name
-      :line-show="lineFormVisible"
-      :line-loading="lineLoading"
-      :table-box-height="tableBoxHeight"
-      :line-data="lineData"
-      :pagination-search-line="paginationSearchLine"
-      @lineClick="lineClick"
-      @lineClose="lineClose"
-      @lineBox="lineBox"
-    />
-  </div>
-</template>
+  </div></template>
 
 <script>
 import '../../../../styles/commentBox.scss'
 import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
-import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, baseRouteList, bomCopy, GetDictionary } from '@/api/BasicData'
+import { bomList, bomDelete, bomAdd, bomModify, bomModifyStatus, GetMaterialList, bomCopy, GetDictionary } from '@/api/BasicData'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import FinshName from '@/components/FinshName' // 成品名称
-import LineName from '@/components/LineName' // 工艺路线名称
+
 import Bus from '@/api/bus.js'
 const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'BomMangement',
-  components: { Pagination, FinshName, LineName },
+  components: { Pagination, FinshName },
   data() {
     return {
       tableData: [],
       ruleForm: {
         finshBox: '',
         ProcessRouteName: ''
-      }, // 编辑弹窗
+      },
+      // 编辑弹窗
       pagination: {
         PageIndex: 1,
         PageSize: 30,
@@ -245,31 +236,24 @@ export default {
       // 搜索条件
       paginationSearch: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         MaterialType: 1,
         MaterialNum: undefined,
         Name: undefined,
         ShowBanned: false
       },
-      paginationSearchLine: {
-        PageIndex: 1,
-        PageSize: 10000,
-        Name: undefined,
-        ShowBanned: false
-      },
+
       listLoading: false,
       listBoxLoading: false, // 产品名称loading
-      lineLoading: false, // 新增工艺路线搜索loading
-      lineFormVisible: false, // 新增工艺路线弹窗
       finshFormVisible: false, // input产品名称弹窗
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
-      lineData: [], // 工艺路线数组
       finshData: [], // 成品编号
       BomData: [], // 新增Bom下拉类型
       expireTimeOption: {
@@ -476,9 +460,7 @@ export default {
       })
         .then(() => {
           bomDelete({ BomCode: row.BomCode }).then(res => {
-            debugger
             if (res.IsPass === true) {
-              debugger
               this.$message({
                 type: 'success',
                 message: this.$t('table.deleteSuccess')
@@ -591,6 +573,7 @@ export default {
       GetMaterialList(this.paginationSearch).then(res => {
         if (res.IsPass === true) {
           this.finshData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.listBoxLoading = false
         }
       })
@@ -604,48 +587,23 @@ export default {
     fishClick(row) {
       this.ruleForm.ProductNum = row.MaterialNum
       this.$set(this.ruleForm, 'ProductName', row.Name)
-      // this.ruleForm.ProductName = row.Name
       this.ruleForm.ProductCode = row.MaterialCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
       this.finshFormVisible = false
     },
+    // 成品弹窗分页
+    getLogList(val) {
+      this.paginationSearch.PageIndex = val.current
+      this.paginationSearch.PageSize = val.size
+      this.finshBox()
+    },
     // 关闭成品名称查询弹窗
     fishClose() {
       this.finshFormVisible = false
-    },
-
-    // 聚焦事件工艺路线弹窗
-    lineBox() {
-      this.lineFormVisible = true
-      this.lineLoading = true
-      baseRouteList(this.paginationSearchLine).then(res => {
-        if (res.IsPass === true) {
-          this.lineData = res.Obj
-          this.lineLoading = false
-        }
-      })
-    },
-    // 工艺路线弹窗搜索
-    LineBox() {
-      this.paginationSearchLine.PageIndex = 1
-      this.lineBox()
-    },
-    // 增加工艺路线双击事件获取当前行的值
-    lineClick(row) {
-      this.$set(this.ruleForm, 'ProcessRouteName', row.Name)
-      // this.ruleForm.ProcessRouteName = row.Name
-      this.ruleForm.ProcessRouteCode = row.ProcessRouteCode
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-      this.lineFormVisible = false
-    },
-    // 关闭工艺路线查询弹窗
-    lineClose() {
-      this.lineFormVisible = false
     }
+
   }
 }
 </script>

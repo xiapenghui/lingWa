@@ -41,11 +41,7 @@
       @row-dblclick="workingClick"
     >
 
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="工序编号" width="250" prop="ProcessNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -75,15 +71,18 @@
           {{ scope.row.Remark }}
         </template>
       </el-table-column>
-
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearchWorking.PageIndex" :size.sync="paginationSearchWorking.PageSize" @pagination="getLogList" />
+  </el-dialog>
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'WorkingName',
+  components: { Pagination },
   props: {
     workingShow: {
       type: Boolean,
@@ -108,6 +107,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -125,6 +128,14 @@ export default {
     // 成品名称查询
     handleSearchWorking() {
       this.$emit('handleSearchWorking')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchWorking.PageIndex - 1) * this.paginationSearchWorking.PageSize + index + 1
     }
 
   }

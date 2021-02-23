@@ -106,9 +106,11 @@
       :equ-data="equData"
       :pagination-search-equ="paginationSearchEqu"
       :equ-type-code-data="EquTypeCodeData"
+      :log-total="logTotal"
       @equClose="equClose"
       @equClick="equClick"
       @handleSearchEqu="handleSearchEqu"
+      @pageChange="getLogList"
     />
 
     <!-- 备品备件弹窗 -->
@@ -119,9 +121,11 @@
       :spare-data="spareData"
       :pagination-search-spare="paginationSearchSpare"
       :spare-type-code-data="SpareTypeCodeData"
+      :log-total="logTotal2"
       @spareClose="spareClose"
       @spareClick="spareClick"
       @handleSearchSpare="handleSearchSpare"
+      @pageChange="getLogList2"
     />
   </div>
 </template>
@@ -156,7 +160,7 @@ export default {
       // 设备编号查询
       paginationSearchEqu: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         EquNum: undefined,
         EquName: undefined,
         EquTypeCode: undefined,
@@ -166,12 +170,11 @@ export default {
       // 备品备件查询
       paginationSearchSpare: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         SpareNum: undefined,
         name: undefined,
         ShowBanned: false
       },
-
       equData: [], // 设备编号数组
       equFormVisible: false, // input设备编号弹窗
       spareFormVisible: false, // 备品备件弹窗
@@ -184,7 +187,8 @@ export default {
       FaultData: [], // 故障类型数组
       RepairUserData: [], // 维修人员数组
       newEquCode: null, // 获取设备编号回传Code
-      // UnitTextList: [], // 获取新增页面单位下拉
+      logTotal: 0,
+      logTotal2: 0,
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       rules: {
@@ -394,6 +398,7 @@ export default {
       EquDataList(this.paginationSearchEqu).then(res => {
         if (res.IsPass === true) {
           this.equData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.equBoxLoading = false
         }
       })
@@ -413,6 +418,12 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
     },
+    // 设备编号弹窗分页
+    getLogList(val) {
+      this.paginationSearchEqu.PageIndex = val.current
+      this.paginationSearchEqu.PageSize = val.size
+      this.equBox()
+    },
     // 关闭设备编号查询弹窗
     equClose() {
       this.equFormVisible = false
@@ -426,6 +437,7 @@ export default {
       EquSpareList(this.paginationSearchSpare).then(res => {
         if (res.IsPass === true) {
           this.spareData = res.Obj
+          this.logTotal2 = res.TotalRowCount
           this.spareBoxLoading = false
         }
       })
@@ -446,6 +458,12 @@ export default {
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
+    },
+    // 备品备件弹窗分页
+    getLogList2(val) {
+      this.paginationSearchSpare.PageIndex = val.current
+      this.paginationSearchSpare.PageSize = val.size
+      this.spareBox()
     },
     // 关闭备品备件查询弹窗
     spareClose() {

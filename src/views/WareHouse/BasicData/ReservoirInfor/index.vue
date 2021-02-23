@@ -135,9 +135,11 @@
       :table-box-height="tableBoxHeight"
       :ware-data="wareData"
       :pagination-search="paginationSearchWare"
+      :log-total="logTotal"
       @wareClose="wareClose"
       @wareClick="wareClick"
       @handleSearchWare="handleSearchWare"
+      @pageChange="getLogList"
     />
 
   </div>
@@ -169,13 +171,14 @@ export default {
       // 仓库编号搜索条件
       paginationSearchWare: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         WarehouseNum: undefined,
         WarehouseName: undefined
       },
       listLoading: false,
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
       wareData: [], // 仓库编号数组
@@ -456,6 +459,7 @@ export default {
       StoWareList(this.paginationSearchWare).then(res => {
         if (res.IsPass === true) {
           this.wareData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.wareBoxLoading = false
         }
       })
@@ -468,13 +472,18 @@ export default {
     // 增加仓库编号双击事件获取当前行的值
     wareClick(row) {
       this.$set(this.ruleForm, 'WarehouseNum', row.WarehouseNum)
-      // this.ruleForm.ProcessNum = row.ProcessNum
       this.ruleForm.WarehouseName = row.WarehouseName
       this.ruleForm.WarehouseCode = row.WarehouseCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
       this.wareFormVisible = false
+    },
+    // 成品弹窗分页
+    getLogList(val) {
+      this.paginationSearchWare.PageIndex = val.current
+      this.paginationSearchWare.PageSize = val.size
+      this.WarehouseBox()
     },
     // 关闭仓库编号查询弹窗
     wareClose() {

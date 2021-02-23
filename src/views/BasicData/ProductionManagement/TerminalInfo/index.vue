@@ -189,9 +189,11 @@
       :table-box-height="tableBoxHeight"
       :working-data="workingData"
       :pagination-search-working="paginationSearchWorking"
+      :log-total="logTotal"
       @workingClose="workingClose"
       @workingClick="workingClick"
       @handleSearchWorking="handleSearchWorking"
+      @pageChange="getLogList"
     />
   </div>
 </template>
@@ -226,14 +228,15 @@ export default {
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         ProcessNum: undefined,
         Name: undefined,
         ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
       dialogFormVisible: false, // 编辑弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
@@ -563,6 +566,7 @@ export default {
       BaseProList(this.paginationSearchWorking).then(res => {
         if (res.IsPass === true) {
           this.workingData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.workingBoxLoading = false
         }
       })
@@ -583,6 +587,14 @@ export default {
       })
       this.workingFormVisible = false
     },
+
+    // 工序弹窗分页
+    getLogList(val) {
+      this.paginationSearchWorking.PageIndex = val.current
+      this.paginationSearchWorking.PageSize = val.size
+      this.workingBox()
+    },
+
     // 关闭工序名称查询弹窗
     workingClose() {
       this.workingFormVisible = false

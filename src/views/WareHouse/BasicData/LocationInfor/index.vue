@@ -153,9 +153,11 @@
       :table-box-height="tableBoxHeight"
       :ware-data="wareData"
       :pagination-search="paginationSearchWare"
+      :log-total="logTotal"
       @wareClose="wareClose"
       @wareClick="wareClick"
       @handleSearchWare="handleSearchWare"
+      @pageChange="getLogList"
     />
 
     <!-- 封装库区信息编号 -->
@@ -165,9 +167,11 @@
       :table-box-height="tableBoxHeight"
       :location-data="locationData"
       :pagination-search="paginationSearchLocation"
+      :log-total="logTotal2"
       @locationClose="locationClose"
       @locationClick="locationClick"
       @handleSearchLocation="handleSearchLocation"
+      @pageChange="getLogList2"
     />
 
   </div>
@@ -200,7 +204,7 @@ export default {
       // 仓库编号搜索条件
       paginationSearchWare: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         LocationNum: undefined,
         LocationName: undefined
       },
@@ -208,14 +212,16 @@ export default {
       // 库区信息搜索条件
       paginationSearchLocation: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         RegionNum: undefined,
         RegionName: undefined
       },
 
       listLoading: false,
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
+      logTotal2: 0,
       dialogFormVisible: false, // 编辑弹出框
       dialogType: 'new',
       wareData: [], // 仓库编号数组
@@ -505,6 +511,7 @@ export default {
       StoWareList(this.paginationSearchWare).then(res => {
         if (res.IsPass === true) {
           this.wareData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.wareBoxLoading = false
         }
       })
@@ -516,15 +523,20 @@ export default {
     },
     // 增加仓库编号双击事件获取当前行的值
     wareClick(row) {
-      debugger
       this.$set(this.ruleForm, 'WarehouseNum', row.WarehouseNum)
-      // this.ruleForm.ProcessNum = row.ProcessNum
       this.ruleForm.WarehouseName = row.WarehouseName
       this.ruleForm.WarehouseCode = row.WarehouseCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
       this.wareFormVisible = false
+    },
+
+    // 仓库编号弹窗分页
+    getLogList(val) {
+      this.paginationSearchWare.PageIndex = val.current
+      this.paginationSearchWare.PageSize = val.size
+      this.WarehouseBox()
     },
     // 关闭仓库编号查询弹窗
     wareClose() {
@@ -535,28 +547,34 @@ export default {
     LocationBox() {
       this.locationFormVisible = true
       this.locationLoading = true
-      WareHouseList(this.paginationSearchWare).then(res => {
+      WareHouseList(this.paginationSearchLocation).then(res => {
         if (res.IsPass === true) {
           this.locationData = res.Obj
+          this.logTotal2 = res.TotalRowCount
           this.locationBoxLoading = false
         }
       })
     },
     // 库区信息弹窗搜索
     handleSearchLocation() {
-      this.paginationSearchWare.PageIndex = 1
+      this.paginationSearchLocation.PageIndex = 1
       this.LocationBox()
     },
     // 增加库区信息双击事件获取当前行的值
     locationClick(row) {
       this.$set(this.ruleForm, 'RegionNum', row.RegionNum)
-      // this.ruleForm.ProcessNum = row.ProcessNum
       this.ruleForm.RegionName = row.RegionName
       this.ruleForm.RegionCode = row.RegionCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
       this.locationFormVisible = false
+    },
+    // 库区信息弹窗分页
+    getLogList2(val) {
+      this.paginationSearchLocation.PageIndex = val.current
+      this.paginationSearchLocation.PageSize = val.size
+      this.LocationBox()
     },
     // 关闭 库区信息查询弹窗
     locationClose() {

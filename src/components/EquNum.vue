@@ -52,11 +52,7 @@
       @row-dblclick="equClick"
     >
 
-      <el-table-column align="center" label="行号" width="50">
-        <template slot-scope="scope">
-          {{ scope.$index+1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="设备编号" width="150" prop="EquNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -135,15 +131,17 @@
           {{ scope.row.MtMethod }}
         </template>
       </el-table-column>
-
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearchEqu.PageIndex" :size.sync="paginationSearchEqu.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'EquNum',
+  components: { Pagination },
   props: {
     equShow: {
       type: Boolean,
@@ -175,6 +173,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -192,6 +194,14 @@ export default {
     // 成品名称查询
     handleSearchEqu() {
       this.$emit('handleSearchEqu')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchEqu.PageIndex - 1) * this.paginationSearchEqu.PageSize + index + 1
     }
 
   }

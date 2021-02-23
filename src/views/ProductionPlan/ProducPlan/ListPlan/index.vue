@@ -305,9 +305,11 @@
       :table-box-height="tableBoxHeight"
       :line-data="lineData"
       :pagination-search-line="paginationSearchLine"
+      :log-total="logTotal"
       @lineClick="lineClick"
       @lineClose="lineClose"
-      @lineBox="lineBox"
+      @handleSearchLine="handleSearchLine"
+      @pageChange="getLogList"
     />
   </div>
 </template>
@@ -352,13 +354,14 @@ export default {
       paginationSearchLine: {
         Name: undefined,
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         ShowBanned: false
       },
       listLoading: false, // 主列表
       editLoading: false, // 编辑loading
       lineLoading: false, // 工艺路线封装loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
       lineFormVisible: false, // 工艺路线封装弹窗
       dialogFormVisible: false, // 编辑弹出框
       newPriority: null, // 获取下拉优先级
@@ -604,12 +607,13 @@ export default {
       baseRouteList(this.paginationSearchLine).then(res => {
         if (res.IsPass === true) {
           this.lineData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.lineLoading = false
         }
       })
     },
     // 工艺路线弹窗搜索
-    LineBox() {
+    handleSearchLine() {
       this.paginationSearchLine.PageIndex = 1
       this.lineBox()
     },
@@ -622,6 +626,12 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
       this.lineFormVisible = false
+    },
+    // 成品弹窗分页
+    getLogList(val) {
+      this.paginationSearchLine.PageIndex = val.current
+      this.paginationSearchLine.PageSize = val.size
+      this.lineBox()
     },
     // 关闭工艺路线查询弹窗
     lineClose() {

@@ -36,11 +36,7 @@
       highlight-current-row
       @row-dblclick="materClick"
     >
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="物料类型编号" width="200" prop="TypeNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -59,15 +55,17 @@
           {{ scope.row.Description }}
         </template>
       </el-table-column>
-
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearchMater.PageIndex" :size.sync="paginationSearchMater.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'MaterType',
+  components: { Pagination },
   props: {
     materShow: {
       type: Boolean,
@@ -92,6 +90,11 @@ export default {
       default: function() {
         return {}
       }
+    },
+
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -109,6 +112,14 @@ export default {
     //  物料名称查询
     handleSearchMater() {
       this.$emit('handleSearchMater')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchMater.PageIndex - 1) * this.paginationSearchMater.PageSize + index + 1
     }
   }
 }

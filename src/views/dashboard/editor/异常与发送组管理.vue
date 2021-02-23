@@ -145,9 +145,11 @@
       :table-box-height="tableBoxHeight"
       :group-data="groupData"
       :pagination-search-group="paginationSearchGroup"
+      :log-total="logTotal"
       @groupClose="groupClose"
       @groupClick="groupClick"
       @handleSearchGroup="handleSearchGroup"
+      @pageChange="getLogList"
     />
 
     <!-- 异常明细弹窗 -->
@@ -158,9 +160,11 @@
       :table-box-height="tableBoxHeight"
       :waring-data="waringData"
       :pagination-search-waring="paginationSearchWaring"
+      :log-total="logTotal2"
       @waringClose="waringClose"
       @waringClick="waringClick"
       @handleSearchWaring="handleSearchWaring"
+      @pageChange="getLogList2"
     />
   </div>
 </template>
@@ -194,7 +198,7 @@ export default {
       // 异常发送组搜索条件
       paginationSearchGroup: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         GroupNum: undefined,
         GroupName: undefined,
         ShowBanned: false
@@ -203,7 +207,7 @@ export default {
       // 异常明细搜索条件
       paginationSearchWaring: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         ExceptNum: undefined,
         ExceptName: undefined,
         ExceptType: undefined,
@@ -212,7 +216,9 @@ export default {
 
       listLoading: false,
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
+      logTotal2: 0,
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
@@ -513,6 +519,7 @@ export default {
       AdnGroupList(this.paginationSearchGroup).then(res => {
         if (res.IsPass === true) {
           this.groupData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.groupBoxLoading = false
         }
       })
@@ -532,6 +539,14 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
     },
+
+    // 异常发送弹窗分页
+    getLogList(val) {
+      this.paginationSearchGroup.PageIndex = val.current
+      this.paginationSearchGroup.PageSize = val.size
+      this.groupBox()
+    },
+
     // 关闭异常发送组查询弹窗
     groupClose() {
       this.groupFormVisible = false
@@ -544,6 +559,7 @@ export default {
       AnList(this.paginationSearchWaring).then(res => {
         if (res.IsPass === true) {
           this.waringData = res.Obj
+          this.logTotal2 = res.TotalRowCount
           this.waringBoxLoading = false
         }
       })
@@ -564,6 +580,14 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
     },
+
+    // 异常明细弹窗分页
+    getLogList2(val) {
+      this.paginationSearchWaring.PageIndex = val.current
+      this.paginationSearchWaring.PageSize = val.size
+      this.waringBox()
+    },
+
     // 关闭异常明细查询弹窗
     waringClose() {
       this.waringFormVisible = false

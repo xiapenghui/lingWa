@@ -150,9 +150,11 @@
       :table-box-height="tableBoxHeight"
       :working-data="workingData"
       :pagination-search-working="paginationSearchWorking"
+      :log-total="logTotal"
       @workingClose="workingClose"
       @workingClick="workingClick"
       @handleSearchWorking="handleSearchWorking"
+      @pageChange="getLogList"
     />
 
     <!-- 原料名称对应弹窗 -->
@@ -162,9 +164,11 @@
       :table-box-height="tableBoxHeight"
       :material-data="materialData"
       :pagination-search-material="paginationSearchMaterial"
+      :log-total="logTotal2"
       @materialClose="materialClose"
       @materialClick="materialClick"
       @handleSearchMaterial="handleSearchMaterial"
+      @pageChange="getLogList2"
     />
   </div>
 </template>
@@ -205,7 +209,7 @@ export default {
       // 原料搜索条件
       paginationSearchMaterial: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         MaterialType: 0,
         MaterialNum: undefined,
         MaterialName: undefined,
@@ -215,7 +219,7 @@ export default {
       // 工序搜索条件
       paginationSearchWorking: {
         PageIndex: 1,
-        PageSize: 10000,
+        PageSize: 30,
         ProcessNum: undefined,
         Name: undefined,
         ShowBanned: false
@@ -230,7 +234,9 @@ export default {
       materialFormVisible: false, // input原料称弹窗
       workingFormVisible: false, // input工序名称弹窗
       editLoading: false, // 编辑loading
-      total: 10,
+      total: 0,
+      logTotal: 0,
+      logTotal2: 0,
       dialogFormVisible: false, // 编辑弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
@@ -473,6 +479,7 @@ export default {
       MaterialList(this.paginationSearchMaterial).then(res => {
         if (res.IsPass === true) {
           this.materialData = res.Obj
+          this.logTotal2 = res.TotalRowCount
           this.materialBoxLoading = false
         }
       })
@@ -485,11 +492,9 @@ export default {
     // 增加原料名称双击事件获取当前行的值
     materialClick(row) {
       if (this.materialActiveIndex === 1) {
-        // this.ruleForm.MaterialName = row.Name
         this.$set(this.ruleForm, 'MaterialName', row.Name)
         this.ruleForm.materialCode = row.MaterialCode
       } else {
-        // this.ruleForm.SubMaterialName = row.Name
         this.$set(this.ruleForm, 'SubMaterialName', row.Name)
         this.ruleForm.SubMaterialCode = row.MaterialCode
       }
@@ -498,6 +503,13 @@ export default {
       })
       this.materialFormVisible = false
     },
+    // 成品弹窗分页
+    getLogList2(val) {
+      this.paginationSearchMaterial.PageIndex = val.current
+      this.paginationSearchMaterial.PageSize = val.size
+      this.materialBox()
+    },
+
     // 关闭成品名称查询弹窗
     materialClose() {
       this.materialFormVisible = false
@@ -510,6 +522,7 @@ export default {
       MaterialList(this.paginationSearchMaterial).then(res => {
         if (res.IsPass === true) {
           this.materialData = res.Obj
+          this.logTotal2 = res.TotalRowCount
           this.materialBoxLoading = false
         }
       })
@@ -522,24 +535,30 @@ export default {
       BaseProList(this.paginationSearchWorking).then(res => {
         if (res.IsPass === true) {
           this.workingData = res.Obj
+          this.logTotal = res.TotalRowCount
           this.workingBoxLoading = false
         }
       })
     },
     // 工序弹窗搜索
     handleSearchWorking() {
-      this.paginationSearchMaterial.PageIndex = 1
+      this.paginationSearchWorking.PageIndex = 1
       this.workingBox()
     },
     // 增加工序名称双击事件获取当前行的值
     workingClick(row) {
-      // this.ruleForm.WorkingProcedureName = row.Name
       this.$set(this.ruleForm, 'ProcessCodeName', row.Name)
       this.ruleForm.ProcessCode = row.ProcessCode
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
       this.workingFormVisible = false
+    },
+    // 成品弹窗分页
+    getLogList(val) {
+      this.paginationSearchWorking.PageIndex = val.current
+      this.paginationSearchWorking.PageSize = val.size
+      this.workingBox()
     },
     // 关闭工序名称查询弹窗
     workingClose() {

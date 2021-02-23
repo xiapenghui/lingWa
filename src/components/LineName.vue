@@ -10,7 +10,7 @@
         </el-col>
         <el-col :span="4">
           <el-col :span="8">
-            <el-button type="primary" icon="el-icon-search" @click="lineBox">{{ $t('permission.search') }}</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="handleSearchLine">{{ $t('permission.search') }}</el-button>
           </el-col>
         </el-col>
       </el-row>
@@ -28,11 +28,7 @@
       highlight-current-row
       @row-dblclick="lineClick"
     >
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="工艺路线名称" width="200" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -58,13 +54,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearchLine.PageIndex" :size.sync="paginationSearchLine.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'LineName',
+  components: { Pagination },
   props: {
     lineShow: {
       type: Boolean,
@@ -89,6 +88,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -104,8 +107,16 @@ export default {
       this.$emit('lineClick', row)
     },
     // 工艺路线名称查询
-    lineBox() {
-      this.$emit('lineBox')
+    handleSearchLine() {
+      this.$emit('handleSearchLine')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchLine.PageIndex - 1) * this.paginationSearchLine.PageSize + index + 1
     }
   }
 }

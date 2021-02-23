@@ -41,11 +41,7 @@
       @row-dblclick="seatClick"
     >
 
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="库位编号" width="150" prop="LocationNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -108,13 +104,16 @@
       </el-table-column>
 
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearchSeat.PageIndex" :size.sync="paginationSearchSeat.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'SeatName',
+  components: { Pagination },
   props: {
     seatShow: {
       type: Boolean,
@@ -139,6 +138,11 @@ export default {
       default: function() {
         return {}
       }
+    },
+
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -156,6 +160,14 @@ export default {
     // 成品名称查询
     handleSearchSeat() {
       this.$emit('handleSearchSeat')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchSeat.PageIndex - 1) * this.paginationSearchSeat.PageSize + index + 1
     }
 
   }

@@ -37,11 +37,7 @@
       @row-dblclick="spareClick"
     >
 
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index+1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="备件编号" width="150" prop="SpareNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -74,13 +70,16 @@
       </el-table-column>
 
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearchSpare.PageIndex" :size.sync="paginationSearchSpare.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'SparePart',
+  components: { Pagination },
   props: {
     spareShow: {
       type: Boolean,
@@ -105,6 +104,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -122,6 +125,14 @@ export default {
     //  客户名称查询
     handleSearchSpare() {
       this.$emit('handleSearchSpare')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchSpare.PageIndex - 1) * this.paginationSearchSpare.PageSize + index + 1
     }
 
   }

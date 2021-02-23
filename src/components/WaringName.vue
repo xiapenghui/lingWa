@@ -48,11 +48,7 @@
       @row-dblclick="waringClick"
     >
 
-      <el-table-column align="center" label="行号" width="50" fixed>
-        <template slot-scope="scope">
-          {{ scope.$index+1 }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
       <el-table-column align="center" label="异常编号" width="150" prop="ExceptNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -91,13 +87,16 @@
       </el-table-column>
 
     </el-table>
+    <pagination v-show="logTotal > 0" :total="logTotal" :current.sync="paginationSearchWaring.PageIndex" :size.sync="paginationSearchWaring.PageSize" @pagination="getLogList" />
   </el-dialog>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
 const fixHeightBox = 350
 export default {
   name: 'WaringName',
+  components: { Pagination },
   props: {
     waringShow: {
       type: Boolean,
@@ -130,6 +129,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    logTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -147,6 +150,14 @@ export default {
     // 异常发送组查询
     handleSearchWaring() {
       this.$emit('handleSearchWaring')
+    },
+
+    getLogList(val) {
+      this.$emit('pageChange', val)
+    },
+    // 分页
+    table_index(index) {
+      return (this.paginationSearchWaring.PageIndex - 1) * this.paginationSearchWaring.PageSize + index + 1
     }
 
   }
