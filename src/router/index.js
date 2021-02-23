@@ -269,34 +269,33 @@ export const asyncRoutes = [
 
         },
         redirect: '/BasicData/MaterialManagement/MaterialType',
-        children: [
-          {
-            path: 'MaterialType',
-            component: () => import('@/views/BasicData/MaterialManagement/MaterialType'),
-            name: 'MaterialType',
-            meta: {
-              title: 'MaterialType'
+        children: [{
+          path: 'MaterialType',
+          component: () => import('@/views/BasicData/MaterialManagement/MaterialType'),
+          name: 'MaterialType',
+          meta: {
+            title: 'MaterialType'
 
-            }
-          },
-
-          {
-            path: 'MaterialInformation',
-            component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
-            name: 'MaterialInformation',
-            meta: {
-              title: 'MaterialInformation'
-
-            }
-          },
-          {
-            path: 'ProductMaintenance',
-            component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
-            name: 'ProductMaintenance',
-            meta: {
-              title: 'ProductMaintenance'
-            }
           }
+        },
+
+        {
+          path: 'MaterialInformation',
+          component: () => import('@/views/BasicData/MaterialManagement/MaterialInformation'),
+          name: 'MaterialInformation',
+          meta: {
+            title: 'MaterialInformation'
+
+          }
+        },
+        {
+          path: 'ProductMaintenance',
+          component: () => import('@/views/BasicData/MaterialManagement/ProductMaintenance'),
+          name: 'ProductMaintenance',
+          meta: {
+            title: 'ProductMaintenance'
+          }
+        }
         ]
       },
 
@@ -318,6 +317,35 @@ export const asyncRoutes = [
             title: 'CustomerInformation'
           }
         }]
+      },
+
+      // 打印模板管理
+      {
+        path: 'SealTemp',
+        component: () => import('@/views/BasicData/SealTemp/index'), // Parent router-view
+        name: 'SealTemp',
+        meta: {
+          title: 'SealTemp'
+        },
+        // 客户信息管理
+        redirect: '/BasicData/SealTemp/SealMain',
+        children: [{
+          path: 'SealMain',
+          component: () => import('@/views/BasicData/SealTemp/SealMain'),
+          name: 'SealMain',
+          meta: {
+            title: 'SealMain'
+          }
+        },
+        {
+          path: 'SealProce',
+          component: () => import('@/views/BasicData/SealTemp/SealProce'),
+          name: 'SealProce',
+          meta: {
+            title: 'SealProce'
+          }
+        }
+        ]
       }
 
     ]
@@ -857,6 +885,92 @@ export const asyncRoutes = [
         name: 'DevicePart',
         meta: {
           title: 'DevicePart'
+        }
+      }]
+    }
+    ]
+  },
+
+  // AnDon管理
+  {
+    path: '/AnDon',
+    component: Layout,
+    redirect: '/AnDon/WaringMan',
+    name: 'AnDon',
+    meta: {
+      title: 'AnDon',
+      icon: 'tab'
+    },
+    children: [{
+      path: 'WaringMan',
+      component: () => import('@/views/AnDon/WaringMan/index'),
+      name: 'WaringMan',
+      meta: {
+        title: 'WaringMan'
+      },
+      redirect: '/AnDon/WaringMan/WaringDetail',
+      children: [
+        {
+          path: 'WaringDetail',
+          component: () => import('@/views/AnDon/WaringMan/WaringDetail'),
+          name: 'WaringDetail',
+          meta: {
+            title: 'WaringDetail'
+          }
+        },
+        {
+          path: 'WaringGrop',
+          component: () => import('@/views/AnDon/WaringMan/WaringGrop'),
+          name: 'WaringGrop',
+          meta: {
+            title: 'WaringGrop'
+          }
+        },
+
+        {
+          path: 'WaringAndGrop',
+          component: () => import('@/views/AnDon/WaringMan/WaringAndGrop'),
+          name: 'WaringAndGrop',
+          meta: {
+            title: 'WaringAndGrop'
+          }
+        },
+
+        {
+          path: 'WaringTermin',
+          component: () => import('@/views/AnDon/WaringMan/WaringTermin'),
+          name: 'WaringTermin',
+          meta: {
+            title: 'WaringTermin'
+          }
+        },
+        // 下面明细先放开，后面再做隐藏
+        {
+          path: 'WaringGropDetail',
+          component: () => import('@/views/AnDon/WaringMan/WaringGropDetail'),
+          name: 'WaringGropDetail',
+          meta: {
+            title: 'WaringGropDetail'
+          }
+        }
+      ]
+    },
+
+    // AnDon信息报表
+    {
+      path: 'WaringReport',
+      component: () => import('@/views/AnDon/WaringReport/index'),
+      name: 'WaringReport',
+      meta: {
+        title: 'WaringReport'
+      },
+      redirect: '/AnDon/WaringReport',
+      children: [{
+        path: 'WaringReport',
+        component: () => import('@/views/AnDon/WaringReport'),
+        name: 'WaringReport',
+        meta: {
+          title: 'WaringReport'
         }
       }
       ]

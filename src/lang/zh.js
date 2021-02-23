@@ -96,6 +96,16 @@ export default {
     DeviceGrade: '预警级别管理',
     DeviceSpare: '备品备件管理',
     DevicePart: '设备备品备件',
+    SealTemp: '打印模板管理',
+    SealMain: '打印模板维护',
+    SealProce: '工序与模板关系维护',
+    AnDon: '异常管理',
+    WaringMan: '异常信息管理',
+    WaringDetail: '异常明细管理',
+    WaringGrop: '异常发送组管理',
+    WaringTermin: '异常与工位管理',
+    WaringGropDetail: '异常与发送组关系维护',
+    WaringAndGrop: '异常与发送组管理',
 
     // 截止
 
