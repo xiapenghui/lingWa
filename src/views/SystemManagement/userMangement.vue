@@ -1,5 +1,62 @@
 <template>
   <div class="app-container">
+    <div class="search">
+      <el-row :gutter="20">
+        <el-col :span="4">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content1" placement="top-start">
+              <label class="radio-label">{{ $t('permission.userName') }}:</label>
+            </el-tooltip>
+          </el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.AccountName" :placeholder="$t('permission.userNameInfo')" clearable /></el-col>
+        </el-col>
+        <el-col :span="4">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content2" placement="top-start">
+              <label class="radio-label">{{ $t('permission.fullName') }}:</label>
+            </el-tooltip>
+          </el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable /></el-col>
+        </el-col>
+        <el-col :span="4">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content4" placement="top-start">
+              <label class="radio-label">{{ $t('permission.company') }}:</label>
+            </el-tooltip>
+          </el-col>
+          <el-col :span="16">
+            <el-select v-model="pagination.OrgCode" :placeholder="$t('permission.companyInfo')" clearable style="width: 100%" @change="companyVal">
+              <el-option v-for="item in companyData" :key="item.OrgCode" :label="item.FullName" :value="item.OrgCode" />
+            </el-select>
+          </el-col>
+        </el-col>
+        <el-col :span="4">
+          <el-col :span="8">
+            <el-tooltip class="item" effect="dark" :enterable="false" :content="content5" placement="top-start">
+              <label class="radio-label">{{ $t('permission.department') }}:</label>
+            </el-tooltip>
+          </el-col>
+          <el-col :span="16">
+            <el-select v-model="pagination.DeptCode" :placeholder="$t('permission.departmentInfo')" clearable style="width: 100%">
+              <el-option v-for="item in DepFilterData" :key="item.DeptCode" :label="item.FullName" :value="item.DeptCode" />
+            </el-select>
+          </el-col>
+        </el-col>
+
+        <el-col :span="4">
+          <el-col :span="24">
+            <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
+              <el-checkbox v-model="pagination.ShowBanned">是否包含禁用状态数据</el-checkbox>
+            </el-tooltip>
+          </el-col>
+        </el-col>
+
+        <el-col :span="4">
+          <el-button type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('permission.search') }}</el-button>
+        </el-col>
+      </el-row>
+    </div>
+
     <div class="rightBtn">
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addUser') }}</el-button>
     </div>
@@ -17,37 +74,49 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="员工编号" width="180" prop="UserJobNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.userName')" width="180" prop="AccountName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.UserJobNum }}
+          {{ scope.row.AccountName }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="员工名称" width="180" prop="UserNameCN" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.fullName')" width="180" prop="NameCN" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.UserNameCN }}
+          {{ scope.row.NameCN }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="分组编号" width="180" prop="GroupNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.title')" min-width="180" prop="RoleName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.GroupNum }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="分组名称" width="180" prop="GroupName" sortable :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.GroupName }}
+          {{ scope.row.RoleName }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注" min-width="200" prop="Remark" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" :label="$t('permission.company')" min-width="180" prop="OrgFullName" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Remark }}
+          {{ scope.row.OrgFullName }}
+        </template>
+      </el-table-column>
+
+      <!-- <el-table-column align="center" :label="$t('permission.department')" width="200" prop="DepFullName" sortable :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.DepFullName }}
+        </template>
+      </el-table-column> -->
+
+      <!-- <el-table-column align="center" :label="$t('permission.description')" width="200" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{ scope.row.Description }}
+        </template>
+      </el-table-column> -->
+
+      <el-table-column align="center" :label="$t('permission.state')" width="100" prop="Status" sortable>
+        <template slot-scope="scope">
+          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('permission.user')" prop="name" sortable width="150" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ModifyUserName }}
+          {{ scope.row.ModifyUser }}
         </template>
       </el-table-column>
 
@@ -57,15 +126,28 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="120">
+      <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="200">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top-start">
             <el-button type="primary" size="small" icon=" el-icon-edit" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
 
+          <el-tooltip v-if="scope.row.Status == true" class="item" effect="dark" :enterable="false" content="禁用" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-remove" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip v-if="scope.row.Status == false" class="item" effect="dark" :enterable="false" content="启用" placement="top-start">
+            <el-button type="success" size="small" icon="el-icon-success" plain @click="handleBan(scope.row)" />
+          </el-tooltip>
+
+          <el-tooltip class="item" effect="dark" :enterable="false" content="重置密码" placement="top-start">
+            <el-button type="danger" size="small" icon="el-icon-refresh" plain @click="handleReset(scope.row)" />
+          </el-tooltip>
+
           <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top-start">
             <el-button type="danger" size="small" icon="el-icon-delete" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
+
         </template>
       </el-table-column>
     </el-table>
@@ -73,39 +155,33 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="dialogType === 'edit' ? '编辑' : '新增'">
       <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-
-        <el-form-item label="编号code" style="display: none;"><el-input v-model.trim="ruleForm.GroupCode" /></el-form-item>
-        <el-form-item label="分组编号" prop="GroupNum"><el-input v-model.trim="ruleForm.GroupNum" :disabled="true" /></el-form-item>
-
-        <el-form-item label="分组名称" prop="GroupName"><el-input v-model.trim="ruleForm.GroupName" :disabled="true" /></el-form-item>
-
-        <el-form-item label="员工编号" prop="UserJobNum">
-          <el-input v-model.trim="ruleForm.UserJobNum" placeholder="员工编号" class="disActive" @focus="personBox()" />
+        <el-form-item :label="$t('permission.userName')" prop="AccountName">
+          <el-input v-model.trim="ruleForm.AccountName" :placeholder="$t('permission.userNameInfo')" clearable />
         </el-form-item>
 
-        <el-form-item label="员工名称" prop="UserNameCN"><el-input v-model.trim="ruleForm.UserNameCN" placeholder="员工名称" :disabled="true" /></el-form-item>
+        <el-form-item v-if="isPassword" :label="$t('permission.password')" prop="AccountPwd" :required="true">
+          <el-input v-model.trim="ruleForm.AccountPwd" type="password" :placeholder="$t('permission.password')" clearable :show-password="true" />
+        </el-form-item>
 
-        <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
+        <el-form-item v-if="isPassword" label="重复密码" prop="passwords" required="true">
+          <el-input v-model.trim="ruleForm.passwords" type="password" placeholder="重复密码" clearable :show-password="true" />
+        </el-form-item>
+
+        <el-form-item :label="$t('permission.fullName')" prop="NameCN">
+          <el-input v-model.trim="ruleForm.NameCN" :placeholder="$t('permission.fullNameInfo')" clearable />
+        </el-form-item>
+
+        <el-form-item :label="$t('permission.rouleInfo')" prop="RoleCode">
+          <el-select v-model="ruleForm.RoleCode" :placeholder="$t('permission.rouleInfo')" clearable style="width: 100%">
+            <el-option v-for="item in rouleOptions" :key="item.RoleCode" :label="item.RoleName" :value="item.RoleCode" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
-
-    <!-- 人员信息弹窗 -->
-    <person-name
-      :person-show="personFormVisible"
-      :person-box-loading="personBoxLoading"
-      :table-box-height="tableBoxHeight"
-      :person-data="personData"
-      :pagination-search-person="paginationSearchPerson"
-      :log-total="logTotal"
-      @personClose="personClose"
-      @personClick="personClick"
-      @handleSearchPerson="handleSearchPerson"
-      @pageChange="getLogList"
-    />
   </div>
 </template>
 
@@ -114,51 +190,66 @@ import '../../styles/commentBox.scss'
 import '../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import Bus from '@/api/bus.js'
-import PersonName from '@/components/PersonName' //  工位信息
-import { PerList } from '@/api/BasicData'
-import { AdnGroupUserList, AdnGroupUserAdd, AdnGroupUserDelete, AdnGroupUserModify } from '@/api/Andon'
-const fixHeight = 190
-const fixHeightBox = 350
+import { companyList, UserList, UserAdd, UserUpdate, RelerStatus, RelerDelete, RelerPassword } from '@/api/role'
+const fixHeight = 260
+
 export default {
   name: 'UserMangement',
-  components: { Pagination, PersonName },
+  components: { Pagination },
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '' || value === undefined) {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.ruleForm.passwords !== '') {
+          this.$refs.ruleForm.validateField('passwords')
+        }
+        callback()
+      }
+    }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '' || value === undefined) {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.AccountPwd) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       tableData: [],
       ruleForm: {
-        GroupNum: '',
-        GroupName: '',
-        GroupCode: ''
+        AccountPwd: '',
+        passwords: ''
       }, // 编辑弹窗
       pagination: {
         PageIndex: 1,
-        PageSize: 30
-      },
-      // 人员信息搜索条件
-      paginationSearchPerson: {
-        PageIndex: 1,
         PageSize: 30,
-        JobNum: undefined,
-        NameCN: undefined
+        AccountName: undefined,
+        NameCN: undefined,
+        OrgCode: null,
+        DeptCode: null,
+        ShowBanned: false
       },
-
-      GroupCode: this.$route.query.GroupCode,
       listLoading: false,
       editLoading: false, // 编辑loading
-      total: 0,
-      logTotal: 0,
+      total: 10,
+      isPassword: true, // 密码是否可见
       dialogFormVisible: false, // 编辑弹出框
       dialogTableVisible: false, // 查看用户弹出框
-      personData: [], // 人员信息数组
-      personBoxLoading: false, // 人员信息搜索loading
-      personFormVisible: false, // input人员信息弹窗
       tableHeight: window.innerHeight - fixHeight, // 表格高度
-      tableBoxHeight: window.innerHeight - fixHeightBox, // 弹窗表格高度
       dialogType: 'new',
+      companyData: [], // 获取搜索框公司列表
+      DepFullData: [], // 获取搜索框部门列表
+      DepFilterData: [],
+      rouleOptions: [], // 获取新增框角色列表
       rules: {
-        UserJobNum: [{ required: true, message: '请选择员工编号', trigger: 'blur' }],
-        UserNameCN: [{ required: true, message: '请选择员工名称', trigger: 'blur' }]
+        NameCN: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        AccountPwd: [{ validator: validatePass, trigger: 'blur' }],
+        passwords: [{ validator: validatePass2, trigger: 'blur' }],
+        AccountName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        RoleCode: [{ required: true, message: '请选择角色', trigger: 'blur' }]
       },
       content1: this.$t('permission.userName'),
       content2: this.$t('permission.fullName'),
@@ -177,16 +268,6 @@ export default {
     tableHeight(val) {
       if (!this.timer) {
         this.tableHeight = val
-        this.timer = true
-        const that = this
-        setTimeout(function() {
-          that.timer = false
-        }, 400)
-      }
-    },
-    tableBoxHeight(val) {
-      if (!this.timer) {
-        this.tableBoxHeight = val
         this.timer = true
         const that = this
         setTimeout(function() {
@@ -214,20 +295,22 @@ export default {
     window.onresize = () => {
       return (() => {
         that.tableHeight = window.innerHeight - fixHeight
-        that.tableBoxHeight = window.innerHeight - fixHeightBox
       })()
     }
     // Mock: get all routes and roles list from server
     this.getList()
     this.setFormRules()
-
-    // 监听详情页getList事件
-    const self = this
-    Bus.$on('getList', function() {
-      self.getList()
+  },
+  mounted() {
+    // 获取公司部门的信息
+    companyList().then(res => {
+      if (res.IsPass === true) {
+        this.companyData = res.Obj.OrgList
+        this.DepFullData = res.Obj.DeptList
+        this.rouleOptions = res.Obj.RoleList
+      }
     })
   },
-
   methods: {
     // 分页
     table_index(index) {
@@ -237,9 +320,63 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        UserJobNum: [{ required: true, message: '请选择员工编号', trigger: 'blur' }],
-        UserNameCN: [{ required: true, message: '请选择员工名称', trigger: 'blur' }]
+        NameCN: [{ required: true, message: this.$t('permission.userNameInfo'), trigger: 'blur' }],
+        AccountPwd: [{ validator: validatePass, trigger: 'blur' }],
+        passwords: [{ validator: validatePass2, trigger: 'blur' }],
+        AccountName: [
+          {
+            required: true,
+            message: this.$t('permission.fullNamesInfo'),
+            trigger: 'blur'
+          }
+        ],
+        RoleCode: [{ required: true, message: '请选择角色', trigger: 'blur' }]
       }
+    },
+    // 公司部门联动
+    companyVal(value) {
+      this.DepFilterData = []
+      this.DepFullData.map(item => {
+        if (item.OrgCode === value) {
+          this.DepFilterData.push(item)
+        }
+      })
+    },
+
+    // 禁用，启用权限
+    handleBan(row) {
+      let status, statusTitle
+      if (row.Status === true) {
+        status = this.$t('permission.jingyongTitle')
+        statusTitle = this.$t('permission.jingyongInfo')
+      } else {
+        status = this.$t('permission.qiyongTitle')
+        statusTitle = this.$t('permission.qiyongInfo')
+      }
+      this.$confirm(statusTitle, status, {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          Status: (row.Status = row.Status !== true),
+          UserCode: row.UserCode
+        }
+        RelerStatus(params).then(res => {
+          if (res.IsPass === true) {
+            this.$message({
+              type: 'success',
+              message: res.MSG
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.MSG
+            })
+          }
+          this.getList()
+        })
+      })
     },
 
     // 查询
@@ -250,12 +387,7 @@ export default {
 
     getList() {
       this.listLoading = true
-      const params = {
-        PageIndex: this.pagination.PageIndex,
-        PageSize: this.pagination.PageSize,
-        GroupCode: this.$route.query.GroupCode
-      }
-      AdnGroupUserList(params).then(res => {
+      UserList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -282,9 +414,6 @@ export default {
         this.$refs.ruleForm.clearValidate()
       })
       this.ruleForm = {}
-      this.ruleForm.GroupNum = this.tableData[0].GroupNum
-      this.ruleForm.GroupName = this.tableData[0].GroupName
-      this.ruleForm.GroupCode = this.tableData[0].GroupCode
     },
     // 编辑角色
     handleEdit(row) {
@@ -297,6 +426,37 @@ export default {
       this.ruleForm = JSON.parse(JSON.stringify(row))
     },
 
+    // 重置密码
+    handleReset(row) {
+      this.$confirm('您确定要重置密码吗？', '重置', {
+        confirmButtonText: this.$t('permission.Confirm'),
+        cancelButtonText: this.$t('permission.Cancel'),
+        type: 'warning'
+      })
+        .then(() => {
+          RelerPassword({ UserCode: row.UserCode }).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: '重置成功'
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '重置失败'
+          })
+        })
+    },
+
     // 删除角色
     handleDelete(row) {
       if (this.tableData.length > 0) {
@@ -306,7 +466,7 @@ export default {
           type: 'warning'
         })
           .then(() => {
-            AdnGroupUserDelete({ RsCode: row.RsCode }).then(res => {
+            RelerDelete({ UserCode: row.UserCode }).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -336,25 +496,18 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            AdnGroupUserModify(this.ruleForm).then(res => {
-              debugger
+            UserUpdate(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
                   message: this.$t('table.editSuc')
                 })
-                this.getList()
-                this.dialogFormVisible = false
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.MSG
-                })
               }
-              this.editLoading = false
+              this.getList()
+              this.dialogFormVisible = false
             })
           } else {
-            AdnGroupUserAdd(this.ruleForm).then(res => {
+            UserAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -380,47 +533,11 @@ export default {
           return false
         }
       })
-    },
-
-    // 人员信息弹窗
-    personBox() {
-      this.personFormVisible = true
-      this.personBoxLoading = true
-      PerList(this.paginationSearchPerson).then(res => {
-        if (res.IsPass === true) {
-          this.personData = res.Obj
-          this.logTotal = res.TotalRowCount
-          this.personBoxLoading = false
-        }
-      })
-    },
-    // 人员信息搜索
-    handleSearchPerson() {
-      this.paginationSearchPerson.PageIndex = 1
-      this.personBox()
-    },
-    // 增加人员信息双击事件获取当前行的值
-    personClick(row) {
-      this.$set(this.ruleForm, 'UserJobNum', row.JobNum)
-      this.ruleForm.UserNameCN = row.NameCN
-      this.ruleForm.UserCode = row.UserCode
-      this.personFormVisible = false
-      this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate()
-      })
-    },
-    // 人员弹窗分页
-    getLogList(val) {
-      this.paginationSearchPerson.PageIndex = val.current
-      this.paginationSearchPerson.PageSize = val.size
-      this.personBox()
-    },
-    // 关闭人员信息查询弹窗
-    personClose() {
-      this.personFormVisible = false
     }
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

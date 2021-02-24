@@ -929,3 +929,49 @@ export function BarTempModify(data) {
     data
   })
 }
+
+//  基础数据 - 组织架构维护 - 供应商信息列表
+export function BaseOrgList(data) {
+  return request({
+    url: '/api/BaseOrganizationSupplier/List',
+    method: 'post',
+    data
+  })
+}
+
+//  基础数据 - 组织架构维护 - 供应商信息增加
+export function BaseOrgAdd(data) {
+  return request({
+    url: '/api/BaseOrganizationSupplier/Add',
+    method: 'post',
+    data
+  })
+}
+
+//  基础数据 - 组织架构维护 - 供应商信息删除
+export function BaseOrgDelete(data) {
+  return request({
+    url: '/api/BaseOrganizationSupplier/Delete',
+    method: 'post',
+    data
+  })
+}
+
+//  基础数据 - 组织架构维护 - 供应商信息编辑
+export function BaseOrgModify(data) {
+  return request({
+    url: '/api/BaseOrganizationSupplier/Modify',
+    method: 'post',
+    data
+  })
+}
+
+//  基础数据 - 组织架构维护 - 供应商信息状态
+export function BaseOrgModifyStatus(data) {
+  return request({
+    url: '/api/BaseOrganizationSupplier/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+

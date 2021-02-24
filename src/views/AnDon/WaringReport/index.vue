@@ -1,9 +1,3 @@
 <template>
-  <div>异常数据查询</div>
+  <router-view />
 </template>
-
-<script>
-</script>
-
-<style>
-</style>

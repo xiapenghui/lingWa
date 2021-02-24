@@ -188,8 +188,8 @@
   </div>
 </template>
 <script>
-import '../../../styles/scrollbar.css'
-import '../../../styles/commentBox.scss'
+import '../../../../styles/scrollbar.css'
+import '../../../../styles/commentBox.scss'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { GetDictionary } from '@/api/BasicData'

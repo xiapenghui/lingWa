@@ -327,7 +327,6 @@ export const asyncRoutes = [
         meta: {
           title: 'SealTemp'
         },
-        // 客户信息管理
         redirect: '/BasicData/SealTemp/SealMain',
         children: [{
           path: 'SealMain',
@@ -966,11 +965,11 @@ export const asyncRoutes = [
       },
       redirect: '/AnDon/WaringReport',
       children: [{
-        path: 'WaringReport',
-        component: () => import('@/views/AnDon/WaringReport'),
-        name: 'WaringReport',
+        path: 'WaringSearch',
+        component: () => import('@/views/AnDon/WaringReport/WaringSearch'),
+        name: 'WaringSearch',
         meta: {
-          title: 'WaringReport'
+          title: 'WaringSearch'
         }
       }
       ]

@@ -106,6 +106,7 @@ export default {
     WaringTermin: '异常与工位管理',
     WaringGropDetail: '异常与发送组关系维护',
     WaringAndGrop: '异常与发送组管理',
+    WaringSearch: '异常数据查询',
 
     // 截止
 
