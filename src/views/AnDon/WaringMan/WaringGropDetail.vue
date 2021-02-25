@@ -281,10 +281,11 @@ export default {
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
+      debugger
       this.ruleForm = {}
-      this.ruleForm.GroupNum = this.tableData[0].GroupNum
-      this.ruleForm.GroupName = this.tableData[0].GroupName
-      this.ruleForm.GroupCode = this.tableData[0].GroupCode
+      this.ruleForm.GroupNum = this.$route.query.GroupNum
+      this.ruleForm.GroupName = this.$route.query.GroupName
+      this.ruleForm.GroupCode = this.$route.query.GroupCode
     },
     // 编辑角色
     handleEdit(row) {

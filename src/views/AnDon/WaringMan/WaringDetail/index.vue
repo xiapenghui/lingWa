@@ -181,7 +181,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import { GetDictionary } from '@/api/BasicData'
 import { GetDepartmentTextValuePair } from '@/api/user'
 import { AnList, AnDelete, AnAdd, AnModify, AnModifyStatus } from '@/api/Andon'
-const fixHeight = 270
+const fixHeight = 260
 export default {
   name: 'MaterialInformation',
   components: { Pagination },

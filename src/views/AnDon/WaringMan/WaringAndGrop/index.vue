@@ -178,7 +178,7 @@ import GroupName from '@/components/GroupName' //  异常发送组
 import WaringName from '@/components/WaringName' //  异常发送组
 import { GetDictionary } from '@/api/BasicData'
 import { AdnGroupList, AdnSendList, AnList, AdnSendDelete, AdnSendAdd, AdnSendModify, AdnSendModifyStatus } from '@/api/Andon'
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'MaterialInformation',

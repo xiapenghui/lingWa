@@ -158,7 +158,7 @@ import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { BarList, BarDelete, BarAdd, BarModify } from '@/api/BasicData'
-const fixHeight = 270
+const fixHeight = 260
 export default {
   name: 'MaterialInformation',
   components: { Pagination },

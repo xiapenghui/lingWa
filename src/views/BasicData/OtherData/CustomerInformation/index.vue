@@ -152,7 +152,7 @@ import '../../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { CustomerList, CustomerDelete, CustomerAdd, CustomerModify, CustomerStatus } from '@/api/BasicData'
-const fixHeight = 270
+const fixHeight = 260
 
 export default {
   name: 'CustomerInformation',

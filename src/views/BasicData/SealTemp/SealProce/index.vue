@@ -179,7 +179,7 @@ import Pagination from '@/components/Pagination'; // secondary package based on 
 import WorkingName from '@/components/WorkingName'; // 工序名称
 import TempName from '@/components/TempName'; // 上传模板
 import { BaseProList, BarList, BarTempList, BarTempAdd, BarTempDelete, BarTempModify } from '@/api/BasicData';
-const fixHeight = 270;
+const fixHeight = 260;
 const fixHeightBox = 350;
 export default {
   name: 'MaterialInformation',

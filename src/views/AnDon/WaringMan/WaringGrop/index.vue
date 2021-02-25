@@ -166,7 +166,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { AdnGroupList, AdnGroupDelete, AdnGroupAdd, AdnGroupModify, AdnGroupModifyStatus } from '@/api/Andon'
 import Bus from '@/api/bus.js'
-const fixHeight = 270
+const fixHeight = 260
 export default {
   name: 'MaterialInformation',
   components: { Pagination },
@@ -317,6 +317,8 @@ export default {
       this.$router.push({
         path: '/AnDon/WaringMan/WaringGropDetail',
         query: {
+          GroupNum: row.GroupNum,
+          GroupName: row.GroupName,
           GroupCode: row.GroupCode
         }
       })

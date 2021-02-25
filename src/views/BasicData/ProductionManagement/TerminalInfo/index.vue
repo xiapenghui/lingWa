@@ -205,7 +205,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { stationList, stationDelete, stationAdd, stationModify, stationStatus, treeList, GetAuthOrganizationRange, BaseProList } from '@/api/BasicData'
 import WorkingName from '@/components/WorkingName' // 工序名称
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'TerminalInfo',

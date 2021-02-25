@@ -192,7 +192,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, baseRouteList } from '@/api/BasicData'
 import LineName from '@/components/LineName' // 工艺路线弹
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'ProductMaintenance',

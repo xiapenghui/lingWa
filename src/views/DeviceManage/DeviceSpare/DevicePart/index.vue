@@ -150,7 +150,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { GetDictionary } from '@/api/BasicData'
 import { EquSpareList, EquSpareDelete, EquSpareAdd, EquSpareModify, EquSpareModifyStatus } from '@/api/DeviceData'
-const fixHeight = 270
+const fixHeight = 260
 export default {
   name: 'MaterialInformation',
   components: { Pagination },

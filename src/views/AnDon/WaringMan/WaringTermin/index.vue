@@ -180,7 +180,7 @@ import TerminalInfo from '@/components/TerminalInfo' //  工位信息
 import WaringName from '@/components/WaringName' //  异常发送组
 import { stationList } from '@/api/BasicData'
 import { AnList, AdnTerList, AdnTerDelete, AdnTerAdd, AdnTerModify, AdnTerModifyStatus } from '@/api/Andon'
-const fixHeight = 270
+const fixHeight = 260
 const fixHeightBox = 350
 export default {
   name: 'MaterialInformation',
