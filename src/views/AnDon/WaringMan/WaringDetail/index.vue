@@ -180,7 +180,7 @@ import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { GetDictionary } from '@/api/BasicData'
 import { GetDepartmentTextValuePair } from '@/api/user'
-import { AnList, AnDelete, AnAdd, AnModify, AnStatus } from '@/api/Andon'
+import { AnList, AnDelete, AnAdd, AnModify, AnModifyStatus } from '@/api/Andon'
 const fixHeight = 270
 export default {
   name: 'MaterialInformation',
@@ -329,7 +329,7 @@ export default {
           Status: (row.Status = row.Status !== true),
           ExceptCode: row.ExceptCode
         }
-        AnStatus(params).then(res => {
+        AnModifyStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',

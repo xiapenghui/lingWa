@@ -46,7 +46,7 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" type="selection" width="150" />
+      <el-table-column align="center" type="selection" width="150" fixed />
 
       <el-table-column align="center" label="设备编号" width="150" prop="EquNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">

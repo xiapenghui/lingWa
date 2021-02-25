@@ -56,9 +56,16 @@
           {{ scope.row.Name }}
         </template>
       </el-table-column>
+
       <el-table-column align="center" label="成品规格" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Spec }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="成品属性" width="150" prop="AttributeText" sortable>
+        <template slot-scope="scope">
+          {{ scope.row.AttributeText }}
         </template>
       </el-table-column>
 
@@ -137,6 +144,13 @@
 
         <el-form-item label="成品名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="成品名称" clearable /></el-form-item>
         <el-form-item label="成品规格"><el-input v-model.trim="ruleForm.Spec" placeholder="成品规格" clearable /></el-form-item>
+
+        <el-form-item label="物料属性">
+          <el-select v-model="ruleForm.Attribute" placeholder="请选择" style="width: 100%" clearable>
+            <el-option v-for="item in AttributeData" :key="item.value" :label="item.text" :value="item.value" />
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="颜色"><el-input v-model.trim="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
 
         <el-form-item label="单位">
@@ -218,6 +232,7 @@ export default {
       dialogType: 'new',
       UnitTextList: [], // 获取新增页面单位下拉
       linerData: [], // 工艺路线数组
+      AttributeData: [], // 成品属性下拉
       newUnit: null,
       rules: {
         MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
@@ -294,6 +309,13 @@ export default {
     GetDictionary({ code: '0021' }).then(res => {
       if (res.IsPass === true) {
         this.UnitTextList = res.Obj
+      }
+    })
+
+    // 成品属性下拉
+    GetDictionary({ code: '0037' }).then(res => {
+      if (res.IsPass === true) {
+        this.AttributeData = res.Obj
       }
     })
 

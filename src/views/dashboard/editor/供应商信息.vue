@@ -2,18 +2,20 @@
   <div class="app-container">
     <div class="search">
       <el-row :gutter="20">
-        <el-col :span="6">
+        <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="原料编号" placement="top-start"><label class="radio-label">原料编号:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="供应商编号" placement="top-start"><label class="radio-label">供应商编号:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.MaterialNum" placeholder="原料编号" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.SupplierNum" placeholder="供应商编号" clearable /></el-col>
         </el-col>
-        <el-col :span="6">
+
+        <el-col :span="5">
           <el-col :span="8">
-            <el-tooltip class="item" effect="dark" :enterable="false" content="原料名称" placement="top-start"><label class="radio-label">原料名称:</label></el-tooltip>
+            <el-tooltip class="item" effect="dark" :enterable="false" content="供应商名称" placement="top-start"><label class="radio-label">供应商名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="原料名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="供应商名称" clearable /></el-col>
         </el-col>
+
         <el-col :span="4">
           <el-col :span="24">
             <el-tooltip class="item" effect="dark" :enterable="false" content="是否包含禁用状态数据" placement="top-start">
@@ -46,68 +48,51 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column align="center" label="原料编号" width="150" prop="MaterialNum" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="供应商编号" width="150" prop="SupplierNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.MaterialNum }}
+          {{ scope.row.SupplierNum }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原料名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
+
+      <el-table-column align="center" label="供应商名称" width="150" prop="Name" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Name }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="原料规格" width="150" prop="Spec" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="供应商代码" width="150" prop="ExceptTypeText" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Spec }}
+          {{ scope.row.ExceptTypeText }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="物料类型" width="150" prop="TypeName" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="联系人" width="150" prop="Contact" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.TypeName }}
+          {{ scope.row.Contact }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="物料属性" width="150" prop="AttributeText" sortable>
+      <el-table-column align="center" label="电话" width="150" prop="Tel" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.AttributeText }}
+          {{ scope.row.Tel }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="颜色" width="120" prop="Color" sortable>
+      <el-table-column align="center" label="地址" width="200" prop="Address" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.Color }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="单位" width="120" prop="UnitText" sortable>
-        <template slot-scope="scope">
-          {{ scope.row.UnitText }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="是否免检" width="120" prop="IsInspection" sortable>
-        <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.IsInspection === false ? '#FF5757' : '#13ce66' }">{{ scope.row.IsInspection === false ? '否' : '是' }}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="状态" width="100" prop="Status" sortable>
-        <template slot-scope="scope">
-          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="描述" min-width="200" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.Description }}
+          {{ scope.row.Address }}
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="备注" min-width="200" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           {{ scope.row.Remark }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="状态" width="100" prop="Status" sortable>
+        <template slot-scope="scope">
+          <el-tag :style="{ color: scope.row.Status === false ? '#FF5757' : '#13ce66' }">{{ scope.row.Status === false ? '禁用' : '启用' }}</el-tag>
         </template>
       </el-table-column>
 
@@ -151,40 +136,18 @@
       :visible.sync="dialogFormVisible"
       :title="dialogType === 'edit' ? $t('permission.editMaterial') : $t('permission.addMaterial')"
     >
-      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="100px" label-position="left">
-        <el-form-item label="原料编号" prop="MaterialNum"><el-input v-model.trim="ruleForm.MaterialNum" placeholder="原料编号" clearable /></el-form-item>
-        <el-form-item label="原料名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="原料名称" clearable /></el-form-item>
-        <el-form-item label="原料规格"><el-input v-model.trim="ruleForm.Spec" placeholder="原料规格" clearable /></el-form-item>
-        <el-form-item label="颜色"><el-input v-model.trim="ruleForm.Color" placeholder="颜色" clearable /></el-form-item>
-
-        <el-form-item label="单位">
-          <el-select v-model="ruleForm.Unit" placeholder="请选择" style="width: 100%" clearable @change="changeUnit">
-            <el-option v-for="item in UnitTextList" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="物料类型">
-          <el-select v-model="ruleForm.TypeCode" placeholder="请选择" style="width: 100%" clearable>
-            <el-option v-for="item in BelongingData" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="物料属性">
-          <el-select v-model="ruleForm.Attribute" placeholder="请选择" style="width: 100%" clearable>
-            <el-option v-for="item in AttributeData" :key="item.value" :label="item.text" :value="item.value" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="是否免检">
-          <el-radio v-model="ruleForm.IsInspection" :label="true">是</el-radio>
-          <el-radio v-model="ruleForm.IsInspection" :label="false">否</el-radio>
-        </el-form-item>
-
-        <el-form-item label="描述"><el-input v-model.trim="ruleForm.Description" placeholder="描述" type="textarea" clearable /></el-form-item>
+      <el-form ref="ruleForm" v-loading="editLoading" :model="ruleForm" :rules="rules" label-width="120px" label-position="left">
+        <el-form-item label="工应商编号" prop="SupplierNum"><el-input v-model.trim="ruleForm.SupplierNum" placeholder="工应商编号" clearable /></el-form-item>
+        <el-form-item label="工应商名称" prop="Name"><el-input v-model.trim="ruleForm.Name" placeholder="工应商名称" clearable /></el-form-item>
+        <el-form-item label="联系人"><el-input v-model.trim="ruleForm.Contact" placeholder="工应商名称" clearable /></el-form-item>
+        <el-form-item label="电话"><el-input v-model.trim="ruleForm.Tel" placeholder="工应商名称" clearable /></el-form-item>
+        <el-form-item label="工应商代码"><el-input v-model.trim="ruleForm.ShortCode" placeholder="工应商代码" clearable /></el-form-item>
+        <el-form-item label="地址"><el-input v-model.trim="ruleForm.Address" placeholder="地址" clearable /></el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="ruleForm.Remark" placeholder="备注" type="textarea" clearable /></el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button v-if="addShow" type="primary" @click="submitAdd('ruleForm')">继续新增</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">{{ $t('permission.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -192,11 +155,11 @@
 </template>
 
 <script>
-import '../../../../styles/commentBox.scss'
-import '../../../../styles/scrollbar.css'
+import '../../../styles/commentBox.scss'
+import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { MaterialList, MaterialDelete, MaterialAdd, MaterialModify, MaterialStatus, GetDictionary, GetMaterialTypeTextValuePair } from '@/api/BasicData'
+import { BaseOrgList, BaseOrgDelete, BaseOrgAdd, BaseOrgModify, BaseOrgModifyStatus } from '@/api/BasicData'
 const fixHeight = 270
 export default {
   name: 'MaterialInformation',
@@ -208,10 +171,9 @@ export default {
       pagination: {
         PageIndex: 1,
         PageSize: 30,
-        MaterialNum: undefined,
+        SupplierNum: undefined,
         Name: undefined,
-        ShowBanned: false,
-        MaterialType: 0
+        ShowBanned: false
       },
       listLoading: false,
       editLoading: false, // 编辑loading
@@ -220,13 +182,10 @@ export default {
       dialogTableVisible: false, // 查看用户弹出框
       tableHeight: window.innerHeight - fixHeight, // 表格高度
       dialogType: 'new',
-      UnitTextList: [], // 获取新增页面单位下拉
-      BelongingData: [], // 物料类型下拉
-      AttributeData: [], // 物料属性下拉
-      newUnit: null,
+      addShow: true, // 继续新增
       rules: {
-        MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }]
+        SupplierNum: [{ required: true, message: '请输入供应商编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入供应商名称', trigger: 'blur' }]
       }
       // content1: this.$t('permission.userName'),
       // content2: this.$t('permission.fullName'),
@@ -252,14 +211,20 @@ export default {
         }, 400)
       }
     },
-    'ruleForm.MaterialNum': function(val) {
+    'ruleForm.SupplierNum': function(val) {
       if (val === '' || val === undefined) {
         return
       } else {
-        this.ruleForm.MaterialNum = this.filterInput(val)
+        this.ruleForm.SupplierNum = this.filterInput(val)
       }
     },
-
+    'ruleForm.ShortCode': function(val) {
+      if (val === '' || val === undefined) {
+        return
+      } else {
+        this.ruleForm.ShortCode = this.filterInput(val)
+      }
+    },
     // 监听data属性中英文切换问题
     '$i18n.locale'() {
       // this.content1 = this.$t('permission.userName')
@@ -283,27 +248,6 @@ export default {
       })()
     }
 
-    // 单位下拉
-    GetDictionary({ code: '0021' }).then(res => {
-      if (res.IsPass === true) {
-        this.UnitTextList = res.Obj
-      }
-    })
-
-    // 物料属性下拉
-    GetDictionary({ code: '0037' }).then(res => {
-      if (res.IsPass === true) {
-        this.AttributeData = res.Obj
-      }
-    })
-
-    //  物料类型下拉
-    GetMaterialTypeTextValuePair().then(res => {
-      if (res.IsPass === true) {
-        this.BelongingData = res.Obj
-      }
-    })
-
     this.getList()
     this.setFormRules()
   },
@@ -323,14 +267,11 @@ export default {
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
-        MaterialNum: [{ required: true, message: '请输入原料编号', trigger: 'blur' }],
-        Name: [{ required: true, message: '请输入原料名称', trigger: 'blur' }]
+        SupplierNum: [{ required: true, message: '请输入供应商编号', trigger: 'blur' }],
+        Name: [{ required: true, message: '请输入供应商名称', trigger: 'blur' }]
       }
     },
-    // 获取下拉选择单位的最新值
-    changeUnit(val) {
-      this.newUnit = val
-    },
+
     // 禁用，启用权限
     handleBan(row) {
       let status, statusTitle
@@ -348,9 +289,9 @@ export default {
       }).then(() => {
         const params = {
           Status: (row.Status = row.Status !== true),
-          MaterialCode: row.MaterialCode
+          SupplierCode: row.SupplierCode
         }
-        MaterialStatus(params).then(res => {
+        BaseOrgModifyStatus(params).then(res => {
           if (res.IsPass === true) {
             this.$message({
               type: 'success',
@@ -375,7 +316,7 @@ export default {
 
     getList() {
       this.listLoading = true
-      MaterialList(this.pagination).then(res => {
+      BaseOrgList(this.pagination).then(res => {
         this.tableData = res.Obj
         this.total = res.TotalRowCount
         this.listLoading = false
@@ -397,17 +338,17 @@ export default {
     handleAdd() {
       this.dialogType = 'new'
       this.dialogFormVisible = true
+      this.addShow = true
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
-      this.ruleForm = {
-        MaterialType: 0
-      }
+      this.ruleForm = {}
     },
     // 编辑角色
     handleEdit(row) {
       this.dialogType = 'edit'
       this.dialogFormVisible = true
+      this.addShow = false
       this.$nextTick(() => {
         this.$refs.ruleForm.clearValidate()
       })
@@ -422,7 +363,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          MaterialDelete({ MaterialCode: row.MaterialCode }).then(res => {
+          BaseOrgDelete({ SupplierCode: row.SupplierCode }).then(res => {
             if (res.IsPass === true) {
               this.$message({
                 type: 'success',
@@ -451,8 +392,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.dialogType === 'edit') {
-            const params = this.ruleForm
-            MaterialModify(params).then(res => {
+            BaseOrgModify(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -469,9 +409,7 @@ export default {
               this.editLoading = false
             })
           } else {
-            const params = this.ruleForm
-            params.Unit = this.newUnit
-            MaterialAdd(params).then(res => {
+            BaseOrgAdd(this.ruleForm).then(res => {
               if (res.IsPass === true) {
                 this.$message({
                   type: 'success',
@@ -497,7 +435,32 @@ export default {
           return false
         }
       })
+    },
+
+    // 继续新增
+    submitAdd(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          BaseOrgAdd(this.ruleForm).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: this.$t('table.addSuc')
+              })
+              this.getList()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+            this.editLoading = false
+          })
+          this.handleAdd()
+        }
+      })
     }
+
   }
 }
 </script>

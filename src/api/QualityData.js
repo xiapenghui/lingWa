@@ -660,3 +660,84 @@ export function QuaDefectModifyStatus(data) {
     data
   })
 }
+
+// 质量管理 - 收货管理 - 收货计划、收货管理列表
+export function QuaRecvList(data) {
+  return request({
+    url: '/api/QuaRecvGoods/List',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 收货管理 - 收货计划、收货管理增加
+export function QuaRecvAdd(data) {
+  return request({
+    url: '/api/QuaRecvGoods/Add',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 收货管理 - 收货计划、收货管理删除
+export function QuaRecvDelete(data) {
+  return request({
+    url: '/api/QuaRecvGoods/Delete',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 收货管理 - 收货计划、收货管理修改
+export function QuaRecvModify(data) {
+  return request({
+    url: '/api/QuaRecvGoods/Modify',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 收货管理 - 收货计划、收货管理状态
+export function QuaRecvModifyStatus(data) {
+  return request({
+    url: '/api/QuaRecvGoods/ModifyStatus',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 收货管理 - 收货计划、收货管理打印收货单
+export function PrintReceipt(data) {
+  return request({
+    url: '/api/QuaRecvGoods/PrintReceipt',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 收货管理 - 收货计划、收货管理打印条码
+export function PrintBarCode(data) {
+  return request({
+    url: '/api/QuaRecvGoods/PrintBarCode',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 收货管理 - 收货计划、收货管理 执行收货列表
+export function PerformRecvGoodsList(data) {
+  return request({
+    url: '/api/QuaRecvGoods/PerformRecvGoodsList',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 收货管理 - 收货计划、收货管理 执行收货保存
+export function PerformRecvGoodsSave(data) {
+  return request({
+    url: '/api/QuaRecvGoods/PerformRecvGoodsSave',
+    method: 'post',
+    data
+  })
+}

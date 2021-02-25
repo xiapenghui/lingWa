@@ -33,7 +33,7 @@
 
     <div class="rightBtn">
       <el-button type="primary" icon="el-icon-circle-plus-outline" @click="handleAdd">{{ $t('permission.addMaterial') }}</el-button>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="Toprint"> 打印</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="Toprint">打印</el-button>
       <el-button type="primary" icon="el-icon-circle-plus-outline" :loading="downloadLoading" @click="handleDownload">批量导出</el-button>
     </div>
 
@@ -52,12 +52,7 @@
     >
       <el-table-column align="center" label="行号" width="50" type="index" :index="table_index" fixed />
 
-      <el-table-column
-        align="center"
-        type="selection"
-        width="55"
-        fixed
-      />
+      <el-table-column align="center" type="selection" width="55" fixed />
 
       <el-table-column align="center" label="异常编号" width="150" prop="ExceptNum" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
@@ -183,7 +178,6 @@ import '../../../styles/commentBox.scss'
 import '../../../styles/scrollbar.css'
 import i18n from '@/lang'
 import printJS from 'print-js' // 打印js
-
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TerminalInfo from '@/components/TerminalInfo' //  工位信息
 import WaringName from '@/components/WaringName' //  异常发送组
@@ -631,7 +625,6 @@ export default {
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => v[j]))
     }
-
   }
 }
 </script>
