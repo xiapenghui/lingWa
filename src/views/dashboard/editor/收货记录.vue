@@ -29,8 +29,8 @@
           </el-col>
           <el-col :span="16">
             <el-date-picker
-              class="pickerCss"
               v-model="pagination.importDate"
+              class="pickerCss"
               type="daterange"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
@@ -128,28 +128,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="收货状态" width="150" prop="RecvStatusText" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.RecvStatusText }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="收货开始时间" width="150" prop="StartDate" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.StartDate }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="收货完成时间" width="150" prop="EndDate" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          {{ scope.row.EndDate }}
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" :label="$t('permission.operations')" fixed="right" width="80">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :enterable="false" content="查看明细" placement="top-start">
-            <el-button type="warning" size="small" icon="el-icon-tickets" plain @click="handleEdit(scope.row)" />
+          <el-tooltip class="item" effect="dark" :enterable="false" content="执行收货" placement="top-start">
+            <el-button type="warning" size="small" icon="el-icon-document-checked" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -237,13 +219,13 @@
 </template>
 
 <script>
-import '../../../styles/commentBox.scss';
-import '../../../styles/scrollbar.css';
-import i18n from '@/lang';
-import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
-import { QuaRecvList, PerformRecvGoodsList, PerformRecvGoodsSave, PerformRecvGoodsCheck } from '@/api/QualityData';
-const fixHeight = 260;
-const fixHeight2 = 600;
+import '../../../styles/commentBox.scss'
+import '../../../styles/scrollbar.css'
+import i18n from '@/lang'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { QuaRecvList, PerformRecvGoodsList, PerformRecvGoodsSave } from '@/api/QualityData'
+const fixHeight = 260
+const fixHeight2 = 600
 export default {
   name: 'MaterialInformation',
   components: { Pagination },
@@ -276,28 +258,28 @@ export default {
           {
             text: '最近一周',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
             }
           },
           {
             text: '最近一个月',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
             }
           },
           {
             text: '最近三个月',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
             }
           }
         ]
@@ -314,37 +296,37 @@ export default {
       // content7: this.$t('permission.passwords'),
       // content8: this.$t('permission.roleUser'),
       // content9: this.$t('permission.description')
-    };
+    }
   },
   computed: {},
   watch: {
     // 监听表格高度
     tableHeight(val) {
       if (!this.timer) {
-        this.tableHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
     tableHeight2(val) {
       if (!this.timer) {
-        this.tableHeight = val;
-        this.timer = true;
-        const that = this;
+        this.tableHeight = val
+        this.timer = true
+        const that = this
         setTimeout(function() {
-          that.timer = false;
-        }, 400);
+          that.timer = false
+        }, 400)
       }
     },
 
     'ruleForm.ShortCode': function(val) {
       if (val === '' || val === undefined) {
-        return;
+        return
       } else {
-        this.ruleForm.ShortCode = this.filterInput(val);
+        this.ruleForm.ShortCode = this.filterInput(val)
       }
     },
     // 监听data属性中英文切换问题
@@ -358,178 +340,169 @@ export default {
       // this.content7 = this.$t('permission.passwords')
       // this.content8 = this.$t('permission.roleUser')
       // this.content9 = this.$t('permission.description')
-      this.setFormRules();
+      this.setFormRules()
     }
   },
   created() {
     // 监听表格高度
-    const that = this;
+    const that = this
     window.onresize = () => {
       return (() => {
-        that.tableHeight = window.innerHeight - fixHeight;
-        that.tableHeight2 = window.innerHeight - fixHeight2;
-      })();
-    };
+        that.tableHeight = window.innerHeight - fixHeight
+        that.tableHeight2 = window.innerHeight - fixHeight2
+      })()
+    }
 
-    this.getList();
-    this.setFormRules();
+    this.getList()
+    this.setFormRules()
   },
   methods: {
     // 分页
     table_index(index) {
-      return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1;
+      return (this.pagination.PageIndex - 1) * this.pagination.PageSize + index + 1
     },
     // 输入框禁止输入中文
     filterInput(val) {
       if (val === '') {
-        return val;
+        return val
       } else {
-        return val.replace(/[\u4e00-\u9fa5\s]/gi, '');
+        return val.replace(/[\u4e00-\u9fa5\s]/gi, '')
       }
     },
     // 表单验证切换中英文
     setFormRules: function() {
       this.rules = {
         Barcode: [{ required: true, message: '请输入收货条码', trigger: 'blur' }]
-      };
+      }
     },
     // 改变搜索框开始结束时间触发
     importChange(val) {
       if (val === null) {
         this.$nextTick(function() {
-          this.pagination.importDate = [];
-          this.pagination.StartDate = '';
-          this.pagination.EndDate = '';
-        });
+          this.pagination.importDate = []
+          this.pagination.StartDate = ''
+          this.pagination.EndDate = ''
+        })
       } else {
-        this.pagination.importDate[0] = val[0];
-        this.pagination.importDate[1] = val[1];
-        this.pagination.StartDate = this.pagination.importDate[0];
-        this.pagination.EndDate = this.pagination.importDate[1];
+        this.pagination.importDate[0] = val[0]
+        this.pagination.importDate[1] = val[1]
+        this.pagination.StartDate = this.pagination.importDate[0]
+        this.pagination.EndDate = this.pagination.importDate[1]
       }
     },
 
     // 查询
     handleSearch() {
-      this.pagination.PageIndex = 1;
-      this.getList();
+      this.pagination.PageIndex = 1
+      this.getList()
     },
 
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       QuaRecvList(this.pagination).then(res => {
-        this.tableData = res.Obj;
-        this.total = res.TotalRowCount;
-        this.listLoading = false;
-      });
+        this.tableData = res.Obj
+        this.total = res.TotalRowCount
+        this.listLoading = false
+      })
     },
 
     i18n(routes) {
       const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`);
+        route.title = i18n.t(`route.${route.title}`)
         if (route.children) {
-          route.children = this.i18n(route.children);
+          route.children = this.i18n(route.children)
         }
-        return route;
-      });
-      return app;
+        return route
+      })
+      return app
     },
 
     // 编辑角色
     handleEdit(row) {
-      this.dialogFormVisible = true;
+      this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs.ruleForm.clearValidate();
-      });
-      this.ruleForm = JSON.parse(JSON.stringify(row));
-      this.NewRecvCode = row.RecvCode;
+        this.$refs.ruleForm.clearValidate()
+      })
+      this.ruleForm = JSON.parse(JSON.stringify(row))
+      this.NewRecvCode = row.RecvCode
     },
 
     // 检验条码
     submitForm(formName) {
-      this.editLoading = true;
+      this.editLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
-          PerformRecvGoodsCheck({ Barcode: this.ruleForm.Barcode }).then(res => {
+          const params = {
+            Barcode: this.ruleForm.Barcode,
+            RecvCode: this.NewRecvCode
+          }
+          PerformRecvGoodsList(params).then(res => {
             if (res.IsPass === true) {
-              const params = {
-                Barcode: this.ruleForm.Barcode,
-                RecvCode: this.NewRecvCode
-              };
-              PerformRecvGoodsList(params).then(res => {
-                if (res.IsPass === true) {
-                  this.$message({
-                    type: 'success',
-                    message: res.MSG
-                  });
-                  this.tableData2 = res.Obj;
-                }
-              });
+              this.$message({
+                type: 'success',
+                message: res.MSG
+              })
+              this.tableData2 = res.Obj
             } else {
               this.$message({
                 type: 'error',
                 message: res.MSG
-              });
+              })
             }
-            this.tableData2 = [];
-            this.editLoading = false;
-          });
+            this.editLoading = false
+          })
         } else {
-          this.editLoading = false;
+          this.editLoading = false
           this.$message({
             type: 'error',
             message: '必填项不能为空'
-          });
-          return false;
+          })
+          return false
         }
-      });
+      })
     },
 
     // 提交保存成功
     submitForm2(formName) {
-      this.editLoading = true;
+      this.editLoading = true
       this.$refs[formName].validate(valid => {
-        let self = this;
         if (valid) {
-          let self = this;
-          if (self.tableData2.length > 0) {
-            const params = {
-              Barcode: self.ruleForm.Barcode,
-              DetailCode: self.tableData2[0].DetailCode
-            };
-            PerformRecvGoodsSave(params).then(res => {
-              if (res.IsPass === true) {
-                self.$message({
-                  type: 'success',
-                  message: res.MSG
-                });
-                self.getList();
-                self.dialogFormVisible = false;
-                self.tableData2 = [];
-                self.$nextTick(() => {
-                  self.$refs.ruleForm.clearValidate();
-                });
-              }
-            });
-          } else {
-            self.$message({
-              type: 'error',
-              message: '请先检验收货条码是否存在！'
-            });
+          const params = {
+            Barcode: this.ruleForm.Barcode,
+            DetailCode: this.tableData2[0].DetailCode
           }
-          self.editLoading = false;
+          PerformRecvGoodsSave(params).then(res => {
+            if (res.IsPass === true) {
+              this.$message({
+                type: 'success',
+                message: '执行收货成功！'
+              })
+              this.getList()
+              this.dialogFormVisible = false
+              this.tableData2 = []
+              this.$nextTick(() => {
+                this.$refs.ruleForm.clearValidate()
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.MSG
+              })
+            }
+            this.editLoading = false
+          })
         } else {
-          self.editLoading = false;
-          self.$message({
+          this.editLoading = false
+          this.$message({
             type: 'error',
             message: '必填项不能为空'
-          });
-          return false;
+          })
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -550,9 +523,9 @@ export default {
 }
 
 @media screen and (min-width: 1350px) and (max-width: 1600px) {
-  .search .pickerCss {
-    width: 200px;
-  }
+ .search .pickerCss {
+   width: 200px;
+ }
 }
 
 @media screen and (min-width: 1000px) and (max-width: 1349px) {

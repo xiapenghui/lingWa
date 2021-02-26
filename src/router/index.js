@@ -734,6 +734,35 @@ export const asyncRoutes = [
       }
       ]
     }
+
+      // 收货管理
+      // {
+      //   path: 'ProcessParam',
+      //   component: () => import('@/views/QualityData/ProcessParam'),
+      //   name: 'ProcessParam',
+      //   meta: {
+      //     title: 'ProcessParam'
+      //   },
+      //   redirect: '/QualityData/ProcessParam/ProcessInspec',
+      //   children: [{
+      //     path: 'ProcessInspec',
+      //     component: () => import('@/views/QualityData/ProcessParam/ProcessInspec'),
+      //     name: 'ProcessInspec',
+      //     meta: {
+      //       title: 'ProcessInspec'
+      //     }
+      //   },
+      //   {
+      //     path: 'ProcessDefect',
+      //     component: () => import('@/views/QualityData/ProcessParam/ProcessDefect'),
+      //     name: 'ProcessDefect',
+      //     meta: {
+      //       title: 'ProcessDefect'
+      //     }
+      //   }
+      //   ]
+      // },
+
     ]
   },
 

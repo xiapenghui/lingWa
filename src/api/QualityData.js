@@ -741,3 +741,12 @@ export function PerformRecvGoodsSave(data) {
     data
   })
 }
+
+// 质量管理 - 收货管理 -   执行收货 - 检查条码
+export function PerformRecvGoodsCheck(data) {
+  return request({
+    url: '/api/QuaRecvGoods/PerformRecvGoodsCheck',
+    method: 'post',
+    data
+  })
+}

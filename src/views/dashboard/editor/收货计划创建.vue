@@ -142,7 +142,7 @@
 
       <el-table-column align="center" label="收货状态" width="150" prop="RecvPrintStatusText" sortable>
         <template slot-scope="scope">
-          {{ scope.row.ReceStatusText }}
+          {{ scope.row.RecvStatusText }}
         </template></el-table-column>
 
       <el-table-column align="center" label="收货单打印状态" width="150" prop="RecvPrintStatusText" sortable>
@@ -272,8 +272,8 @@ export default {
         importDate: [],
         OrderNum: undefined,
         Name: undefined,
+        RecvCret: undefined,
         MaterialNum: undefined,
-        ReceStatus: undefined,
         ShowBanned: false
       },
       // 原料搜索条件
