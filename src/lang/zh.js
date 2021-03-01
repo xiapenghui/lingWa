@@ -107,6 +107,12 @@ export default {
     WaringGropDetail: '异常与发送组关系维护',
     WaringAndGrop: '异常与发送组管理',
     WaringSearch: '异常数据查询',
+    SupplierName: '供应商信息',
+    ReceivingGoods: '收货管理',
+    ReceivingPlan: '收货计划',
+    ReceivingPrinting: '收货标签补打',
+    ReceivingManage: '执行收货',
+    ReceivingResult: '收货记录',
 
     // 截止
 

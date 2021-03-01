@@ -691,7 +691,6 @@ export default {
         CustomerName: ''
       }, // 编辑弹窗
       selectedData: [], // 批量选择新数组
-      CreateTime: null,
       btnShow: true, // 互斥按钮
       showSearch: false, // 隐藏搜素条件
       isDisabled: false, // 拆分弹窗默认不能修改

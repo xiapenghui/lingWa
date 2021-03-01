@@ -148,6 +148,24 @@ export const asyncRoutes = [
           meta: {
             title: 'Personnelinfor'
           }
+        },
+        // 客户信息
+        {
+          path: 'CustomerInformation',
+          component: () => import('@/views/BasicData/OrganizationalManagement/CustomerInformation'),
+          name: 'CustomerInformation',
+          meta: {
+            title: 'CustomerInformation'
+          }
+        },
+        // 供应商信息
+        {
+          path: 'SupplierName',
+          component: () => import('@/views/BasicData/OrganizationalManagement/SupplierName'),
+          name: 'SupplierName',
+          meta: {
+            title: 'SupplierName'
+          }
         }
         ]
       },
@@ -275,7 +293,6 @@ export const asyncRoutes = [
           name: 'MaterialType',
           meta: {
             title: 'MaterialType'
-
           }
         },
 
@@ -297,26 +314,6 @@ export const asyncRoutes = [
           }
         }
         ]
-      },
-
-      // 其他主数据管理
-      {
-        path: 'OtherData',
-        component: () => import('@/views/BasicData/OtherData/index'), // Parent router-view
-        name: 'OtherData',
-        meta: {
-          title: 'OtherData'
-        },
-        // 客户信息管理
-        redirect: '/BasicData/OtherData/CustomerInformation',
-        children: [{
-          path: 'CustomerInformation',
-          component: () => import('@/views/BasicData/OtherData/CustomerInformation'),
-          name: 'CustomerInformation',
-          meta: {
-            title: 'CustomerInformation'
-          }
-        }]
       },
 
       // 打印模板管理
@@ -733,35 +730,56 @@ export const asyncRoutes = [
         }
       }
       ]
-    }
+    },
 
-      // 收货管理
-      // {
-      //   path: 'ProcessParam',
-      //   component: () => import('@/views/QualityData/ProcessParam'),
-      //   name: 'ProcessParam',
-      //   meta: {
-      //     title: 'ProcessParam'
-      //   },
-      //   redirect: '/QualityData/ProcessParam/ProcessInspec',
-      //   children: [{
-      //     path: 'ProcessInspec',
-      //     component: () => import('@/views/QualityData/ProcessParam/ProcessInspec'),
-      //     name: 'ProcessInspec',
-      //     meta: {
-      //       title: 'ProcessInspec'
-      //     }
-      //   },
-      //   {
-      //     path: 'ProcessDefect',
-      //     component: () => import('@/views/QualityData/ProcessParam/ProcessDefect'),
-      //     name: 'ProcessDefect',
-      //     meta: {
-      //       title: 'ProcessDefect'
-      //     }
-      //   }
-      //   ]
-      // },
+    // 收货管理
+    {
+      path: 'ReceivingGoods',
+      component: () => import('@/views/QualityData/ReceivingGoods'),
+      name: 'ReceivingGoods',
+      meta: {
+        title: 'ReceivingGoods'
+      },
+      redirect: '/QualityData/ReceivingGoods/ReceivingPlan',
+      children: [
+        // 收货计划
+        {
+          path: 'ReceivingPlan',
+          component: () => import('@/views/QualityData/ReceivingGoods/ReceivingPlan'),
+          name: 'ReceivingPlan',
+          meta: {
+            title: 'ReceivingPlan'
+          }
+        },
+        // 收货标签补打
+        {
+          path: 'ReceivingPrinting',
+          component: () => import('@/views/QualityData/ReceivingGoods/ReceivingPrinting'),
+          name: 'ReceivingPrinting',
+          meta: {
+            title: 'ReceivingPrinting'
+          }
+        },
+        // 收货管理
+        {
+          path: 'ReceivingManage',
+          component: () => import('@/views/QualityData/ReceivingGoods/ReceivingManage'),
+          name: 'ReceivingManage',
+          meta: {
+            title: 'ReceivingManage'
+          }
+        },
+        // 收货记录
+        {
+          path: 'ReceivingResult',
+          component: () => import('@/views/QualityData/ReceivingGoods/ReceivingResult'),
+          name: 'ReceivingResult',
+          meta: {
+            title: 'ReceivingResult'
+          }
+        }
+      ]
+    }
 
     ]
   },

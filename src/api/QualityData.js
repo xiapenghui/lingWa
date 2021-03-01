@@ -750,3 +750,22 @@ export function PerformRecvGoodsCheck(data) {
     data
   })
 }
+
+// 质量管理 - 收货管理 -  公用查询接口
+export function ListCommonSearch(data) {
+  return request({
+    url: '/api/QuaRecvGoods/ListCommonSearch',
+    method: 'post',
+    data
+  })
+}
+
+// 质量管理 - 收货管理 -  补打-标签补打
+export function RepeatPrintBarcode(data) {
+  return request({
+    url: '/api/QuaRecvGoods/RepeatPrintBarcode',
+    method: 'post',
+    data
+  })
+}
+
