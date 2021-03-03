@@ -13,7 +13,8 @@
           <el-col :span="8">
             <el-tooltip class="item" effect="dark" :enterable="false" content="供应商名称" placement="top-start"><label class="radio-label">供应商名称:</label></el-tooltip>
           </el-col>
-          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="供应商名称" clearable /></el-col>
+          <el-col :span="16"><el-input v-model.trim="pagination.Name" placeholder="供应商名称" clearable />
+          </el-col>
         </el-col>
 
         <el-col :span="4">
@@ -60,9 +61,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="供应商代码" width="150" prop="ExceptTypeText" sortable :show-overflow-tooltip="true">
+      <el-table-column align="center" label="供应商代码" width="150" prop="ShortCode" sortable :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          {{ scope.row.ExceptTypeText }}
+          {{ scope.row.ShortCode }}
         </template>
       </el-table-column>
 

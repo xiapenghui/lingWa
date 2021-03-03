@@ -243,14 +243,14 @@ $light_gray: #ffffff;
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 60px 35px 60px 35px;
+    padding: 50px 35px 50px 35px;
     margin: -750px auto;
     overflow: hidden;
     background-color: rgba(0,0,0,0.2);
     border-radius: 20px;
     .el-button {
       width: 100%;
-      margin-bottom: 30px;
+      margin-top: 10px;
       background-color: #f8b502;
       border: 1px solid #f8b502;
       font-weight: bold;
